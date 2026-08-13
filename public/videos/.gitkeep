@@ -1,0 +1,2 @@
+# Drop your landing video here, e.g. overview.mp4
+# then set VIDEO_SRC = '/videos/overview.mp4' in lib/chapters.js

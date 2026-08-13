@@ -1,0 +1,220 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+
+import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
+
+// Chapters can render a code-driven animation scene instead of a <video>.
+const SCENES = {
+  'posted-missions': PostedMissionsScene,
+};
+
+function BadgeIcon({ name }) {
+  const p = {
+    width: 20,
+    height: 20,
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 2,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
+  };
+  if (name === 'check')
+    return (
+      <svg {...p}>
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    );
+  if (name === 'users')
+    return (
+      <svg {...p}>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    );
+  if (name === 'chart')
+    return (
+      <svg {...p}>
+        <line x1="12" y1="20" x2="12" y2="10" />
+        <line x1="18" y1="20" x2="18" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="16" />
+      </svg>
+    );
+  return (
+    <svg {...p}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      <polyline points="9 12 11 14 15 10" />
+    </svg>
+  );
+}
+
+const BADGES = [
+  { icon: 'check', title: 'Proven in the field', sub: 'Across industries' },
+  { icon: 'users', title: 'Built for your teams', sub: 'Frontline to leadership' },
+  { icon: 'chart', title: 'Measurable impact', sub: 'Results you can see' },
+  { icon: 'shield', title: 'Secure & reliable', sub: 'Enterprise grade' },
+];
+
+export default function HeroVideo({ src, poster, activeChapter }) {
+  const videoRef = useRef(null);
+
+  // A chapter can bring its own video file; otherwise we fall back to the
+  // shared VIDEO_SRC and seek to the chapter's timestamp.
+  const chapterSrc = activeChapter?.src || null;
+  const effectiveSrc = chapterSrc || src;
+  const cues = activeChapter?.subtitles || null;
+
+  // A chapter can render a code-driven animation scene instead of any video.
+  const Scene = activeChapter?.scene ? SCENES[activeChapter.scene] : null;
+
+  const [subtitlesOn, setSubtitlesOn] = useState(false);
+  const [cueText, setCueText] = useState('');
+
+  // Seek/play when the active chapter changes.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Own-file chapter: the element remounts (see key=), just start at 0.
+    if (chapterSrc) {
+      try {
+        video.currentTime = 0;
+      } catch {
+        /* metadata not ready yet — safe to ignore */
+      }
+      return;
+    }
+
+    // Shared-video chapter: seek to its timestamp and play.
+    if (!src || !activeChapter) return;
+    try {
+      video.currentTime = activeChapter.start || 0;
+      const play = video.play();
+      if (play && typeof play.catch === 'function') play.catch(() => {});
+    } catch {
+      /* seeking before metadata is loaded, safe to ignore */
+    }
+  }, [activeChapter, src, chapterSrc]);
+
+  // Subtitles: keep the current cue in sync with playback, and auto-enable
+  // subtitles the moment the user mutes (they persist after unmute until the
+  // user turns them off with the CC button).
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !cues) {
+      setCueText('');
+      return;
+    }
+
+    const updateCue = () => {
+      const t = video.currentTime || 0;
+      const cue = cues.find((c) => t >= c.start && t < c.end);
+      setCueText(cue ? cue.text : '');
+    };
+    const onVolume = () => {
+      if (video.muted || video.volume === 0) setSubtitlesOn(true);
+    };
+
+    video.addEventListener('timeupdate', updateCue);
+    video.addEventListener('seeked', updateCue);
+    video.addEventListener('volumechange', onVolume);
+    updateCue();
+
+    return () => {
+      video.removeEventListener('timeupdate', updateCue);
+      video.removeEventListener('seeked', updateCue);
+      video.removeEventListener('volumechange', onVolume);
+    };
+  }, [cues, effectiveSrc]);
+
+  return (
+    <section className="stage" id="overview" aria-label="Overview video">
+      <div className="stage-inner">
+        <div className="stage-head js-cta">
+          <h1 className="stage-cta">
+            <span className="stage-cta-1">See how Taskmaverick makes</span>
+            <span className="stage-cta-2">operational excellence possible</span>
+          </h1>
+        </div>
+
+        <div className="video-frame js-video">
+          {Scene ? (
+            <Scene />
+          ) : effectiveSrc ? (
+            <>
+              <video
+                key={effectiveSrc}
+                ref={videoRef}
+                className="video-el"
+                src={effectiveSrc}
+                poster={poster || undefined}
+                controls
+                playsInline
+                preload="metadata"
+              />
+
+              {cues ? (
+                <>
+                  {subtitlesOn && cueText ? (
+                    <div className="video-subtitle" aria-live="polite">
+                      <span>{cueText}</span>
+                    </div>
+                  ) : null}
+
+                  <button
+                    type="button"
+                    className={`video-cc ${subtitlesOn ? 'is-active' : ''}`}
+                    onClick={() => setSubtitlesOn((v) => !v)}
+                    aria-pressed={subtitlesOn}
+                    aria-label={subtitlesOn ? 'Turn subtitles off' : 'Turn subtitles on'}
+                    title={subtitlesOn ? 'Subtitles on' : 'Subtitles off'}
+                  >
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="2" />
+                      <path
+                        d="M10 10.6c-.5-.6-1.2-1-2.1-1-1.5 0-2.6 1.1-2.6 2.4s1.1 2.4 2.6 2.4c.9 0 1.6-.4 2.1-1M18.7 10.6c-.5-.6-1.2-1-2.1-1-1.5 0-2.6 1.1-2.6 2.4s1.1 2.4 2.6 2.4c.9 0 1.6-.4 2.1-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </button>
+                </>
+              ) : null}
+            </>
+          ) : (
+            <div className="video-placeholder">
+              <button type="button" className="play-btn" aria-label="Play video">
+                <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+                  <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
+                </svg>
+              </button>
+              <p className="video-placeholder-label">
+                {activeChapter ? activeChapter.title : 'Your video goes here'}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <ul className="stage-badges">
+          {BADGES.map((b) => (
+            <li className="stage-badge" key={b.title}>
+              <span className="stage-badge-icon">
+                <BadgeIcon name={b.icon} />
+              </span>
+              <span className="stage-badge-text">
+                <b>{b.title}</b>
+                <small>{b.sub}</small>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
