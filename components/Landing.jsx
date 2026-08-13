@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -8,8 +8,6 @@ import Navbar from '@/components/Navbar';
 import HeroVideo from '@/components/HeroVideo';
 import Chapters from '@/components/Chapters';
 import DemoCtaOptions from '@/components/DemoCtaOptions';
-import FeatureShowcase from '@/components/FeatureShowcase';
-import FeatureSplit from '@/components/FeatureSplit';
 import IndustryGrid from '@/components/IndustryGrid';
 import { CHAPTERS, VIDEO_SRC, VIDEO_POSTER } from '@/lib/chapters';
 
@@ -57,56 +55,10 @@ function Icon({ name, size = 22 }) {
   );
 }
 
-/* ---- "About" content: a normal marketing site below the demo ---------- */
-const PILLARS = [
-  {
-    icon: 'route',
-    title: 'Guided execution',
-    text: 'Step-by-step missions post exactly when they are due, with instructions, alerts, and instant translation at every step, so the right work gets done right the first time.',
-  },
-  {
-    icon: 'activity',
-    title: 'Live oversight',
-    text: 'Managers feel the heartbeat of the operation from live dashboards that show who is working, what is done, and what is due, then travel back in time through the evidence.',
-  },
-  {
-    icon: 'book',
-    title: 'Built-in learning',
-    text: 'Micro-training is woven into the work itself, reinforced with quick quizzes, so skills are learned through repetition and never forgotten.',
-  },
-];
-
-const REASONS = [
-  'Step-by-step guidance so every task is done right, the first time',
-  'Micro-trainings injected directly into the flow of work',
-  'A Knowledge Base always at your team’s fingertips',
-  'Aging timers and gamification that keep work moving on time',
-  'Quality documented with photo and video evidence',
-  'Live dashboards showing what is due, in progress, and done',
-  'Automatic alerts the moment something needs attention',
-  'Reports broken down by team, person, mission, and checkpoint',
-];
-
 export default function Landing() {
   const container = useRef(null);
   const [activeId, setActiveId] = useState(1);
   const activeChapter = CHAPTERS.find((c) => c.id === activeId) || null;
-
-  // CTA design-exploration: compare all three options, or isolate one.
-  // 0 / Esc → all · 1 → button · 2 → purple · 3 → ticket
-  const [ctaView, setCtaView] = useState('ticket');
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const t = e.target;
-      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
-      const map = { 1: 'button', 2: 'purple', 3: 'ticket', 0: 'all' };
-      if (e.key in map) setCtaView(map[e.key]);
-      else if (e.key === 'Escape') setCtaView('all');
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
 
   useGSAP(
     () => {
@@ -137,8 +89,8 @@ export default function Landing() {
         <div className="panel-col">
           <Chapters chapters={CHAPTERS} activeId={activeId} onSelect={setActiveId} />
 
-          <div className={`cta-slot js-panel cta-slot--${ctaView}`}>
-            <DemoCtaOptions view={ctaView} />
+          <div className="cta-slot js-panel">
+            <DemoCtaOptions />
           </div>
         </div>
       </main>
@@ -146,63 +98,8 @@ export default function Landing() {
       {/* ---------------- Horizontal divider ---------------------------- */}
       <hr className="lp-divider" />
 
-      {/* ---------------- About Taskmaverick (normal website) ----------- */}
+      {/* ---------------- Use cases + final CTA (About sections live on /about) --- */}
       <div className="lp">
-        <FeatureShowcase />
-
-        <FeatureSplit kicker="Management" title="Zone Coverage" artSide="left">
-          Optimize staff distribution throughout any facility, especially in high-touch areas.
-        </FeatureSplit>
-
-        <section className="lp-section" id="about">
-          <div className="lp-container">
-            <div className="lp-head">
-              <span className="lp-kicker">Who we are</span>
-              <h2 className="lp-h2">We turn everyday operations into a system that runs itself.</h2>
-              <p className="lp-lead">
-                Taskmaverick is an Automated Business Manager. It guides every person on a tablet,
-                phone, or the web, in their own language, so the right work gets done on time,
-                measured, and recognized, without anyone having to micromanage. From a single café
-                to a hospital running a hundred teams, it brings structure, accountability, and
-                continuous training to the frontline.
-              </p>
-            </div>
-
-            <div className="lp-grid">
-              {PILLARS.map((p) => (
-                <div className="lp-feature" key={p.title}>
-                  <span className="lp-ficon">
-                    <Icon name={p.icon} size={22} />
-                  </span>
-                  <h3>{p.title}</h3>
-                  <p>{p.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="lp-section alt" id="why">
-          <div className="lp-container">
-            <div className="lp-head">
-              <span className="lp-kicker">Why Taskmaverick</span>
-              <h2 className="lp-h2">Everything your team needs to perform, in one place.</h2>
-              <p className="lp-lead">
-                Every capability pulls in the same direction, helping your people do their best
-                work and giving you the visibility to prove it.
-              </p>
-            </div>
-            <ul className="lp-checks">
-              {REASONS.map((r) => (
-                <li key={r}>
-                  <Icon name="check" size={19} />
-                  <span>{r}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
         <section className="lp-section" id="use-cases">
           <div className="lp-container">
             <div className="lp-head center">
@@ -245,7 +142,7 @@ export default function Landing() {
             <img src="/logo.svg" alt="Taskmaverick" className="lp-footer-logo" />
             <nav>
               <a href="#overview">Demo</a>
-              <a href="#about">About</a>
+              <a href="/about">About</a>
               <a href="#use-cases">Use cases</a>
               <a href="#book">Contact</a>
             </nav>

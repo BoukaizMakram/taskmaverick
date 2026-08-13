@@ -49,6 +49,14 @@ function cleanParagraphs(text) {
     .filter(Boolean);
 }
 
+/* A short one-line brief for a slide, shown under its title in the contents. */
+function toBrief(text, max = 92) {
+  const s = cleanParagraphs(text).join(' ');
+  if (!s) return '';
+  if (s.length <= max) return s;
+  return s.slice(0, max).replace(/\s+\S*$/, '') + '…';
+}
+
 function SlideMedia({ media, playing }) {
   const videoRef = useRef(null);
 
@@ -105,13 +113,13 @@ export default function IndustrySlides({ industry }) {
     setPlaying(true);
   }, [cur]);
 
-  // Keep the active step scrolled into view within the rail.
+  // Keep the active line scrolled into view within the table of contents.
   useEffect(() => {
     const rail = stepsRef.current;
     if (!rail) return;
-    const el = rail.querySelector(`[data-step="${activeSection}"]`);
-    if (el) el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
-  }, [activeSection]);
+    const el = rail.querySelector(`[data-slide="${cur}"]`);
+    if (el) el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+  }, [cur]);
 
   // Keyboard navigation.
   useEffect(() => {
@@ -155,81 +163,98 @@ export default function IndustrySlides({ industry }) {
         </span>
       </header>
 
-      {/* The slide: image on the left, text on the right. */}
+      {/* Left: image with the slide text under it. Right: table of contents. */}
       <div className="isl-slide">
-        <div className="isl-media-col">
-          <SlideMedia media={slide.media} playing={playing} />
-          {isVideo && (
-            <button
-              type="button"
-              className="isl-pause"
-              onClick={() => setPlaying((p) => !p)}
-              aria-label={playing ? 'Pause' : 'Play'}
-            >
-              {playing ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect x="6" y="4" width="4" height="16" rx="1" fill="#fff" />
-                  <rect x="14" y="4" width="4" height="16" rx="1" fill="#fff" />
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M8 5.5C8 4.1 9.5 3.3 10.7 4.1L20.2 9.9C21.4 10.6 21.4 12.3 20.2 13.1L10.7 18.9C9.5 19.7 8 18.9 8 17.5V5.5Z" fill="#fff" />
-                </svg>
-              )}
-              <span>{playing ? 'Pause' : 'Play'}</span>
-            </button>
-          )}
-        </div>
+        <div className="isl-main">
+          <div className="isl-media-col">
+            <SlideMedia media={slide.media} playing={playing} />
+            {isVideo && (
+              <button
+                type="button"
+                className="isl-pause"
+                onClick={() => setPlaying((p) => !p)}
+                aria-label={playing ? 'Pause' : 'Play'}
+              >
+                {playing ? (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="6" y="4" width="4" height="16" rx="1" fill="#fff" />
+                    <rect x="14" y="4" width="4" height="16" rx="1" fill="#fff" />
+                  </svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 5.5C8 4.1 9.5 3.3 10.7 4.1L20.2 9.9C21.4 10.6 21.4 12.3 20.2 13.1L10.7 18.9C9.5 19.7 8 18.9 8 17.5V5.5Z" fill="#fff" />
+                  </svg>
+                )}
+                <span>{playing ? 'Pause' : 'Play'}</span>
+              </button>
+            )}
+          </div>
 
-        <div className="isl-text-col" key={cur}>
-          {showEyebrow && <span className="isl-ov-cat">{slide.sectionName}</span>}
-          <h2 className="isl-ov-title">{slide.title}</h2>
-          {paragraphs.map((p, i) => (
-            <p key={i} className="isl-ov-desc">
-              {p}
-            </p>
-          ))}
+          <div className="isl-text-col" key={cur}>
+            {showEyebrow && <span className="isl-ov-cat">{slide.sectionName}</span>}
+            <h2 className="isl-ov-title">{slide.title}</h2>
+            {paragraphs.map((p, i) => (
+              <p key={i} className="isl-ov-desc">
+                {p}
+              </p>
+            ))}
 
-          <div className="isl-slide-nav">
-            <button type="button" className="isl-navbtn" onClick={() => go(-1)} disabled={cur === 0}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              Previous
-            </button>
-            <button type="button" className="isl-navbtn isl-navbtn--next" onClick={() => go(1)} disabled={cur === total - 1}>
-              Next
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+            <div className="isl-slide-nav">
+              <button type="button" className="isl-navbtn" onClick={() => go(-1)} disabled={cur === 0}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Previous
+              </button>
+              <button type="button" className="isl-navbtn isl-navbtn--next" onClick={() => go(1)} disabled={cur === total - 1}>
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Section step-rail (click a section to jump). */}
-      <div className="isl-controls">
-        <div
-          className="isl-steps"
-          ref={stepsRef}
-          style={{ '--step-count': sections.length, '--step-index': activeSection }}
-        >
-          <div className="isl-steps-line-bg" />
-          <div className="isl-steps-line-fill" />
-          {sections.map((sec, i) => (
-            <button
-              key={sec.id}
-              type="button"
-              data-step={i}
-              className={`isl-step ${i === activeSection ? 'is-active' : ''} ${i < activeSection ? 'is-done' : ''}`}
-              aria-current={i === activeSection}
-              onClick={() => jumpToSection(i)}
-            >
-              <span className="isl-step-dot" />
-              <span className="isl-step-label">{sec.name}</span>
-            </button>
-          ))}
-        </div>
+        {/* Table of contents — every slide as a clickable line, grouped by section. */}
+        <aside className="isl-toc" ref={stepsRef} aria-label="Contents">
+          <p className="isl-toc-title">Contents</p>
+          <div className="isl-toc-list">
+            {sections.map((sec, sIdx) => (
+              <div className="isl-toc-group" key={sec.id}>
+                <button
+                  type="button"
+                  className={`isl-toc-section ${sIdx === activeSection ? 'is-active' : ''}`}
+                  onClick={() => jumpToSection(sIdx)}
+                >
+                  {sec.name}
+                </button>
+                <ul className="isl-toc-slides">
+                  {Array.from({ length: sec.count }).map((_, i) => {
+                    const g = sec.start + i;
+                    return (
+                      <li key={g}>
+                        <button
+                          type="button"
+                          data-slide={g}
+                          className={`isl-toc-line ${g === cur ? 'is-active' : ''}`}
+                          aria-current={g === cur}
+                          onClick={() => setCur(g)}
+                        >
+                          <span className="isl-toc-line-title">{flat[g].title}</span>
+                          {(() => {
+                            const brief = toBrief(flat[g].text);
+                            return brief ? <span className="isl-toc-line-brief">{brief}</span> : null;
+                          })()}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </aside>
       </div>
     </section>
   );

@@ -13,6 +13,7 @@ function Chevron() {
 
 const NAV_LINKS = [
   { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '#contact' },
   { label: 'Book Demo', href: '#book' },
   { label: 'Sign in', href: '#signin' },
