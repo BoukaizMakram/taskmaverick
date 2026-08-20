@@ -1,13 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import { smoothScrollTo } from '@/lib/smoothScroll';
 import Navbar from '@/components/Navbar';
-import HeroVideo from '@/components/HeroVideo';
-import Chapters from '@/components/Chapters';
-import DemoCtaOptions from '@/components/DemoCtaOptions';
+import DesktopReel from '@/components/DesktopReel';
+import MobileReel from '@/components/MobileReel';
 import IndustryGrid from '@/components/IndustryGrid';
 import { CHAPTERS, VIDEO_SRC, VIDEO_POSTER } from '@/lib/chapters';
 
@@ -58,42 +59,107 @@ function Icon({ name, size = 22 }) {
 export default function Landing() {
   const container = useRef(null);
   const [activeId, setActiveId] = useState(1);
-  const activeChapter = CHAPTERS.find((c) => c.id === activeId) || null;
+  // True while the industries (Use Cases) section is the current view. While
+  // it's true the chapter selector freezes on the chapter you left and turns
+  // into a blue "back up" button — see Navbar / MobileReel.
+  const [atUseCases, setAtUseCases] = useState(false);
+  const atUseCasesRef = useRef(false);
+  const lockRef = useRef(false); // ignore observer updates during a scripted scroll
+
+  // Hold the lock until a scripted scroll actually settles (scroll events go
+  // quiet), instead of a fixed timeout — a jump from chapter 3 down to the
+  // industries section can take well over a second.
+  const holdLockUntilSettled = useCallback(() => {
+    lockRef.current = true;
+    let t = window.setTimeout(release, 1800); // safety cap
+    const onScroll = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(release, 150);
+    };
+    function release() {
+      lockRef.current = false;
+      window.removeEventListener('scroll', onScroll);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }, []);
+
+  // While pinned to the industries section the selector stays on the chapter you
+  // left. When a chapter scrolls back into view (you went back up), clear that
+  // state so the selector returns to the normal dropdown for the live chapter.
+  const handleSelect = useCallback((id) => {
+    if (lockRef.current) return; // mid scripted scroll — keep the selector pinned
+    if (atUseCasesRef.current) {
+      atUseCasesRef.current = false;
+      setAtUseCases(false);
+    }
+    setActiveId(id);
+  }, []);
+
+  // Industries / "Use Cases by Industry" → scroll down to the section, freeze
+  // the selector on the current chapter, and flip it to the back-up button.
+  const enterUseCases = useCallback(() => {
+    atUseCasesRef.current = true;
+    setAtUseCases(true);
+    smoothScrollTo('use-cases', { instant: true }); // jump, don't animate
+    holdLockUntilSettled();
+  }, [holdLockUntilSettled]);
+
+  // Back-up button → clear the state; the caller scrolls back to its chapter
+  // (desktop via #dchapter-<id>, mobile via the reel page).
+  const exitUseCases = useCallback(() => {
+    atUseCasesRef.current = false;
+    setAtUseCases(false);
+    holdLockUntilSettled();
+  }, [holdLockUntilSettled]);
 
   useGSAP(
     () => {
-      const reduce =
-        typeof window !== 'undefined' &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) return;
+      gsap.registerPlugin(ScrollTrigger);
 
-      // Intro reveal: one coordinated timeline.
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl.from('.js-nav', { y: -28, autoAlpha: 0, duration: 0.6 })
-        .from('.js-cta', { y: 16, autoAlpha: 0, duration: 0.5 }, '-=0.2')
-        .from('.js-video', { y: 30, scale: 0.98, autoAlpha: 0, duration: 0.8 }, '-=0.3')
-        .from('.js-panel', { x: 44, autoAlpha: 0, duration: 0.7 }, '-=0.6')
-        .from('.js-chapter', { x: 30, y: 10, autoAlpha: 0, duration: 0.5, stagger: 0.08 }, '-=0.4');
+      // Intro reveal only. Scrolling itself is now native CSS scroll-snap — a
+      // hard chapter-to-chapter flip (see the desktop reel rules in
+      // globals.css), the same pager the mobile reel uses. No ScrollSmoother.
+      gsap.from('.js-nav', { y: -28, autoAlpha: 0, duration: 0.6, ease: 'power3.out' });
     },
     { scope: container }
   );
 
   return (
     <div className="page" ref={container}>
-      <Navbar />
+      <Navbar
+        chapters={CHAPTERS}
+        activeId={activeId}
+        onSelect={handleSelect}
+        atUseCases={atUseCases}
+        onIndustries={enterUseCases}
+        onExitUseCases={exitUseCases}
+      />
 
-      {/* ---------------- Demo hero: video + sections + text ------------- */}
-      <main className="hero">
-        <HeroVideo src={VIDEO_SRC} poster={VIDEO_POSTER} activeChapter={activeChapter} />
-        <div className="panel-col">
-          <Chapters chapters={CHAPTERS} activeId={activeId} onSelect={setActiveId} />
+      {/* ScrollSmoother wrapper — everything that scrolls lives inside
+          #smooth-content; the nav stays outside (fixed/sticky elements must). */}
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
+      {/* ---------------- Demo hero (desktop: snap-scroll chapter reel) --- */}
+      <DesktopReel
+        chapters={CHAPTERS}
+        activeId={activeId}
+        onSelect={handleSelect}
+        onIndustries={enterUseCases}
+        src={VIDEO_SRC}
+        poster={VIDEO_POSTER}
+      />
 
-          <div className="cta-slot js-panel">
-            <DemoCtaOptions />
-          </div>
-        </div>
-      </main>
+      {/* ---------------- Demo hero (mobile: TikTok-style chapter reel) --- */}
+      <MobileReel
+        chapters={CHAPTERS}
+        activeId={activeId}
+        onSelect={handleSelect}
+        atUseCases={atUseCases}
+        onIndustries={enterUseCases}
+        onExitUseCases={exitUseCases}
+        src={VIDEO_SRC}
+        poster={VIDEO_POSTER}
+      />
 
       {/* ---------------- Horizontal divider ---------------------------- */}
       <hr className="lp-divider" />
@@ -148,6 +214,8 @@ export default function Landing() {
             </nav>
           </div>
         </footer>
+      </div>
+        </div>
       </div>
     </div>
   );

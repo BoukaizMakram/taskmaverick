@@ -14,7 +14,7 @@
 // A progress timeline runs along the bottom. Loops.
 // ---------------------------------------------------------------------------
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
@@ -119,6 +119,47 @@ export default function PostedMissionsScene() {
   const callout = useRef(null);
   const hand = useRef(null);
   const bar = useRef(null);
+  const track = useRef(null);
+  const tl = useRef(null);
+  const [paused, setPaused] = useState(true);
+  const [full, setFull] = useState(false);
+  const [controlsShown, setControlsShown] = useState(true);
+  const hideTimer = useRef(null);
+
+  // Fullscreen: lock body scroll and allow Escape to exit.
+  useEffect(() => {
+    if (!full) return;
+    const onKey = (e) => e.key === 'Escape' && setFull(false);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [full]);
+
+  // Auto-hide the controls after inactivity (only while playing) — like a video.
+  const armHide = () => {
+    clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => {
+      if (!tl.current || !tl.current.paused()) setControlsShown(false);
+    }, 2600);
+  };
+  const showControls = () => {
+    setControlsShown(true);
+    clearTimeout(hideTimer.current);
+    if (tl.current && !tl.current.paused()) armHide();
+  };
+  useEffect(() => {
+    // Keep the play button up until the viewer actually starts the scene.
+    const id = setTimeout(() => {
+      if (tl.current && !tl.current.paused()) setControlsShown(false);
+    }, 2600);
+    return () => {
+      clearTimeout(id);
+      clearTimeout(hideTimer.current);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -165,7 +206,9 @@ export default function PostedMissionsScene() {
       gsap.set(phone, { x: 0, scale: 1, height: trimH });
       gsap.set(bar.current, { scaleX: 0 });
 
-      const t = gsap.timeline({ repeat: -1, repeatDelay: 0.6 });
+      // Start paused — the scene waits on the viewer's play button, like a video.
+      const t = gsap.timeline({ repeat: -1, repeatDelay: 0.6, paused: true });
+      tl.current = t;
       t.eventCallback('onUpdate', () => { if (bar.current) gsap.set(bar.current, { scaleX: t.progress() }); });
 
       const setCap = (at, text) =>
@@ -234,9 +277,58 @@ export default function PostedMissionsScene() {
     { scope: root }
   );
 
+  const togglePlay = () => {
+    const t = tl.current;
+    if (!t) return;
+    if (t.paused()) {
+      t.play();
+      setPaused(false);
+      armHide();
+    } else {
+      t.pause();
+      setPaused(true);
+      setControlsShown(true);
+      clearTimeout(hideTimer.current);
+    }
+  };
+
+  const seekTo = (clientX) => {
+    const el = track.current;
+    const t = tl.current;
+    if (!el || !t) return;
+    const r = el.getBoundingClientRect();
+    const frac = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
+    t.progress(frac);
+    if (bar.current) gsap.set(bar.current, { scaleX: frac });
+  };
+
+  // Click / drag the timeline to scrub (pauses while scrubbing).
+  const onTrackDown = (e) => {
+    const t = tl.current;
+    if (!t) return;
+    t.pause();
+    setPaused(true);
+    setControlsShown(true);
+    clearTimeout(hideTimer.current);
+    seekTo(e.clientX);
+    const move = (ev) => seekTo(ev.clientX);
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
   return (
-    <div className="scene-fit" ref={root}>
-      <div className="scene">
+    <div
+      className={`scene-fit${full ? ' is-full' : ''}`}
+      ref={root}
+      onPointerMove={showControls}
+      onPointerDown={showControls}
+    >
+      {/* Click anywhere on the video (not the control bar) to play/pause. */}
+      <div className="scene" onClick={togglePlay} role="button" tabIndex={-1} aria-label={paused ? 'Play' : 'Pause'} style={{ cursor: 'pointer' }}>
         <div className="dots-bg" aria-hidden="true">
           <i className="d1" />
           <i className="d2" />
@@ -273,8 +365,37 @@ export default function PostedMissionsScene() {
         <div className="scene-hand" ref={hand} aria-hidden="true"><SceneCursor /></div>
 
         <p className="lower-third" ref={caption}>Missions are posted exactly when due</p>
+      </div>
 
-        <div className="scene-timeline" aria-hidden="true"><span className="scene-timeline-fill" ref={bar} /></div>
+      {/* live playback controls (drive the GSAP timeline — not baked) */}
+      <div className={`scene-controls${controlsShown ? '' : ' is-hidden'}`}>
+        <button
+          type="button"
+          className="scene-play"
+          onClick={togglePlay}
+          aria-label={paused ? 'Play' : 'Pause'}
+        >
+          {paused ? (
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" /></svg>
+          )}
+        </button>
+        <div className="scene-track" ref={track} onPointerDown={onTrackDown}>
+          <span className="scene-timeline-fill" ref={bar} />
+        </div>
+        <button
+          type="button"
+          className="scene-play scene-full-btn"
+          onClick={() => setFull((f) => !f)}
+          aria-label={full ? 'Exit fullscreen' : 'Fullscreen'}
+        >
+          {full ? (
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5" /></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+          )}
+        </button>
       </div>
     </div>
   );
