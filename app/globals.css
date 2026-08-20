@@ -783,15 +783,20 @@ html.cover-cutout .cover-play:hover {
 
 /* Option 3 (press "3"): a REAL cut-out. The image itself is masked so a
    rounded-rect bite is removed from the lower-right corner (flush to both
-   edges, inner corner rounded), revealing the white backing — no panel, no
-   shadow. The play control sits transparent inside the hole. The three mask
-   layers KEEP: the band above the cut, the band left of it, and a concave
-   quarter at the inner corner; everything else (the cut) is transparent. */
+   edges, inner corner rounded). The cover backing AND the frame's black
+   background are made transparent there (only while showing the cover — a
+   playing video keeps its black letterbox), so the hole shows THROUGH to the
+   page behind the frame, not a fill. The play control sits inside the hole. The
+   three mask layers KEEP: the band above the cut, the band left of it, and a
+   concave quarter at the inner corner; everything else (the cut) is cut away. */
+html.cover-mask .video-frame:has(.cover) {
+  background: transparent;
+}
 html.cover-mask .cover {
   --cut-w: 132px;
   --cut-h: 40px;
   --cut-r: 16px;
-  background: #fff;
+  background: transparent;
 }
 html.cover-mask .cover-img {
   -webkit-mask:
