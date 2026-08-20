@@ -8,8 +8,10 @@ export function generateStaticParams() {
   return INDUSTRY_ORDER.map((industry) => ({ industry }));
 }
 
-export function generateMetadata({ params }) {
-  const ind = getIndustry(params.industry);
+// Next 15+/16: route `params` is a Promise and must be awaited.
+export async function generateMetadata({ params }) {
+  const { industry } = await params;
+  const ind = getIndustry(industry);
   if (!ind) return { title: 'Use cases · Taskmaverick' };
   return {
     title: `${ind.name} use cases · Taskmaverick`,
@@ -17,8 +19,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function IndustryPage({ params }) {
-  const ind = getIndustry(params.industry);
+export default async function IndustryPage({ params }) {
+  const { industry } = await params;
+  const ind = getIndustry(industry);
   if (!ind) notFound();
 
   return (
