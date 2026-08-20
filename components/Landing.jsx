@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -65,6 +65,19 @@ export default function Landing() {
   const [atUseCases, setAtUseCases] = useState(false);
   const atUseCasesRef = useRef(false);
   const lockRef = useRef(false); // ignore observer updates during a scripted scroll
+
+  // A/B toggle for the cover play-control style: press "2" for the cut-out
+  // corner tab, "1" (default) for the floating white chip. Toggles a class on
+  // <html> that the .cover-play CSS reads.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
+      if (e.key === '2') document.documentElement.classList.add('cover-cutout');
+      else if (e.key === '1') document.documentElement.classList.remove('cover-cutout');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // Hold the lock until a scripted scroll actually settles (scroll events go
   // quiet), instead of a fixed timeout — a jump from chapter 3 down to the

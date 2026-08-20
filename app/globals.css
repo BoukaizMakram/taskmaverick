@@ -764,6 +764,23 @@ code {
   outline-offset: 2px;
 }
 
+/* Option 2 (press "2"): a cut-out corner tab instead of the floating white
+   chip. The control sits flush in the lower-right corner on a page-light panel
+   with only its inner corner rounded, so the image reads as cut out there. The
+   frame's own rounded corner clips the outer edge. Press "1" for the default. */
+html.cover-cutout .cover-play {
+  right: 0;
+  bottom: 0;
+  padding: 10px 13px 10px 14px;
+  border-radius: 14px 0 0 0;
+  background: #eef1f5;
+  box-shadow: none;
+}
+html.cover-cutout .cover-play:hover {
+  transform: none;
+  background: #e6ebf1;
+}
+
 /* In fullscreen the video fills the viewport — show the whole frame (contain)
    instead of the cropped `cover` used in the boxed hero. */
 .video-el:fullscreen,
