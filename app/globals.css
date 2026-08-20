@@ -819,9 +819,12 @@ html.cover-mask .cover-play {
   height: var(--cut-h);
   padding: 0;
   justify-content: center;
-  border-radius: 0;
+  /* Round the inner corner to match the mask, and cast a soft shadow along the
+     top/left cut edges so the image reads as having thickness (recessed hole)
+     rather than a flat light fill. */
+  border-radius: var(--cut-r) 0 0 0;
   background: transparent;
-  box-shadow: none;
+  box-shadow: inset 3px 3px 6px -1px rgba(0, 0, 0, 0.3);
 }
 html.cover-mask .cover-play:hover {
   transform: none;
