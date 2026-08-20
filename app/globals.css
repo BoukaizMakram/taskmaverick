@@ -781,6 +781,48 @@ html.cover-cutout .cover-play:hover {
   background: #f5f7f9;
 }
 
+/* Option 3 (press "3"): a REAL cut-out. The image itself is masked so a
+   rounded-rect bite is removed from the lower-right corner (flush to both
+   edges, inner corner rounded), revealing the white backing — no panel, no
+   shadow. The play control sits transparent inside the hole. The three mask
+   layers KEEP: the band above the cut, the band left of it, and a concave
+   quarter at the inner corner; everything else (the cut) is transparent. */
+html.cover-mask .cover {
+  --cut-w: 132px;
+  --cut-h: 40px;
+  --cut-r: 16px;
+  background: #fff;
+}
+html.cover-mask .cover-img {
+  -webkit-mask:
+    linear-gradient(#000 0 0) top left / 100% calc(100% - var(--cut-h)) no-repeat,
+    linear-gradient(#000 0 0) bottom left / calc(100% - var(--cut-w)) var(--cut-h) no-repeat,
+    radial-gradient(circle var(--cut-r) at bottom right, transparent var(--cut-r), #000 0)
+      right calc(var(--cut-w) - var(--cut-r)) bottom calc(var(--cut-h) - var(--cut-r)) /
+      var(--cut-r) var(--cut-r) no-repeat;
+  mask:
+    linear-gradient(#000 0 0) top left / 100% calc(100% - var(--cut-h)) no-repeat,
+    linear-gradient(#000 0 0) bottom left / calc(100% - var(--cut-w)) var(--cut-h) no-repeat,
+    radial-gradient(circle var(--cut-r) at bottom right, transparent var(--cut-r), #000 0)
+      right calc(var(--cut-w) - var(--cut-r)) bottom calc(var(--cut-h) - var(--cut-r)) /
+      var(--cut-r) var(--cut-r) no-repeat;
+}
+html.cover-mask .cover-play {
+  right: 0;
+  bottom: 0;
+  width: var(--cut-w);
+  height: var(--cut-h);
+  padding: 0;
+  justify-content: center;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+html.cover-mask .cover-play:hover {
+  transform: none;
+  background: transparent;
+}
+
 /* In fullscreen the video fills the viewport — show the whole frame (contain)
    instead of the cropped `cover` used in the boxed hero. */
 .video-el:fullscreen,

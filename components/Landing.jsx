@@ -66,14 +66,23 @@ export default function Landing() {
   const atUseCasesRef = useRef(false);
   const lockRef = useRef(false); // ignore observer updates during a scripted scroll
 
-  // A/B toggle for the cover play-control style: press "2" for the cut-out
-  // corner tab, "1" (default) for the floating white chip. Toggles a class on
-  // <html> that the .cover-play CSS reads.
+  // Preview toggle for the cover play-control style. Press:
+  //   1 (default) → floating white chip
+  //   2           → white corner tab
+  //   3           → real cut-out (the image is masked out of the corner)
+  // Toggles mutually-exclusive classes on <html> that the .cover-play CSS reads.
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
-      if (e.key === '2') document.documentElement.classList.add('cover-cutout');
-      else if (e.key === '1') document.documentElement.classList.remove('cover-cutout');
+      const root = document.documentElement;
+      if (e.key === '1') root.classList.remove('cover-cutout', 'cover-mask');
+      else if (e.key === '2') {
+        root.classList.add('cover-cutout');
+        root.classList.remove('cover-mask');
+      } else if (e.key === '3') {
+        root.classList.add('cover-mask');
+        root.classList.remove('cover-cutout');
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
