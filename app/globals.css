@@ -711,6 +711,67 @@ code {
   display: block;
 }
 
+/* ---- Cover image + play button (see components/CoverPlayer.jsx) ---------- */
+/* A still chapter cover that swaps to its video on click. The light bg shows
+   through the corner notch so it reads as "cut out". */
+.cover {
+  position: absolute;
+  inset: 0;
+  background: #eef1f5;
+}
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Only when a video is available: notch a circle out of the lower-right corner
+   for the play button (the light .cover bg shows through the hole). The mask
+   circle is centered on the button; radius = button radius + a light ring. */
+.cover--playable .cover-img {
+  -webkit-mask: radial-gradient(
+    circle 34px at calc(100% - 43px) calc(100% - 43px),
+    transparent 0 34px,
+    #000 35px
+  );
+  mask: radial-gradient(
+    circle 34px at calc(100% - 43px) calc(100% - 43px),
+    transparent 0 34px,
+    #000 35px
+  );
+}
+.cover-play {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+.cover-play svg {
+  width: 40px;
+  height: 40px;
+  /* Nudge right for optical centering of the triangle. */
+  transform: translateX(2px);
+  fill: var(--blue);
+  transition: transform 0.15s ease, fill 0.15s ease;
+}
+.cover-play:hover svg {
+  transform: translateX(2px) scale(1.08);
+  fill: var(--blue-dark);
+}
+.cover-play:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 /* In fullscreen the video fills the viewport — show the whole frame (contain)
    instead of the cropped `cover` used in the boxed hero. */
 .video-el:fullscreen,

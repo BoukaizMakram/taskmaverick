@@ -12,6 +12,7 @@
 import { useEffect, useRef } from 'react';
 
 import { smoothScrollTo } from '@/lib/smoothScroll';
+import CoverPlayer from '@/components/CoverPlayer';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 
@@ -21,7 +22,14 @@ const SCENES = {
 
 function ChapterMedia({ chapter, src, poster }) {
   if (chapter.cover) {
-    return <img className="video-el" src={chapter.cover} alt={chapter.heroTitle || chapter.title} />;
+    return (
+      <CoverPlayer
+        cover={chapter.cover}
+        video={chapter.src || src || ''}
+        poster={poster}
+        alt={chapter.heroTitle || chapter.title}
+      />
+    );
   }
 
   const Scene = chapter.scene ? SCENES[chapter.scene] : null;
