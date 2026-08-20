@@ -773,12 +773,12 @@ html.cover-cutout .cover-play {
   bottom: 0;
   padding: 10px 13px 10px 14px;
   border-radius: 14px 0 0 0;
-  background: #eef1f5;
+  background: #fff;
   box-shadow: none;
 }
 html.cover-cutout .cover-play:hover {
   transform: none;
-  background: #e6ebf1;
+  background: #f5f7f9;
 }
 
 /* In fullscreen the video fills the viewport — show the whole frame (contain)
