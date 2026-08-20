@@ -712,12 +712,10 @@ code {
 }
 
 /* ---- Cover image + play button (see components/CoverPlayer.jsx) ---------- */
-/* A still chapter cover that swaps to its video on click. The light bg shows
-   through the corner notch so it reads as "cut out". */
+/* A still chapter cover that swaps to its video on click. */
 .cover {
   position: absolute;
   inset: 0;
-  background: #eef1f5;
 }
 .cover-img {
   width: 100%;
@@ -725,47 +723,41 @@ code {
   object-fit: cover;
   display: block;
 }
-/* Only when a video is available: notch a circle out of the lower-right corner
-   for the play button (the light .cover bg shows through the hole). The mask
-   circle is centered on the button; radius = button radius + a light ring. */
-.cover--playable .cover-img {
-  -webkit-mask: radial-gradient(
-    circle 34px at calc(100% - 43px) calc(100% - 43px),
-    transparent 0 34px,
-    #000 35px
-  );
-  mask: radial-gradient(
-    circle 34px at calc(100% - 43px) calc(100% - 43px),
-    transparent 0 34px,
-    #000 35px
-  );
-}
+/* Lower-right control: a blue play triangle + "Play video" label on a light
+   chip (no circle). The chip sits over the corner so the label stays legible
+   without drawing text across the image content. */
 .cover-play {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  padding: 0;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px 7px 11px;
   border: 0;
-  border-radius: 50%;
-  background: transparent;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 10px rgba(17, 24, 39, 0.18);
   cursor: pointer;
   z-index: 2;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.cover-play:hover {
+  transform: translateY(-1px);
+  background: #fff;
 }
 .cover-play svg {
-  width: 40px;
-  height: 40px;
-  /* Nudge right for optical centering of the triangle. */
-  transform: translateX(2px);
+  width: 15px;
+  height: 15px;
   fill: var(--blue);
-  transition: transform 0.15s ease, fill 0.15s ease;
+  display: block;
 }
-.cover-play:hover svg {
-  transform: translateX(2px) scale(1.08);
-  fill: var(--blue-dark);
+.cover-play span {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--blue);
 }
 .cover-play:focus-visible {
   outline: 2px solid var(--blue);

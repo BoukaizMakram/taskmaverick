@@ -23,18 +23,14 @@ export default function CoverPlayer({ cover, video, poster, alt }) {
   }
 
   return (
-    <div className={`cover${video ? ' cover--playable' : ''}`}>
+    <div className="cover">
       <img className="cover-img" src={cover} alt={alt || ''} />
       {video && (
-        <button
-          type="button"
-          className="cover-play"
-          onClick={() => setPlaying(true)}
-          aria-label="Play video"
-        >
+        <button type="button" className="cover-play" onClick={() => setPlaying(true)}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M8 5v14l11-7z" />
           </svg>
+          <span>Play video</span>
         </button>
       )}
     </div>
