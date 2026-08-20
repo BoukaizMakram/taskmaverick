@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import PhoneMissions from '@/components/PhoneMissions';
 
 export const metadata = {
@@ -5,6 +7,12 @@ export const metadata = {
 };
 
 export default function PhonePage() {
+  // ── FOR BAKING LATER — dev-only, not part of the public site ─────────────
+  // Prototype used to author/preview the phone personal-board animations. Hidden
+  // (404) in production so it never ships or shows up in an audit; still
+  // reachable in `npm run dev` while the animations are being baked.
+  if (process.env.NODE_ENV === 'production') notFound();
+
   return (
     <main
       style={{

@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import { OpenedMissionsGallery } from '@/components/OpenedMission';
 
 export const metadata = {
@@ -5,6 +7,12 @@ export const metadata = {
 };
 
 export default function MissionsPage() {
+  // ── FOR BAKING LATER — dev-only, not part of the public site ─────────────
+  // Prototype gallery of the opened-mission detail views (all six types). Hidden
+  // (404) in production so it never ships or shows up in an audit; still
+  // reachable in `npm run dev` while the animations are being baked.
+  if (process.env.NODE_ENV === 'production') notFound();
+
   return (
     <main
       style={{

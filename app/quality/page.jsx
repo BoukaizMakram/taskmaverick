@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import Navbar from '@/components/Navbar';
 import QualityStoryboard from '@/components/quality/QualityStoryboard';
 
@@ -8,6 +10,13 @@ export const metadata = {
 };
 
 export default function QualityPage() {
+  // ── FOR BAKING LATER — dev-only, not part of the public site ─────────────
+  // "Improving Quality" storyboard (GSAP scenes recreated from the Figma
+  // animation storyboard). Hidden (404) in production so these still-baking
+  // animated frames never ship or show up in an audit; reachable in
+  // `npm run dev` while the scenes are finished.
+  if (process.env.NODE_ENV === 'production') notFound();
+
   return (
     <div className="page">
       <Navbar />
