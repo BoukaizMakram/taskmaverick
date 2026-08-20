@@ -29,7 +29,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} ${montserrat.variable}`}>
+    // suppressHydrationWarning: some browser extensions inject attributes onto
+    // <html> (e.g. crxlauncher, Grammarly) before React hydrates, which would
+    // otherwise trip a hydration mismatch warning on the root element. This only
+    // relaxes attribute checking on <html> itself, nothing deeper.
+    <html
+      lang="en"
+      className={`${poppins.variable} ${inter.variable} ${montserrat.variable}`}
+      suppressHydrationWarning
+    >
       <body>{children}</body>
     </html>
   );
