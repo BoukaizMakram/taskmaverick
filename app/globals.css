@@ -3754,6 +3754,78 @@ html.cover-mask .cover-play:hover {
 
 
 /* ---- Slide deck page (.isl-*) — full-bleed, edge-to-edge slides ---------- */
+/* ============================================================
+   Industry slide deck — rendered as a full-screen scroll-snap reel,
+   the same layout language as the landing reel (see IndustrySlides.jsx).
+   ============================================================ */
+html:has(.ireel) {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: var(--nav-h);
+}
+.ireel {
+  position: relative;
+}
+.ireel-page {
+  /* One slide = one full screen below the sticky nav; grows for long text. */
+  min-height: calc(100vh - var(--nav-h));
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 3vw, 40px);
+  background: linear-gradient(180deg, #ffffff 0%, #f2f7fb 100%);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.ireel .stage-inner {
+  gap: clamp(14px, 1.6vw, 20px);
+}
+/* Slide media fills the shared 16:9 .video-frame. */
+.ireel-frame .isl-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+.ireel-frame .isl-media-empty {
+  background: #0b0b0c;
+}
+.ireel-text {
+  margin: 0;
+  max-width: 760px;
+  text-align: center;
+  font-size: clamp(1rem, 1.3vw, 1.12rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+/* Fixed "back to all use cases" affordance (there is no chapter selector here). */
+.ireel-back {
+  position: fixed;
+  top: calc(var(--nav-h) + 14px);
+  left: clamp(16px, 4vw, 40px);
+  z-index: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--divider);
+  box-shadow: var(--shadow-md);
+  color: var(--ink);
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+}
+.ireel-back:hover {
+  color: var(--blue);
+}
+.ireel-back svg {
+  display: block;
+}
+
 .isl {
   display: flex;
   flex-direction: column;
