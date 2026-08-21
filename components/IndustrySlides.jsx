@@ -1,16 +1,20 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
+
+import Navbar from '@/components/Navbar';
 
 /*
  * Flatten an industry's sections into one linear slide list. Media "carries
  * forward" inside a section (the source only stamps media on the first slide),
- * falling back to the section thumbnail so every slide has a visual.
+ * falling back to the section thumbnail so every slide has a visual. Also return
+ * the sections with their starting slide index (drives the nav dropdown).
  */
 function buildDeck(industry) {
   const flat = [];
+  const sections = [];
   industry.sections.forEach((sec, sIdx) => {
+    sections.push({ id: sIdx, name: sec.name, start: flat.length });
     let carried = sec.thumb ? { type: 'image', src: sec.thumb } : null;
     sec.slides.forEach((s, i) => {
       if (s.media) carried = s.media;
@@ -24,7 +28,7 @@ function buildDeck(industry) {
       });
     });
   });
-  return flat;
+  return { flat, sections };
 }
 
 /* Some slide text arrives from the DB with raw HTML (<p>…</p>). Strip tags,
@@ -82,13 +86,28 @@ function SlideMedia({ media, playing }) {
 }
 
 // Industry deck rendered as a full-screen scroll-snap reel — one slide per page,
-// same layout language as the landing reel (media frame + title + text).
+// same layout language and nav dropdown as the landing reel. The dropdown lists
+// the industry's sections; picking one jumps to that section's first slide.
 export default function IndustrySlides({ industry }) {
-  const flat = useMemo(() => buildDeck(industry), [industry]);
+  const { flat, sections } = useMemo(() => buildDeck(industry), [industry]);
   const [active, setActive] = useState(0);
   const pagesRef = useRef([]);
 
-  // Play only the slide currently in view (like the landing reel).
+  const activeSection = flat[active]?.sectionIdx ?? 0;
+  const sectionChapters = useMemo(
+    () => sections.map((s) => ({ id: s.id, title: s.name })),
+    [sections]
+  );
+
+  const jumpToSection = (id) => {
+    const sec = sections.find((s) => s.id === id);
+    if (!sec) return;
+    setActive(sec.start);
+    pagesRef.current[sec.start]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  // Keep the dropdown in sync with the slide currently in view, and play only
+  // that slide's video (like the landing reel).
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -106,49 +125,46 @@ export default function IndustrySlides({ industry }) {
   }, [flat.length]);
 
   return (
-    <div className="ireel">
-      <Link href="/#use-cases" className="ireel-back">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M19 12H5M12 19l-7-7 7-7" />
-        </svg>
-        All use cases
-      </Link>
+    <>
+      <Navbar chapters={sectionChapters} activeId={activeSection} onSelect={jumpToSection} />
 
-      {flat.map((slide, i) => {
-        const paragraphs = cleanParagraphs(slide.text);
-        const showSection =
-          slide.sectionName &&
-          slide.sectionName.trim().toLowerCase() !== (slide.title || '').trim().toLowerCase();
-        return (
-          <section
-            className="ireel-page"
-            key={i}
-            data-idx={i}
-            ref={(el) => {
-              pagesRef.current[i] = el;
-            }}
-          >
-            <div className="stage-inner">
-              <div className="video-frame ireel-frame">
-                <SlideMedia media={slide.media} playing={i === active} />
-              </div>
+      <div className="ireel">
+        {flat.map((slide, i) => {
+          const paragraphs = cleanParagraphs(slide.text);
+          const showSection =
+            slide.sectionName &&
+            slide.sectionName.trim().toLowerCase() !== (slide.title || '').trim().toLowerCase();
+          return (
+            <section
+              className="ireel-page"
+              key={i}
+              data-idx={i}
+              ref={(el) => {
+                pagesRef.current[i] = el;
+              }}
+            >
+              <div className="stage-inner">
+                <div className="video-frame ireel-frame">
+                  <SlideMedia media={slide.media} playing={i === active} />
+                </div>
 
-              <div className="stage-head">
-                <span className="stage-eyebrow">
-                  {industry.name}
-                  {showSection ? ` · ${slide.sectionName}` : ''}
-                </span>
-                {slide.title && <h2 className="stage-cta">{slide.title}</h2>}
-                {paragraphs.map((p, j) => (
-                  <p key={j} className="ireel-text">
-                    {p}
-                  </p>
-                ))}
+                <div className="stage-head">
+                  <span className="stage-eyebrow">
+                    {industry.name}
+                    {showSection ? ` · ${slide.sectionName}` : ''}
+                  </span>
+                  {slide.title && <h2 className="stage-cta">{slide.title}</h2>}
+                  {paragraphs.map((p, j) => (
+                    <p key={j} className="ireel-text">
+                      {p}
+                    </p>
+                  ))}
+                </div>
               </div>
-            </div>
-          </section>
-        );
-      })}
-    </div>
+            </section>
+          );
+        })}
+      </div>
+    </>
   );
 }

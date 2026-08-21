@@ -3778,7 +3778,14 @@ html:has(.ireel) {
 .ireel .stage-inner {
   gap: clamp(14px, 1.6vw, 20px);
 }
-/* Slide media fills the shared 16:9 .video-frame. */
+/* Industry slides ship as 1920×1345 images — give the frame that exact ratio so
+   they aren't cropped by the shared 16:9 box. Cap the WIDTH (not the height) so
+   the frame still fits within 52vh tall, matching .video-frame's approach. */
+.ireel-frame {
+  aspect-ratio: 1920 / 1345;
+  max-width: min(100%, calc(52vh * 1920 / 1345));
+}
+/* Slide media fills the 1920×1345 .ireel-frame. */
 .ireel-frame .isl-media {
   position: absolute;
   inset: 0;
@@ -3799,33 +3806,6 @@ html:has(.ireel) {
   line-height: 1.6;
   color: var(--muted);
 }
-/* Fixed "back to all use cases" affordance (there is no chapter selector here). */
-.ireel-back {
-  position: fixed;
-  top: calc(var(--nav-h) + 14px);
-  left: clamp(16px, 4vw, 40px);
-  z-index: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: #fff;
-  border: 1px solid var(--divider);
-  box-shadow: var(--shadow-md);
-  color: var(--ink);
-  font-family: var(--font-poppins), sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  text-decoration: none;
-}
-.ireel-back:hover {
-  color: var(--blue);
-}
-.ireel-back svg {
-  display: block;
-}
-
 .isl {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 
-import Navbar from '@/components/Navbar';
 import IndustrySlides from '@/components/IndustrySlides';
 import { INDUSTRY_ORDER, getIndustry } from '@/lib/industryDecks';
 
@@ -26,7 +25,6 @@ export default async function IndustryPage({ params }) {
 
   return (
     <div className="page isl-page">
-      <Navbar />
       <IndustrySlides industry={ind} />
     </div>
   );
