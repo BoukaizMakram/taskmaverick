@@ -89,21 +89,21 @@ function SlideMedia({ media, playing }) {
 // same layout language and nav dropdown as the landing reel. The dropdown lists
 // the industry's sections; picking one jumps to that section's first slide.
 export default function IndustrySlides({ industry }) {
-  const { flat, sections } = useMemo(() => buildDeck(industry), [industry]);
+  const { flat } = useMemo(() => buildDeck(industry), [industry]);
   const [active, setActive] = useState(0);
   const pagesRef = useRef([]);
 
-  const activeSection = flat[active]?.sectionIdx ?? 0;
-  const sectionChapters = useMemo(
-    () => sections.map((s) => ({ id: s.id, title: s.name })),
-    [sections]
+  // The nav dropdown lists every slide of the reel, labelled "Section-Title"
+  // (e.g. "Philosophy-Traffic Systems"); the navbar renders the slide number
+  // as its own badge. Picking one jumps straight to that slide.
+  const slideChapters = useMemo(
+    () => flat.map((s, i) => ({ id: i, title: `${s.sectionName}-${s.title}` })),
+    [flat]
   );
 
-  const jumpToSection = (id) => {
-    const sec = sections.find((s) => s.id === id);
-    if (!sec) return;
-    setActive(sec.start);
-    pagesRef.current[sec.start]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const jumpToSlide = (id) => {
+    setActive(id);
+    pagesRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   // Keep the dropdown in sync with the slide currently in view, and play only
@@ -126,14 +126,16 @@ export default function IndustrySlides({ industry }) {
 
   return (
     <>
-      <Navbar chapters={sectionChapters} activeId={activeSection} onSelect={jumpToSection} />
+      <Navbar
+        chapters={slideChapters}
+        activeId={active}
+        onSelect={jumpToSlide}
+        backTo={{ href: '/industries', label: 'All industries' }}
+      />
 
       <div className="ireel">
         {flat.map((slide, i) => {
           const paragraphs = cleanParagraphs(slide.text);
-          const showSection =
-            slide.sectionName &&
-            slide.sectionName.trim().toLowerCase() !== (slide.title || '').trim().toLowerCase();
           return (
             <section
               className="ireel-page"
@@ -144,15 +146,39 @@ export default function IndustrySlides({ industry }) {
               }}
             >
               <div className="stage-inner">
-                <div className="video-frame ireel-frame">
-                  <SlideMedia media={slide.media} playing={i === active} />
+                <div className="ireel-stage">
+                  <div className="video-frame ireel-frame">
+                    <SlideMedia media={slide.media} playing={i === active} />
+                  </div>
+
+                  {/* Desktop-only up/down slide navigation, to the frame's right. */}
+                  <div className="ireel-nav">
+                    <button
+                      type="button"
+                      className="ireel-navbtn"
+                      aria-label="Previous slide"
+                      disabled={i === 0}
+                      onClick={() => jumpToSlide(i - 1)}
+                    >
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M18 15l-6-6-6 6" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="ireel-navbtn"
+                      aria-label="Next slide"
+                      disabled={i === flat.length - 1}
+                      onClick={() => jumpToSlide(i + 1)}
+                    >
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="stage-head">
-                  <span className="stage-eyebrow">
-                    {industry.name}
-                    {showSection ? ` · ${slide.sectionName}` : ''}
-                  </span>
                   {slide.title && <h2 className="stage-cta">{slide.title}</h2>}
                   {paragraphs.map((p, j) => (
                     <p key={j} className="ireel-text">

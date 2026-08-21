@@ -120,6 +120,38 @@ code {
   margin-left: 14px;
 }
 
+/* "All industries" back link on the industry-reel navbar: mirror the Industries
+   link but pin it to the LEFT of the centered dropdown, with a leading arrow. */
+/* Blue back button floating over the cover (top-left), below the nav. */
+.nav-back {
+  position: fixed;
+  top: calc(var(--nav-h) + 16px);
+  left: clamp(16px, 4vw, 40px);
+  z-index: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: auto;
+  padding: 9px 16px 9px 14px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(18, 113, 183, 0.35);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.nav-back:hover {
+  background: var(--blue-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.nav-back svg {
+  display: block;
+}
+
 /* Plain text links sitting to the dropdown's right, next to the burger. */
 .nav-link {
   display: inline-flex;
@@ -948,6 +980,105 @@ html.cover-mask .cover-play:hover {
 .play-btn:hover {
   transform: scale(1.06);
   background: var(--blue-dark);
+}
+
+/* Wrapper so the corner Play button can protrude OUTSIDE the (clipped) frame. */
+.video-frame-wrap {
+  position: relative;
+}
+.video-frame-wrap > .video-frame {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+.dreel .video-frame-wrap {
+  width: 100%;
+  max-width: min(100%, calc(52vh * 16 / 9));
+  margin: 0 auto;
+}
+
+/* Big blue "Play" button pushed to the bottom-right corner, outside the frame. */
+.corner-play {
+  position: absolute;
+  right: -12px;
+  bottom: -22px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 58px;
+  padding: 0 28px 0 24px;
+  border: 0;
+  border-radius: 12px;
+  background: #126eb3;
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 21px;
+  cursor: pointer;
+  box-shadow: 0 16px 34px rgba(18, 110, 179, 0.42);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.corner-play:hover {
+  background: #0f5c96;
+  transform: translateY(-2px);
+}
+.corner-play svg {
+  display: block;
+  margin-left: 2px;
+}
+
+@media (max-width: 900px) {
+  .corner-play {
+    height: 50px;
+    padding: 0 22px 0 18px;
+    font-size: 18px;
+    right: -6px;
+    bottom: -18px;
+  }
+}
+
+/* Up / down chapter navigation, stacked on the right of the video (desktop). */
+.reel-nav {
+  position: absolute;
+  top: 50%;
+  right: -70px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 3;
+}
+.reel-nav-btn {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--divider);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 8px 20px rgba(15, 40, 80, 0.16);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.reel-nav-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.reel-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+.reel-nav-btn svg { display: block; }
+/* On narrower desktops there isn't room outside the frame — tuck them just
+   inside the right edge so they never cause horizontal overflow. */
+@media (max-width: 1200px) {
+  .reel-nav {
+    right: 14px;
+  }
 }
 
 .video-placeholder-label {
@@ -3784,6 +3915,66 @@ html:has(.ireel) {
 .ireel-frame {
   aspect-ratio: 1920 / 1345;
   max-width: min(100%, calc(52vh * 1920 / 1345));
+}
+/* Wrapper that shrink-wraps the frame so the up/down nav can be pinned just
+   outside its right edge. Same width cap as .ireel-frame. */
+.ireel-stage {
+  position: relative;
+  width: min(100%, calc(52vh * 1920 / 1345));
+  margin: 0 auto;
+}
+.ireel-stage .ireel-frame {
+  max-width: 100%;
+}
+/* Desktop up/down slide navigation, stacked to the right of the video. */
+.ireel-nav {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ireel-navbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--divider);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+.ireel-navbtn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  transform: translateY(-1px);
+}
+.ireel-navbtn:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.ireel-navbtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+.ireel-navbtn:disabled:hover {
+  border-color: var(--divider);
+  color: var(--ink);
+  transform: none;
+}
+/* Touch/narrow screens: no floating side controls (scroll-snap handles it). */
+@media (max-width: 900px) {
+  .ireel-nav {
+    display: none;
+  }
 }
 /* Slide media fills the 1920×1345 .ireel-frame. */
 .ireel-frame .isl-media {

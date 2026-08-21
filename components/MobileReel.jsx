@@ -54,14 +54,34 @@ function ChapterMedia({ chapter, src, poster }) {
     );
   }
 
+  return <div className="video-placeholder" aria-hidden="true" />;
+}
+
+// Blue "Play" button pushed to the bottom-right corner, protruding outside the
+// video frame. Shown on every chapter. Clicking it plays whatever is in the
+// frame — the animation scene, a real video, or nothing (placeholder).
+function CornerPlay() {
+  const onClick = (e) => {
+    const wrap = e.currentTarget.closest('.video-frame-wrap');
+    if (!wrap) return;
+    const scene = wrap.querySelector('.scene');
+    if (scene) {
+      scene.click(); // the scene toggles play/pause on click
+      return;
+    }
+    const video = wrap.querySelector('video');
+    if (video) {
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
+    }
+  };
   return (
-    <div className="video-placeholder">
-      <span className="play-btn" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
-          <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
-        </svg>
-      </span>
-    </div>
+    <button type="button" className="corner-play" aria-label="Play video" onClick={onClick}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
+      </svg>
+      Play
+    </button>
   );
 }
 
@@ -205,8 +225,11 @@ export default function MobileReel({
           >
             {/* Every page reads like the hero: video up top, headline under it,
                 then the trust-badge cards. */}
-            <div className="reel-media video-frame">
-              <ChapterMedia chapter={c} src={src} poster={poster} />
+            <div className="reel-media video-frame-wrap">
+              <div className="video-frame">
+                <ChapterMedia chapter={c} src={src} poster={poster} />
+              </div>
+              <CornerPlay />
             </div>
 
             <h1 className="reel-hero-title">{c.heroTitle || c.title}</h1>
