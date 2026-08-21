@@ -4,32 +4,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Navbar from '@/components/Navbar';
 
-/*
- * Flatten an industry's sections into one linear slide list. Media "carries
- * forward" inside a section (the source only stamps media on the first slide),
- * falling back to the section thumbnail so every slide has a visual. Also return
- * the sections with their starting slide index (drives the nav dropdown).
- */
-function buildDeck(industry) {
-  const flat = [];
-  const sections = [];
-  industry.sections.forEach((sec, sIdx) => {
-    sections.push({ id: sIdx, name: sec.name, start: flat.length });
-    let carried = sec.thumb ? { type: 'image', src: sec.thumb } : null;
-    sec.slides.forEach((s, i) => {
-      if (s.media) carried = s.media;
-      flat.push({
-        sectionIdx: sIdx,
-        sectionName: sec.name,
-        indexInSection: i,
-        title: s.title,
-        text: s.text,
-        media: s.media || carried,
-      });
-    });
-  });
-  return { flat, sections };
-}
+// Up to this many ideas per page — fewer when their combined text is long.
+const MAX_IDEAS_PER_PAGE = 4;
+const CHAR_BUDGET = 520;
 
 /* Some slide text arrives from the DB with raw HTML (<p>…</p>). Strip tags,
    decode the common entities, and return clean paragraph strings. */
@@ -48,6 +25,51 @@ function cleanParagraphs(text) {
     .split(/\n+/)
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+const textLength = (text) => cleanParagraphs(text).join(' ').length;
+
+/*
+ * Build the reel as a list of PAGES. Each section contributes one cover image
+ * (its first slide's media, else the section thumb) shown on top, plus its
+ * slides grouped into "ideas" (a title + its text) listed underneath — up to
+ * MAX_IDEAS_PER_PAGE per page, fewer when the combined text is long. Also
+ * returns the sections with their starting page index (drives the dropdown).
+ */
+function buildDeck(industry) {
+  const pages = [];
+  const sections = [];
+  industry.sections.forEach((sec, sIdx) => {
+    sections.push({ id: sIdx, name: sec.name, start: pages.length });
+
+    const firstWithMedia = sec.slides.find((s) => s.media);
+    const cover =
+      firstWithMedia?.media || (sec.thumb ? { type: 'image', src: sec.thumb } : null);
+
+    // An idea needs at least a title or some text to be worth a row.
+    const ideas = sec.slides
+      .map((s) => ({ title: s.title, text: s.text }))
+      .filter((idea) => idea.title || textLength(idea.text));
+
+    let bucket = [];
+    let chars = 0;
+    const flush = () => {
+      if (!bucket.length) return;
+      pages.push({ sectionIdx: sIdx, sectionName: sec.name, media: cover, ideas: bucket });
+      bucket = [];
+      chars = 0;
+    };
+    ideas.forEach((idea) => {
+      const len = (idea.title || '').length + textLength(idea.text);
+      if (bucket.length >= MAX_IDEAS_PER_PAGE || (bucket.length > 0 && chars + len > CHAR_BUDGET)) {
+        flush();
+      }
+      bucket.push(idea);
+      chars += len;
+    });
+    flush();
+  });
+  return { pages, sections };
 }
 
 function SlideMedia({ media, playing }) {
@@ -85,29 +107,35 @@ function SlideMedia({ media, playing }) {
   return <img key={media.src} className="isl-media isl-image" src={media.src} alt="" />;
 }
 
-// Industry deck rendered as a full-screen scroll-snap reel — one slide per page,
-// same layout language and nav dropdown as the landing reel. The dropdown lists
-// the industry's sections; picking one jumps to that section's first slide.
+// Industry deck rendered as a full-screen scroll-snap reel — one page per group
+// of ideas, the section cover on top and the ideas listed left-justified below.
+// The nav dropdown (navbar on desktop, pinned selector on mobile) lists every
+// page, labelled "Section-<first idea>".
 export default function IndustrySlides({ industry }) {
-  const { flat } = useMemo(() => buildDeck(industry), [industry]);
+  const { pages } = useMemo(() => buildDeck(industry), [industry]);
   const [active, setActive] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pagesRef = useRef([]);
+  const pad = (n) => String(n).padStart(2, '0');
 
-  // The nav dropdown lists every slide of the reel, labelled "Section-Title"
-  // (e.g. "Philosophy-Traffic Systems"); the navbar renders the slide number
-  // as its own badge. Picking one jumps straight to that slide.
-  const slideChapters = useMemo(
-    () => flat.map((s, i) => ({ id: i, title: `${s.sectionName}-${s.title}` })),
-    [flat]
+  const pageChapters = useMemo(
+    () => pages.map((p, i) => ({ id: i, title: `${p.sectionName}-${p.ideas[0]?.title || ''}` })),
+    [pages]
   );
+  const activeTitle = pageChapters[active]?.title || '';
 
-  const jumpToSlide = (id) => {
-    setActive(id);
-    pagesRef.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const goTo = (id) => {
+    const n = Math.max(0, Math.min(pages.length - 1, id));
+    setActive(n);
+    pagesRef.current[n]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const pick = (id) => {
+    setMenuOpen(false);
+    goTo(id);
   };
 
-  // Keep the dropdown in sync with the slide currently in view, and play only
-  // that slide's video (like the landing reel).
+  // Keep the dropdown in sync with the page in view, and play only that page's
+  // video (like the landing reel).
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -122,74 +150,132 @@ export default function IndustrySlides({ industry }) {
     );
     pagesRef.current.forEach((el) => el && io.observe(el));
     return () => io.disconnect();
-  }, [flat.length]);
+  }, [pages.length]);
 
   return (
     <>
       <Navbar
-        chapters={slideChapters}
+        chapters={pageChapters}
         activeId={active}
-        onSelect={jumpToSlide}
+        onSelect={goTo}
         backTo={{ href: '/industries', label: 'All industries' }}
       />
 
-      <div className="ireel">
-        {flat.map((slide, i) => {
-          const paragraphs = cleanParagraphs(slide.text);
-          return (
-            <section
-              className="ireel-page"
-              key={i}
-              data-idx={i}
-              ref={(el) => {
-                pagesRef.current[i] = el;
-              }}
+      {/* Mobile-only pinned selector, mirroring the landing reel's selector.
+          Desktop uses the navbar dropdown (.nav-chapters). */}
+      <div className="ireel-bar">
+        <div className="stage-chapters">
+          <button
+            type="button"
+            className="stage-chapters-select"
+            aria-haspopup="listbox"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {activeTitle}
+          </button>
+          <span className="stage-chapters-count" aria-hidden="true">
+            {pad(active + 1)}
+          </span>
+          <span className={`stage-chapters-chev${menuOpen ? ' is-open' : ''}`} aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </span>
+        </div>
+      </div>
+      {menuOpen && (
+        <div className="ch-menu ireel-menu" role="listbox" aria-label="Jump to a section">
+          {pageChapters.map((c, i) => (
+            <button
+              key={c.id}
+              type="button"
+              role="option"
+              aria-selected={i === active}
+              className={`ch-menu-item${i === active ? ' is-active' : ''}`}
+              onClick={() => pick(i)}
             >
-              <div className="stage-inner">
-                <div className="ireel-stage">
-                  <div className="video-frame ireel-frame">
-                    <SlideMedia media={slide.media} playing={i === active} />
-                  </div>
+              <span className="ch-menu-title">{c.title}</span>
+              <span className="ch-menu-num">{pad(i + 1)}</span>
+            </button>
+          ))}
+          <a
+            href="/industries"
+            className="ch-menu-item ch-menu-item--featured"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="ch-menu-title">All industries</span>
+            <svg className="ch-menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+      )}
 
-                  {/* Desktop-only up/down slide navigation, to the frame's right. */}
-                  <div className="ireel-nav">
-                    <button
-                      type="button"
-                      className="ireel-navbtn"
-                      aria-label="Previous slide"
-                      disabled={i === 0}
-                      onClick={() => jumpToSlide(i - 1)}
-                    >
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M18 15l-6-6-6 6" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      className="ireel-navbtn"
-                      aria-label="Next slide"
-                      disabled={i === flat.length - 1}
-                      onClick={() => jumpToSlide(i + 1)}
-                    >
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M6 9l6 6 6-6" />
-                      </svg>
-                    </button>
-                  </div>
+      <div className="ireel">
+        {pages.map((page, i) => (
+          <section
+            className="ireel-page"
+            key={i}
+            data-idx={i}
+            ref={(el) => {
+              pagesRef.current[i] = el;
+            }}
+          >
+            <div className="stage-inner">
+              <div className="video-frame-wrap">
+                <div className="video-frame ireel-frame">
+                  <SlideMedia media={page.media} playing={i === active} />
                 </div>
 
-                <div className="stage-head">
-                  {slide.title && <h2 className="stage-cta">{slide.title}</h2>}
-                  {paragraphs.map((p, j) => (
-                    <p key={j} className="ireel-text">
-                      {p}
-                    </p>
-                  ))}
+                {/* Up / down page navigation on the right of the video,
+                    matching the landing reel. */}
+                <div className="reel-nav">
+                  <button
+                    type="button"
+                    className="reel-nav-btn"
+                    aria-label="Previous slide"
+                    disabled={i === 0}
+                    onClick={() => goTo(i - 1)}
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M18 15l-6-6-6 6" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="reel-nav-btn"
+                    aria-label="Next slide"
+                    disabled={i === pages.length - 1}
+                    onClick={() => goTo(i + 1)}
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </section>
-          );
-        })}
+
+              {page.ideas.length > 0 && (
+                <div className="ireel-ideas">
+                  {page.ideas.map((idea, k) => {
+                    const paragraphs = cleanParagraphs(idea.text);
+                    return (
+                      <div className="ireel-idea" key={k}>
+                        {idea.title && <h2 className="ireel-idea-title">{idea.title}</h2>}
+                        {paragraphs.map((p, j) => (
+                          <p key={j} className="ireel-idea-text">
+                            {p}
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </section>
+        ))}
       </div>
     </>
   );

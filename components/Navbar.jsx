@@ -150,17 +150,18 @@ export default function Navbar({
   return (
     <>
       <nav className="nav js-nav">
-        <a href="/" className="brand" aria-label="Taskmaverick home">
-          <img src="/logo.svg" alt="Taskmaverick" className="brand-logo" width="220" height="30" />
-        </a>
-
-        {/* Fixed blue back button floating over the cover (not in the nav row). */}
-        {backTo && (
+        {/* On the industry reel, the back button takes the brand's slot and is
+            styled like the Book Demo button; elsewhere the logo shows. */}
+        {backTo ? (
           <a href={backTo.href} className="nav-back">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             {backTo.label}
+          </a>
+        ) : (
+          <a href="/" className="brand" aria-label="Taskmaverick home">
+            <img src="/logo.svg" alt="Taskmaverick" className="brand-logo" width="220" height="30" />
           </a>
         )}
 

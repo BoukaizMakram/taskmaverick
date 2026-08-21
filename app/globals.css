@@ -120,33 +120,26 @@ code {
   margin-left: 14px;
 }
 
-/* "All industries" back link on the industry-reel navbar: mirror the Industries
-   link but pin it to the LEFT of the centered dropdown, with a leading arrow. */
-/* Blue back button floating over the cover (top-left), below the nav. */
+/* "All industries" back button — sits in the brand's slot on the industry reel
+   and matches the Book Demo button (.btn-demo): blue fill, leading arrow. */
 .nav-back {
-  position: fixed;
-  top: calc(var(--nav-h) + 16px);
-  left: clamp(16px, 4vw, 40px);
-  z-index: 600;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: auto;
-  padding: 9px 16px 9px 14px;
-  border-radius: 999px;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
   background: var(--blue);
   color: #fff;
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(18, 113, 183, 0.35);
-  transition: background 0.18s ease, transform 0.18s ease;
+  transition: background 0.18s ease;
 }
 .nav-back:hover {
   background: var(--blue-dark);
   color: #fff;
-  transform: translateY(-1px);
 }
 .nav-back svg {
   display: block;
@@ -1000,23 +993,24 @@ html.cover-mask .cover-play:hover {
 /* Big blue "Play" button pushed to the bottom-right corner, outside the frame. */
 .corner-play {
   position: absolute;
-  right: -12px;
-  bottom: -22px;
+  right: -9px;
+  bottom: -15px;
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  height: 58px;
-  padding: 0 28px 0 24px;
+  gap: 6px;
+  height: 40px;
+  padding: 0 19px 0 16px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 9px;
   background: #126eb3;
   color: #fff;
   font-family: var(--font-poppins), sans-serif;
   font-weight: 700;
+  /* Button box shrunk ~30%; the word size stays 21px. */
   font-size: 21px;
   cursor: pointer;
-  box-shadow: 0 16px 34px rgba(18, 110, 179, 0.42);
+  box-shadow: 0 10px 22px rgba(18, 110, 179, 0.42);
   transition: background 0.18s ease, transform 0.18s ease;
 }
 .corner-play:hover {
@@ -1026,6 +1020,8 @@ html.cover-mask .cover-play:hover {
 .corner-play svg {
   display: block;
   margin-left: 2px;
+  width: 15px;
+  height: 15px;
 }
 
 @media (max-width: 900px) {
@@ -3895,9 +3891,13 @@ html:has(.ireel) {
 }
 .ireel {
   position: relative;
+  /* Shared width of the cover frame and the ideas list below it, so the ideas
+     align to the cover's edges. Capped so the cover stays within ~44vh tall
+     (leaving room for up to four ideas underneath). */
+  --ireel-cover-w: min(100%, calc(44vh * 1920 / 1345));
 }
 .ireel-page {
-  /* One slide = one full screen below the sticky nav; grows for long text. */
+  /* One page = one full screen below the sticky nav; grows for long text. */
   min-height: calc(100vh - var(--nav-h));
   display: grid;
   place-items: center;
@@ -3907,72 +3907,92 @@ html:has(.ireel) {
   scroll-snap-stop: always;
 }
 .ireel .stage-inner {
-  gap: clamp(14px, 1.6vw, 20px);
+  gap: clamp(16px, 2.2vh, 26px);
 }
 /* Industry slides ship as 1920×1345 images — give the frame that exact ratio so
    they aren't cropped by the shared 16:9 box. Cap the WIDTH (not the height) so
-   the frame still fits within 52vh tall, matching .video-frame's approach. */
+   the frame still fits its height budget, matching .video-frame's approach. */
 .ireel-frame {
   aspect-ratio: 1920 / 1345;
-  max-width: min(100%, calc(52vh * 1920 / 1345));
+  max-width: var(--ireel-cover-w);
 }
-/* Wrapper that shrink-wraps the frame so the up/down nav can be pinned just
-   outside its right edge. Same width cap as .ireel-frame. */
-.ireel-stage {
-  position: relative;
-  width: min(100%, calc(52vh * 1920 / 1345));
+/* Frame wrapper — the positioning context for the reused landing `.reel-nav`
+   up/down controls. Same width cap as .ireel-frame so the frame fills it and
+   the nav pins just outside its right edge (see .reel-nav / .reel-nav-btn). */
+.ireel .video-frame-wrap {
+  width: 100%;
+  max-width: var(--ireel-cover-w);
   margin: 0 auto;
 }
-.ireel-stage .ireel-frame {
-  max-width: 100%;
-}
-/* Desktop up/down slide navigation, stacked to the right of the video. */
-.ireel-nav {
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 16px;
+/* The ideas (title + text) listed under the cover, left-justified and aligned
+   to the cover's edges. */
+.ireel-ideas {
+  width: 100%;
+  max-width: var(--ireel-cover-w);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(14px, 1.8vh, 22px);
+  text-align: left;
 }
-.ireel-navbtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  border: 1px solid var(--divider);
-  border-radius: 50%;
-  background: #fff;
+.ireel-idea {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ireel-idea-title {
+  margin: 0;
+  font-family: var(--font-inter), system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   color: var(--ink);
-  box-shadow: var(--shadow-md);
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
 }
-.ireel-navbtn:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  transform: translateY(-1px);
+.ireel-idea-text {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.5;
+  color: var(--muted);
 }
-.ireel-navbtn:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 2px;
+
+/* --- Mobile: pinned chapter selector, mirroring the landing reel's selector
+   (.reel-bar). Desktop keeps the navbar dropdown (.nav-chapters). --- */
+.ireel-bar {
+  display: none;
 }
-.ireel-navbtn:disabled {
-  opacity: 0.4;
-  cursor: default;
-  box-shadow: none;
+.ireel-menu {
+  display: none;
 }
-.ireel-navbtn:disabled:hover {
-  border-color: var(--divider);
-  color: var(--ink);
-  transform: none;
-}
-/* Touch/narrow screens: no floating side controls (scroll-snap handles it). */
 @media (max-width: 900px) {
-  .ireel-nav {
+  html:has(.ireel) {
+    scroll-padding-top: calc(var(--nav-h) + var(--reel-bar-h));
+  }
+  .ireel-bar {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    z-index: 900;
+    height: var(--reel-bar-h);
+    padding: 0 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+    border-bottom: 1px solid var(--divider);
+  }
+  .ireel-menu {
+    display: block;
+  }
+  .ireel {
+    /* Reserve space for the fixed selector so the first page starts below it. */
+    padding-top: var(--reel-bar-h);
+  }
+  .ireel-page {
+    min-height: calc(100vh - var(--nav-h) - var(--reel-bar-h));
+  }
+  /* Touch/narrow screens: no floating side controls (scroll-snap handles it). */
+  .ireel .reel-nav {
     display: none;
   }
 }
