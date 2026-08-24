@@ -5275,3 +5275,133 @@ html:has(.ireel) {
     margin-left: 0;
   }
 }
+
+/* ============================================================
+   Internationalization (EN / ES / AR)
+   - Language switcher chip in the navbar
+   - Arabic font swap + right-to-left layout
+   ============================================================ */
+
+/* ---- Language switcher (navbar): a blue rounded-square chip showing the
+   current two-letter code; opens a small menu of the three languages. ---- */
+.lang-switch {
+  position: relative;
+  display: inline-flex;
+}
+.lang-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: none;
+  border-radius: 11px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.lang-switch-btn:hover {
+  background: var(--blue-dark);
+}
+.lang-switch-btn:active {
+  transform: scale(0.95);
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 168px;
+  background: #fff;
+  border: 1px solid var(--nav-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 60;
+}
+.lang-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+.lang-menu-item:hover {
+  background: var(--blue-soft);
+}
+.lang-menu-item.is-active {
+  background: var(--blue-soft);
+}
+.lang-menu-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  flex: none;
+  border-radius: 7px;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+}
+.lang-menu-item:not(.is-active) .lang-menu-code {
+  background: #eef2f7;
+  color: var(--ink-soft);
+}
+.lang-menu-name {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+/* ---- Arabic: swap every font token to the Arabic-capable face. Because the
+   whole design references these three variables, redefining them here restyles
+   all text at once (headings, body, chips) without touching each rule. ---- */
+html[lang="ar"] {
+  --font-poppins: var(--font-arabic);
+  --font-inter: var(--font-arabic);
+  --font-montserrat: var(--font-arabic);
+}
+html[lang="ar"] body {
+  font-family: var(--font-arabic), system-ui, sans-serif;
+}
+
+/* ---- Right-to-left. Arabic content (titles, badges, deck ideas, paragraphs)
+   reads RTL via `dir="rtl"`, but a few chrome elements are kept in their normal
+   LTR layout on purpose (per design): the navbar (logo stays left, actions stay
+   right), the "Use Cases by Industry" / Industries buttons, and the corner Play
+   button. Forcing `direction: ltr` on them preserves flex order + icon side
+   while their Arabic text still shapes correctly. ---- */
+html[dir="rtl"] .nav,
+html[dir="rtl"] .stage-uc,
+html[dir="rtl"] .btn-demo,
+html[dir="rtl"] .corner-play,
+html[dir="rtl"] .ch-menu-item--featured {
+  direction: ltr;
+}
+/* Keep numeric chapter/slide counters left-to-right too. */
+html[dir="rtl"] .nav-ch-num,
+html[dir="rtl"] .nav-ch-item-num,
+html[dir="rtl"] .stage-chapters-count,
+html[dir="rtl"] .ch-menu-num,
+html[dir="rtl"] .chapter-index,
+html[dir="rtl"] .itoc-nav-count {
+  direction: ltr;
+}
