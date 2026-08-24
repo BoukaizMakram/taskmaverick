@@ -5396,6 +5396,11 @@ html[dir="rtl"] .corner-play,
 html[dir="rtl"] .ch-menu-item--featured {
   direction: ltr;
 }
+/* The "Use Cases by Industry" link uses align-self:flex-end, which resolves to
+   the left under RTL — pin it back to the right side (design request). */
+html[dir="rtl"] .stage-uc {
+  align-self: flex-start;
+}
 /* Keep numeric chapter/slide counters left-to-right too. */
 html[dir="rtl"] .nav-ch-num,
 html[dir="rtl"] .nav-ch-item-num,
