@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 // Chapters can render a code-driven animation scene instead of a <video>.
 const SCENES = {
@@ -101,6 +102,7 @@ export const BADGES = [
 ];
 
 export default function HeroVideo({ src, poster, activeChapter }) {
+  const t = useT();
   const videoRef = useRef(null);
 
   // A chapter can bring its own video file; otherwise we fall back to the
@@ -229,7 +231,7 @@ export default function HeroVideo({ src, poster, activeChapter }) {
                 </svg>
               </button>
               <p className="video-placeholder-label">
-                {activeChapter ? activeChapter.title : 'Your video goes here'}
+                {activeChapter ? t(activeChapter.title) : t('Your video goes here')}
               </p>
             </div>
           )}
@@ -237,7 +239,7 @@ export default function HeroVideo({ src, poster, activeChapter }) {
 
         <div className="stage-head js-cta">
           <h1 className="stage-cta">
-            {activeChapter?.heroTitle || activeChapter?.title || 'See how Taskmaverick makes operational excellence possible'}
+            {t(activeChapter?.heroTitle || activeChapter?.title || 'See how Taskmaverick makes operational excellence possible')}
           </h1>
         </div>
 
@@ -248,15 +250,15 @@ export default function HeroVideo({ src, poster, activeChapter }) {
                 <BadgeIcon name={b.icon} />
               </span>
               <span className="stage-badge-text">
-                <b>{b.title}</b>
-                <small>{b.sub}</small>
+                <b>{t(b.title)}</b>
+                <small>{t(b.sub)}</small>
               </span>
             </li>
           ))}
         </ul>
 
         <a className="stage-uc" href="#use-cases">
-          Industries
+          {t('Industries')}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>

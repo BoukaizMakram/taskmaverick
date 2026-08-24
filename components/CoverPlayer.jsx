@@ -1,38 +1,20 @@
-'use client';
-
-import { useState } from 'react';
-
-// A chapter cover image with an optional play button. The button — a blue play
-// triangle notched into the image's lower-right corner — only appears when a
-// video source is available; clicking it swaps the still cover for the video.
-// No text is drawn over the image.
+// Chapter cover for a reel frame. When the chapter has a video, render it with
+// the cover image as its poster so the reel's corner Play button (and the native
+// controls) play it — no separate on-cover play button. With no video, just show
+// the cover image.
 export default function CoverPlayer({ cover, video, poster, alt }) {
-  const [playing, setPlaying] = useState(false);
-
-  if (playing && video) {
+  if (video) {
     return (
       <video
         className="video-el"
         src={video}
-        poster={poster || undefined}
-        autoPlay
+        poster={cover || poster || undefined}
         controls
         playsInline
+        preload="metadata"
       />
     );
   }
 
-  return (
-    <div className="cover">
-      <img className="cover-img" src={cover} alt={alt || ''} />
-      {video && (
-        <button type="button" className="cover-play" onClick={() => setPlaying(true)}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          <span>Play video</span>
-        </button>
-      )}
-    </div>
-  );
+  return <img className="cover-img" src={cover} alt={alt || ''} />;
 }

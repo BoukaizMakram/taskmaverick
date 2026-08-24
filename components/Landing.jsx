@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { smoothScrollTo } from '@/lib/smoothScroll';
+import { useT } from '@/lib/i18n/LanguageProvider';
 import Navbar from '@/components/Navbar';
 import DesktopReel from '@/components/DesktopReel';
 import MobileReel from '@/components/MobileReel';
@@ -57,6 +58,7 @@ function Icon({ name, size = 22 }) {
 }
 
 export default function Landing() {
+  const t = useT();
   const container = useRef(null);
   const [activeId, setActiveId] = useState(1);
   // True while the industries (Use Cases) section is the current view. While
@@ -191,11 +193,12 @@ export default function Landing() {
         <section className="lp-section" id="use-cases">
           <div className="lp-container">
             <div className="lp-head center">
-              <span className="lp-kicker">Use cases by industry</span>
-              <h2 className="lp-h2">Endless applications, one for every industry.</h2>
+              <span className="lp-kicker">{t('Use cases by industry')}</span>
+              <h2 className="lp-h2">{t('Endless applications, one for every industry.')}</h2>
               <p className="lp-lead">
-                See how teams in every industry put Taskmaverick to work. Open an industry for a
-                slide-by-slide walkthrough of the everyday missions it runs.
+                {t(
+                  'See how teams in every industry put Taskmaverick to work. Open an industry for a slide-by-slide walkthrough of the everyday missions it runs.'
+                )}
               </p>
             </div>
             <IndustryGrid />
@@ -205,20 +208,21 @@ export default function Landing() {
         {/* ---------------- Final CTA ---------------- */}
         <section className="lp-cta" id="book">
           <div className="lp-container">
-            <h2>See it for yourself.</h2>
+            <h2>{t('See it for yourself.')}</h2>
             <p>
-              Anybody who has seen Taskmaverick says they have never seen anything like how it comes
-              together. Watch the walkthrough above, or reach out for a personalized demo.
+              {t(
+                'Anybody who has seen Taskmaverick says they have never seen anything like how it comes together. Watch the walkthrough above, or reach out for a personalized demo.'
+              )}
             </p>
             <div className="lp-cta-actions">
               <a href="#overview" className="btn-primary btn-lg">
-                <Icon name="play" size={18} /> Watch the walkthrough
+                <Icon name="play" size={18} /> {t('Watch the walkthrough')}
               </a>
               <a
                 href="mailto:hello@taskmaverick.com?subject=Taskmaverick%20demo"
                 className="btn-secondary btn-lg"
               >
-                Contact sales
+                {t('Contact sales')}
               </a>
             </div>
           </div>
@@ -229,10 +233,10 @@ export default function Landing() {
           <div className="lp-container lp-footer-inner">
             <img src="/logo.svg" alt="Taskmaverick" className="lp-footer-logo" />
             <nav>
-              <a href="#overview">Demo</a>
-              <a href="/about">About</a>
-              <a href="#use-cases">Use cases</a>
-              <a href="#book">Contact</a>
+              <a href="#overview">{t('Demo')}</a>
+              <a href="/about">{t('About')}</a>
+              <a href="#use-cases">{t('Use cases')}</a>
+              <a href="#book">{t('Contact')}</a>
             </nav>
           </div>
         </footer>

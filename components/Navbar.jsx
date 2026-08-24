@@ -3,6 +3,66 @@
 import { useEffect, useState } from 'react';
 
 import { smoothScrollTo } from '@/lib/smoothScroll';
+import { useLang, useT } from '@/lib/i18n/LanguageProvider';
+import { LANGS } from '@/lib/i18n/languages';
+
+// Compact language switcher — a blue rounded-square chip showing the current
+// two-letter code (EN / ES / AR); clicking opens a small menu of the three
+// languages. Switching flips the whole site (and <html dir> for Arabic).
+function LanguageSwitcher() {
+  const { lang, setLang } = useLang();
+  const [open, setOpen] = useState(false);
+  const current = LANGS.find((l) => l.code === lang) || LANGS[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => {
+      if (!e.target.closest?.('.lang-switch')) setOpen(false);
+    };
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    document.addEventListener('pointerdown', onDown);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="lang-switch">
+      <button
+        type="button"
+        className="lang-switch-btn"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={`Language: ${current.name}`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {current.label}
+      </button>
+      {open && (
+        <div className="lang-menu" role="listbox">
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              role="option"
+              aria-selected={l.code === lang}
+              className={`lang-menu-item${l.code === lang ? ' is-active' : ''}`}
+              onClick={() => {
+                setLang(l.code);
+                setOpen(false);
+              }}
+            >
+              <span className="lang-menu-code">{l.label}</span>
+              <span className="lang-menu-name">{l.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Right-hand chevron on every menu row, matches the live Taskmaverick burger.
 function Chevron() {
@@ -62,10 +122,11 @@ function MenuIcon({ name }) {
 
 // A burger menu row — a real link, or an inert (disabled) row that goes nowhere.
 function BurgerLink({ link, onNavigate }) {
+  const t = useT();
   const inner = (
     <>
       <MenuIcon name={link.icon} />
-      <span>{link.label}</span>
+      <span>{t(link.label)}</span>
       <Chevron />
     </>
   );
@@ -112,13 +173,14 @@ export default function Navbar({
   onExitUseCases,
   backTo,
 }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [chOpen, setChOpen] = useState(false);
   const close = () => setOpen(false);
 
   const pad = (n) => String(n).padStart(2, '0');
   const activeIdx = chapters.findIndex((c) => c.id === activeId);
-  const activeTitle = chapters[activeIdx]?.title || 'Chapters';
+  const activeTitle = t(chapters[activeIdx]?.title || 'Chapters');
 
   // Lock the page behind the panel while it's open, and close on Escape.
   useEffect(() => {
@@ -157,7 +219,7 @@ export default function Navbar({
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            {backTo.label}
+            {t(backTo.label)}
           </a>
         ) : (
           <a href="/" className="brand" aria-label="Taskmaverick home">
@@ -203,38 +265,32 @@ export default function Navbar({
                         setChOpen(false);
                       }}
                     >
-                      <span className="nav-ch-item-title">{c.title}</span>
+                      <span className="nav-ch-item-title">{t(c.title)}</span>
                       <span className="nav-ch-item-num">{pad(i + 1)}</span>
                     </button>
                   ))}
                 </div>
               )}
             </div>
-            {onIndustries && (
-              <a
-                href="/#use-cases"
-                className="nav-link"
-                onClick={(e) => {
-                  if (document.getElementById('use-cases')) {
-                    e.preventDefault();
-                    onIndustries();
-                  }
-                }}
-              >
-                Industries
-              </a>
-            )}
           </div>
         )}
 
         <div className="nav-right">
-          <a href="/book" className="btn-demo" onClick={(e) => e.preventDefault()}>
-            Book Demo
+          <a
+            href="/#use-cases"
+            className="btn-demo"
+            onClick={(e) => {
+              // On the landing, scroll down to the industries section; elsewhere
+              // let the link navigate to /#use-cases.
+              if (onIndustries && document.getElementById('use-cases')) {
+                e.preventDefault();
+                onIndustries();
+              }
+            }}
+          >
+            {t('Industries')}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
+              <path d="M12 5v14M5 12l7 7 7-7" />
             </svg>
           </a>
 
@@ -243,8 +299,10 @@ export default function Navbar({
             className="nav-link nav-link--signin"
             onClick={(e) => e.preventDefault()}
           >
-            Sign in
+            {t('Sign in')}
           </a>
+
+          <LanguageSwitcher />
 
           <button
             type="button"

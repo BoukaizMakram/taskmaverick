@@ -1,5 +1,6 @@
-import { Poppins, Inter, Montserrat } from 'next/font/google';
+import { Poppins, Inter, Montserrat, Cairo } from 'next/font/google';
 import './globals.css';
+import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -22,6 +23,15 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
+// Arabic-capable face, applied via CSS when the document is dir="rtl" / lang="ar"
+// (the Latin faces above don't carry Arabic glyphs).
+const cairo = Cairo({
+  subsets: ['arabic'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-arabic',
+  display: 'swap',
+});
+
 export const metadata = {
   title: 'Taskmaverick · Automated Business Manager',
   description: 'Watch the Taskmaverick overview, chapter by chapter.',
@@ -35,10 +45,12 @@ export default function RootLayout({ children }) {
     // relaxes attribute checking on <html> itself, nothing deeper.
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${montserrat.variable}`}
+      className={`${poppins.variable} ${inter.variable} ${montserrat.variable} ${cairo.variable}`}
       suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }

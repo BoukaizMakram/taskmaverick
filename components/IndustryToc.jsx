@@ -9,7 +9,10 @@
 
 import { useEffect, useState } from 'react';
 
+import { useT } from '@/lib/i18n/LanguageProvider';
+
 export default function IndustryToc({ groups }) {
+  const t = useT();
   const [active, setActive] = useState(null);
 
   useEffect(() => {
@@ -34,19 +37,19 @@ export default function IndustryToc({ groups }) {
 
   return (
     <nav className="itoc-nav" aria-label="Use cases table of contents">
-      <p className="itoc-nav-title">On this page</p>
+      <p className="itoc-nav-title">{t('On this page')}</p>
       <ul className="itoc-nav-list">
         {groups.map((g) => (
           <li key={g.id} className={`itoc-nav-industry ${activeIndustry === g.id ? 'is-open' : ''}`}>
             <a href={`#${g.id}`} className={`itoc-nav-ind ${activeIndustry === g.id ? 'is-active' : ''}`}>
-              {g.name}
+              {t(g.name)}
               <span className="itoc-nav-count">{g.sections.length}</span>
             </a>
             <ul className="itoc-nav-sections">
               {g.sections.map((s) => (
                 <li key={s.id}>
                   <a href={`#${s.id}`} className={`itoc-nav-sec ${active === s.id ? 'is-active' : ''}`}>
-                    {s.name}
+                    {t(s.name)}
                   </a>
                 </li>
               ))}

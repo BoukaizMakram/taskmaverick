@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import CoverPlayer from '@/components/CoverPlayer';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 const SCENES = {
   'posted-missions': PostedMissionsScene,
@@ -61,6 +62,7 @@ function ChapterMedia({ chapter, src, poster }) {
 // video frame. Shown on every chapter. Clicking it plays whatever is in the
 // frame — the animation scene, a real video, or nothing (placeholder).
 function CornerPlay() {
+  const t = useT();
   const onClick = (e) => {
     const wrap = e.currentTarget.closest('.video-frame-wrap');
     if (!wrap) return;
@@ -80,7 +82,7 @@ function CornerPlay() {
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
         <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
       </svg>
-      Play
+      {t('Play')}
     </button>
   );
 }
@@ -95,6 +97,7 @@ export default function MobileReel({
   src,
   poster,
 }) {
+  const t = useT();
   const reelRef = useRef(null);
   const pages = useRef({});
   const [menuOpen, setMenuOpen] = useState(false);
@@ -141,7 +144,7 @@ export default function MobileReel({
 
   const idx = chapters.findIndex((c) => c.id === activeId);
   const pos = idx >= 0 ? idx + 1 : 1;
-  const activeTitle = chapters[idx]?.title || chapters[0]?.title || '';
+  const activeTitle = t(chapters[idx]?.title || chapters[0]?.title || '');
 
   const pick = (v) => {
     setMenuOpen(false);
@@ -192,7 +195,7 @@ export default function MobileReel({
                 className={`ch-menu-item${c.id === activeId ? ' is-active' : ''}`}
                 onClick={() => pick(String(c.id))}
               >
-                <span className="ch-menu-title">{c.title}</span>
+                <span className="ch-menu-title">{t(c.title)}</span>
                 <span className="ch-menu-num">{pad(i + 1)}</span>
               </button>
             ))}
@@ -204,7 +207,7 @@ export default function MobileReel({
                 onIndustries?.();
               }}
             >
-              <span className="ch-menu-title">Use Cases by Industry</span>
+              <span className="ch-menu-title">{t('Use Cases by Industry')}</span>
               <svg className="ch-menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
@@ -232,7 +235,7 @@ export default function MobileReel({
               <CornerPlay />
             </div>
 
-            <h1 className="reel-hero-title">{c.heroTitle || c.title}</h1>
+            <h1 className="reel-hero-title">{t(c.heroTitle || c.title)}</h1>
 
             <ul className="stage-badges reel-badges">
               {(c.badges || BADGES).map((b) => (
@@ -241,19 +244,12 @@ export default function MobileReel({
                     <BadgeIcon name={b.icon} />
                   </span>
                   <span className="stage-badge-text">
-                    <b>{b.title}</b>
-                    <small>{b.sub}</small>
+                    <b>{t(b.title)}</b>
+                    <small>{t(b.sub)}</small>
                   </span>
                 </li>
               ))}
             </ul>
-
-            <button type="button" className="reel-uc" onClick={() => onIndustries?.()}>
-              Use Cases by Industry
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" />
-              </svg>
-            </button>
           </section>
         ))}
       </div>

@@ -15,6 +15,7 @@ import { smoothScrollTo } from '@/lib/smoothScroll';
 import CoverPlayer from '@/components/CoverPlayer';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 const SCENES = {
   'posted-missions': PostedMissionsScene,
@@ -62,6 +63,7 @@ function ChapterMedia({ chapter, src, poster }) {
 // video frame. Shown on every chapter. Clicking it plays whatever is in the
 // frame — the animation scene, a real video, or nothing (placeholder).
 function CornerPlay() {
+  const t = useT();
   const onClick = (e) => {
     const wrap = e.currentTarget.closest('.video-frame-wrap');
     if (!wrap) return;
@@ -81,12 +83,13 @@ function CornerPlay() {
       <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
         <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
       </svg>
-      Play
+      {t('Play')}
     </button>
   );
 }
 
 export default function DesktopReel({ chapters = [], activeId, onSelect, onIndustries, src, poster }) {
+  const t = useT();
   const wrapRef = useRef(null);
   const pages = useRef({});
   const visibleId = useRef(activeId);
@@ -202,7 +205,7 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
 
               <div className="stage-head">
                 <h1 className="stage-cta">
-                  {c.heroTitle || c.title}
+                  {t(c.heroTitle || c.title)}
                 </h1>
               </div>
 
@@ -213,8 +216,8 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                       <BadgeIcon name={b.icon} />
                     </span>
                     <span className="stage-badge-text">
-                      <b>{b.title}</b>
-                      <small>{b.sub}</small>
+                      <b>{t(b.title)}</b>
+                      <small>{t(b.sub)}</small>
                     </span>
                   </li>
                 ))}
@@ -228,7 +231,7 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                   onIndustries?.();
                 }}
               >
-                Use Cases by Industry
+                {t('Use Cases by Industry')}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>

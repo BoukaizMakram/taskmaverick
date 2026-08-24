@@ -1,3 +1,5 @@
+'use client';
+
 // ---------------------------------------------------------------------------
 // About — the marketing "About Taskmaverick" sections, moved off the landing
 // page onto their own /about route. Composes FeatureShowcase + Zone Coverage
@@ -6,6 +8,7 @@
 
 import FeatureShowcase from '@/components/FeatureShowcase';
 import FeatureSplit from '@/components/FeatureSplit';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 /* ---- tiny inline icon set (Feather-style, stroked) -------------------- */
 const ICONS = {
@@ -79,25 +82,26 @@ const REASONS = [
 ];
 
 export default function About() {
+  const t = useT();
   return (
     <>
       <FeatureShowcase />
 
-      <FeatureSplit kicker="Management" title="Zone Coverage" artSide="left">
-        Optimize staff distribution throughout any facility, especially in high-touch areas.
+      <FeatureSplit kicker={t('Management')} title={t('Zone Coverage')} artSide="left">
+        {t(
+          'Optimize staff distribution throughout any facility, especially in high-touch areas.'
+        )}
       </FeatureSplit>
 
       <section className="lp-section" id="about">
         <div className="lp-container">
           <div className="lp-head">
-            <span className="lp-kicker">Who we are</span>
-            <h2 className="lp-h2">We turn everyday operations into a system that runs itself.</h2>
+            <span className="lp-kicker">{t('Who we are')}</span>
+            <h2 className="lp-h2">{t('We turn everyday operations into a system that runs itself.')}</h2>
             <p className="lp-lead">
-              Taskmaverick is an Automated Business Manager. It guides every person on a tablet,
-              phone, or the web, in their own language, so the right work gets done on time,
-              measured, and recognized, without anyone having to micromanage. From a single café
-              to a hospital running a hundred teams, it brings structure, accountability, and
-              continuous training to the frontline.
+              {t(
+                'Taskmaverick is an Automated Business Manager. It guides every person on a tablet, phone, or the web, in their own language, so the right work gets done on time, measured, and recognized, without anyone having to micromanage. From a single café to a hospital running a hundred teams, it brings structure, accountability, and continuous training to the frontline.'
+              )}
             </p>
           </div>
 
@@ -107,8 +111,8 @@ export default function About() {
                 <span className="lp-ficon">
                   <Icon name={p.icon} size={22} />
                 </span>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
+                <h3>{t(p.title)}</h3>
+                <p>{t(p.text)}</p>
               </div>
             ))}
           </div>
@@ -118,18 +122,19 @@ export default function About() {
       <section className="lp-section alt" id="why">
         <div className="lp-container">
           <div className="lp-head">
-            <span className="lp-kicker">Why Taskmaverick</span>
-            <h2 className="lp-h2">Everything your team needs to perform, in one place.</h2>
+            <span className="lp-kicker">{t('Why Taskmaverick')}</span>
+            <h2 className="lp-h2">{t('Everything your team needs to perform, in one place.')}</h2>
             <p className="lp-lead">
-              Every capability pulls in the same direction, helping your people do their best
-              work and giving you the visibility to prove it.
+              {t(
+                'Every capability pulls in the same direction, helping your people do their best work and giving you the visibility to prove it.'
+              )}
             </p>
           </div>
           <ul className="lp-checks">
             {REASONS.map((r) => (
               <li key={r}>
                 <Icon name="check" size={19} />
-                <span>{r}</span>
+                <span>{t(r)}</span>
               </li>
             ))}
           </ul>

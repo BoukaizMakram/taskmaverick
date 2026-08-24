@@ -120,26 +120,22 @@ code {
   margin-left: 14px;
 }
 
-/* "All industries" back button — sits in the brand's slot on the industry reel
-   and matches the Book Demo button (.btn-demo): blue fill, leading arrow. */
+/* Back link on the industry reel — sits in the brand's slot as plain blue text
+   with a leading back arrow (shows the industry name). */
 .nav-back {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   height: 40px;
-  padding: 0 20px;
-  border-radius: 8px;
-  background: var(--blue);
-  color: #fff;
+  color: var(--blue);
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   text-decoration: none;
-  transition: background 0.18s ease;
+  transition: color 0.18s ease;
 }
 .nav-back:hover {
-  background: var(--blue-dark);
-  color: #fff;
+  color: var(--blue-dark);
 }
 .nav-back svg {
   display: block;
@@ -576,7 +572,7 @@ code {
 .stage-badge-text {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 1px;
   line-height: 1.25;
   min-width: 0;
 }
@@ -1020,17 +1016,23 @@ html.cover-mask .cover-play:hover {
 .corner-play svg {
   display: block;
   margin-left: 2px;
-  width: 15px;
-  height: 15px;
+  width: 19px;
+  height: 19px;
 }
 
 @media (max-width: 900px) {
   .corner-play {
-    height: 50px;
-    padding: 0 22px 0 18px;
+    /* Box shrunk ~30%; word size stays 18px. */
+    height: 35px;
+    padding: 0 15px 0 12px;
     font-size: 18px;
-    right: -6px;
-    bottom: -18px;
+    right: -4px;
+    bottom: -6px; /* moved up so it stops crowding the content below */
+  }
+  /* Shorter video on mobile frees vertical space so the badges + "Use Cases by
+     Industry" aren't cramped on the fixed-height reel page. */
+  .reel-media > .video-frame {
+    aspect-ratio: 2 / 1;
   }
 }
 

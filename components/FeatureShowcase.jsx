@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 
 import WorkGetsDoneScene from '@/components/scenes/WorkGetsDoneScene';
 import TrainScene from '@/components/scenes/TrainScene';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 const DEFAULT_DURATION = 5000;
 
@@ -47,6 +48,7 @@ const FEATURES = [
 ];
 
 export default function FeatureShowcase() {
+  const t = useT();
   const [active, setActive] = useState(0);
 
   const feature = FEATURES[active];
@@ -77,10 +79,10 @@ export default function FeatureShowcase() {
                 </div>
                 <div className="fs-screen">
                   {feature.image ? (
-                    <img className="fs-shot" src={feature.image} alt={feature.title} />
+                    <img className="fs-shot" src={feature.image} alt={t(feature.title)} />
                   ) : (
                     <div className="fs-placeholder">
-                      <p className="fs-placeholder-tagline">{feature.tagline}</p>
+                      <p className="fs-placeholder-tagline">{t(feature.tagline)}</p>
                     </div>
                   )}
                 </div>
@@ -106,10 +108,10 @@ export default function FeatureShowcase() {
                     ) : null}
                   </span>
                   <span className="fs-bullet" aria-hidden="true" />
-                  <span className="fs-item-title">{f.title}</span>
-                  <span className="fs-item-lead">{f.lead}</span>
-                  <span className="fs-item-body">{f.body}</span>
-                  <span className="fs-learn">Learn more →</span>
+                  <span className="fs-item-title">{t(f.title)}</span>
+                  <span className="fs-item-lead">{t(f.lead)}</span>
+                  <span className="fs-item-body">{t(f.body)}</span>
+                  <span className="fs-learn">{t('Learn more →')}</span>
                 </button>
               );
             })}

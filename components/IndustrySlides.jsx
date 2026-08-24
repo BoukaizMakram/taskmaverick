@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Navbar from '@/components/Navbar';
+import { useT } from '@/lib/i18n/LanguageProvider';
 
 // Up to this many ideas per page — fewer when their combined text is long.
 const MAX_IDEAS_PER_PAGE = 4;
@@ -112,6 +113,7 @@ function SlideMedia({ media, playing }) {
 // The nav dropdown (navbar on desktop, pinned selector on mobile) lists every
 // page, labelled "Section-<first idea>".
 export default function IndustrySlides({ industry }) {
+  const t = useT();
   const { pages } = useMemo(() => buildDeck(industry), [industry]);
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -119,8 +121,12 @@ export default function IndustrySlides({ industry }) {
   const pad = (n) => String(n).padStart(2, '0');
 
   const pageChapters = useMemo(
-    () => pages.map((p, i) => ({ id: i, title: `${p.sectionName}-${p.ideas[0]?.title || ''}` })),
-    [pages]
+    () =>
+      pages.map((p, i) => ({
+        id: i,
+        title: `${t(p.sectionName)}-${t(p.ideas[0]?.title || '')}`,
+      })),
+    [pages, t]
   );
   const activeTitle = pageChapters[active]?.title || '';
 
@@ -158,7 +164,7 @@ export default function IndustrySlides({ industry }) {
         chapters={pageChapters}
         activeId={active}
         onSelect={goTo}
-        backTo={{ href: '/industries', label: 'All industries' }}
+        backTo={{ href: '/#use-cases', label: industry.name }}
       />
 
       {/* Mobile-only pinned selector, mirroring the landing reel's selector.
@@ -204,7 +210,7 @@ export default function IndustrySlides({ industry }) {
             className="ch-menu-item ch-menu-item--featured"
             onClick={() => setMenuOpen(false)}
           >
-            <span className="ch-menu-title">All industries</span>
+            <span className="ch-menu-title">{t('All industries')}</span>
             <svg className="ch-menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -259,10 +265,10 @@ export default function IndustrySlides({ industry }) {
               {page.ideas.length > 0 && (
                 <div className="ireel-ideas">
                   {page.ideas.map((idea, k) => {
-                    const paragraphs = cleanParagraphs(idea.text);
+                    const paragraphs = cleanParagraphs(t(idea.text));
                     return (
                       <div className="ireel-idea" key={k}>
-                        {idea.title && <h2 className="ireel-idea-title">{idea.title}</h2>}
+                        {idea.title && <h2 className="ireel-idea-title">{t(idea.title)}</h2>}
                         {paragraphs.map((p, j) => (
                           <p key={j} className="ireel-idea-text">
                             {p}
