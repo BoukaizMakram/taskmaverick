@@ -123,6 +123,7 @@ export default function PostedMissionsScene({ poster }) {
   const tl = useRef(null);
   const [paused, setPaused] = useState(true);
   const [started, setStarted] = useState(false); // hide the poster after first play
+  const [ended, setEnded] = useState(false); // show the replay overlay after it finishes
   const [full, setFull] = useState(false);
   const [controlsShown, setControlsShown] = useState(true);
   const hideTimer = useRef(null);
@@ -178,6 +179,7 @@ export default function PostedMissionsScene({ poster }) {
         if (bar.current) gsap.set(bar.current, { scaleX: 0 });
         setPaused(true);
         setStarted(false);
+        setEnded(false);
         setControlsShown(true);
       },
       { threshold: 0.5 }
@@ -231,8 +233,9 @@ export default function PostedMissionsScene({ poster }) {
       gsap.set(phone, { x: 0, scale: 1, height: trimH });
       gsap.set(bar.current, { scaleX: 0 });
 
-      // Start paused — the scene waits on the viewer's play button, like a video.
-      const t = gsap.timeline({ repeat: -1, repeatDelay: 0.6, paused: true });
+      // Start paused — the scene waits on the viewer's play button, like a
+      // video. Plays once (no loop); onComplete shows the replay overlay.
+      const t = gsap.timeline({ paused: true, onComplete: () => setEnded(true) });
       tl.current = t;
       t.eventCallback('onUpdate', () => { if (bar.current) gsap.set(bar.current, { scaleX: t.progress() }); });
 
@@ -318,6 +321,17 @@ export default function PostedMissionsScene({ poster }) {
     }
   };
 
+  // Replay from the top (from the end/replay overlay).
+  const replay = () => {
+    const t = tl.current;
+    if (!t) return;
+    setEnded(false);
+    setStarted(true);
+    setPaused(false);
+    t.play(0);
+    armHide();
+  };
+
   const seekTo = (clientX) => {
     const el = track.current;
     const t = tl.current;
@@ -399,7 +413,7 @@ export default function PostedMissionsScene({ poster }) {
       </div>
 
       {/* live playback controls (drive the GSAP timeline — not baked) */}
-      <div className={`scene-controls${started && controlsShown ? '' : ' is-hidden'}`}>
+      <div className={`scene-controls${started && controlsShown && !ended ? '' : ' is-hidden'}`}>
         <button
           type="button"
           className="scene-play"
@@ -428,6 +442,20 @@ export default function PostedMissionsScene({ poster }) {
           )}
         </button>
       </div>
+
+      {/* End state — no loop; replay button over the faded cover. */}
+      {ended && (
+        <div className="scene-ended">
+          {poster && <img className="scene-ended-cover" src={poster} alt="" />}
+          <button type="button" className="scene-replay" onClick={replay}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M1 4v6h6" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            Replay
+          </button>
+        </div>
+      )}
     </div>
   );
 }
