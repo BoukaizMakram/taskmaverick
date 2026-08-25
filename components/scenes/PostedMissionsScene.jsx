@@ -375,7 +375,7 @@ export default function PostedMissionsScene({ poster }) {
       </div>
 
       {/* live playback controls (drive the GSAP timeline — not baked) */}
-      <div className={`scene-controls${controlsShown ? '' : ' is-hidden'}`}>
+      <div className={`scene-controls${started && controlsShown ? '' : ' is-hidden'}`}>
         <button
           type="button"
           className="scene-play"
