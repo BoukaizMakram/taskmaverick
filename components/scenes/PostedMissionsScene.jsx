@@ -163,8 +163,8 @@ export default function PostedMissionsScene({ poster }) {
     };
   }, []);
 
-  // Scrolled out of view -> stop and reset to the poster, so coming back you
-  // play it again from the top.
+  // Scrolled out of view -> just pause where it is (don't reset). Coming back,
+  // it stays paused at the same spot and you resume.
   useEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -172,15 +172,11 @@ export default function PostedMissionsScene({ poster }) {
       ([e]) => {
         if (e.isIntersecting) return;
         const t = tl.current;
-        if (t) {
+        if (t && !t.paused()) {
           t.pause();
-          t.progress(0);
+          setPaused(true);
+          setControlsShown(true);
         }
-        if (bar.current) gsap.set(bar.current, { scaleX: 0 });
-        setPaused(true);
-        setStarted(false);
-        setEnded(false);
-        setControlsShown(true);
       },
       { threshold: 0.5 }
     );
