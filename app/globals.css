@@ -3514,6 +3514,17 @@ html.cover-mask .cover-play:hover {
   font-family: var(--font-montserrat), system-ui, sans-serif;
 }
 
+/* Cover image shown over the scene until the viewer hits play. */
+.scene-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 6;
+  background: #000;
+}
+
 /* moving small dots background (seamless: layers translate by exactly one tile) */
 .dots-bg { position: absolute; inset: 0; overflow: hidden; background: #05070e; }
 .dots-bg i {
@@ -5286,6 +5297,11 @@ html:has(.ireel) {
    current two-letter code; opens a small menu of the three languages. ---- */
 .lang-switch {
   position: relative;
+  /* Hidden by default; revealed with the Ctrl+Alt+1 shortcut, which toggles
+     `.show-lang` on <html> (see LanguageProvider). */
+  display: none;
+}
+html.show-lang .lang-switch {
   display: inline-flex;
 }
 .lang-switch-btn {

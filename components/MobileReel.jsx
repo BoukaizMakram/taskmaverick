@@ -21,6 +21,10 @@ const SCENES = {
 };
 
 function ChapterMedia({ chapter, src, poster }) {
+  // A coded scene wins; the cover image is its poster (shown until you hit play).
+  const Scene = chapter.scene ? SCENES[chapter.scene] : null;
+  if (Scene) return <Scene poster={chapter.cover} />;
+
   if (chapter.cover) {
     return (
       <CoverPlayer
@@ -31,9 +35,6 @@ function ChapterMedia({ chapter, src, poster }) {
       />
     );
   }
-
-  const Scene = chapter.scene ? SCENES[chapter.scene] : null;
-  if (Scene) return <Scene />;
 
   const s = chapter.src || src;
   if (s) {

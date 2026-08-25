@@ -112,7 +112,7 @@ function ChecklistCallout() {
   );
 }
 
-export default function PostedMissionsScene() {
+export default function PostedMissionsScene({ poster }) {
   const root = useRef(null);
   const caption = useRef(null);
   const cardRefs = useRef([]);
@@ -122,6 +122,7 @@ export default function PostedMissionsScene() {
   const track = useRef(null);
   const tl = useRef(null);
   const [paused, setPaused] = useState(true);
+  const [started, setStarted] = useState(false); // hide the poster after first play
   const [full, setFull] = useState(false);
   const [controlsShown, setControlsShown] = useState(true);
   const hideTimer = useRef(null);
@@ -283,6 +284,7 @@ export default function PostedMissionsScene() {
     if (t.paused()) {
       t.play();
       setPaused(false);
+      setStarted(true);
       armHide();
     } else {
       t.pause();
@@ -365,6 +367,11 @@ export default function PostedMissionsScene() {
         <div className="scene-hand" ref={hand} aria-hidden="true"><SceneCursor /></div>
 
         <p className="lower-third" ref={caption}>Missions are posted exactly when due</p>
+
+        {/* Cover image shown over the scene until the viewer hits play. Clicking
+            it bubbles to the .scene onClick (togglePlay), which starts the
+            animation and hides this. */}
+        {poster && !started && <img className="scene-poster" src={poster} alt="" />}
       </div>
 
       {/* live playback controls (drive the GSAP timeline — not baked) */}
