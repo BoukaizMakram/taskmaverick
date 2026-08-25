@@ -3524,6 +3524,10 @@ html.cover-mask .cover-play:hover {
   z-index: 6;
   background: #000;
 }
+/* Once the scene has started it has its own controls, so drop the corner Play. */
+.video-frame-wrap:has(.scene-fit.is-started) .corner-play {
+  display: none;
+}
 
 /* moving small dots background (seamless: layers translate by exactly one tile) */
 .dots-bg { position: absolute; inset: 0; overflow: hidden; background: #05070e; }

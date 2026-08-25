@@ -162,6 +162,30 @@ export default function PostedMissionsScene({ poster }) {
     };
   }, []);
 
+  // Scrolled out of view -> stop and reset to the poster, so coming back you
+  // play it again from the top.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) return;
+        const t = tl.current;
+        if (t) {
+          t.pause();
+          t.progress(0);
+        }
+        if (bar.current) gsap.set(bar.current, { scaleX: 0 });
+        setPaused(true);
+        setStarted(false);
+        setControlsShown(true);
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useGSAP(
     () => {
       const cards = cardRefs.current.filter(Boolean);
@@ -324,7 +348,7 @@ export default function PostedMissionsScene({ poster }) {
 
   return (
     <div
-      className={`scene-fit${full ? ' is-full' : ''}`}
+      className={`scene-fit${full ? ' is-full' : ''}${started ? ' is-started' : ''}`}
       ref={root}
       onPointerMove={showControls}
       onPointerDown={showControls}
