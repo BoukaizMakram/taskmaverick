@@ -3614,6 +3614,88 @@ html.cover-mask .cover-play:hover {
 /* the board layer and the opened-mission overlay live in the same .ph-screen */
 .ph-board { position: relative; z-index: 1; }
 .ph-overlay { position: absolute; inset: 0; z-index: 2; }
+/* the media content viewer (video player) opens above the mission detail */
+.ph-overlay--viewer { z-index: 3; }
+
+/* ============================================================
+   Media content viewer (video player) — full-screen takeover inside the phone.
+   Prefix: .mv-*. Reuses .ph-status for the status bar.
+   ============================================================ */
+.mv {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  color: var(--ink, #111);
+}
+.mv-status-sp { width: 60px; }
+.mv-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px 8px;
+}
+.mv-hbtn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #e6e8eb;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+}
+.mv-hbtn svg { width: 20px; height: 20px; display: block; }
+.mv-header-title { flex: 1; text-align: center; font-weight: 700; font-size: 20px; }
+.mv-hspacer { flex: none; width: 34px; }
+
+.mv-pager {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 10px 16px 8px;
+}
+.mv-idx { display: block; font-size: 13px; font-weight: 600; color: #9aa0a6; line-height: 1.2; }
+.mv-kind { display: block; font-size: 18px; font-weight: 700; }
+.mv-pager-nav { display: flex; gap: 16px; }
+.mv-navbtn { border: 0; background: transparent; padding: 2px; cursor: pointer; }
+.mv-navbtn svg { display: block; }
+
+.mv-stage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #fff;
+}
+.mv-video { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+
+.mv-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 24px;
+}
+.mv-play { flex: none; border: 0; background: transparent; padding: 2px; cursor: pointer; }
+.mv-play svg { display: block; }
+.mv-track { position: relative; flex: 1; height: 4px; border-radius: 2px; background: #d7dbe0; }
+.mv-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 2px; background: #1271b7; }
+.mv-knob {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #1271b7;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.mv-time { flex: none; font-size: 15px; font-weight: 600; color: #444; }
 
 /* a scene filling a 16:9 preview (feature showcase) */
 .fs-scene {
@@ -3679,6 +3761,46 @@ html.cover-mask .cover-play:hover {
 
 /* Lower-third caption — REUSABLE RULE: Inter Medium, centered, lower third.
    Used for narration text under any scene. */
+/* On-screen intro title + tagline (animated in code, not a caption). Two verses
+   share the same centered slot; each line animates in/out as a whole unit. */
+.scene-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  /* Both verses live in one centered column; the gap is the space between them. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 46px;
+  padding: 0 6%;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  color: #fff;
+  text-align: center;
+}
+.scene-intro-verse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.scene-intro-line {
+  display: block;
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  will-change: transform, opacity;
+}
+.scene-intro-brand {
+  font-size: 66px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
 .lower-third {
   position: absolute;
   left: 0;
@@ -3696,14 +3818,56 @@ html.cover-mask .cover-play:hover {
 }
 
 /* ---- scene: checklist that comes out of the phone (real .om-* UI) ---- */
-.scene-callout { position: absolute; right: 5%; top: 14%; width: 372px; z-index: 4; }
-.scene-callout .scene-callout-chip { box-shadow: 0 0 0 2.5px #7c3aed, 0 16px 34px rgba(0, 0, 0, 0.35); }
-.scene-callout-list { margin-top: 8px; padding: 14px; background: #f5f6f2; border-radius: 16px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); }
-.scene-callout .scene-hl-item .om-num { box-shadow: 0 0 0 2.5px #7c3aed; border-radius: 8px; }
+/* Checklist that slides in UNDER the Inventory Check card. Left/top/width are set
+   in JS to sit centered beneath that card; the phone rises to make room. */
+.scene-callout { position: absolute; top: 40%; width: 360px; z-index: 4; }
+.scene-callout-list { padding: 14px; background: #f5f6f2; border-radius: 16px; box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35); }
 
 
 /* hand cursor + progress timeline */
 .scene-hand { position: absolute; top: 0; left: 0; z-index: 6; will-change: transform; }
+
+/* YouTube-style subtitles — overlaid on the scene, timed to the animation.
+   Sits in .scene-fit (unscaled) above the control bar, centered near the bottom. */
+.scene-subtitle {
+  position: absolute;
+  left: 50%;
+  bottom: 74px;
+  max-width: 82%;
+  margin: 0;
+  padding: 5px 14px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 2.1cqw, 24px);
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  z-index: 7;
+  /* draggable */
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  /* hidden resting state: nudged down + faded; slides up when its cue is active */
+  opacity: 0;
+  transform: translate(-50%, 14px);
+  transition: opacity 0.3s ease, transform 0.3s ease, bottom 0.3s ease;
+}
+.scene-subtitle.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+/* When the control bar (timeline) fades away, the caption drops down to take its
+   place — like YouTube. Only applies at the default position (a dragged caption
+   sets an inline bottom:auto, which wins). */
+.scene-subtitle.is-low { bottom: 20px; }
+.scene-subtitle:active { cursor: grabbing; }
+/* CC toggle in the control bar (shown only with a voice-over) */
+.scene-cc-btn { width: 42px; border-radius: 8px; }
+.scene-cc-btn.is-active { background: var(--blue); }
+.scene-cc-btn.is-active:hover { background: var(--blue); }
 /* Live playback controls (rendered in .scene-fit so they don't scale with the scene) */
 .scene-controls {
   position: absolute;
@@ -4817,10 +4981,35 @@ html:has(.ireel) {
   font-size: 16px;
   color: var(--ink);
 }
-.itoc-slides { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.itoc-slide { display: flex; flex-direction: column; gap: 2px; }
+/* right-side items styled as a table of contents: numbered entries, one-line
+   descriptions, dotted separators */
+.itoc-slides { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; counter-reset: none; }
+.itoc-slide {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 0;
+}
+.itoc-slide + .itoc-slide { border-top: 1px dashed #e9edf1; }
+.itoc-slide-num {
+  flex: none;
+  min-width: 22px;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+.itoc-slide-main { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .itoc-slide-title { font-weight: 600; font-size: 14px; color: var(--ink); }
-.itoc-slide-text { font-size: 13px; line-height: 1.45; color: var(--ink-soft); }
+.itoc-slide-text {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* --- responsive --- */
 @media (max-width: 900px) {
@@ -5472,3 +5661,665 @@ html[dir="rtl"] .chapter-index,
 html[dir="rtl"] .itoc-nav-count {
   direction: ltr;
 }
+
+/* ======================================================================
+   Overview / Running board (components/OverviewBoard.jsx, preview /overview)
+   HTML/CSS recreation of Figma Frame 47185. Fixed 900x762 coordinate space
+   (.ov-card) scaled to its container (.ov-fit). Blue tab/header accent and the
+   light-gray grid follow the Figma; the timer pills use OUR tokens + the
+   mission-chip pill shape (green #007A33, orange #ed7f04, red #bd1f59,
+   gray #686f76 for Duration).
+   Column widths mirror the design: 21.4 / 22.2 / 19.3 / 17.2 / 19.9.
+   ====================================================================== */
+.ov-fit {
+  container-type: inline-size;
+  width: min(900px, 100%);
+  margin: 0 auto;
+  aspect-ratio: 900 / 762;
+}
+.ov-fit,
+.ov-fit * {
+  box-sizing: border-box;
+}
+.ov-card {
+  width: 900px;
+  height: 762px;
+  background: #fff;
+  border: 1.6px solid #d3d3d3;
+  border-radius: 30px;
+  overflow: hidden;
+  transform-origin: top left;
+  transform: scale(calc(100cqw / 900px));
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 500;
+  color: #111;
+}
+
+/* top band: logo (left) + date range (right) */
+.ov-top {
+  height: 96px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ov-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+.ov-daterange {
+  border: 1.5px solid #7b7b7b;
+  border-radius: 8px;
+  padding: 11px 20px;
+  font-size: 22px;
+  line-height: 1;
+  color: #111;
+}
+
+/* table */
+.ov-table {
+  display: flex;
+  flex-direction: column;
+}
+.ov-head,
+.ov-row {
+  display: grid;
+  grid-template-columns: 19fr 21fr 20fr 20fr 20fr;
+  height: 74px;
+}
+.ov-head {
+  position: relative;
+  border-bottom: 3px solid #3ba2d1;
+}
+/* short blue active-tab accent along the top-left of the header */
+.ov-tabline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 43.6%;
+  height: 3px;
+  background: #3ba2d1;
+}
+.ov-row {
+  border-top: 1.4px solid #e6e6e6;
+}
+
+.ov-cell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+/* vertical grid lines between columns (cols 2-5) */
+.ov-cell:not(:first-child) {
+  border-left: 1.4px solid #e6e6e6;
+}
+.ov-cell--head {
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 20px;
+}
+.ov-cell--text {
+  padding: 0 20px;
+  font-size: 22px;
+  font-weight: 400;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ov-cell--pill {
+  justify-content: center;
+  padding: 0 6px;
+}
+.ov-h-label {
+  font-size: 23px;
+  font-weight: 500;
+  color: #111;
+  white-space: nowrap;
+}
+.ov-menu {
+  flex: none;
+  width: 4px;
+  height: 18px;
+  fill: #7b7b7b;
+}
+
+/* timer pill — mission-chip shape (.chip-pill), our tokens */
+.ov-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 130px;
+  height: 40px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  /* fixed width + tabular digits: the pill never resizes and the text never
+     shifts as the timer ticks */
+  font-variant-numeric: tabular-nums;
+}
+.ov-pill--green { background: #007a33; }
+.ov-pill--orange { background: #bd4b00; }
+.ov-pill--red { background: #bd1f59; }
+.ov-pill--gray { background: #6a6a6a; }
+
+/* ---- Overview board: highlight, inline edit, control lab ---------------- */
+
+/* ZOOM: the stage carries the camera transform; it eases both ways and glides
+   between targets. transform-origin 0 0 so the translate math is exact. */
+.ov-stage {
+  transform-origin: 0 0;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+/* drag-to-pan affordance while zoomed */
+.ov-card.is-pannable {
+  cursor: grab;
+}
+.ov-card.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* DIM: a single spotlight overlay — one dark layer above ALL content (grid
+   lines included), with a transparent hole punched out over the target via a
+   huge box-shadow (clipped by the card's overflow). The hole stays mounted, so
+   switching targets glides the spotlight smoothly. */
+.ov-dim-hole {
+  position: absolute;
+  z-index: 5;
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: left 0.4s ease, top 0.4s ease, width 0.4s ease, height 0.4s ease;
+  animation: ov-fade-in 0.4s ease;
+}
+@keyframes ov-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* POP: one unified tile lifts the whole target (column/row/cell). It sits just
+   behind the content (negative z within the card), so a soft shadow rings the
+   target and it reads as raised. The tile stays mounted, so switching targets
+   glides between positions. */
+.ov-pop-tile {
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+  transition: left 0.4s ease, top 0.4s ease, width 0.4s ease, height 0.4s ease;
+  animation: ov-pop-in 0.35s ease;
+}
+
+@keyframes ov-pop-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* editable affordance + inline input */
+.ov-editable {
+  cursor: text;
+  border-radius: 5px;
+  transition: background-color 0.15s ease;
+}
+.ov-editable:hover {
+  background: rgba(18, 113, 183, 0.1);
+  box-shadow: 0 0 0 2px rgba(18, 113, 183, 0.1);
+}
+.ov-pill-txt {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.ov-input {
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  color: inherit;
+  letter-spacing: inherit;
+  background: rgba(18, 113, 183, 0.1);
+  border: 1.5px solid #1271b7;
+  border-radius: 6px;
+  padding: 0 4px;
+  margin: 0;
+  outline: none;
+  min-width: 40px;
+  max-width: 100%;
+}
+.ov-pill-input {
+  width: 100%;
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+}
+/* white tint (not blue) when hovering an editable timer inside a colored pill */
+.ov-pill .ov-editable:hover {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+}
+
+/* control lab under the board */
+.ov-lab {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+}
+.ov-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #e3e7ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+.ov-ctrl-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ov-ctrl-label {
+  min-width: 80px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+.ov-ctrl-hint {
+  font-size: 13px;
+  color: #9aa1a9;
+  font-style: italic;
+}
+.ov-btn {
+  border: 1px solid #d3d8de;
+  background: #f7f8fa;
+  color: #111;
+  border-radius: 9px;
+  padding: 7px 13px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.08s ease;
+}
+.ov-btn:hover:not(:disabled) {
+  background: #eef1f5;
+}
+.ov-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.ov-btn.is-on {
+  background: #1271b7;
+  border-color: #1271b7;
+  color: #fff;
+}
+.ov-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.ov-btn--icon {
+  min-width: 40px;
+  padding: 7px 12px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* ======================================================================
+   Running board (components/RunningBoard.jsx, preview /running)
+   Recreation of Figma "2048w default" (Frame 1 - video 61): the Taskmaverick
+   web app on Team Board · Running (Overview). Fixed 1848×879 window scaled to
+   its container (.rb-fit). Timer pills use the /overview font (Poppins Medium).
+   ====================================================================== */
+.rb-fit {
+  container-type: inline-size;
+  width: min(1848px, 100%);
+  margin: 0 auto;
+  aspect-ratio: 1848 / 879;
+}
+.rb-fit,
+.rb-fit * {
+  box-sizing: border-box;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+.rb-win {
+  width: 1848px;
+  height: 879px;
+  transform-origin: top left;
+  transform: scale(calc(100cqw / 1848px));
+  background: #fff;
+  border: 1px solid #e4e8ee;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #1f2733;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- top nav ---- */
+.rb-nav {
+  flex: none;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 18px;
+  border-bottom: 1px solid #e9ecf1;
+}
+.rb-brand { display: flex; align-items: center; gap: 8px; flex: none; }
+.rb-logo { width: 22px; height: 22px; object-fit: contain; }
+.rb-brand-name { font-weight: 700; font-size: 16px; color: #14181e; letter-spacing: -0.2px; }
+.rb-nav-menu { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 0; }
+.rb-nav-item { font-size: 13.5px; color: #3b4552; white-space: nowrap; }
+.rb-nav-item--active {
+  border: 1.4px solid #1271b7;
+  color: #1271b7;
+  border-radius: 6px;
+  padding: 4px 11px;
+  font-weight: 600;
+}
+.rb-nav-right { display: flex; align-items: center; gap: 14px; flex: none; }
+.rb-icon { width: 19px; height: 19px; color: #5b6472; }
+.rb-avatar {
+  width: 27px; height: 27px; border-radius: 50%;
+  background: #384250; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+}
+
+/* ---- sub-nav ---- */
+.rb-subnav {
+  flex: none;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #e9ecf1;
+}
+.rb-tabs { display: flex; align-items: center; gap: 22px; height: 100%; }
+.rb-tab {
+  display: inline-flex; align-items: center; height: 100%;
+  font-size: 13.5px; color: #4b5563; white-space: nowrap;
+  border-bottom: 2.4px solid transparent;
+}
+.rb-tab.is-active { color: #1271b7; font-weight: 600; border-bottom-color: #1271b7; }
+.rb-views { display: flex; align-items: center; gap: 16px; }
+.rb-view { font-size: 13px; color: #6b7280; white-space: nowrap; }
+.rb-view.is-active {
+  color: #1271b7; font-weight: 600;
+  border: 1.4px solid #1271b7; border-radius: 6px; padding: 3px 12px;
+}
+
+/* ---- toolbar ---- */
+.rb-toolbar {
+  flex: none;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 18px;
+  border-bottom: 1px solid #eef1f5;
+}
+.rb-tool {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12.5px; color: #4b5563; white-space: nowrap;
+}
+.rb-tool-ic { display: inline-flex; }
+.rb-tool-ic svg { width: 15px; height: 15px; }
+.rb-tool--primary { color: #1271b7; font-weight: 600; }
+.rb-tool--check { gap: 7px; }
+.rb-check--sq { width: 13px; height: 13px; border-radius: 3px; border: 1.5px solid #b6bdc7; background: #fff; }
+.rb-tool .rb-chev { width: 11px; height: 11px; }
+
+/* ---- table ---- */
+.rb-table { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.rb-row {
+  display: grid;
+  grid-template-columns: 451px 143px 190px 172px 131px 121px 129px 130px 165px 216px;
+  align-items: center;
+}
+.rb-head {
+  flex: none;
+  height: 36px;
+  border-bottom: 2px solid #1271b7;
+}
+.rb-cell {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 0;
+  padding: 0 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.rb-cell:not(:first-child) { border-left: 1px solid #eef1f5; }
+.rb-cell--head { justify-content: space-between; gap: 6px; }
+.rb-cell--center { justify-content: center; }
+.rb-cell--muted { color: #5b6472; text-overflow: ellipsis; }
+.rb-h-label { font-weight: 600; font-size: 13px; color: #2b3440; display: inline-flex; align-items: center; gap: 6px; }
+.rb-sort { color: #1271b7; font-size: 13px; font-weight: 700; }
+.rb-dots { width: 3px; height: 15px; fill: #9aa2ad; flex: none; }
+.rb-chev { width: 12px; height: 12px; color: #6b7280; flex: none; }
+
+.rb-body { flex: 1; overflow: hidden; }
+.rb-drow { height: 38px; border-bottom: 1px solid #f0f2f5; }
+.rb-drow.is-hl { background: #fbeecb; }
+
+/* name column: tree connector + number + name + (flag) + row menu */
+.rb-cell--name { gap: 7px; padding-left: 30px; position: relative; }
+.rb-tree {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  border-left: 1px solid #d7dce2;
+  flex: none;
+}
+.rb-tree::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 11px;
+  height: 1px;
+  background: #d7dce2;
+}
+.rb-num { color: #8a929c; font-size: 12.5px; flex: none; }
+.rb-name { color: #1f2733; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.rb-flag { width: 13px; height: 15px; flex: none; }
+.rb-cell--name .rb-dots { flex: none; }
+
+/* group rows */
+.rb-grp { height: 34px; background: #eef5fc; border-bottom: 1px solid #e2ebf5; }
+.rb-grp .rb-cell--name { gap: 8px; }
+.rb-toggle {
+  width: 17px; height: 17px; border-radius: 4px;
+  background: #1271b7; color: #fff; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.rb-toggle .rb-chev { width: 11px; height: 11px; color: #fff; }
+.rb-grp-label { font-weight: 600; color: #1f2733; font-size: 13px; }
+.rb-count { margin-left: auto; color: #6b7280; font-weight: 600; font-size: 12.5px; }
+.rb-sum { color: #c17d2e; font-weight: 600; font-size: 13px; }
+
+/* activity */
+.rb-activity { gap: 7px; }
+.rb-adot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.rb-adot--red { background: #bd1f59; }
+.rb-adot--green { background: #007a33; }
+.rb-adot--orange { background: #bd4b00; }
+.rb-adot--closed { background: transparent; border: 1.6px solid #b6bdc7; }
+.rb-astate { color: #1f2733; }
+.rb-astate--muted { color: #7b828c; }
+
+/* timer pills — same font as /overview (Poppins Medium) + same tokens.
+   Duration is outline while Open, filled gray once Closed. */
+.rb-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 92px; height: 27px; padding: 0 12px;
+  border-radius: 999px;
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 15.5px; font-weight: 500; color: #fff;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.rb-pill--green { background: #007a33; }
+.rb-pill--orange { background: #bd4b00; }
+.rb-pill--red { background: #bd1f59; }
+.rb-pill--gray { background: #6a6a6a; }
+.rb-pill--outline { background: #fff; color: #5b6472; border: 1.4px solid #cfd5dd; }
+
+/* ---- Running board: highlight / zoom animation layer ---------------- */
+.rb-stage {
+  transform-origin: 0 0;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+.rb-win.is-pannable { cursor: grab; }
+.rb-win.is-dragging { cursor: grabbing; user-select: none; }
+
+/* DIM: single spotlight overlay with a hole over the target */
+.rb-dim-hole {
+  position: absolute;
+  z-index: 5;
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: left 0.4s ease, top 0.4s ease, width 0.4s ease, height 0.4s ease;
+  animation: ov-fade-in 0.4s ease;
+}
+/* POP: one unified raised tile behind the target */
+.rb-pop-tile {
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  pointer-events: none;
+  transition: left 0.4s ease, top 0.4s ease, width 0.4s ease, height 0.4s ease;
+  animation: ov-pop-in 0.35s ease;
+}
+
+/* ---- Phone board: highlight / pop / zoom animation layer ------------- */
+.pb-viewport { position: relative; width: min(401px, 100%); margin: 0 auto; }
+.pb-viewport.is-clip { overflow: hidden; }
+.pb-stage {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+/* smooth pop of a chip */
+.pb-stage .chip { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.pb-pop {
+  position: relative;
+  z-index: 30;
+  transform: scale(1.06);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+/* dim spotlight: dark everywhere but a hole over the selected chip */
+.pb-dim {
+  position: absolute;
+  z-index: 40;
+  border-radius: 16px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: left 0.35s ease, top 0.35s ease, width 0.35s ease, height 0.35s ease;
+  animation: ov-fade-in 0.35s ease;
+}
+
+/* ---- Industry reel: persistent table of contents on the right ---------- */
+.isl-page { --ireel-toc-w: min(440px, 36vw); }
+/* make room for the right sidebar so it never overlaps the centered video */
+@media (min-width: 861px) {
+  .ireel-page { padding-right: calc(var(--ireel-toc-w, min(440px, 36vw)) + 24px); }
+}
+.ireel-toc {
+  position: fixed;
+  top: var(--nav-h);
+  bottom: 0;
+  right: 0;
+  width: var(--ireel-toc-w, min(440px, 36vw));
+  overflow-y: auto;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 10px 30px 32px;
+  background: #f2f5f9;
+  border-left: 1px solid #e4eaf1;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  scrollbar-width: thin;
+}
+.ireel-toc-group { display: flex; flex-direction: column; gap: 4px; }
+.ireel-toc-sec {
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.25;
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+.ireel-toc-sec:hover { color: var(--blue); }
+.ireel-toc-group.is-active .ireel-toc-sec { color: var(--blue); }
+.ireel-toc-items {
+  list-style: none;
+  margin: 2px 0 0 8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--divider);
+}
+.ireel-toc-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  padding: 4px 0 4px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500; /* Poppins Medium */
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.ireel-toc-item:hover { color: var(--blue); }
+.ireel-toc-item.is-active {
+  color: var(--blue);
+  font-weight: 600;
+  border-left-color: var(--blue);
+}
+/* hide only on small screens (mobile uses the pinned selector / dropdown) */
+@media (max-width: 860px) {
+  .ireel-toc { display: none; }
+}
+/* the right-rail TOC replaces the navbar chapter dropdown on this page */
+.isl-page .nav-chapters { display: none; }

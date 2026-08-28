@@ -9,9 +9,13 @@
 //   Act 2 — highlight the last mission (a Checklist); its Checklist comes out.
 //           "Audits are performed on time"
 //   Act 3 — highlight the Media mission above it; a hand cursor clicks it and we
-//           navigate into the real Media mission (video + 2 quizzes, Claim
-//           button). "Micro-trainings are automatically assigned"
-// A progress timeline runs along the bottom. Loops.
+//           navigate into the real Media mission ("Access Check": a training
+//           video + 2 quizzes). "Micro-trainings are automatically assigned"
+//   Act 4 — a hand taps the Training Video row; the media player (MediaViewer)
+//           takes over the phone and plays the training clip.
+// Narration rides on top as YouTube-style subtitles (SUBTITLES, driven by the
+// timeline clock) rather than baked-in captions. A progress timeline runs along
+// the bottom. Plays once, then offers Replay.
 // ---------------------------------------------------------------------------
 
 import { useEffect, useRef, useState } from 'react';
@@ -21,7 +25,24 @@ import { useGSAP } from '@gsap/react';
 import PhoneShell from '@/components/PhoneShell';
 import MissionChip from '@/components/MissionChip';
 import { OpenedMission } from '@/components/OpenedMission';
+import MediaViewer from '@/components/MediaViewer';
 import SceneCursor from '@/components/scenes/SceneCursor';
+import { useT } from '@/lib/i18n/LanguageProvider';
+
+// Narration is delivered as YouTube-style subtitles overlaid on the scene (see
+// SUBTITLES below), driven by the timeline clock — not baked into the animation.
+// The scene has no voice-over yet, so subtitles are always shown and cannot be
+// turned off; flip this to true once an audio track exists and a CC toggle
+// appears in the control bar.
+const HAS_VOICEOVER = false;
+
+// Subtitle cues, keyed to the timeline clock (seconds). Boundaries line up with
+// the three acts (see the timeline below).
+const SUBTITLES = [
+  { start: 0.4, end: 4.15, text: 'Missions are posted exactly when due' },
+  { start: 4.15, end: 9.2, text: 'Audits are performed on time' },
+  { start: 9.2, end: 16.8, text: 'Micro-trainings are automatically assigned' },
+];
 
 const fmt = (s) => {
   s = Math.max(0, Math.floor(s));
@@ -42,7 +63,7 @@ const TABS = [
 const MISSIONS = [
   { kind: 'Checklist', points: 15, title: 'Daily Log', date: '07-09-26', time: '04:07 PM', timer: 1330 },
   { kind: 'Checklist', points: 20, title: 'Opening Checklist', date: '07-09-26', time: '04:07 PM', timer: 900 },
-  { kind: 'Media', points: 50, title: 'Safety Training', date: '07-09-26', time: '04:07 PM', timer: 700 },
+  { kind: 'Media', points: 50, title: 'Access Check', date: '07-09-26', time: '04:07 PM', timer: 700 },
   { kind: 'Checklist', points: 10, title: 'Inventory Check', date: '07-09-26', time: '04:07 PM', timer: 460 },
 ];
 const MEDIA_I = 2;
@@ -53,7 +74,7 @@ const AUDIT_I = 3;
 const MEDIA_MISSION = {
   id: 'scene-media',
   type: 'Media',
-  title: 'Safety Training',
+  title: 'Access Check',
   points: 50,
   location: '',
   postedBy: 'Julian D',
@@ -63,7 +84,7 @@ const MEDIA_MISSION = {
   pillTime: '00:07:00',
   pillClass: 'chip--green',
   description: 'Watch the short training and answer the quizzes.',
-  notice: 'Complete before your next shift',
+  notice: 'Pay attention to the badge reader’s green and red indicators, then answer the questions that follow.',
   headerRight: 'es-menu',
   estimated: '05:00',
   initialState: 'open',
@@ -74,71 +95,89 @@ const MEDIA_MISSION = {
   ],
 };
 
-// Checklist that "comes out" of the phone — composed from the real .om-* UI.
+// The Inventory Check's checklist — real .om-* UI. Slides in directly UNDER the
+// Inventory Check card (the phone rises to make room), so no duplicate card here.
 function ChecklistCallout() {
   return (
-    <>
-      <MissionChip
-        className="scene-callout-chip"
-        kind="Checklist"
-        points={10}
-        title="Inventory Check"
-        who="Julian D"
-        date="07-09-26"
-        time="04:07 PM"
-        showExec
-        execTime="00:05:53"
-        pillTime="00:07:53"
-      />
-      <div className="scene-callout-list">
-        <div className="om-checklist">
-          <div className="om-grp om-grp--yellow">
-            <div className="om-item">
-              <span className="om-item-label"><b>1.</b> Item A</span>
-              <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">130</span></span>
-            </div>
-            <div className="om-item scene-hl-item">
-              <span className="om-item-label"><b>2.</b> Item B</span>
-              <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">5</span></span>
-            </div>
-            <div className="om-item">
-              <span className="om-item-label"><b>3.</b> Item C</span>
-              <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">110</span></span>
-            </div>
+    <div className="scene-callout-list">
+      <div className="om-checklist">
+        <div className="om-grp om-grp--yellow">
+          <div className="om-item">
+            <span className="om-item-label"><b>1.</b> Item A</span>
+            <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">130</span></span>
+          </div>
+          <div className="om-item">
+            <span className="om-item-label"><b>2.</b> Item B</span>
+            <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">5</span></span>
+          </div>
+          <div className="om-item">
+            <span className="om-item-label"><b>3.</b> Item C</span>
+            <span className="om-num om-num--yellow"><span className="om-num-hash">#</span><span className="om-num-val">110</span></span>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default function PostedMissionsScene({ poster }) {
+  const t = useT();
   const root = useRef(null);
-  const caption = useRef(null);
+  const cueIdx = useRef(-1);
   const cardRefs = useRef([]);
   const callout = useRef(null);
+  const intro = useRef(null);
   const hand = useRef(null);
   const bar = useRef(null);
   const track = useRef(null);
   const tl = useRef(null);
+  const sub = useRef(null);
   const [paused, setPaused] = useState(true);
   const [started, setStarted] = useState(false); // hide the poster after first play
   const [ended, setEnded] = useState(false); // show the replay overlay after it finishes
+  const [cueText, setCueText] = useState(''); // live cue from the timeline ('' between/around cues)
+  const [shownText, setShownText] = useState(''); // last non-empty line — kept during the exit fade
+  const [subPos, setSubPos] = useState(null); // user-dragged position {x: center, y: top}, or null = default
+  const [subtitlesOn, setSubtitlesOn] = useState(true); // CC toggle (only offered with a voice-over)
   const [full, setFull] = useState(false);
   const [controlsShown, setControlsShown] = useState(true);
   const hideTimer = useRef(null);
 
-  // Fullscreen: lock body scroll and allow Escape to exit.
+  // Keep the last line on screen while it fades out — the box only ever swaps to
+  // a new non-empty cue, so it never blanks mid-exit.
   useEffect(() => {
-    if (!full) return;
-    const onKey = (e) => e.key === 'Escape' && setFull(false);
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
+    if (cueText) setShownText(cueText);
+  }, [cueText]);
+
+  // Real fullscreen via the Fullscreen API (fills the actual screen, hides the
+  // browser chrome). We drive the request off the root element and mirror the
+  // browser's fullscreen status into `full` so the .is-full styling and the
+  // button icon follow it — including when the user exits with Escape.
+  const toggleFull = () => {
+    const el = root.current;
+    if (!el) return;
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fsEl) {
+      (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+    } else if (el.requestFullscreen || el.webkitRequestFullscreen) {
+      (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+    } else {
+      // No Fullscreen API (older iOS Safari) — fall back to the CSS overlay.
+      setFull((f) => !f);
+    }
+  };
+  useEffect(() => {
+    const onChange = () => {
+      const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+      setFull(Boolean(fsEl));
     };
-  }, [full]);
+    document.addEventListener('fullscreenchange', onChange);
+    document.addEventListener('webkitfullscreenchange', onChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onChange);
+      document.removeEventListener('webkitfullscreenchange', onChange);
+    };
+  }, []);
 
   // Auto-hide the controls after inactivity (only while playing) — like a video.
   const armHide = () => {
@@ -193,11 +232,15 @@ export default function PostedMissionsScene({ poster }) {
       const sceneEl = root.current.querySelector('.scene');
       const phone = root.current.querySelector('.scene-phone');
       const board = root.current.querySelector('.ph-board');
-      const overlay = root.current.querySelector('.ph-overlay');
+      const overlay = root.current.querySelector('.ph-overlay:not(.ph-overlay--viewer)');
+      const viewerLayer = root.current.querySelector('.ph-overlay--viewer');
 
       // Measure: trim the phone below the last card + record card centers (design px).
       let centers = [];
       let trimH = 620;
+      const ZOOM = 0.78; // Act 2/3 zoom-out (un-trimmed); same scale the media act uses
+      let mediaHit = null; // Media card center at that zoom (Act 3 hand target)
+      let videoHit = null; // Training Video row center at that zoom (Act 4 hand target)
       const FULL_H = 823; // full phone height in design px (390*838/401 + 8 pad)
       if (sceneEl && phone && cards.length) {
         const sr = sceneEl.getBoundingClientRect();
@@ -210,6 +253,42 @@ export default function PostedMissionsScene({ poster }) {
           const r = c.getBoundingClientRect();
           return { x: (r.left + r.width / 2 - sr.left) / sceneScale, y: (r.top + r.height / 2 - sr.top) / sceneScale };
         });
+
+        // In Act 2 the phone un-trims to full height and zooms out (scale ZOOM
+        // about its top), so the cards land smaller and higher — no header
+        // clipping, room below. Compute where the Inventory Check card's bottom
+        // lands at that zoom and sit the checklist just under it (matched width,
+        // also scaled ZOOM so it reads at the same size as the card). Precompute
+        // the Media card center at that zoom too, for the Act 3 hand tap.
+        const pr = phone.getBoundingClientRect();
+        const PCX = (pr.left + pr.width / 2 - sr.left) / sceneScale; // phone center X
+        const PT = (pr.top - sr.top) / sceneScale; // phone top Y (zoom origin)
+        // A design-space point mapped to where it lands once the phone zooms out.
+        const zoomPt = (x, y) => ({ x: PCX + (x - PCX) * ZOOM, y: PT + (y - PT) * ZOOM });
+
+        const auditCard = cards[AUDIT_I];
+        if (callout.current && auditCard) {
+          const acr = auditCard.getBoundingClientRect();
+          const auditBottom = (acr.bottom - sr.top) / sceneScale;
+          const cardW = acr.width / sceneScale;
+          const co = callout.current;
+          co.style.right = 'auto';
+          co.style.left = `${Math.round(PCX)}px`;
+          co.style.width = `${Math.round(cardW)}px`;
+          co.style.top = `${Math.round(PT + (auditBottom - PT) * ZOOM + 10)}px`;
+        }
+        if (centers[MEDIA_I]) mediaHit = zoomPt(centers[MEDIA_I].x, centers[MEDIA_I].y);
+
+        // The Training Video row inside the (rendered) detail overlay — used for
+        // the Act 4 tap that opens the player. Measured at scale 1, mapped to zoom.
+        const vrow = overlay ? overlay.querySelector('.om-mrow') : null;
+        if (vrow) {
+          const rr = vrow.getBoundingClientRect();
+          videoHit = zoomPt(
+            (rr.left + rr.width / 2 - sr.left) / sceneScale,
+            (rr.top + rr.height / 2 - sr.top) / sceneScale
+          );
+        }
       }
 
       // Shared elapsed clock -> every Open Timer ticks together, in real time.
@@ -218,29 +297,60 @@ export default function PostedMissionsScene({ poster }) {
 
       const glow = '0 0 0 3px rgba(124,58,237,0.6), 0 14px 30px rgba(124,58,237,0.28)';
       const flat = '0 1px 2.5px rgba(0,0,0,0.25)';
-      const SHIFT = -300;
+
+      // Intro line elements (each verse's lines animate as whole units).
+      const introEl = intro.current;
+      const v1 = introEl ? introEl.querySelectorAll('[data-v="1"] .scene-intro-line') : [];
+      const v2 = introEl ? introEl.querySelectorAll('[data-v="2"] .scene-intro-line') : [];
+      // Verse 1 starts centered on its own; when verse 2 appears the whole block
+      // rises so the pair is centered. That rise = half of (verse 2's height + the
+      // inter-verse gap). offsetHeight is design px (CSS transforms don't scale it).
+      const verse2El = introEl ? introEl.querySelector('[data-v="2"]') : null;
+      const INTRO_GAP = 46; // matches .scene-intro gap in globals.css
+      const INTRO_RISE = verse2El ? (verse2El.offsetHeight + INTRO_GAP) / 2 : 0;
 
       // Initial states.
       cards.forEach((card) => gsap.set(card, { autoAlpha: 0, y: 26, scale: 0.94 }));
-      gsap.set(caption.current, { autoAlpha: 0, y: 24 });
-      gsap.set(callout.current, { autoAlpha: 0, xPercent: 8, y: 14 });
+      // Callout is centered under the audit card (left set in JS), scaled to match
+      // the zoomed-out card, and rises into place. Origin top so its top stays put.
+      gsap.set(callout.current, { autoAlpha: 0, xPercent: -50, y: 22, scale: ZOOM, transformOrigin: '50% 0' });
       gsap.set(overlay, { autoAlpha: 0 });
+      gsap.set(viewerLayer, { autoAlpha: 0 });
       gsap.set(hand.current, { autoAlpha: 0, x: 300, y: 640 });
-      gsap.set(phone, { x: 0, scale: 1, height: trimH });
+      // Phone stays hidden behind the intro; it fades in as the intro leaves.
+      gsap.set(phone, { x: 0, y: 0, scale: 1, height: trimH, autoAlpha: 0 });
+      gsap.set(introEl, { autoAlpha: 1, y: INTRO_RISE });
+      gsap.set([...v1, ...v2], { autoAlpha: 0, y: 22 });
       gsap.set(bar.current, { scaleX: 0 });
 
       // Start paused — the scene waits on the viewer's play button, like a
       // video. Plays once (no loop); onComplete shows the replay overlay.
+      // The scene opens with an on-screen title/tagline intro; the mission board
+      // acts play after it. INTRO is that lead-in's length — every board beat
+      // (and the subtitle clock) is offset by it. SUBTITLES stay relative to the
+      // board start, so syncCue reads the clock minus INTRO.
+      const INTRO = 7.5;
+
+      // Keep the current subtitle line in sync with the timeline clock. Only
+      // touches React state when the cue actually changes (not every frame).
+      const syncCue = (time) => {
+        const rel = time - INTRO;
+        const idx = SUBTITLES.findIndex((c) => rel >= c.start && rel < c.end);
+        if (idx !== cueIdx.current) {
+          cueIdx.current = idx;
+          setCueText(idx === -1 ? '' : SUBTITLES[idx].text);
+        }
+      };
+
       const t = gsap.timeline({ paused: true, onComplete: () => setEnded(true) });
       tl.current = t;
-      t.eventCallback('onUpdate', () => { if (bar.current) gsap.set(bar.current, { scaleX: t.progress() }); });
+      t.eventCallback('onUpdate', () => {
+        if (bar.current) gsap.set(bar.current, { scaleX: t.progress() });
+        syncCue(t.time());
+      });
 
-      const setCap = (at, text) =>
-        t.to(caption.current, { autoAlpha: 0, y: -12, duration: 0.35, ease: 'power2.in' }, at)
-          .call(() => (caption.current.textContent = text), null, at + 0.36)
-          .to(caption.current, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, at + 0.38);
-
-      const END = 17.4;
+      const BOARD = 19.8; // board acts' own duration (clock starts at INTRO)
+      const END = INTRO + BOARD;
 
       // ---- reset ----
       t.call(() => {
@@ -249,54 +359,89 @@ export default function PostedMissionsScene({ poster }) {
           paint(q(card, '.chip-pill'), MISSIONS[i].timer);
         });
         elapsed.e = 0;
-        gsap.set(caption.current, { autoAlpha: 0, y: 24 });
-        gsap.set(callout.current, { autoAlpha: 0, xPercent: 8, y: 14 });
+        cueIdx.current = -1;
+        setCueText('');
+        gsap.set(callout.current, { autoAlpha: 0, xPercent: -50, y: 22, scale: ZOOM, transformOrigin: '50% 0' });
         gsap.set(overlay, { autoAlpha: 0 });
+        gsap.set(viewerLayer, { autoAlpha: 0 });
         gsap.set(board, { autoAlpha: 1 });
         gsap.set(hand.current, { autoAlpha: 0, x: 300, y: 640 });
-        gsap.set(phone, { x: 0, scale: 1, height: trimH, autoAlpha: 1 });
-        caption.current.textContent = 'Missions are posted exactly when due';
+        gsap.set(phone, { x: 0, y: 0, scale: 1, height: trimH, autoAlpha: 0 });
+        gsap.set(introEl, { autoAlpha: 1, y: INTRO_RISE });
+        gsap.set([...v1, ...v2], { autoAlpha: 0, y: 22 });
       }, null, 0);
 
-      t.to(elapsed, { e: END, duration: END, ease: 'none', onUpdate: tickAll }, 0);
+      // ===== INTRO — on-screen title + tagline (two verses, stacked) =====
+      // Verse 1 appears first: brand + "Automatically guides Teams / to take
+      // initiatives…". Verse 2's slot is reserved below (visibility only), so
+      // verse 1 sits in its final spot and nothing shifts when verse 2 arrives.
+      t.to(v1, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.28, ease: 'power2.out' }, 0.3);
+      // …then, after a beat, verse 2 fades in below it — both stay on screen — and
+      // the block rises so verse 1 moves up and the pair ends up centered.
+      t.to(introEl, { y: 0, duration: 0.7, ease: 'power3.out' }, 3.4);
+      t.to(v2, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.28, ease: 'power2.out' }, 3.4);
+      // The whole intro clears as the board comes in.
+      t.to(introEl, { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, INTRO - 0.5);
+      t.to(phone, { autoAlpha: 1, duration: 0.5, ease: 'power2.out' }, INTRO - 0.3);
+
+      // Board clock — Open Timers tick in real time once the board is shown.
+      t.to(elapsed, { e: BOARD, duration: BOARD, ease: 'none', onUpdate: tickAll }, INTRO);
 
       // ===== ACT 1 — posted =====
       cards.forEach((card, i) => {
-        t.to(card, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }, 0.4 + i * 0.26);
+        t.to(card, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.5)' }, INTRO + 0.4 + i * 0.26);
       });
-      t.to(caption.current, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' }, 1.7);
 
-      // ===== ACT 2 — checklist audit comes out =====
-      const A2 = 3.8;
-      t.to(phone, { x: SHIFT, duration: 0.9, ease: 'power3.inOut' }, A2);
-      t.to(cards[AUDIT_I], { boxShadow: glow, scale: 1.03, duration: 0.5, ease: 'power2.out' }, A2 + 0.5);
-      setCap(A2 + 0.35, 'Audits are performed on time');
-      t.to(callout.current, { autoAlpha: 1, xPercent: 0, y: 0, duration: 0.7, ease: 'power3.out' }, A2 + 0.7);
+      // ===== ACT 2 — phone un-trims & zooms out; the checklist slides in under it =====
+      // Instead of sliding the trimmed phone up (which clips its header), un-trim
+      // to the full device and zoom out about the top — the board shrinks, freeing
+      // room below for the Inventory Check's checklist to slide in under its card.
+      const A2 = INTRO + 3.8;
+      t.to(phone, { height: FULL_H, scale: ZOOM, duration: 0.9, ease: 'power3.inOut' }, A2);
+      t.to(cards[AUDIT_I], { boxShadow: glow, scale: 1.03, duration: 0.5, ease: 'power2.out' }, A2 + 0.6);
+      t.to(callout.current, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, A2 + 0.8);
 
       // ===== ACT 3 — click the Media mission, open the real detail =====
-      const A3 = 9.0;
-      t.to(callout.current, { autoAlpha: 0, xPercent: 8, y: 14, duration: 0.5, ease: 'power2.in' }, A3);
+      // The phone is already un-trimmed and zoomed out from Act 2, so we just tap
+      // the Media card (at its zoomed position) and cross-fade board -> detail.
+      const A3 = INTRO + 9.0;
+      t.to(callout.current, { autoAlpha: 0, y: 22, duration: 0.5, ease: 'power2.in' }, A3);
       t.to(cards[AUDIT_I], { boxShadow: flat, scale: 1, duration: 0.4 }, A3);
-      t.to(phone, { x: 0, duration: 0.8, ease: 'power3.inOut' }, A3);
-      setCap(A3 + 0.2, 'Micro-trainings are automatically assigned');
 
-      // hand cursor moves to the Media card and taps
+      // hand cursor moves to the Media card (zoomed position) and taps
       t.to(hand.current, { autoAlpha: 1, duration: 0.3 }, A3 + 0.8);
-      if (centers[MEDIA_I]) {
-        t.to(hand.current, { x: centers[MEDIA_I].x + 12, y: centers[MEDIA_I].y + 6, duration: 0.9, ease: 'power2.inOut' }, A3 + 0.8);
+      if (mediaHit) {
+        t.to(hand.current, { x: mediaHit.x + 12, y: mediaHit.y + 6, duration: 0.9, ease: 'power2.inOut' }, A3 + 0.8);
       }
       t.to(hand.current, { scale: 0.82, duration: 0.12, ease: 'power2.in' }, A3 + 1.8)
         .to(hand.current, { scale: 1, duration: 0.18, ease: 'back.out(3)' }, A3 + 1.92);
       t.to(cards[MEDIA_I], { boxShadow: glow, scale: 1.03, duration: 0.35, ease: 'power2.out' }, A3 + 1.8);
 
-      // navigate INSIDE the same phone: zoom out + un-trim, cross-fade board -> detail
+      // navigate INSIDE the same phone: cross-fade board -> detail (already zoomed)
       t.to(hand.current, { autoAlpha: 0, duration: 0.3 }, A3 + 2.05);
-      t.to(phone, { height: FULL_H, scale: 0.78, duration: 0.9, ease: 'power3.inOut' }, A3 + 2.1);
       t.to(board, { autoAlpha: 0, duration: 0.45, ease: 'power2.in' }, A3 + 2.2)
         .to(overlay, { autoAlpha: 1, duration: 0.55, ease: 'power2.out' }, A3 + 2.5);
 
+      // ===== ACT 4 — open the Training Video; the player takes over and plays =====
+      // Hold on the Access Check detail (title + alert read), then the hand taps
+      // the Training Video row and the media player slides over, playing the mp4.
+      const A4 = A3 + 4.0;
+      t.to(hand.current, { autoAlpha: 1, duration: 0.3 }, A4);
+      if (videoHit) {
+        t.to(hand.current, { x: videoHit.x + 12, y: videoHit.y + 6, duration: 0.9, ease: 'power2.inOut' }, A4);
+      }
+      t.to(hand.current, { scale: 0.82, duration: 0.12, ease: 'power2.in' }, A4 + 1.0)
+        .to(hand.current, { scale: 1, duration: 0.18, ease: 'back.out(3)' }, A4 + 1.12);
+      t.to(hand.current, { autoAlpha: 0, duration: 0.3 }, A4 + 1.35);
+      // restart the video from the top as the player is revealed
+      t.call(() => {
+        const v = root.current.querySelector('.mv-video');
+        if (v) { try { v.currentTime = 0; } catch (e) { /* not ready */ } v.play?.(); }
+      }, null, A4 + 1.45);
+      t.to(viewerLayer, { autoAlpha: 1, duration: 0.5, ease: 'power2.out' }, A4 + 1.45);
+
       // ===== end — fade out before the loop =====
-      t.to([caption.current, phone], { autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, END - 0.6);
+      t.to(phone, { autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, END - 0.6);
     },
     { scope: root }
   );
@@ -356,6 +501,34 @@ export default function PostedMissionsScene({ poster }) {
     window.addEventListener('pointerup', up);
   };
 
+  // Drag the subtitle anywhere over the frame. Position is stored as {x: center,
+  // y: top} in .scene-fit px; the box keeps its translate(-50%, …) so the
+  // enter/exit slide still works while dragged.
+  const onSubtitleDown = (e) => {
+    const el = sub.current;
+    const fit = root.current;
+    if (!el || !fit) return;
+    e.preventDefault();
+    const er = el.getBoundingClientRect();
+    const fr = fit.getBoundingClientRect();
+    const offX = e.clientX - (er.left + er.width / 2); // pointer offset from the box center
+    const offY = e.clientY - er.top;
+    const clamp = (v, min, max) => Math.max(min, Math.min(v, max));
+    const move = (ev) => {
+      const x = clamp(ev.clientX - fr.left - offX, er.width / 2, fr.width - er.width / 2);
+      const y = clamp(ev.clientY - fr.top - offY, 0, fr.height - er.height);
+      setSubPos({ x, y });
+    };
+    // Anchor at the current spot first so grabbing never makes it jump.
+    setSubPos({ x: er.left + er.width / 2 - fr.left, y: er.top - fr.top });
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
   return (
     <div
       className={`scene-fit${full ? ' is-full' : ''}${started ? ' is-started' : ''}`}
@@ -378,6 +551,7 @@ export default function PostedMissionsScene({ poster }) {
               title="Team Board"
               tabs={TABS}
               overlay={<OpenedMission mission={MEDIA_MISSION} state="open" showExec={false} />}
+              viewer={<MediaViewer src="/videos/training%20video%201.mp4" index="1/2" label="Video" />}
             >
               {MISSIONS.map((m, i) => (
                 <MissionChip
@@ -395,18 +569,48 @@ export default function PostedMissionsScene({ poster }) {
           </div>
         </div>
 
+        {/* Animated on-screen intro (product title + tagline). Not a caption —
+            each line fades/rises in as a whole, centered (never typed or wiped
+            left-to-right), broken only at points where the line reads as a
+            complete thought. See docs/mission-animation.md → "On-screen text". */}
+        <div className="scene-intro" ref={intro} aria-hidden="true">
+          <div className="scene-intro-verse" data-v="1">
+            <span className="scene-intro-line scene-intro-brand">{t('Taskmaverick')}</span>
+            <span className="scene-intro-line">{t('Automatically Guides Teams')}</span>
+            <span className="scene-intro-line">{t('To Take Initiatives On Their Own')}</span>
+          </div>
+          <div className="scene-intro-verse" data-v="2">
+            <span className="scene-intro-line">{t('No Need For A Manager')}</span>
+            <span className="scene-intro-line">{t('To Constantly Remind Them')}</span>
+          </div>
+        </div>
+
         {/* checklist coming out of the phone (real .om-* UI) */}
         <div className="scene-callout" ref={callout} aria-hidden="true"><ChecklistCallout /></div>
 
         <div className="scene-hand" ref={hand} aria-hidden="true"><SceneCursor /></div>
-
-        <p className="lower-third" ref={caption}>Missions are posted exactly when due</p>
 
         {/* Cover image shown over the scene until the viewer hits play. Clicking
             it bubbles to the .scene onClick (togglePlay), which starts the
             animation and hides this. */}
         {poster && !started && <img className="scene-poster" src={poster} alt="" />}
       </div>
+
+      {/* YouTube-style subtitles overlaid on the scene, timed to the animation.
+          Rendered in .scene-fit (unscaled) so they read at a steady size. Stays
+          mounted while playing so it can slide down/fade as each line leaves;
+          drag it anywhere over the frame to reposition. */}
+      {started && !ended && subtitlesOn ? (
+        <div
+          ref={sub}
+          className={`scene-subtitle${cueText ? ' is-visible' : ''}${controlsShown ? '' : ' is-low'}`}
+          style={subPos ? { left: subPos.x, top: subPos.y, bottom: 'auto' } : undefined}
+          onPointerDown={onSubtitleDown}
+          aria-live="polite"
+        >
+          <span>{t(shownText)}</span>
+        </div>
+      ) : null}
 
       {/* live playback controls (drive the GSAP timeline — not baked) */}
       <div className={`scene-controls${started && controlsShown && !ended ? '' : ' is-hidden'}`}>
@@ -425,10 +629,27 @@ export default function PostedMissionsScene({ poster }) {
         <div className="scene-track" ref={track} onPointerDown={onTrackDown}>
           <span className="scene-timeline-fill" ref={bar} />
         </div>
+        {/* CC toggle — only offered once the scene has a voice-over; without one,
+            subtitles carry the narration and can't be turned off. */}
+        {HAS_VOICEOVER && (
+          <button
+            type="button"
+            className={`scene-play scene-cc-btn ${subtitlesOn ? 'is-active' : ''}`}
+            onClick={() => setSubtitlesOn((v) => !v)}
+            aria-pressed={subtitlesOn}
+            aria-label={subtitlesOn ? 'Turn subtitles off' : 'Turn subtitles on'}
+            title={subtitlesOn ? 'Subtitles on' : 'Subtitles off'}
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M10 10.6c-.5-.6-1.2-1-2.1-1-1.5 0-2.6 1.1-2.6 2.4s1.1 2.4 2.6 2.4c.9 0 1.6-.4 2.1-1M18.7 10.6c-.5-.6-1.2-1-2.1-1-1.5 0-2.6 1.1-2.6 2.4s1.1 2.4 2.6 2.4c.9 0 1.6-.4 2.1-1" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        )}
         <button
           type="button"
           className="scene-play scene-full-btn"
-          onClick={() => setFull((f) => !f)}
+          onClick={toggleFull}
           aria-label={full ? 'Exit fullscreen' : 'Fullscreen'}
         >
           {full ? (

@@ -204,9 +204,11 @@ section — so new mission variants are data, not new components. Preview at
 **To build (later, as needed — do not pre-build):**
 
 - **Opened-mission secondary states** (animation beats layered on the shell):
-  content viewer / video player, number-pad entry, correct-vs-answer states for
-  Test, photo/video capture for Survey, the "Personal Missions Assigned" confirm
-  modal.
+  number-pad entry, correct-vs-answer states for Test, photo/video capture for
+  Survey, the "Personal Missions Assigned" confirm modal. (The **content viewer /
+  video player is built** — `components/MediaViewer.jsx`, a `.mv-*` full-screen
+  player that takes over the phone as a second overlay layer; see `PhoneShell`'s
+  `viewer` prop and `PostedMissionsScene` Act 4.)
 - **Library view.**
 - **Overview / timeline** — history, running, timeline; for **Team Board** and
   **Personal Board**.
@@ -249,6 +251,40 @@ components (device shells, `MissionChip`) on a backdrop.
 Narration under a scene uses the **`.lower-third`** class: **34px Inter Medium
 (weight 500)**, white, centered horizontally, positioned in the **lower third**
 (near the bottom). Reuse it for every scene's caption.
+
+### On-screen text — titles & taglines (RULE)
+
+Some narration is **animated *inside* the scene** (a title / tagline that reads
+like part of the product film) rather than shown as a lower-third caption. When
+text lives on the screen this way, it MUST follow these rules — the intro of
+`PostedMissionsScene` (`.scene-intro`, centered on the dots backdrop) is the
+reference implementation:
+
+1. **Whole lines, centered — never left-to-right.** Each line animates in and out
+   as one unit (fade + a small vertical rise). **Do not type it out, wipe it, or
+   reveal it character-by-character / left-to-right.** The text is centered and
+   grows from the middle, so it never "reads across" the frame.
+2. **Capital first word, always.** The first word of every sentence/phrase starts
+   with a capital letter (e.g. **T**askmaverick, **A**utomatically, **N**o need).
+   A continuation line that is grammatically part of the previous line stays
+   lowercase (e.g. "…Teams" → next line "to take initiatives…").
+3. **Break only where the line makes sense on its own.** A line break must fall at
+   a point where the line reads as a complete, sensible thought — **never split a
+   phrase mid-thought.**
+
+   ✅ `Automatically guides Teams` / `to take initiatives on their own`
+   ❌ `Automatically guides Teams to` / `take initiatives on their own`
+
+4. **Group related lines into verses, stacked in one block.** Verses share a
+   single centered column with a **space between them**. Reveal them in sequence
+   and keep earlier verses on screen — don't swap them out: **verse 1 fades in
+   centered on its own → wait a beat → the block rises as verse 2 fades in
+   below it**, so the pair ends up centered. (Impl: reserve verse 2's slot with
+   `visibility` from the start, offset the block down by half of (verse 2 height +
+   gap) so verse 1 reads centered, then tween that offset to 0 as verse 2 appears.)
+5. Style: `.scene-intro` — **Montserrat**, white, centered; brand line heavier /
+   larger (`.scene-intro-brand`), tagline lines lighter. It is *not* a caption, so
+   it does **not** use `.lower-third` / `.scene-subtitle`.
 
 ## Extending
 

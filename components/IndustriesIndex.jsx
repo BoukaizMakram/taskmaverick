@@ -71,17 +71,20 @@ export default function IndustriesIndex() {
                   {d.sections.map((sec) => (
                     <div key={sec.id} id={sec.id} className="itoc-section">
                       <h3 className="itoc-sec-name">{t(sec.name)}</h3>
-                      <ul className="itoc-slides">
+                      <ol className="itoc-slides">
                         {sec.slides.map((sl, i) => {
                           const text = stripHtml(t(sl.text));
                           return (
                             <li key={i} className="itoc-slide">
-                              <span className="itoc-slide-title">{t(sl.title)}</span>
-                              {text ? <span className="itoc-slide-text">{text}</span> : null}
+                              <span className="itoc-slide-num">{String(i + 1).padStart(2, '0')}</span>
+                              <span className="itoc-slide-main">
+                                <span className="itoc-slide-title">{t(sl.title)}</span>
+                                {text ? <span className="itoc-slide-text">{text}</span> : null}
+                              </span>
                             </li>
                           );
                         })}
-                      </ul>
+                      </ol>
                     </div>
                   ))}
                 </div>

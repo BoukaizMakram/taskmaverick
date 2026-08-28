@@ -32,7 +32,7 @@ function StatusIcons() {
   );
 }
 
-export default function PhoneShell({ title = 'Personal Board', tabs = [], children, overlay }) {
+export default function PhoneShell({ title = 'Personal Board', tabs = [], children, overlay, viewer }) {
   return (
     <div className="ph-phone">
       <span className="ph-side ph-side-left ph-side-action" aria-hidden="true" />
@@ -68,6 +68,8 @@ export default function PhoneShell({ title = 'Personal Board', tabs = [], childr
 
         {/* an opened mission navigated to inside the same phone */}
         {overlay ? <div className="ph-overlay">{overlay}</div> : null}
+        {/* a media content viewer (video player) opened above the mission detail */}
+        {viewer ? <div className="ph-overlay ph-overlay--viewer">{viewer}</div> : null}
       </div>
     </div>
   );

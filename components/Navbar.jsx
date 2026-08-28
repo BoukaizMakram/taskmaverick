@@ -152,7 +152,7 @@ function BurgerLink({ link, onNavigate }) {
 // `disabled` items are inert for now (they don't navigate anywhere). Only Terms
 // of Service is live.
 const NAV_LINKS = [
-  { label: 'Home', href: '/', icon: 'home', disabled: true },
+  { label: 'Home', href: '/', icon: 'home' },
   { label: 'About', href: '/about', icon: 'about', disabled: true },
   { label: 'Contact', href: '/contact', icon: 'contact', disabled: true },
   { label: 'Book Demo', href: '/book', icon: 'calendar', disabled: true },

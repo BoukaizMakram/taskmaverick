@@ -1,16 +1,16 @@
 import { notFound } from 'next/navigation';
 
-import PhoneLab from '@/components/PhoneLab';
+import OverviewLab from '@/components/OverviewLab';
 
 export const metadata = {
-  title: 'Phone — Personal Board',
+  title: 'Overview — Running board (Frame 47185 recreation)',
 };
 
-export default function PhonePage() {
+export default function OverviewPage() {
   // ── FOR BAKING LATER — dev-only, not part of the public site ─────────────
-  // Prototype used to author/preview the phone personal-board animations. Hidden
-  // (404) in production so it never ships or shows up in an audit; still
-  // reachable in `npm run dev` while the animations are being baked.
+  // Prototype used to author/preview the Overview "Running" board (Figma Frame
+  // 47185). Hidden (404) in production so it never ships or shows up in an
+  // audit; still reachable in `npm run dev` while the animation is being baked.
   if (process.env.NODE_ENV === 'production') notFound();
 
   return (
@@ -23,8 +23,8 @@ export default function PhonePage() {
         background: '#eef1f5',
       }}
     >
-      <div style={{ width: 'min(460px, 100%)' }}>
-        <PhoneLab />
+      <div style={{ width: 'min(900px, 100%)' }}>
+        <OverviewLab />
       </div>
     </main>
   );

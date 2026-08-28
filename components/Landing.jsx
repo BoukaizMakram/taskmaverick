@@ -76,6 +76,8 @@ export default function Landing() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
+      // Ignore modifier combos (e.g. Ctrl+Alt+1 toggles the language switcher).
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
       const root = document.documentElement;
       if (e.key === '1') root.classList.remove('cover-cutout', 'cover-mask');
       else if (e.key === '2') {

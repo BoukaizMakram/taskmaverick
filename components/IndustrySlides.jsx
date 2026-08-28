@@ -5,10 +5,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
-// Up to this many ideas per page — fewer when their combined text is long.
-const MAX_IDEAS_PER_PAGE = 4;
-const CHAR_BUDGET = 520;
-
 /* Some slide text arrives from the DB with raw HTML (<p>…</p>). Strip tags,
    decode the common entities, and return clean paragraph strings. */
 function cleanParagraphs(text) {
@@ -31,10 +27,9 @@ function cleanParagraphs(text) {
 const textLength = (text) => cleanParagraphs(text).join(' ').length;
 
 /*
- * Build the reel as a list of PAGES. Each section contributes one cover image
- * (its first slide's media, else the section thumb) shown on top, plus its
- * slides grouped into "ideas" (a title + its text) listed underneath — up to
- * MAX_IDEAS_PER_PAGE per page, fewer when the combined text is long. Also
+ * Build the reel as a list of PAGES — ONE idea (slide) per page. Each page shows
+ * that slide's own media on top (falling back to the section's cover / thumb
+ * when the slide has none) and its single idea (title + text) underneath. Also
  * returns the sections with their starting page index (drives the dropdown).
  */
 function buildDeck(industry) {
@@ -44,31 +39,20 @@ function buildDeck(industry) {
     sections.push({ id: sIdx, name: sec.name, start: pages.length });
 
     const firstWithMedia = sec.slides.find((s) => s.media);
-    const cover =
+    const fallback =
       firstWithMedia?.media || (sec.thumb ? { type: 'image', src: sec.thumb } : null);
 
-    // An idea needs at least a title or some text to be worth a row.
-    const ideas = sec.slides
-      .map((s) => ({ title: s.title, text: s.text }))
-      .filter((idea) => idea.title || textLength(idea.text));
-
-    let bucket = [];
-    let chars = 0;
-    const flush = () => {
-      if (!bucket.length) return;
-      pages.push({ sectionIdx: sIdx, sectionName: sec.name, media: cover, ideas: bucket });
-      bucket = [];
-      chars = 0;
-    };
-    ideas.forEach((idea) => {
-      const len = (idea.title || '').length + textLength(idea.text);
-      if (bucket.length >= MAX_IDEAS_PER_PAGE || (bucket.length > 0 && chars + len > CHAR_BUDGET)) {
-        flush();
-      }
-      bucket.push(idea);
-      chars += len;
-    });
-    flush();
+    // One page per slide — needs at least a title or some text to be worth a page.
+    sec.slides
+      .filter((s) => s.title || textLength(s.text))
+      .forEach((s) => {
+        pages.push({
+          sectionIdx: sIdx,
+          sectionName: sec.name,
+          media: s.media || fallback,
+          ideas: [{ title: s.title, text: s.text }],
+        });
+      });
   });
   return { pages, sections };
 }
@@ -115,6 +99,25 @@ function SlideMedia({ media, playing }) {
 export default function IndustrySlides({ industry }) {
   const t = useT();
   const { pages } = useMemo(() => buildDeck(industry), [industry]);
+
+  // Table of contents for the right rail: each section, with its ideas listed
+  // underneath (each idea links to the page it lives on). Pages for a section
+  // are contiguous (buildDeck emits them section by section).
+  const toc = useMemo(() => {
+    const secs = [];
+    pages.forEach((p, pageIdx) => {
+      let s = secs[secs.length - 1];
+      if (!s || s.sectionIdx !== p.sectionIdx) {
+        s = { sectionIdx: p.sectionIdx, name: p.sectionName, firstPage: pageIdx, items: [] };
+        secs.push(s);
+      }
+      p.ideas.forEach((idea) => {
+        if (idea.title) s.items.push({ title: idea.title, page: pageIdx });
+      });
+    });
+    return secs;
+  }, [pages]);
+
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const pagesRef = useRef([]);
@@ -218,6 +221,35 @@ export default function IndustrySlides({ industry }) {
         </div>
       )}
 
+      {/* Persistent table of contents on the right of the reel (desktop only —
+          mobile keeps the pinned selector / navbar dropdown). Plain clickable
+          text: sections as headings, their slides indented underneath. */}
+      <nav className="ireel-toc" aria-label={t('On this page')}>
+        {toc.map((sec) => {
+          const secActive = pages[active]?.sectionIdx === sec.sectionIdx;
+          return (
+            <div className={`ireel-toc-group${secActive ? ' is-active' : ''}`} key={sec.sectionIdx}>
+              <button type="button" className="ireel-toc-sec" onClick={() => goTo(sec.firstPage)}>
+                {t(sec.name)}
+              </button>
+              <ul className="ireel-toc-items">
+                {sec.items.map((it, k) => (
+                  <li key={k}>
+                    <button
+                      type="button"
+                      className={`ireel-toc-item${active === it.page ? ' is-active' : ''}`}
+                      onClick={() => goTo(it.page)}
+                    >
+                      {t(it.title)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </nav>
+
       <div className="ireel">
         {pages.map((page, i) => (
           <section
@@ -269,11 +301,13 @@ export default function IndustrySlides({ industry }) {
                     return (
                       <div className="ireel-idea" key={k}>
                         {idea.title && <h2 className="ireel-idea-title">{t(idea.title)}</h2>}
-                        {paragraphs.map((p, j) => (
-                          <p key={j} className="ireel-idea-text">
-                            {p}
-                          </p>
-                        ))}
+                        {paragraphs.map((p, j) =>
+                          p.trim() ? (
+                            <p key={j} className="ireel-idea-text">
+                              {p}
+                            </p>
+                          ) : null
+                        )}
                       </div>
                     );
                   })}

@@ -42,6 +42,19 @@ export function LanguageProvider({ children }) {
     el.setAttribute('dir', dir);
   }, [lang]);
 
+  // The language switcher is hidden by default; a hidden shortcut (Ctrl+Alt+1)
+  // toggles it on/off by flipping `.show-lang` on <html> (see globals.css).
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.ctrlKey && e.altKey && (e.code === 'Digit1' || e.key === '1')) {
+        e.preventDefault();
+        document.documentElement.classList.toggle('show-lang');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   const setLang = useCallback((code) => {
     if (!isLang(code)) return;
     setLangState(code);
