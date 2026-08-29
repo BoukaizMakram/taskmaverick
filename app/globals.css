@@ -130,7 +130,7 @@ code {
   color: var(--blue);
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px; /* match the chapters dropdown title (.nav-ch-btn) */
   text-decoration: none;
   transition: color 0.18s ease;
 }
@@ -4114,23 +4114,31 @@ html:has(.ireel) {
 }
 .ireel {
   position: relative;
+  /* Width lane reserved on the right of the cover for the up/down arrows, so
+     they sit beside the image (not on top of its content). */
+  --ireel-nav-lane: 92px;
   /* Shared width of the cover frame and the ideas list below it, so the ideas
-     align to the cover's edges. Capped so the cover stays within ~44vh tall
-     (leaving room for up to four ideas underneath). */
-  --ireel-cover-w: min(100%, calc(44vh * 1920 / 1345));
+     align to the cover's edges. One idea (title + short text) sits underneath
+     each cover, so the cover can use most of the page — cap the height budget
+     high and let the width fill the content column minus the arrow lane. */
+  --ireel-cover-w: min(calc(100% - var(--ireel-nav-lane)), calc(70vh * 1920 / 1345));
 }
 .ireel-page {
-  /* One page = one full screen below the sticky nav; grows for long text. */
+  /* One page = one full screen below the sticky nav; grows for long text.
+     Content sits toward the TOP (not centered) so there's open space below the
+     idea box — easier to reach the corner buttons. */
   min-height: calc(100vh - var(--nav-h));
   display: grid;
-  place-items: center;
+  place-items: start center;
   padding: clamp(20px, 3vw, 40px);
+  padding-top: clamp(8px, 2vh, 24px);
   background: linear-gradient(180deg, #ffffff 0%, #f2f7fb 100%);
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
 .ireel .stage-inner {
-  gap: clamp(16px, 2.2vh, 26px);
+  gap: clamp(28px, 3.4vh, 44px); /* space below the cover — moves the idea box down */
+  align-items: flex-start; /* left-align the cover + ideas; arrows sit in the right lane */
 }
 /* Industry slides ship as 1920×1345 images — give the frame that exact ratio so
    they aren't cropped by the shared 16:9 box. Cap the WIDTH (not the height) so
@@ -4140,29 +4148,160 @@ html:has(.ireel) {
   max-width: var(--ireel-cover-w);
 }
 /* Frame wrapper — the positioning context for the reused landing `.reel-nav`
-   up/down controls. Same width cap as .ireel-frame so the frame fills it and
-   the nav pins just outside its right edge (see .reel-nav / .reel-nav-btn). */
+   up/down controls. Left-aligned within the stage (with the ideas below), so the
+   reserved --ireel-nav-lane stays open on the right for the arrows to pin into
+   just outside the frame's right edge (see .reel-nav / .reel-nav-btn). */
 .ireel .video-frame-wrap {
   width: 100%;
   max-width: var(--ireel-cover-w);
-  margin: 0 auto;
+  margin: 0 auto 0 0;
 }
 /* The ideas (title + text) listed under the cover, left-justified and aligned
    to the cover's edges. */
 .ireel-ideas {
   width: 100%;
   max-width: var(--ireel-cover-w);
-  margin: 0 auto;
+  margin: 0 auto 0 0;
   display: flex;
   flex-direction: column;
   gap: clamp(14px, 1.8vh, 22px);
   text-align: left;
 }
+/* Each idea sits in its own card, with a corner "Cases" button that links to the
+   industry's detailed documentation (mirrors the cover's Play button). */
 .ireel-idea {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e4eaf1;
+  border-radius: 16px;
+  padding: 20px 22px 24px;
+  box-shadow: 0 8px 24px rgba(15, 40, 80, 0.07);
 }
+.ireel-cases-btn {
+  position: absolute;
+  right: -9px;
+  bottom: -15px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 15px 0 19px;
+  border-radius: 9px;
+  background: #126eb3;
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.ireel-cases-btn:hover {
+  background: #0f5c96;
+  transform: translateY(-2px);
+}
+.ireel-cases-btn svg { display: block; }
+/* No blue glow on the corner buttons in the industry reel. */
+.ireel .corner-play { box-shadow: none; }
+
+/* ---- Industry case documentation (template): /industries/[industry]/cases --- */
+.cases-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #f2f7fb 100%);
+  color: var(--ink);
+}
+.cases-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px clamp(20px, 5vw, 64px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e4eaf1;
+}
+.cases-brand img { display: block; height: 28px; width: auto; }
+.cases-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--blue);
+  text-decoration: none;
+}
+.cases-back:hover { text-decoration: underline; }
+.cases-back svg { display: block; }
+
+.cases-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(32px, 6vw, 72px) clamp(20px, 5vw, 40px) 96px;
+}
+.cases-eyebrow {
+  margin: 0 0 10px;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.cases-title {
+  margin: 0 0 16px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.cases-lead {
+  margin: 0 0 44px;
+  max-width: 680px;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--muted);
+}
+.cases-sec { margin-top: 48px; }
+.cases-sec-title {
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e4eaf1;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  letter-spacing: -0.015em;
+}
+.cases-cards { display: grid; gap: 16px; }
+.cases-card {
+  background: #fff;
+  border: 1px solid #e7edf4;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 6px 18px rgba(15, 40, 80, 0.05);
+}
+.cases-card-title {
+  margin: 0 0 6px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.cases-card-text {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.cases-card-text:last-child { margin-bottom: 0; }
 .ireel-idea-title {
   margin: 0;
   font-family: var(--font-inter), system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
@@ -4218,6 +4357,95 @@ html:has(.ireel) {
   .ireel .reel-nav {
     display: none;
   }
+}
+/* Up / down slide navigation — belongs to the sidebar (child of .ireel-toc),
+   pinned just to its LEFT so it sits close to the rail, vertically centered. */
+.ireel-side-nav {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 16px);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 4;
+}
+.ireel-side-btn {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(18, 110, 179, 0.16);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 8px 20px rgba(15, 40, 80, 0.16), 0 1px 3px rgba(15, 40, 80, 0.10);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.ireel-side-btn:hover {
+  background: var(--blue);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(18, 110, 179, 0.36);
+}
+.ireel-side-btn:active { transform: translateY(0); }
+.ireel-side-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+.ireel-side-btn svg { display: block; }
+
+/* Mobile up / down slide nav shown under the idea box (desktop uses the side
+   rail, so this is hidden above the mobile breakpoint). */
+.ireel-mnav { display: none; }
+
+/* Mobile (no side rail / arrows): drop the nav lane and left-align, so the cover
+   and idea box use the full width and center in the page. */
+@media (max-width: 860px) {
+  .ireel { --ireel-nav-lane: 0px; }
+  .ireel-page { place-items: center; }
+  .ireel .stage-inner { align-items: center; }
+  .ireel .video-frame-wrap,
+  .ireel .ireel-ideas { margin: 0 auto; }
+  .ireel-mnav {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 4px;
+  }
+}
+
+/* Small fixed toggle for the left / right layout option (also keys 1 / 2). */
+.ireel-side-toggle {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 950;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e4eaf1;
+  box-shadow: 0 8px 22px rgba(15, 40, 80, 0.16);
+}
+.ireel-side-toggle button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-soft, #55606c);
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.ireel-side-toggle button:hover { background: #eef4fb; color: var(--blue); }
+.ireel-side-toggle button.is-active { background: var(--blue); color: #fff; }
+@media (max-width: 900px) {
+  /* the mirror only applies to the desktop side-rail layout */
+  .ireel-side-toggle { display: none; }
 }
 /* Slide media fills the 1920×1345 .ireel-frame. */
 .ireel-frame .isl-media {
@@ -6259,19 +6487,31 @@ html[dir="rtl"] .itoc-nav-count {
   bottom: 0;
   right: 0;
   width: var(--ireel-toc-w, min(440px, 36vw));
-  overflow-y: auto;
+  overflow: visible; /* let the side arrows protrude to the left of the rail */
   z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: 18px;
   padding: 28px 10px 30px 32px;
   background: #f2f5f9;
   border-left: 1px solid #e4eaf1;
   font-family: var(--font-poppins), system-ui, sans-serif;
+}
+/* the scrolling list of sections (the sidebar itself stays overflow-visible so
+   the .ireel-side-nav arrows aren't clipped) */
+.ireel-toc-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   scrollbar-width: thin;
 }
 .ireel-toc-group { display: flex; flex-direction: column; gap: 4px; }
 .ireel-toc-sec {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
   text-align: left;
   background: none;
   border: none;
@@ -6284,8 +6524,26 @@ html[dir="rtl"] .itoc-nav-count {
   color: var(--ink);
   transition: color 0.15s ease;
 }
+/* leading 01 / 02 / 03 … number on each section title */
+.ireel-toc-num {
+  flex: none;
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
 .ireel-toc-sec:hover { color: var(--blue); }
-.ireel-toc-group.is-active .ireel-toc-sec { color: var(--blue); }
+.ireel-toc-sec:hover .ireel-toc-num { color: var(--blue); }
+.ireel-toc-group.is-active .ireel-toc-sec,
+.ireel-toc-group.is-active .ireel-toc-num { color: var(--blue); }
+/* Number-side option 2: the 01 / 02 / 03 moves after the title, toward the right
+   but inset from the edge (padding-right pulls it in — not all the way right). */
+.ireel-toc.is-num-right .ireel-toc-sec {
+  justify-content: space-between;
+  padding-right: 40px;
+}
+.ireel-toc.is-num-right .ireel-toc-num { order: 2; }
 .ireel-toc-items {
   list-style: none;
   margin: 2px 0 0 8px;
@@ -6323,3 +6581,8 @@ html[dir="rtl"] .itoc-nav-count {
 }
 /* the right-rail TOC replaces the navbar chapter dropdown on this page */
 .isl-page .nav-chapters { display: none; }
+/* on mobile the industry pages hide the navbar "Industries" button (the back
+   button + burger already cover navigation there). */
+@media (max-width: 860px) {
+  .isl-page .btn-demo { display: none; }
+}

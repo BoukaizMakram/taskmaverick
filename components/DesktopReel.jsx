@@ -13,6 +13,7 @@ import { useEffect, useRef } from 'react';
 
 import { smoothScrollTo } from '@/lib/smoothScroll';
 import CoverPlayer from '@/components/CoverPlayer';
+import CornerPlay from '@/components/CornerPlay';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 import { useT } from '@/lib/i18n/LanguageProvider';
@@ -58,35 +59,6 @@ function ChapterMedia({ chapter, src, poster }) {
   }
 
   return <div className="video-placeholder" aria-hidden="true" />;
-}
-
-// Blue "Play" button pushed to the bottom-right corner, protruding outside the
-// video frame. Shown on every chapter. Clicking it plays whatever is in the
-// frame — the animation scene, a real video, or nothing (placeholder).
-function CornerPlay() {
-  const t = useT();
-  const onClick = (e) => {
-    const wrap = e.currentTarget.closest('.video-frame-wrap');
-    if (!wrap) return;
-    const scene = wrap.querySelector('.scene');
-    if (scene) {
-      scene.click(); // the scene toggles play/pause on click
-      return;
-    }
-    const video = wrap.querySelector('video');
-    if (video) {
-      if (video.paused) video.play().catch(() => {});
-      else video.pause();
-    }
-  };
-  return (
-    <button type="button" className="corner-play" aria-label="Play video" onClick={onClick}>
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-        <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
-      </svg>
-      {t('Play')}
-    </button>
-  );
 }
 
 export default function DesktopReel({ chapters = [], activeId, onSelect, onIndustries, src, poster }) {

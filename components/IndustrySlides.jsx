@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Navbar from '@/components/Navbar';
+import CornerPlay from '@/components/CornerPlay';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
 /* Some slide text arrives from the DB with raw HTML (<p>…</p>). Strip tags,
@@ -120,27 +121,47 @@ export default function IndustrySlides({ industry }) {
 
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  // TOC number-side option: '1' = number before the title ("01  Compliance"),
+  // '2' = number after it at the right edge ("Compliance  01"). Press 1 / 2 (or
+  // click the toggle) to switch.
+  const [side, setSide] = useState('1');
   const pagesRef = useRef([]);
   const pad = (n) => String(n).padStart(2, '0');
 
-  const pageChapters = useMemo(
-    () =>
-      pages.map((p, i) => ({
-        id: i,
-        title: `${t(p.sectionName)}-${t(p.ideas[0]?.title || '')}`,
-      })),
-    [pages, t]
+  // Keys 1 / 2 switch the number's side (left / right of the title).
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target.closest?.('input, textarea, select')) return;
+      if (e.key === '1') setSide('1');
+      else if (e.key === '2') setSide('2');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // The dropdowns (navbar + mobile selector) list SECTIONS only — just the
+  // section titles (e.g. "Compliance", "Maintenance"), no per-slide subtitles.
+  const sectionChapters = useMemo(
+    () => toc.map((s) => ({ id: s.sectionIdx, title: s.name, firstPage: s.firstPage })),
+    [toc]
   );
-  const activeTitle = pageChapters[active]?.title || '';
+  const activeSection = pages[active]?.sectionIdx ?? 0;
+  const activeTitle = t(pages[active]?.sectionName || '');
+  const activeSecPos = sectionChapters.findIndex((c) => c.id === activeSection);
 
   const goTo = (id) => {
     const n = Math.max(0, Math.min(pages.length - 1, id));
     setActive(n);
     pagesRef.current[n]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-  const pick = (id) => {
+  // Jump to a section by its first page.
+  const goToSection = (sectionIdx) => {
+    const sec = toc.find((s) => s.sectionIdx === sectionIdx);
+    if (sec) goTo(sec.firstPage);
+  };
+  const pickSection = (sectionIdx) => {
     setMenuOpen(false);
-    goTo(id);
+    goToSection(sectionIdx);
   };
 
   // Keep the dropdown in sync with the page in view, and play only that page's
@@ -164,9 +185,9 @@ export default function IndustrySlides({ industry }) {
   return (
     <>
       <Navbar
-        chapters={pageChapters}
-        activeId={active}
-        onSelect={goTo}
+        chapters={sectionChapters}
+        activeId={activeSection}
+        onSelect={goToSection}
         backTo={{ href: '/#use-cases', label: industry.name }}
       />
 
@@ -184,7 +205,7 @@ export default function IndustrySlides({ industry }) {
             {activeTitle}
           </button>
           <span className="stage-chapters-count" aria-hidden="true">
-            {pad(active + 1)}
+            {pad(activeSecPos >= 0 ? activeSecPos + 1 : 1)}
           </span>
           <span className={`stage-chapters-chev${menuOpen ? ' is-open' : ''}`} aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -195,16 +216,16 @@ export default function IndustrySlides({ industry }) {
       </div>
       {menuOpen && (
         <div className="ch-menu ireel-menu" role="listbox" aria-label="Jump to a section">
-          {pageChapters.map((c, i) => (
+          {sectionChapters.map((c, i) => (
             <button
               key={c.id}
               type="button"
               role="option"
-              aria-selected={i === active}
-              className={`ch-menu-item${i === active ? ' is-active' : ''}`}
-              onClick={() => pick(i)}
+              aria-selected={c.id === activeSection}
+              className={`ch-menu-item${c.id === activeSection ? ' is-active' : ''}`}
+              onClick={() => pickSection(c.id)}
             >
-              <span className="ch-menu-title">{c.title}</span>
+              <span className="ch-menu-title">{t(c.title)}</span>
               <span className="ch-menu-num">{pad(i + 1)}</span>
             </button>
           ))}
@@ -223,31 +244,48 @@ export default function IndustrySlides({ industry }) {
 
       {/* Persistent table of contents on the right of the reel (desktop only —
           mobile keeps the pinned selector / navbar dropdown). Plain clickable
-          text: sections as headings, their slides indented underneath. */}
-      <nav className="ireel-toc" aria-label={t('On this page')}>
-        {toc.map((sec) => {
-          const secActive = pages[active]?.sectionIdx === sec.sectionIdx;
-          return (
-            <div className={`ireel-toc-group${secActive ? ' is-active' : ''}`} key={sec.sectionIdx}>
-              <button type="button" className="ireel-toc-sec" onClick={() => goTo(sec.firstPage)}>
-                {t(sec.name)}
-              </button>
-              <ul className="ireel-toc-items">
-                {sec.items.map((it, k) => (
-                  <li key={k}>
-                    <button
-                      type="button"
-                      className={`ireel-toc-item${active === it.page ? ' is-active' : ''}`}
-                      onClick={() => goTo(it.page)}
-                    >
-                      {t(it.title)}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          );
-        })}
+          text: just the section titles (e.g. Compliance, Maintenance). */}
+      <nav className={`ireel-toc${side === '2' ? ' is-num-right' : ''}`} aria-label={t('On this page')}>
+        {/* Up / down slide navigation — belongs to the sidebar, pinned just to
+            its left so it sits close to the rail. */}
+        <div className="ireel-side-nav">
+          <button
+            type="button"
+            className="ireel-side-btn"
+            aria-label="Previous slide"
+            disabled={active === 0}
+            onClick={() => goTo(active - 1)}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="ireel-side-btn"
+            aria-label="Next slide"
+            disabled={active === pages.length - 1}
+            onClick={() => goTo(active + 1)}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="ireel-toc-list">
+          {toc.map((sec, i) => {
+            const secActive = pages[active]?.sectionIdx === sec.sectionIdx;
+            return (
+              <div className={`ireel-toc-group${secActive ? ' is-active' : ''}`} key={sec.sectionIdx}>
+                <button type="button" className="ireel-toc-sec" onClick={() => goTo(sec.firstPage)}>
+                  <span className="ireel-toc-num">{pad(i + 1)}</span>
+                  <span className="ireel-toc-name">{t(sec.name)}</span>
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </nav>
 
       <div className="ireel">
@@ -265,33 +303,7 @@ export default function IndustrySlides({ industry }) {
                 <div className="video-frame ireel-frame">
                   <SlideMedia media={page.media} playing={i === active} />
                 </div>
-
-                {/* Up / down page navigation on the right of the video,
-                    matching the landing reel. */}
-                <div className="reel-nav">
-                  <button
-                    type="button"
-                    className="reel-nav-btn"
-                    aria-label="Previous slide"
-                    disabled={i === 0}
-                    onClick={() => goTo(i - 1)}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M18 15l-6-6-6 6" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className="reel-nav-btn"
-                    aria-label="Next slide"
-                    disabled={i === pages.length - 1}
-                    onClick={() => goTo(i + 1)}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </button>
-                </div>
+                <CornerPlay />
               </div>
 
               {page.ideas.length > 0 && (
@@ -308,14 +320,62 @@ export default function IndustrySlides({ industry }) {
                             </p>
                           ) : null
                         )}
+                        {/* Corner "Cases" button (styled like the cover's Play
+                            button) — opens this industry's detailed case
+                            documentation in a new tab. */}
+                        <a
+                          className="ireel-cases-btn"
+                          href={`/industries/${industry.id}/cases`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${t(industry.name)} cases`}
+                        >
+                          {t('Cases')}
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                          </svg>
+                        </a>
                       </div>
                     );
                   })}
                 </div>
               )}
+
+              {/* Mobile-only up / down slide nav under the idea box (the desktop
+                  side-rail arrows are hidden on phones). */}
+              <div className="ireel-mnav">
+                <button
+                  type="button"
+                  className="ireel-side-btn"
+                  aria-label="Previous slide"
+                  disabled={i === 0}
+                  onClick={() => goTo(i - 1)}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M18 15l-6-6-6 6" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="ireel-side-btn"
+                  aria-label="Next slide"
+                  disabled={i === pages.length - 1}
+                  onClick={() => goTo(i + 1)}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </section>
         ))}
+      </div>
+
+      {/* Layout side option — 1 = content left, 2 = content right (also keys 1/2). */}
+      <div className="ireel-side-toggle" role="group" aria-label="Layout side">
+        <button type="button" className={side === '1' ? 'is-active' : ''} onClick={() => setSide('1')} aria-pressed={side === '1'}>1</button>
+        <button type="button" className={side === '2' ? 'is-active' : ''} onClick={() => setSide('2')} aria-pressed={side === '2'}>2</button>
       </div>
     </>
   );
