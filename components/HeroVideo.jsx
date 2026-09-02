@@ -98,7 +98,7 @@ export const BADGES = [
   { icon: 'users', title: 'Automated Guidance', sub: 'Teams Are Guided To Take Initiatives On Their Own' },
   { icon: 'check', title: 'Automated Training', sub: 'Critical Training Is Automatically Repeated For Emphasis' },
   { icon: 'shield', title: 'Automated Risk Detection', sub: 'HR Violations Are Automatically Detected & Resolved' },
-  { icon: 'chart', title: 'Automated Assignments', sub: 'Work Distribution Is Automatically Optimized' },
+  { icon: 'chart', title: 'Optimized Workload', sub: 'Work Distribution Is Automatically Optimized' },
 ];
 
 export default function HeroVideo({ src, poster, activeChapter }) {
@@ -179,7 +179,7 @@ export default function HeroVideo({ src, poster, activeChapter }) {
       <div className="stage-inner">
         <div className="video-frame js-video">
           {Scene ? (
-            <Scene />
+            <Scene poster={activeChapter?.cover} title={activeChapter?.heroTitle || activeChapter?.title} />
           ) : effectiveSrc ? (
             <>
               <video
@@ -225,22 +225,11 @@ export default function HeroVideo({ src, poster, activeChapter }) {
             </>
           ) : (
             <div className="video-placeholder">
-              <button type="button" className="play-btn" aria-label="Play video">
-                <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
-                  <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
-                </svg>
-              </button>
               <p className="video-placeholder-label">
                 {activeChapter ? t(activeChapter.title) : t('Your video goes here')}
               </p>
             </div>
           )}
-        </div>
-
-        <div className="stage-head js-cta">
-          <h1 className="stage-cta">
-            {t(activeChapter?.heroTitle || activeChapter?.title || 'See how Taskmaverick makes operational excellence possible')}
-          </h1>
         </div>
 
         <ul className="stage-badges">
@@ -256,6 +245,7 @@ export default function HeroVideo({ src, poster, activeChapter }) {
             </li>
           ))}
         </ul>
+
 
         <a className="stage-uc" href="#use-cases">
           {t('Industries')}

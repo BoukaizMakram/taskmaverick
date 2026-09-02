@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -8,10 +8,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { smoothScrollTo } from '@/lib/smoothScroll';
 import { useT } from '@/lib/i18n/LanguageProvider';
 import Navbar from '@/components/Navbar';
+import LandingToc from '@/components/LandingToc';
 import DesktopReel from '@/components/DesktopReel';
 import MobileReel from '@/components/MobileReel';
 import IndustryGrid from '@/components/IndustryGrid';
-import { CHAPTERS, VIDEO_SRC, VIDEO_POSTER } from '@/lib/chapters';
+import { useLandingContent } from '@/lib/useLandingContent';
+import { buildLandingChapters } from '@/lib/landingDefaults';
+import { useEdit, EditText } from '@/components/InlineEdit';
 
 /* ---- tiny inline icon set (Feather-style, stroked) -------------------- */
 const ICONS = {
@@ -57,9 +60,18 @@ function Icon({ name, size = 22 }) {
   );
 }
 
-export default function Landing() {
+export default function Landing({ content: contentProp }) {
   const t = useT();
   const container = useRef(null);
+  // Editable content: an explicit prop (admin preview) wins; otherwise load the
+  // saved local content, falling back to defaults.
+  const editCtx = useEdit();
+  const fetched = useLandingContent();
+  const content = editCtx?.content || contentProp || fetched;
+  const chapters = useMemo(
+    () => buildLandingChapters(content.chapters, content.outline),
+    [content]
+  );
   const [activeId, setActiveId] = useState(1);
   // True while the industries (Use Cases) section is the current view. While
   // it's true the chapter selector freezes on the chapter you left and turns
@@ -138,6 +150,29 @@ export default function Landing() {
     holdLockUntilSettled();
   }, [holdLockUntilSettled]);
 
+  // Outline sidebar → jump the reel to a chapter. Set it active and HOLD the
+  // observer lock so the highlight stays on the clicked item instead of stepping
+  // through every chapter the scripted scroll passes, then scroll the reel.
+  const goToChapter = useCallback(
+    (id) => {
+      if (id == null) return;
+      atUseCasesRef.current = false;
+      setAtUseCases(false);
+      setActiveId(id);
+      holdLockUntilSettled();
+      const mobile =
+        typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
+      if (mobile) {
+        document
+          .querySelector(`.reel-page[data-id="${id}"]`)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        smoothScrollTo(`dchapter-${id}`);
+      }
+    },
+    [holdLockUntilSettled]
+  );
+
   useGSAP(
     () => {
       gsap.registerPlugin(ScrollTrigger);
@@ -151,14 +186,23 @@ export default function Landing() {
   );
 
   return (
-    <div className="page" ref={container}>
+    <div className="page lp-page" ref={container}>
       <Navbar
-        chapters={CHAPTERS}
+        chapters={chapters}
         activeId={activeId}
         onSelect={handleSelect}
         atUseCases={atUseCases}
         onIndustries={enterUseCases}
         onExitUseCases={exitUseCases}
+      />
+
+      {/* Right-hand outline sidebar (replaces the navbar chapter dropdown on
+          desktop). Items map to reel chapters — see LandingToc. */}
+      <LandingToc
+        outline={content.outline}
+        chapters={chapters}
+        activeId={activeId}
+        onNavigate={goToChapter}
       />
 
       {/* ScrollSmoother wrapper — everything that scrolls lives inside
@@ -167,24 +211,24 @@ export default function Landing() {
         <div id="smooth-content">
       {/* ---------------- Demo hero (desktop: snap-scroll chapter reel) --- */}
       <DesktopReel
-        chapters={CHAPTERS}
+        chapters={chapters}
         activeId={activeId}
         onSelect={handleSelect}
         onIndustries={enterUseCases}
-        src={VIDEO_SRC}
-        poster={VIDEO_POSTER}
+        src=""
+        poster=""
       />
 
       {/* ---------------- Demo hero (mobile: TikTok-style chapter reel) --- */}
       <MobileReel
-        chapters={CHAPTERS}
+        chapters={chapters}
         activeId={activeId}
         onSelect={handleSelect}
         atUseCases={atUseCases}
         onIndustries={enterUseCases}
         onExitUseCases={exitUseCases}
-        src={VIDEO_SRC}
-        poster={VIDEO_POSTER}
+        src=""
+        poster=""
       />
 
       {/* ---------------- Horizontal divider ---------------------------- */}
@@ -195,13 +239,9 @@ export default function Landing() {
         <section className="lp-section" id="use-cases">
           <div className="lp-container">
             <div className="lp-head center">
-              <span className="lp-kicker">{t('Use cases by industry')}</span>
-              <h2 className="lp-h2">{t('Endless applications, one for every industry.')}</h2>
-              <p className="lp-lead">
-                {t(
-                  'See how teams in every industry put Taskmaverick to work. Open an industry for a slide-by-slide walkthrough of the everyday missions it runs.'
-                )}
-              </p>
+              <EditText as="span" className="lp-kicker" path={['useCases', 'kicker']} value={editCtx ? content.useCases?.kicker : t(content.useCases?.kicker || '')} />
+              <EditText as="h2" className="lp-h2" path={['useCases', 'h2']} value={editCtx ? content.useCases?.h2 : t(content.useCases?.h2 || '')} />
+              <EditText as="p" className="lp-lead" multiline path={['useCases', 'lead']} value={editCtx ? content.useCases?.lead : t(content.useCases?.lead || '')} />
             </div>
             <IndustryGrid />
           </div>
@@ -210,21 +250,18 @@ export default function Landing() {
         {/* ---------------- Final CTA ---------------- */}
         <section className="lp-cta" id="book">
           <div className="lp-container">
-            <h2>{t('See it for yourself.')}</h2>
-            <p>
-              {t(
-                'Anybody who has seen Taskmaverick says they have never seen anything like how it comes together. Watch the walkthrough above, or reach out for a personalized demo.'
-              )}
-            </p>
+            <EditText as="h2" path={['cta', 'h2']} value={editCtx ? content.cta?.h2 : t(content.cta?.h2 || '')} />
+            <EditText as="p" multiline path={['cta', 'p']} value={editCtx ? content.cta?.p : t(content.cta?.p || '')} />
             <div className="lp-cta-actions">
               <a href="#overview" className="btn-primary btn-lg">
-                <Icon name="play" size={18} /> {t('Watch the walkthrough')}
+                <Icon name="play" size={18} />{' '}
+                <EditText path={['cta', 'primary']} value={editCtx ? content.cta?.primary : t(content.cta?.primary || '')} />
               </a>
               <a
                 href="mailto:hello@taskmaverick.com?subject=Taskmaverick%20demo"
                 className="btn-secondary btn-lg"
               >
-                {t('Contact sales')}
+                <EditText path={['cta', 'secondary']} value={editCtx ? content.cta?.secondary : t(content.cta?.secondary || '')} />
               </a>
             </div>
           </div>

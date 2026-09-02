@@ -155,7 +155,7 @@ code {
   transition: color 0.18s ease;
 }
 .nav-link:hover { color: var(--blue); }
-.nav-link--signin { color: var(--ink); }
+.nav-link--signin { color: var(--ink); font-size: 16px; }
 .nav-link--signin:hover { color: var(--ink); }
 
 @media (max-width: 900px) {
@@ -179,6 +179,29 @@ code {
 
 .btn-demo:hover {
   background: var(--blue-dark);
+}
+
+/* Navbar "Industries" — plain blue text + down arrow (no button background),
+   mirroring the reel's "Use Cases by Industry" (.stage-uc) link. */
+.nav-industries {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  /* Font size matches the "Sign in" link next to it (.nav-link--signin); color
+     stays blue. */
+  color: var(--blue);
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.nav-industries:hover {
+  color: var(--blue-dark);
+}
+.nav-industries svg {
+  display: block;
 }
 
 /* ---------------- Chapters dropdown in the navbar (desktop) ---------------- */
@@ -475,7 +498,7 @@ code {
   align-items: center;
   gap: clamp(12px, 1.4vw, 18px);
   width: 100%;
-  max-width: 940px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -543,36 +566,83 @@ code {
   max-width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 .stage-badge {
   display: flex;
   align-items: center;
-  gap: 12px;
-  /* Stronger gray frame, white inside. */
+  gap: 16px;
+  /* Clean white card — black border + soft layered shadow. */
   background: #fff;
-  border: 2px solid #9ca3af;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08), 0 6px 14px rgba(17, 24, 39, 0.12), 0 14px 30px rgba(17, 24, 39, 0.1);
-  padding: 14px 16px;
+  border: 1px solid #111;
+  border-radius: 15px;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 20px rgba(17, 24, 39, 0.06), 0 2px 6px rgba(17, 24, 39, 0.04);
+  padding: 17px 21px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.stage-badge:hover {
+  border-color: #111;
+  box-shadow: 0 2px 4px rgba(17, 24, 39, 0.05), 0 14px 30px rgba(17, 24, 39, 0.1), 0 4px 10px rgba(17, 24, 39, 0.05);
+  transform: translateY(-2px);
+}
+/* Landing-reel badges: soft "plates" instead of bordered boxes — no border, a
+   gentle shadow, and a light colored tint (the two badges get complementary
+   colors, with matching icon chips). */
+.dreel-page .stage-badge,
+.reel-page .stage-badge {
+  gap: 12px;
+  border: 0;
+  border-radius: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 6px 16px rgba(17, 24, 39, 0.07);
+}
+.dreel-page .stage-badge:hover,
+.reel-page .stage-badge:hover {
+  box-shadow: 0 2px 6px rgba(17, 24, 39, 0.06), 0 12px 26px rgba(17, 24, 39, 0.1);
+  transform: translateY(-2px);
+}
+/* first plate — soft green */
+.dreel-page .stage-badge:nth-child(1),
+.reel-page .stage-badge:nth-child(1) {
+  background: #eaf5ee;
+}
+.dreel-page .stage-badge:nth-child(1) .stage-badge-icon,
+.reel-page .stage-badge:nth-child(1) .stage-badge-icon {
+  background: #d5ecdd;
+  color: #2e7d4f;
+}
+/* second plate — soft blue */
+.dreel-page .stage-badge:nth-child(2),
+.reel-page .stage-badge:nth-child(2) {
+  background: #eaf1fb;
+}
+.dreel-page .stage-badge:nth-child(2) .stage-badge-icon,
+.reel-page .stage-badge:nth-child(2) .stage-badge-icon {
+  background: #d7e6f8;
+  color: var(--blue);
 }
 
 .stage-badge-icon {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: var(--blue-soft);
   color: var(--blue);
   flex-shrink: 0;
 }
 
+.stage-badge-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
 .stage-badge-text {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   line-height: 1.25;
   min-width: 0;
 }
@@ -580,12 +650,12 @@ code {
 .stage-badge-text b {
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 19px;
   color: var(--ink);
 }
 
 .stage-badge-text small {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--ink);
 }
 
@@ -594,20 +664,22 @@ code {
   align-self: flex-end;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   padding: 12px 4px;
   background: transparent;
   color: var(--blue);
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  /* Match the navbar "Industries" link (.nav-industries). */
+  font-size: 16px;
   text-decoration: none;
   transition: color 0.18s ease;
 }
 .stage-uc:hover {
   color: var(--blue-dark);
 }
-.stage-uc svg { display: block; }
+.stage-uc svg { display: block; width: 21px; height: 21px; }
+.uc-by { font-size: 16px; }
 
 /* Desktop-only "back to the first chapter" button (bottom-right, in sections) */
 .go-up {
@@ -723,6 +795,10 @@ code {
   border-radius: 14px;
   box-shadow: var(--shadow-md);
   will-change: transform;
+  /* Query container so the CTA poster (.cover-cta) can size its text in cqw —
+     the same frame-relative scale the coded scene uses — so every chapter's
+     CTA renders at an identical size. */
+  container-type: inline-size;
 }
 
 .video-el {
@@ -743,6 +819,114 @@ code {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* Chapters without a coded scene or video show a black poster with the chapter's
+   CTA in white — the same look as the Automating Management scene poster. */
+.cover-cta {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8%;
+  /* Deep blue starfield: a navy gradient behind the drifting white dots. */
+  background: radial-gradient(120% 100% at 50% 0%, #1a5f9c 0%, #0c3866 45%, #061c39 100%);
+  overflow: hidden;
+}
+.cover-cta .stage-cta {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  /* 3cqw == the coded scene poster's 38.4px in its 1280px space (38.4/1280),
+     so every chapter's CTA renders at the same size. */
+  font-size: 3cqw;
+  line-height: 1.18;
+}
+
+/* Forward-flying starfield (hyperspace) behind the black CTA posters — a canvas
+   painted by components/Starfield.jsx. Sits behind the headline (z-index 0) and
+   fades in when the poster is revealed, matching the old dot field's reveal. */
+.cover-cta-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  opacity: 0;
+}
+.cover-cta.is-revealed .cover-cta-stars {
+  animation: dots-fade-in 0.8s ease forwards;
+}
+
+/* A dot field drifting left → right across the black poster background. Shared
+   by the coded scene poster (.scene-poster) and the plain CTA posters. */
+.cover-cta-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  /* Frame-relative (cqw) so the dots render at the same real size on every
+     poster — the scene poster (inside the scaled .scene) matches via a fixed
+     size that cancels the scale (see .scene-poster .cover-cta-dots). */
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0.2cqw, transparent 0.26cqw);
+  background-size: 4cqw 4cqw;
+  animation: cover-dots-drift 3.2s linear infinite;
+}
+/* Fade the dot field in when the poster is revealed. */
+.cover-cta.is-revealed .cover-cta-dots {
+  animation: cover-dots-drift 3.2s linear infinite, dots-fade-in 0.8s ease forwards;
+}
+@keyframes cover-dots-drift {
+  to { background-position: 4cqw 0; }
+}
+@keyframes dots-fade-in {
+  to { opacity: 1; }
+}
+/* Chapter 1's poster lives inside the .scene, which is transform-scaled by
+   (frameWidth / 1280). These fixed lengths are 4cqw / 0.2cqw × 1280/100, so
+   after the scale they render identically to the .cover-cta posters above.
+   The scene poster mounts already in view, so it fades in on mount. */
+.scene-poster .cover-cta-dots {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.28) 2.56px, transparent 3.3px);
+  background-size: 51.2px 51.2px;
+  animation: cover-dots-drift-scene 3.2s linear infinite, dots-fade-in 0.8s ease forwards;
+}
+@keyframes cover-dots-drift-scene {
+  to { background-position: 51.2px 0; }
+}
+
+/* Headline reveal — each line fades + rises in, staggered, when the poster is
+   revealed (the CTA posters toggle .is-revealed as they scroll into view; the
+   scene poster plays it on mount). */
+.cover-cta .cta-line,
+.scene-poster .cta-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.cover-cta.is-revealed .cta-line {
+  animation: cta-line-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.14s);
+}
+.scene-poster .cta-line {
+  animation: cta-line-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.14s);
+}
+@keyframes cta-line-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badge reveal — each trust badge fades + rises in, staggered, when its reel
+   page scrolls into view (the reels toggle .is-in-view on the active page). */
+.dreel-page .stage-badge,
+.reel-page .stage-badge {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.dreel-page.is-in-view .stage-badge,
+.reel-page.is-in-view .stage-badge {
+  animation: cta-line-in 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--bi, 0) * 0.09s + 0.12s);
 }
 /* Lower-right control: a blue play triangle + "Play video" label on a light
    chip (no circle). The chip sits over the corner so the label stays legible
@@ -982,8 +1166,14 @@ html.cover-mask .cover-play:hover {
 }
 .dreel .video-frame-wrap {
   width: 100%;
-  max-width: min(100%, calc(52vh * 16 / 9));
+  max-width: min(100%, calc(63vh * 16 / 9));
   margin: 0 auto;
+}
+/* Match the content column to the video width so the two badges align with the
+   video's left/right edges and the "Use Cases by Industry" link sits at its
+   right edge. */
+.dreel .stage-inner {
+  max-width: min(100%, calc(63vh * 16 / 9));
 }
 
 /* Big blue "Play" button pushed to the bottom-right corner, outside the frame. */
@@ -995,18 +1185,16 @@ html.cover-mask .cover-play:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 40px;
-  padding: 0 19px 0 16px;
+  padding: 7px 12px;
   border: 0;
-  border-radius: 9px;
+  border-radius: 8px;
   background: #126eb3;
   color: #fff;
   font-family: var(--font-poppins), sans-serif;
-  font-weight: 700;
-  /* Button box shrunk ~30%; the word size stays 21px. */
-  font-size: 21px;
+  /* Text matches the "Book a demo" (.btn-demo) button. */
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 10px 22px rgba(18, 110, 179, 0.42);
   transition: background 0.18s ease, transform 0.18s ease;
 }
 .corner-play:hover {
@@ -1015,17 +1203,19 @@ html.cover-mask .cover-play:hover {
 }
 .corner-play svg {
   display: block;
-  margin-left: 2px;
-  width: 19px;
-  height: 19px;
+  width: 16px;
+  height: 16px;
+}
+/* Option 2 (press 2): tuck the Play button INSIDE the frame's bottom-right
+   corner instead of letting it protrude past the edge (option 1 / press 1). */
+.corner-play--inside {
+  right: 14px;
+  bottom: 14px;
 }
 
 @media (max-width: 900px) {
   .corner-play {
-    /* Box shrunk ~30%; word size stays 18px. */
-    height: 35px;
-    padding: 0 15px 0 12px;
-    font-size: 18px;
+    padding: 6px 11px;
     right: -4px;
     bottom: -6px; /* moved up so it stops crowding the content below */
   }
@@ -1044,24 +1234,27 @@ html.cover-mask .cover-play:hover {
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   z-index: 3;
 }
+/* Rounded-square tiles: white with a light border + blue chevron; hover fills
+   blue with a white chevron. */
 .reel-nav-btn {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   border: 1px solid var(--divider);
-  border-radius: 50%;
+  border-radius: 10px;
   background: #fff;
   color: var(--blue);
-  box-shadow: 0 8px 20px rgba(15, 40, 80, 0.16);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 .reel-nav-btn:hover {
   background: var(--blue);
+  border-color: var(--blue);
   color: #fff;
   transform: translateY(-1px);
 }
@@ -1459,9 +1652,10 @@ html.cover-mask .cover-play:hover {
   appearance: none;
   -webkit-appearance: none;
   padding: 12px 50px 12px 16px;
+  /* Same text font as the dropdown rows (.ch-menu-title). */
   font-family: var(--font-poppins), sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.3;
   color: var(--ink);
   text-align: left;
@@ -1518,6 +1712,22 @@ html.cover-mask .cover-play:hover {
   color: #fff;
 }
 
+/* Number-side option 1: move the 01 / 02 count to the LEFT of the title (the
+   default keeps it on the right). Mirrors the desktop TOC's number-side toggle
+   so keys 1 / 2 reposition the number in the mobile selector + dropdown too. */
+/* Align the selector's number + title columns with the dropdown rows below:
+   number at 16px, title at 38px (16 + 18px number + 4px gap). */
+.stage-chapters.is-num-left .stage-chapters-select {
+  padding-left: 38px;
+  padding-right: 40px;
+}
+.stage-chapters.is-num-left .stage-chapters-count {
+  left: 16px;
+  right: auto;
+  width: 18px;
+  text-align: left;
+}
+
 /* Full-page chapter dropdown menu (opens under the pinned selector) */
 .ch-menu {
   position: fixed;
@@ -1543,7 +1753,7 @@ html.cover-mask .cover-play:hover {
   justify-content: space-between;
   gap: 12px;
   width: 100%;
-  padding: 15px 18px;
+  padding: 10px 16px;
   border: 0;
   border-bottom: 1px solid var(--divider);
   background: transparent;
@@ -1573,6 +1783,34 @@ html.cover-mask .cover-play:hover {
 .ch-menu-item.is-active .ch-menu-num {
   color: var(--blue);
 }
+/* Number-side option 1: the count sits before the title on the left (default is
+   right). Featured rows keep their title + arrow layout untouched. The number
+   gets a fixed width so every title starts at the same x (aligned column), with
+   just a space-sized gap between the number and the title. */
+/* Rows are tightened, rounded pills inset 16px each side so they line up with
+   the selector box; the 16px inset + 16px padding keeps the number/title columns
+   aligned with the selector (number at 32px, title at 54px). */
+.ch-menu.is-num-left .ch-menu-item:not(.ch-menu-item--featured) {
+  justify-content: flex-start;
+  gap: 4px;
+  width: auto;
+  margin: 1px 16px;
+  padding: 7px 16px;
+  border-radius: 10px;
+  border-bottom: 0;
+}
+.ch-menu.is-num-left .ch-menu-item--featured {
+  width: auto;
+  margin: 1px 16px;
+  padding: 7px 16px;
+  border-radius: 10px;
+  border-bottom: 0;
+}
+.ch-menu.is-num-left .ch-menu-num {
+  order: -1;
+  width: 18px;
+  text-align: left;
+}
 /* "Use Cases by Industry" entry — styled like the other rows: blue text and
    arrow on a white background. */
 .ch-menu-item--featured {
@@ -1584,6 +1822,84 @@ html.cover-mask .cover-play:hover {
 .ch-menu-arrow {
   color: var(--blue);
 }
+
+/* Mobile expandable sections: tapping a section reveals its titles as an
+   animated indented tree (mirrors the desktop right-rail TOC). */
+.ch-menu-group { border-bottom: 0; }
+.ch-menu-group .ch-menu-item { border-bottom: 0; }
+/* Title takes the row so the number + chevron stay grouped on the right. */
+.ch-menu-group .ch-menu-title { flex: 1; }
+.ch-menu-chev {
+  flex: none;
+  color: var(--blue);
+  transition: transform 0.2s ease;
+}
+.ch-menu-chev.is-open { transform: rotate(180deg); }
+.ch-menu-subwrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+.ch-menu-group.is-open .ch-menu-subwrap {
+  grid-template-rows: 1fr;
+}
+.ch-menu-subs {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 6px 44px; /* indented further right than the section titles */
+  overflow: hidden;
+  min-height: 0;
+}
+.ch-menu-sub-li {
+  position: relative;
+  padding-left: 22px;
+}
+/* vertical trunk + L-shaped elbow to each title */
+.ch-menu-sub-li::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--divider);
+}
+.ch-menu-sub-li:last-child::before { bottom: auto; height: 18px; }
+.ch-menu-sub-li::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 18px;
+  width: 11px;
+  height: 1.5px;
+  background: var(--divider);
+}
+.ch-menu-sub-li:has(.ch-menu-sub.is-active)::after { background: var(--blue); }
+.ch-menu-sub {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 7px 0;
+  cursor: pointer;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+/* a. b. c. marker to the left of each sub-title */
+.ch-menu-sub-letter {
+  flex: none;
+  color: var(--muted);
+  font-weight: 600;
+}
+.ch-menu-sub-text { min-width: 0; }
+.ch-menu-sub.is-active { color: var(--blue); font-weight: 600; }
+.ch-menu-sub.is-active .ch-menu-sub-letter { color: var(--blue); }
 
 /* ============================================================
    Mobile reel — a TikTok-style vertical pager of chapters.
@@ -3518,11 +3834,25 @@ html.cover-mask .cover-play:hover {
 .scene-poster {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   z-index: 6;
-  background: #000;
+  /* Deep blue starfield: a navy gradient behind the drifting white dots. */
+  background: radial-gradient(120% 100% at 50% 0%, #1a5f9c 0%, #0c3866 45%, #061c39 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8%;
+  overflow: hidden;
+}
+/* The chapter's stage-cta headline, shown in white on the black poster. Sized up
+   for the 1280×720 scene coordinate space. */
+.scene-poster .stage-cta {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  /* 38.4px in the 1280px scene space == 3cqw of the frame, matching the other
+     chapters' .cover-cta posters (see .cover-cta .stage-cta). */
+  font-size: 38.4px;
+  line-height: 1.15;
 }
 /* Once the scene has started it has its own controls, so drop the corner Play. */
 .video-frame-wrap:has(.scene-fit.is-started) .corner-play {
@@ -4180,30 +4510,8 @@ html:has(.ireel) {
   padding: 20px 22px 24px;
   box-shadow: 0 8px 24px rgba(15, 40, 80, 0.07);
 }
-.ireel-cases-btn {
-  position: absolute;
-  right: -9px;
-  bottom: -15px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 40px;
-  padding: 0 15px 0 19px;
-  border-radius: 9px;
-  background: #126eb3;
-  color: #fff;
-  font-family: var(--font-poppins), sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  text-decoration: none;
-  transition: background 0.18s ease, transform 0.18s ease;
-}
-.ireel-cases-btn:hover {
-  background: #0f5c96;
-  transform: translateY(-2px);
-}
-.ireel-cases-btn svg { display: block; }
+/* Styled like the landing's "Use Cases by Industry" link (.stage-uc): plain blue
+   text + arrow, no fill. */
 /* No blue glow on the corner buttons in the industry reel. */
 .ireel .corner-play { box-shadow: none; }
 
@@ -4269,7 +4577,7 @@ html:has(.ireel) {
   line-height: 1.6;
   color: var(--muted);
 }
-.cases-sec { margin-top: 48px; }
+.cases-sec { margin-top: 48px; scroll-margin-top: 88px; /* clear the sticky topbar when anchored */ }
 .cases-sec-title {
   margin: 0 0 18px;
   padding-bottom: 10px;
@@ -4367,27 +4675,28 @@ html:has(.ireel) {
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   z-index: 4;
 }
+/* Same rounded-square tiles as the landing reel (.reel-nav-btn). */
 .ireel-side-btn {
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(18, 110, 179, 0.16);
-  border-radius: 50%;
+  border: 1px solid var(--divider);
+  border-radius: 10px;
   background: #fff;
   color: var(--blue);
-  box-shadow: 0 8px 20px rgba(15, 40, 80, 0.16), 0 1px 3px rgba(15, 40, 80, 0.10);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 .ireel-side-btn:hover {
   background: var(--blue);
+  border-color: var(--blue);
   color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(18, 110, 179, 0.36);
+  transform: translateY(-1px);
 }
 .ireel-side-btn:active { transform: translateY(0); }
 .ireel-side-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
@@ -6504,53 +6813,93 @@ html[dir="rtl"] .itoc-nav-count {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 2px;
+  /* Custom blue scrollbar on the right (Firefox) */
   scrollbar-width: thin;
+  scrollbar-color: var(--blue) transparent;
 }
-.ireel-toc-group { display: flex; flex-direction: column; gap: 4px; }
+/* Custom blue scrollbar on the right (WebKit/Chromium) */
+.ireel-toc-list::-webkit-scrollbar {
+  width: 11px;
+}
+.ireel-toc-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ireel-toc-list::-webkit-scrollbar-thumb {
+  background: var(--blue);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.ireel-toc-list::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-dark);
+  background-clip: padding-box;
+}
+.ireel-toc-group { display: flex; flex-direction: column; gap: 0; }
 .ireel-toc-sec {
   display: flex;
   align-items: baseline;
-  gap: 12px;
   text-align: left;
   background: none;
   border: none;
-  padding: 0;
+  padding: 3px 0;
   cursor: pointer;
   font-family: inherit;
   font-weight: 600;
-  font-size: 19px;
-  line-height: 1.25;
+  font-size: 16px;
+  line-height: 1.3;
   color: var(--ink);
   transition: color 0.15s ease;
 }
-/* leading 01 / 02 / 03 … number on each section title */
-.ireel-toc-num {
-  flex: none;
-  font-size: 14px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
-  transition: color 0.15s ease;
-}
 .ireel-toc-sec:hover { color: var(--blue); }
-.ireel-toc-sec:hover .ireel-toc-num { color: var(--blue); }
-.ireel-toc-group.is-active .ireel-toc-sec,
-.ireel-toc-group.is-active .ireel-toc-num { color: var(--blue); }
-/* Number-side option 2: the 01 / 02 / 03 moves after the title, toward the right
-   but inset from the edge (padding-right pulls it in — not all the way right). */
-.ireel-toc.is-num-right .ireel-toc-sec {
-  justify-content: space-between;
-  padding-right: 40px;
+.ireel-toc-group.is-active .ireel-toc-sec { color: var(--blue); }
+/* Animated accordion: the wrapper animates height (0fr → 1fr) so the active
+   section's titles expand while the previous one collapses. */
+.ireel-toc-items-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
 }
-.ireel-toc.is-num-right .ireel-toc-num { order: 2; }
+.ireel-toc-group.is-open .ireel-toc-items-wrap {
+  grid-template-rows: 1fr;
+}
+/* Slide titles under the active section, drawn as an indented tree: a vertical
+   trunk with an L-shaped elbow branching to each title. */
 .ireel-toc-items {
   list-style: none;
-  margin: 2px 0 0 8px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  border-left: 1px solid var(--divider);
+  margin: 0;
+  padding: 6px 0 2px 6px;
+  overflow: hidden;
+  min-height: 0;
+}
+.ireel-toc-item-li {
+  position: relative;
+  padding-left: 22px;
+}
+/* vertical trunk */
+.ireel-toc-item-li::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--divider);
+}
+/* last row: the trunk stops at the elbow, forming the foot of the L */
+.ireel-toc-item-li:last-child::before {
+  bottom: auto;
+  height: 15px;
+}
+/* horizontal branch (the elbow) */
+.ireel-toc-item-li::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 15px;
+  width: 11px;
+  height: 1.5px;
+  background: var(--divider);
 }
 .ireel-toc-item {
   display: block;
@@ -6558,22 +6907,20 @@ html[dir="rtl"] .itoc-nav-count {
   text-align: left;
   background: none;
   border: none;
-  border-left: 2px solid transparent;
-  margin-left: -1px;
-  padding: 4px 0 4px 16px;
+  padding: 4px 0;
   cursor: pointer;
   font-family: inherit;
   font-weight: 500; /* Poppins Medium */
   font-size: 15.5px;
   line-height: 1.35;
   color: var(--ink-soft);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease;
 }
 .ireel-toc-item:hover { color: var(--blue); }
-.ireel-toc-item.is-active {
-  color: var(--blue);
-  font-weight: 600;
-  border-left-color: var(--blue);
+.ireel-toc-item.is-active { color: var(--blue); font-weight: 600; }
+/* highlight the active title's connector too */
+.ireel-toc-item-li:has(.ireel-toc-item.is-active)::after {
+  background: var(--blue);
 }
 /* hide only on small screens (mobile uses the pinned selector / dropdown) */
 @media (max-width: 860px) {
@@ -6586,3 +6933,550 @@ html[dir="rtl"] .itoc-nav-count {
 @media (max-width: 860px) {
   .isl-page .btn-demo { display: none; }
 }
+
+/* ---- Landing: right-hand outline sidebar (LandingToc) ------------------- */
+/* Reuses the industry .ireel-toc styling; replaces the navbar chapter dropdown
+   on desktop. Hidden below the desktop-reel breakpoint (the mobile reel keeps
+   its own pinned selector). */
+.lp-page { --lp-toc-w: min(340px, 28vw); }
+.lp-page .nav-chapters { display: none; }
+.lp-toc {
+  width: var(--lp-toc-w);
+  background: #fff;
+  border-left: 1px solid #eef2f6;
+  /* Small right pad so the scrollbar sits on the far right, past the section
+     content (which keeps its own right inset), without being clipped. */
+  padding: 26px 4px 30px 20px;
+}
+/* Blue scrollbar on the right of the landing sidebar — wide and easy to grab. */
+.lp-toc .ireel-toc-list {
+  scrollbar-width: auto;
+  scrollbar-color: #1271b7 transparent;
+}
+.lp-toc .ireel-toc-list::-webkit-scrollbar {
+  width: 22px;
+}
+.lp-toc .ireel-toc-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.lp-toc .ireel-toc-list::-webkit-scrollbar-thumb {
+  background: #1271b7;
+  border-radius: 999px;
+  /* Thin transparent inset ring so the thumb reads as a fat bar without touching
+     the track edges. min-height keeps it grabbable on long lists. */
+  border: 4px solid transparent;
+  background-clip: padding-box;
+  min-height: 48px;
+}
+.lp-toc .ireel-toc-list::-webkit-scrollbar-thumb:hover {
+  background: #0d5a92;
+  background-clip: padding-box;
+}
+.lp-toc .ireel-toc-list::-webkit-scrollbar-thumb:active {
+  background: #0a4d7d;
+  background-clip: padding-box;
+}
+/* Drag the left edge to resize the sidebar (updates --lp-toc-w, so the reel's
+   reserved space follows). */
+.lp-toc-resizer {
+  position: absolute;
+  left: -3px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: ew-resize;
+  z-index: 3;
+}
+.lp-toc-resizer::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+.lp-toc-resizer:hover::before {
+  background: var(--blue);
+}
+
+/* Section list styled after the product: light-blue pill headers with a count
+   badge (black title), and a highlighted active-item pill (blue text). */
+.lp-toc .ireel-toc-group { gap: 0; }
+.lp-toc .ireel-toc-sec {
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-right: 14px; /* keep the highlight clear of the wider scrollbar */
+  padding: 5px 12px; /* match the subsection highlight's tighter box */
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+  transition: background 0.15s ease;
+}
+.lp-toc .ireel-toc-sec:hover {
+  color: #000;
+}
+.lp-toc .ireel-toc-num {
+  flex: none;
+  min-width: 24px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #d3e6f8;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+/* Items: clean list (no tree connectors); gray text, active = blue pill. */
+/* The guide line + insets live on the .lp-items container so it stays continuous
+   across the preview list and the animated "rest" list (see .lp-rest). */
+.lp-toc .lp-items {
+  margin-top: 3px;
+  margin-left: 12px;
+}
+.lp-toc .ireel-toc-items {
+  padding: 0;
+  margin: 0;
+  border-left: 0;
+}
+/* Extra items (beyond the preview) collapse/expand smoothly via grid-rows. */
+.lp-rest {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
+}
+.lp-items.is-open .lp-rest {
+  grid-template-rows: 1fr;
+}
+.lp-rest > ul {
+  overflow: hidden;
+  min-height: 0;
+}
+/* Insets live on the li so the button can fill it (width:100%); this makes the
+   item highlight's right edge line up with the section title's highlight. */
+.lp-toc .ireel-toc-item-li { padding-left: 0; margin: 0 8px; }
+.lp-toc .ireel-toc-item-li::before,
+.lp-toc .ireel-toc-item-li::after { display: none; }
+.lp-toc .ireel-toc-item {
+  /* A fixed ~30-character column (capped to the sidebar width); left-aligned so
+     there's a gap between it and the scrollbar on the right. */
+  box-sizing: border-box;
+  width: 30ch;
+  max-width: 100%;
+  padding: 5px 12px;
+  border: 3px solid transparent; /* reserved so the active border adds no shift */
+  border-radius: 6px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 15px;
+  transition: color 0.18s ease, font-weight 0.18s ease;
+}
+.lp-toc .ireel-toc-item:hover { color: #000; font-weight: 600; }
+/* Active subsection: highlighted with a blue border + black text. */
+.lp-toc .ireel-toc-item.is-active {
+  border-color: #1271b7;
+  color: #000;
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .lp-toc { display: none; }
+}
+/* Make room on the right of the centered hero so the sidebar never overlaps it,
+   but keep the reserved strip tight so the reel gets more space. */
+@media (min-width: 901px) {
+  .dreel-page {
+    padding-right: calc(var(--lp-toc-w) + 24px);
+  }
+}
+
+/* Press "h" to hide the right-hand outline sidebar (landing + industry reels)
+   and reclaim its reserved space so the reel re-centers. */
+.hide-toc .ireel-toc { display: none; }
+@media (min-width: 901px) {
+  .hide-toc .dreel-page { padding-right: 0; }
+}
+@media (min-width: 861px) {
+  .hide-toc .ireel-page { padding-right: 0; }
+}
+/* Mobile: the landing's own pinned selector (.lp-bar) + menu replace the mobile
+   reel's chapter selector. */
+@media (max-width: 900px) {
+  .lp-page .reel-bar { display: none; }
+}
+/* Items with no mapped chapter are inert. */
+.lp-toc .ireel-toc-item:disabled,
+.lp-menu .ch-menu-sub:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Every section shows a 2-item preview by default; the open section expands to
+   all items (animated). Collapsed height ≈ two rows in each context. */
+.lp-items {
+  overflow: hidden;
+}
+/* Mobile menu still hard-hides items past the preview (no animation there);
+   the desktop sidebar animates them via .lp-rest instead. */
+.lp-menu .lp-items:not(.is-open) .ch-menu-sub-li:nth-child(n + 4) {
+  display: none;
+}
+/* "View more / less" toggle under a section's preview — a small blue square
+   with a white down chevron (flips up when expanded), pushed to the right so it
+   lines up with the items' right edge. */
+.lp-more {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 2px 8px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: #1271b7;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.lp-more:hover { background: #22699f; }
+.lp-more-chev { transition: transform 0.2s ease; }
+.lp-more-chev.is-open { transform: rotate(180deg); }
+
+/* ---- Landing sidebar layout OPTION 2 (press 2): a left-of-title expand
+   toggle (▶ facing the title, rotating ▼) that opens the subsections as an
+   L-shaped tree. Option 1 (press 1, default) keeps the "View more" button. --- */
+/* Option 1: no leading toggle. */
+.lp-opt-1 .lp-tree-toggle { display: none; }
+/* Option 2: show the leading toggle, hide the "View more" button. */
+.lp-opt-2 .lp-more { display: none; }
+.lp-opt-2 .ireel-toc-sec {
+  justify-content: flex-start;
+  gap: 6px;
+}
+/* Same blue square + white chevron as the "View more" button (.lp-more). */
+.lp-tree-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: #1271b7;
+  color: #fff;
+  cursor: pointer;
+}
+.lp-tree-chev {
+  transition: transform 0.2s ease;
+  transform: rotate(-90deg); /* ▶ facing the title when collapsed */
+}
+.lp-tree-chev.is-open {
+  transform: rotate(0deg); /* ▼ down when expanded */
+}
+/* Re-enable the L-shaped connectors (disabled for option 1's flat list). */
+.lp-opt-2 .ireel-toc-item-li {
+  position: relative;
+  margin: 0;
+  padding-left: 22px;
+}
+/* Continuous vertical trunk — spans each item so the line never breaks between
+   the preview items and the ones revealed on expand. */
+.lp-opt-2 .ireel-toc-item-li::before {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--divider);
+}
+/* Rounded elbow branching from the trunk to each item. */
+.lp-opt-2 .ireel-toc-item-li::after {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 0;
+  width: 11px;
+  height: 16px;
+  background: transparent;
+  border-bottom: 1.5px solid var(--divider);
+  border-bottom-left-radius: 6px;
+}
+/* Option 2 collapsed shows only the first 3 items (preview). */
+.lp-opt-2 .lp-items:not(.is-open) .ireel-toc-item-li:nth-child(n + 4) {
+  display: none;
+}
+/* Trunk ends (rounded L) at the last VISIBLE item: the 3rd when collapsed, the
+   actual last item when expanded. */
+.lp-opt-2 .ireel-toc-item-li:last-child::before {
+  bottom: auto;
+  height: 10px; /* stop where the rounded corner (radius 6) begins — no overshoot */
+}
+.lp-opt-2 .lp-items.is-open .ireel-toc-item-li:not(:last-child)::before {
+  bottom: 0;
+  height: auto;
+}
+.lp-opt-2 .lp-items:not(.is-open) .ireel-toc-item-li:nth-child(3)::before {
+  bottom: auto;
+  height: 10px;
+}
+/* All tree connectors stay gray. (The base tree fills the active item's ::after
+   with solid blue, so keep it transparent to preserve the plain gray elbow.) */
+.lp-opt-2 .ireel-toc-item-li:has(.ireel-toc-item.is-active)::after {
+  background: transparent;
+}
+
+/* ============================================================
+   Admin dashboard (local content editor) — components/AdminDashboard.jsx
+   ============================================================ */
+.adm {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(420px, 560px) 1fr;
+  background: #f5f7fa;
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+@media (max-width: 1000px) {
+  .adm { grid-template-columns: 1fr; }
+  .adm-preview { display: none; }
+}
+.adm-editor {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px 22px 80px;
+  border-right: 1px solid #e4eaf1;
+  background: #fff;
+}
+.adm-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -20px -22px 18px;
+  padding: 14px 22px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid #e4eaf1;
+}
+.adm-topbar h1 { margin: 0; font-size: 18px; font-weight: 700; flex: 1; }
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.adm-btn--primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+.adm-btn--primary:disabled { opacity: 0.5; cursor: default; }
+.adm-btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
+.adm-status { font-size: 12px; color: var(--muted); }
+.adm-section {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px solid #e7edf4;
+  border-radius: 12px;
+  background: #fff;
+}
+.adm-section > h2 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.adm-field { margin: 0 0 10px; }
+.adm-field > label {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft, #475569);
+}
+.adm-input,
+.adm-textarea,
+.adm-select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+}
+.adm-textarea { resize: vertical; min-height: 52px; }
+.adm-card {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #e7edf4;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+.adm-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+.adm-card-head h3 { margin: 0; font-size: 13px; font-weight: 700; flex: 1; }
+.adm-row { display: flex; gap: 8px; align-items: center; }
+.adm-row > .adm-input { flex: 1; }
+.adm-hint { font-size: 11px; color: var(--muted); margin: 4px 0 0; }
+.adm-x {
+  border: 0;
+  background: #fdecec;
+  color: #c0392b;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  flex: none;
+}
+.adm-preview { height: 100vh; }
+.adm-preview iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+.adm-thumb { height: 40px; border-radius: 6px; border: 1px solid var(--divider); margin-top: 6px; }
+
+/* ---- Inline editing affordances (components/InlineEdit.jsx) ------------- */
+.edit-text {
+  outline: none;
+  border-radius: 4px;
+  transition: box-shadow 0.12s ease, background 0.12s ease;
+  cursor: text;
+  min-width: 1ch;
+}
+.edit-text:hover {
+  background: rgba(18, 113, 183, 0.08);
+  box-shadow: 0 0 0 2px rgba(18, 113, 183, 0.18);
+}
+.edit-text[contenteditable='true'] {
+  background: #fff;
+  color: #111;
+  box-shadow: 0 0 0 2px var(--blue);
+}
+.edit-icon {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.edit-icon:hover { outline: 2px solid var(--blue); }
+.edit-video-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(18, 113, 183, 0.92);
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+.edit-video-btn:hover { background: var(--blue-dark); }
+.edit-savebar {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px 18px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+}
+.edit-savebar-title { font-family: var(--font-poppins), sans-serif; font-weight: 600; font-size: 13px; }
+.edit-savebar-status { font-size: 12px; color: #9fb4cc; min-width: 90px; }
+.edit-savebar-btn {
+  height: 34px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.edit-savebar-btn--primary { background: var(--blue); border-color: var(--blue); }
+
+/* ---- Landing MOBILE dropdown — same style as the desktop landing sidebar
+   (.lp-toc): count badge, section pill on open, items behind a left guide line
+   (no A./B. markers, no tree). --------------------------------------------- */
+.lp-menu .ch-menu-item {
+  justify-content: space-between;
+  gap: 10px;
+  margin: 1px 12px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border-bottom: 0;
+  background: transparent;
+}
+.lp-menu .ch-menu-title { flex: 1; font-size: 17px; color: var(--ink); }
+.lp-menu .ch-menu-group.is-open .ch-menu-item { background: var(--blue-soft); }
+.lp-menu .ch-menu-num {
+  order: 0;
+  flex: none;
+  width: auto;
+  min-width: 24px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #d3e6f8;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+.lp-menu .ch-menu-subs {
+  padding: 4px 0;
+  margin: 0 12px 6px 24px;
+  border-left: 1.5px solid var(--divider);
+}
+.lp-menu .ch-menu-sub-li { padding-left: 0; }
+.lp-menu .ch-menu-sub-li::before,
+.lp-menu .ch-menu-sub-li::after { display: none; }
+.lp-menu .ch-menu-sub-letter { display: none; }
+.lp-menu .ch-menu-sub {
+  padding: 9px 16px 9px 18px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.lp-menu .ch-menu-sub.is-active { background: var(--blue-soft); color: var(--blue); font-weight: 600; }

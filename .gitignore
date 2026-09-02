@@ -22,6 +22,10 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local admin content DB + uploads (kept local, never pushed)
+/content/landing.local.json
+/public/uploads/
+
 # vercel
 .vercel
 

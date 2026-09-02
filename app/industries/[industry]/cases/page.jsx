@@ -39,10 +39,16 @@ function paragraphs(text) {
     .filter(Boolean);
 }
 
-export default async function IndustryCasesPage({ params }) {
+export default async function IndustryCasesPage({ params, searchParams }) {
   const { industry } = await params;
+  const sp = (await searchParams) || {};
   const ind = getIndustry(industry);
   if (!ind) notFound();
+
+  // Preserve the reel page the reader came from so "Back" returns them there.
+  const from = Array.isArray(sp.from) ? sp.from[0] : sp.from;
+  const backHref =
+    from != null && from !== '' ? `/industries/${ind.id}?p=${from}` : `/industries/${ind.id}`;
 
   return (
     <div className="page cases-page">
@@ -51,7 +57,7 @@ export default async function IndustryCasesPage({ params }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="Taskmaverick" width="200" height="28" />
         </Link>
-        <Link href={`/industries/${ind.id}`} className="cases-back">
+        <Link href={backHref} className="cases-back">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>

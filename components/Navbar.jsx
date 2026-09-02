@@ -168,6 +168,8 @@ export default function Navbar({
   chapters = [],
   activeId,
   onSelect,
+  onSelectItem,
+  activeItemId,
   atUseCases = false,
   onIndustries,
   onExitUseCases,
@@ -176,11 +178,18 @@ export default function Navbar({
   const t = useT();
   const [open, setOpen] = useState(false);
   const [chOpen, setChOpen] = useState(false);
+  // Which chapter's sub-titles are expanded in the dropdown (accordion).
+  const [expandedId, setExpandedId] = useState(null);
   const close = () => setOpen(false);
 
   const pad = (n) => String(n).padStart(2, '0');
   const activeIdx = chapters.findIndex((c) => c.id === activeId);
   const activeTitle = t(chapters[activeIdx]?.title || 'Chapters');
+
+  // Expand the active chapter whenever the dropdown opens.
+  useEffect(() => {
+    if (chOpen) setExpandedId(activeId);
+  }, [chOpen, activeId]);
 
   // Lock the page behind the panel while it's open, and close on Escape.
   useEffect(() => {
@@ -253,22 +262,57 @@ export default function Navbar({
               </button>
               {chOpen && !atUseCases && (
                 <div className="nav-ch-menu" role="listbox">
-                  {chapters.map((c, i) => (
-                    <button
-                      key={c.id}
-                      type="button"
-                      role="option"
-                      aria-selected={c.id === activeId}
-                      className={`nav-ch-item${c.id === activeId ? ' is-active' : ''}`}
-                      onClick={() => {
-                        onSelect?.(c.id);
-                        setChOpen(false);
-                      }}
-                    >
-                      <span className="nav-ch-item-title">{t(c.title)}</span>
-                      <span className="nav-ch-item-num">{pad(i + 1)}</span>
-                    </button>
-                  ))}
+                  {chapters.map((c, i) => {
+                    const items = c.items || [];
+                    const hasItems = items.length > 0;
+                    const expanded = expandedId === c.id;
+                    return (
+                      <div className="nav-ch-group" key={c.id}>
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={c.id === activeId}
+                          aria-expanded={hasItems ? expanded : undefined}
+                          className={`nav-ch-item${c.id === activeId ? ' is-active' : ''}`}
+                          onClick={() => {
+                            if (hasItems) {
+                              setExpandedId(expanded ? null : c.id);
+                            } else {
+                              onSelect?.(c.id);
+                              setChOpen(false);
+                            }
+                          }}
+                        >
+                          <span className="nav-ch-item-title">{t(c.title)}</span>
+                          <span className="nav-ch-item-num">{pad(i + 1)}</span>
+                          {hasItems && (
+                            <svg className={`nav-ch-subchev${expanded ? ' is-open' : ''}`} width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M6 9l6 6 6-6" />
+                            </svg>
+                          )}
+                        </button>
+                        {hasItems && expanded && (
+                          <div className="nav-ch-sublist">
+                            {items.map((it, k) => (
+                              <button
+                                key={`${it.id}-${k}`}
+                                type="button"
+                                role="option"
+                                aria-selected={it.id === activeItemId}
+                                className={`nav-ch-subitem${it.id === activeItemId ? ' is-active' : ''}`}
+                                onClick={() => {
+                                  onSelectItem?.(it.id);
+                                  setChOpen(false);
+                                }}
+                              >
+                                {t(it.title)}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -276,23 +320,27 @@ export default function Navbar({
         )}
 
         <div className="nav-right">
-          <a
-            href="/#use-cases"
-            className="btn-demo"
-            onClick={(e) => {
-              // On the landing, scroll down to the industries section; elsewhere
-              // let the link navigate to /#use-cases.
-              if (onIndustries && document.getElementById('use-cases')) {
-                e.preventDefault();
-                onIndustries();
-              }
-            }}
-          >
-            {t('Industries')}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M12 5v14M5 12l7 7 7-7" />
-            </svg>
-          </a>
+          {/* Hidden on the industry reel (where the back button already leads
+              out); shown everywhere else. */}
+          {!backTo && (
+            <a
+              href="/#use-cases"
+              className="nav-industries"
+              onClick={(e) => {
+                // On the landing, scroll down to the industries section; elsewhere
+                // let the link navigate to /#use-cases.
+                if (onIndustries && document.getElementById('use-cases')) {
+                  e.preventDefault();
+                  onIndustries();
+                }
+              }}
+            >
+              {t('Industries')}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+            </a>
+          )}
 
           <a
             href="/signin"

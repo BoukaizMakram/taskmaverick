@@ -14,55 +14,41 @@ import { useEffect, useRef } from 'react';
 import { smoothScrollTo } from '@/lib/smoothScroll';
 import CoverPlayer from '@/components/CoverPlayer';
 import CornerPlay from '@/components/CornerPlay';
+import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
-import { BADGES, BadgeIcon } from '@/components/HeroVideo';
+import { BADGES } from '@/components/HeroVideo';
 import { useT } from '@/lib/i18n/LanguageProvider';
+import { useEdit, EditText, EditIcon, EditVideoButton } from '@/components/InlineEdit';
 
 const SCENES = {
   'posted-missions': PostedMissionsScene,
 };
 
-function ChapterMedia({ chapter, src, poster }) {
+function ChapterMedia({ chapter, src, poster, editPath }) {
   // A coded scene wins; the cover image is its poster (shown until you hit play).
   const Scene = chapter.scene ? SCENES[chapter.scene] : null;
-  if (Scene) return <Scene poster={chapter.cover} />;
+  if (Scene) return <Scene poster={chapter.cover} title={chapter.heroTitle || chapter.title} />;
 
-  if (chapter.cover) {
+  const video = chapter.src || src;
+  if (video) {
     return (
       <CoverPlayer
         cover={chapter.cover}
-        video={chapter.src || src || ''}
+        video={video}
         poster={poster}
         alt={chapter.heroTitle || chapter.title}
       />
     );
   }
 
-  const s = chapter.src || src;
-  if (s) {
-    return (
-      <video
-        className="video-el"
-        src={s}
-        poster={poster || undefined}
-        controls
-        playsInline
-        preload="metadata"
-        // Free smooth scroll means you can pause between chapters — hitting play
-        // recenters this chapter's page in the viewport.
-        onPlay={(e) => {
-          const page = e.currentTarget.closest('.dreel-page');
-          if (page) smoothScrollTo(page);
-        }}
-      />
-    );
-  }
-
-  return <div className="video-placeholder" aria-hidden="true" />;
+  // No coded scene and no video → a black poster with the chapter's CTA inside
+  // the frame, matching the Automating Management scene poster.
+  return <CtaPoster title={chapter.heroTitle || chapter.title} editPath={editPath} />;
 }
 
 export default function DesktopReel({ chapters = [], activeId, onSelect, onIndustries, src, poster }) {
   const t = useT();
+  const edit = useEdit();
   const wrapRef = useRef(null);
   const pages = useRef({});
   const visibleId = useRef(activeId);
@@ -83,6 +69,11 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
             visibleId.current = id;
             onSelect?.(id);
           }
+          // Mark the most-visible page so its badges (and any reveal) animate in;
+          // clearing it on the others lets them re-animate when scrolled back to.
+          Object.values(pages.current).forEach((el) => {
+            if (el) el.classList.toggle('is-in-view', el === best.target);
+          });
         }
       },
       { threshold: [0.5, 0.75, 1] }
@@ -143,9 +134,15 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
             <div className="stage-inner">
               <div className="video-frame-wrap">
                 <div className="video-frame">
-                  <ChapterMedia chapter={c} src={src} poster={poster} />
+                  <ChapterMedia
+                    chapter={c}
+                    src={src}
+                    poster={poster}
+                    editPath={['chapters', c.baseIndex, 'heroTitle']}
+                  />
                 </div>
                 <CornerPlay />
+                <EditVideoButton path={['chapters', c.baseIndex, 'src']} />
 
                 {/* Up / down chapter navigation on the right of the video. */}
                 <div className="reel-nav">
@@ -176,25 +173,20 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                 </div>
               </div>
 
-              <div className="stage-head">
-                <h1 className="stage-cta">
-                  {t(c.heroTitle || c.title)}
-                </h1>
-              </div>
-
               <ul className="stage-badges">
-                {(c.badges || BADGES).map((b) => (
-                  <li className="stage-badge" key={b.title}>
+                {(c.badges?.length ? c.badges : BADGES).slice(0, 2).map((b, bi) => (
+                  <li className="stage-badge" key={bi} style={{ '--bi': bi }}>
                     <span className="stage-badge-icon">
-                      <BadgeIcon name={b.icon} />
+                      <EditIcon name={b.icon} path={['chapters', c.baseIndex, 'badges', bi, 'icon']} />
                     </span>
                     <span className="stage-badge-text">
-                      <b>{t(b.title)}</b>
-                      <small>{t(b.sub)}</small>
+                      <EditText as="b" path={['chapters', c.baseIndex, 'badges', bi, 'title']} value={edit ? b.title : t(b.title)} />
+                      <EditText as="small" path={['chapters', c.baseIndex, 'badges', bi, 'sub']} value={edit ? b.sub : t(b.sub)} />
                     </span>
                   </li>
                 ))}
               </ul>
+
 
               <a
                 className="stage-uc"
@@ -204,7 +196,7 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                   onIndustries?.();
                 }}
               >
-                {t('Use Cases by Industry')}
+                <span>{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>

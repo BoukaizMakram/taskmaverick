@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import CoverPlayer from '@/components/CoverPlayer';
+import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 import { useT } from '@/lib/i18n/LanguageProvider';
@@ -23,40 +24,23 @@ const SCENES = {
 function ChapterMedia({ chapter, src, poster }) {
   // A coded scene wins; the cover image is its poster (shown until you hit play).
   const Scene = chapter.scene ? SCENES[chapter.scene] : null;
-  if (Scene) return <Scene poster={chapter.cover} />;
+  if (Scene) return <Scene poster={chapter.cover} title={chapter.heroTitle || chapter.title} />;
 
-  if (chapter.cover) {
+  const video = chapter.src || src;
+  if (video) {
     return (
       <CoverPlayer
         cover={chapter.cover}
-        video={chapter.src || src || ''}
+        video={video}
         poster={poster}
         alt={chapter.heroTitle || chapter.title}
       />
     );
   }
 
-  const s = chapter.src || src;
-  if (s) {
-    return (
-      <video
-        className="video-el"
-        src={s}
-        poster={poster || undefined}
-        controls
-        playsInline
-        preload="metadata"
-        // Recenter this chapter when the video is played.
-        onPlay={(e) => {
-          e.currentTarget
-            .closest('.reel-page')
-            ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }}
-      />
-    );
-  }
-
-  return <div className="video-placeholder" aria-hidden="true" />;
+  // No coded scene and no video → a black poster with the chapter's CTA inside
+  // the frame, matching the Automating Management scene poster.
+  return <CtaPoster title={chapter.heroTitle || chapter.title} />;
 }
 
 // Blue "Play" button pushed to the bottom-right corner, protruding outside the
@@ -125,6 +109,11 @@ export default function MobileReel({
         if (best && best.intersectionRatio >= 0.5) {
           const id = Number(best.target.dataset.id);
           if (id) onSelect?.(id);
+          // Mark the most-visible page so its badges animate in; clearing the
+          // others lets them re-animate when swiped back to.
+          Object.values(pages.current).forEach((el) => {
+            if (el) el.classList.toggle('is-in-view', el === best.target);
+          });
         }
       },
       { threshold: [0.5, 0.75, 1] }
@@ -208,7 +197,7 @@ export default function MobileReel({
                 onIndustries?.();
               }}
             >
-              <span className="ch-menu-title">{t('Use Cases by Industry')}</span>
+              <span className="ch-menu-title">{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
               <svg className="ch-menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
@@ -239,8 +228,8 @@ export default function MobileReel({
             <h1 className="reel-hero-title">{t(c.heroTitle || c.title)}</h1>
 
             <ul className="stage-badges reel-badges">
-              {(c.badges || BADGES).map((b) => (
-                <li className="stage-badge" key={b.title}>
+              {(c.badges || BADGES).slice(0, 2).map((b, bi) => (
+                <li className="stage-badge" key={b.title} style={{ '--bi': bi }}>
                   <span className="stage-badge-icon">
                     <BadgeIcon name={b.icon} />
                   </span>

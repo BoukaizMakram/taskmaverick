@@ -50,6 +50,7 @@ function buildDeck(industry) {
         pages.push({
           sectionIdx: sIdx,
           sectionName: sec.name,
+          sectionId: sec.id,
           media: s.media || fallback,
           ideas: [{ title: s.title, text: s.text }],
         });
@@ -121,19 +122,32 @@ export default function IndustrySlides({ industry }) {
 
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  // Which section's titles are expanded in the right-rail TOC. Independent of
+  // navigation: clicking a section only expands it (accordion), it never jumps.
+  const [expandedSec, setExpandedSec] = useState(0);
   // TOC number-side option: '1' = number before the title ("01  Compliance"),
   // '2' = number after it at the right edge ("Compliance  01"). Press 1 / 2 (or
   // click the toggle) to switch.
   const [side, setSide] = useState('1');
   const pagesRef = useRef([]);
+  // While a programmatic jump is scrolling, ignore the scroll observer so the
+  // selection lands directly on the target instead of stepping through pages.
+  const navLock = useRef(false);
+  const navTimer = useRef(null);
   const pad = (n) => String(n).padStart(2, '0');
 
-  // Keys 1 / 2 switch the number's side (left / right of the title).
+  // Keys 1 / 2 switch the number's side (left / right of the title); "h" hides /
+  // shows the right-hand table-of-contents sidebar (a class on <html> hides it
+  // and reclaims its reserved space).
   useEffect(() => {
     const onKey = (e) => {
-      if (e.target.closest?.('input, textarea, select')) return;
+      if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.key === '1') setSide('1');
       else if (e.key === '2') setSide('2');
+      else if (e.key === 'h' || e.key === 'H') {
+        document.documentElement.classList.toggle('hide-toc');
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -152,6 +166,17 @@ export default function IndustrySlides({ industry }) {
   const goTo = (id) => {
     const n = Math.max(0, Math.min(pages.length - 1, id));
     setActive(n);
+    // Lock the scroll observer so the highlight jumps straight to the target
+    // rather than tracking every page the smooth scroll passes through.
+    navLock.current = true;
+    clearTimeout(navTimer.current);
+    const release = () => {
+      navLock.current = false;
+      window.removeEventListener('scrollend', release);
+      clearTimeout(navTimer.current);
+    };
+    window.addEventListener('scrollend', release, { once: true });
+    navTimer.current = setTimeout(release, 1200);
     pagesRef.current[n]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   // Jump to a section by its first page.
@@ -159,16 +184,28 @@ export default function IndustrySlides({ industry }) {
     const sec = toc.find((s) => s.sectionIdx === sectionIdx);
     if (sec) goTo(sec.firstPage);
   };
-  const pickSection = (sectionIdx) => {
-    setMenuOpen(false);
-    goToSection(sectionIdx);
-  };
+
+  // Coming back from the Cases page (?p=<index>): jump straight to the page the
+  // reader left, so "Back" lands them where they were.
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get('p');
+    if (raw === null) return;
+    const p = Number(raw);
+    if (!Number.isInteger(p) || p < 0 || p >= pages.length) return;
+    setActive(p);
+    setExpandedSec(pages[p].sectionIdx);
+    requestAnimationFrame(() => {
+      pagesRef.current[p]?.scrollIntoView({ block: 'start' });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Keep the dropdown in sync with the page in view, and play only that page's
   // video (like the landing reel).
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
+        if (navLock.current) return; // don't track pages during a programmatic jump
         for (const e of entries) {
           if (e.isIntersecting && e.intersectionRatio >= 0.6) {
             const idx = Number(e.target.dataset.idx);
@@ -194,7 +231,7 @@ export default function IndustrySlides({ industry }) {
       {/* Mobile-only pinned selector, mirroring the landing reel's selector.
           Desktop uses the navbar dropdown (.nav-chapters). */}
       <div className="ireel-bar">
-        <div className="stage-chapters">
+        <div className={`stage-chapters${side === '1' ? ' is-num-left' : ''}`}>
           <button
             type="button"
             className="stage-chapters-select"
@@ -215,20 +252,52 @@ export default function IndustrySlides({ industry }) {
         </div>
       </div>
       {menuOpen && (
-        <div className="ch-menu ireel-menu" role="listbox" aria-label="Jump to a section">
-          {sectionChapters.map((c, i) => (
-            <button
-              key={c.id}
-              type="button"
-              role="option"
-              aria-selected={c.id === activeSection}
-              className={`ch-menu-item${c.id === activeSection ? ' is-active' : ''}`}
-              onClick={() => pickSection(c.id)}
-            >
-              <span className="ch-menu-title">{t(c.title)}</span>
-              <span className="ch-menu-num">{pad(i + 1)}</span>
-            </button>
-          ))}
+        <div className={`ch-menu ireel-menu${side === '1' ? ' is-num-left' : ''}`} role="listbox" aria-label="Jump to a section">
+          {toc.map((sec, i) => {
+            const secOpen = expandedSec === sec.sectionIdx;
+            return (
+              <div className={`ch-menu-group${secOpen ? ' is-open' : ''}`} key={sec.sectionIdx}>
+                {/* Tapping a section only expands its titles (accordion); tapping
+                    a title jumps and closes the menu. */}
+                <button
+                  type="button"
+                  aria-expanded={secOpen}
+                  className={`ch-menu-item${sec.sectionIdx === activeSection ? ' is-active' : ''}`}
+                  onClick={() => setExpandedSec(secOpen ? -1 : sec.sectionIdx)}
+                >
+                  <span className="ch-menu-title">{t(sec.name)}</span>
+                  <span className="ch-menu-num">{pad(i + 1)}</span>
+                  <svg className={`ch-menu-chev${secOpen ? ' is-open' : ''}`} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                {sec.items.length > 0 && (
+                  <div className="ch-menu-subwrap">
+                    <ul className="ch-menu-subs">
+                      {sec.items.map((it, k) => (
+                        <li className="ch-menu-sub-li" key={k}>
+                          <button
+                            type="button"
+                            className={`ch-menu-sub${it.page === active ? ' is-active' : ''}`}
+                            tabIndex={secOpen ? 0 : -1}
+                            onClick={() => {
+                              setMenuOpen(false);
+                              goTo(it.page);
+                            }}
+                          >
+                            <span className="ch-menu-sub-letter">
+                              {String.fromCharCode(65 + (k % 26))}.
+                            </span>
+                            <span className="ch-menu-sub-text">{t(it.title)}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            );
+          })}
           <a
             href="/industries"
             className="ch-menu-item ch-menu-item--featured"
@@ -274,14 +343,43 @@ export default function IndustrySlides({ industry }) {
         </div>
 
         <div className="ireel-toc-list">
-          {toc.map((sec, i) => {
+          {toc.map((sec) => {
             const secActive = pages[active]?.sectionIdx === sec.sectionIdx;
+            const secOpen = expandedSec === sec.sectionIdx;
             return (
-              <div className={`ireel-toc-group${secActive ? ' is-active' : ''}`} key={sec.sectionIdx}>
-                <button type="button" className="ireel-toc-sec" onClick={() => goTo(sec.firstPage)}>
-                  <span className="ireel-toc-num">{pad(i + 1)}</span>
+              <div
+                className={`ireel-toc-group${secActive ? ' is-active' : ''}${secOpen ? ' is-open' : ''}`}
+                key={sec.sectionIdx}
+              >
+                <button
+                  type="button"
+                  className="ireel-toc-sec"
+                  aria-expanded={secOpen}
+                  onClick={() => setExpandedSec(secOpen ? -1 : sec.sectionIdx)}
+                >
                   <span className="ireel-toc-name">{t(sec.name)}</span>
                 </button>
+                {/* Slide titles as an indented tree (L-shaped connectors). Kept
+                    mounted so height can animate: the active section expands and
+                    the previous one collapses (grid-template-rows 0fr↔1fr). */}
+                {sec.items.length > 0 && (
+                  <div className="ireel-toc-items-wrap">
+                    <ul className="ireel-toc-items">
+                      {sec.items.map((it, k) => (
+                        <li className="ireel-toc-item-li" key={k}>
+                          <button
+                            type="button"
+                            className={`ireel-toc-item${it.page === active ? ' is-active' : ''}`}
+                            tabIndex={secOpen ? 0 : -1}
+                            onClick={() => goTo(it.page)}
+                          >
+                            {t(it.title)}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -320,21 +418,6 @@ export default function IndustrySlides({ industry }) {
                             </p>
                           ) : null
                         )}
-                        {/* Corner "Cases" button (styled like the cover's Play
-                            button) — opens this industry's detailed case
-                            documentation in a new tab. */}
-                        <a
-                          className="ireel-cases-btn"
-                          href={`/industries/${industry.id}/cases`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${t(industry.name)} cases`}
-                        >
-                          {t('Cases')}
-                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M5 12h14M13 6l6 6-6 6" />
-                          </svg>
-                        </a>
                       </div>
                     );
                   })}

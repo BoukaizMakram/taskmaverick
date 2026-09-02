@@ -120,7 +120,7 @@ function ChecklistCallout() {
   );
 }
 
-export default function PostedMissionsScene({ poster }) {
+export default function PostedMissionsScene({ poster, title }) {
   const t = useT();
   const root = useRef(null);
   const cueIdx = useRef(-1);
@@ -576,11 +576,11 @@ export default function PostedMissionsScene({ poster }) {
         <div className="scene-intro" ref={intro} aria-hidden="true">
           <div className="scene-intro-verse" data-v="1">
             <span className="scene-intro-line scene-intro-brand">{t('Taskmaverick')}</span>
-            <span className="scene-intro-line">{t('Automatically Guides Teams')}</span>
+            <span className="scene-intro-line">{t('Teams Are Automatically Guided')}</span>
             <span className="scene-intro-line">{t('To Take Initiatives On Their Own')}</span>
           </div>
           <div className="scene-intro-verse" data-v="2">
-            <span className="scene-intro-line">{t('No Need For A Manager')}</span>
+            <span className="scene-intro-line">{t('Without A Need For A Manager')}</span>
             <span className="scene-intro-line">{t('To Constantly Remind Them')}</span>
           </div>
         </div>
@@ -590,10 +590,23 @@ export default function PostedMissionsScene({ poster }) {
 
         <div className="scene-hand" ref={hand} aria-hidden="true"><SceneCursor /></div>
 
-        {/* Cover image shown over the scene until the viewer hits play. Clicking
-            it bubbles to the .scene onClick (togglePlay), which starts the
-            animation and hides this. */}
-        {poster && !started && <img className="scene-poster" src={poster} alt="" />}
+        {/* Poster shown over the scene until the viewer hits play: a plain black
+            panel with the chapter's stage-cta title in white. Clicking it bubbles
+            to the .scene onClick (togglePlay), which starts the scene and hides it. */}
+        {!started && (
+          <div className="scene-poster">
+            <div className="cover-cta-dots" aria-hidden="true" />
+            {title ? (
+              <h2 className="stage-cta">
+                {t(title).split('\n').map((line, i) => (
+                  <span className="cta-line" style={{ '--i': i }} key={i}>
+                    {line || ' '}
+                  </span>
+                ))}
+              </h2>
+            ) : null}
+          </div>
+        )}
       </div>
 
       {/* YouTube-style subtitles overlaid on the scene, timed to the animation.
