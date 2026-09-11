@@ -33,13 +33,7 @@ export default function IndustriesIndex() {
   return (
     <div className="itoc">
       <header className="itoc-hero">
-        <span className="lp-kicker">{t('Use cases by industry')}</span>
-        <h1 className="itoc-title">{t('Everything Taskmaverick runs, by industry.')}</h1>
-        <p className="lp-lead">
-          {t(
-            'Browse the full index below — pick an industry and jump straight to the part you need, or scroll through every everyday mission and workflow. Open any industry for its full slide-by-slide walkthrough.'
-          )}
-        </p>
+        <h1 className="itoc-kicker-title">{t('Use Cases By Industry')}</h1>
       </header>
 
       <div className="itoc-layout">
@@ -76,7 +70,6 @@ export default function IndustriesIndex() {
                           const text = stripHtml(t(sl.text));
                           return (
                             <li key={i} className="itoc-slide">
-                              <span className="itoc-slide-num">{String(i + 1).padStart(2, '0')}</span>
                               <span className="itoc-slide-main">
                                 <span className="itoc-slide-title">{t(sl.title)}</span>
                                 {text ? <span className="itoc-slide-text">{text}</span> : null}

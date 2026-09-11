@@ -27,6 +27,7 @@ import MissionChip from '@/components/MissionChip';
 import { OpenedMission } from '@/components/OpenedMission';
 import MediaViewer from '@/components/MediaViewer';
 import SceneCursor from '@/components/scenes/SceneCursor';
+import Starfield from '@/components/Starfield';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
 // Narration is delivered as YouTube-style subtitles overlaid on the scene (see
@@ -131,6 +132,7 @@ export default function PostedMissionsScene({ poster, title }) {
   const bar = useRef(null);
   const track = useRef(null);
   const tl = useRef(null);
+  const inView = useRef(false); // scene is on-screen (for the Space/Enter shortcut)
   const sub = useRef(null);
   const [paused, setPaused] = useState(true);
   const [started, setStarted] = useState(false); // hide the poster after first play
@@ -209,6 +211,7 @@ export default function PostedMissionsScene({ poster, title }) {
     if (!el) return;
     const io = new IntersectionObserver(
       ([e]) => {
+        inView.current = e.isIntersecting;
         if (e.isIntersecting) return;
         const t = tl.current;
         if (t && !t.paused()) {
@@ -462,6 +465,20 @@ export default function PostedMissionsScene({ poster, title }) {
     }
   };
 
+  // Space / Enter play/pause the scene while it's on-screen (ignored while
+  // typing or when a button/link is focused, which handle the keys natively).
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== ' ' && e.code !== 'Space' && e.key !== 'Enter') return;
+      if (!inView.current) return;
+      if (e.target.closest?.('input, textarea, select, [contenteditable], button, a')) return;
+      e.preventDefault();
+      togglePlay();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   // Replay from the top (from the end/replay overlay).
   const replay = () => {
     const t = tl.current;
@@ -595,7 +612,7 @@ export default function PostedMissionsScene({ poster, title }) {
             to the .scene onClick (togglePlay), which starts the scene and hides it. */}
         {!started && (
           <div className="scene-poster">
-            <div className="cover-cta-dots" aria-hidden="true" />
+            <Starfield className="cover-cta-stars" />
             {title ? (
               <h2 className="stage-cta">
                 {t(title).split('\n').map((line, i) => (

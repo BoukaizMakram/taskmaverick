@@ -1,6 +1,7 @@
 import { Poppins, Inter, Montserrat, Cairo } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/lib/i18n/LanguageProvider';
+import RestoreLoader from '@/components/RestoreLoader';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -49,6 +50,16 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body>
+        {/* Runs before the body paints: if we're returning into the Use Cases
+            view (/#use-cases), flag the restore so the loader below shows on the
+            very first frame — no flash of the landing before it appears. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(location.hash==='#use-cases'){document.documentElement.classList.add('tm-boot-restore')}}catch(e){}",
+          }}
+        />
+        <RestoreLoader />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

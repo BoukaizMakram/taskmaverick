@@ -72,13 +72,14 @@ export default function Landing({ content: contentProp }) {
     () => buildLandingChapters(content.chapters, content.outline),
     [content]
   );
-  const [activeId, setActiveId] = useState(1);
+  const [activeId, setActiveId] = useState('philosophy'); // land on the Home page
   // True while the industries (Use Cases) section is the current view. While
   // it's true the chapter selector freezes on the chapter you left and turns
   // into a blue "back up" button — see Navbar / MobileReel.
   const [atUseCases, setAtUseCases] = useState(false);
   const atUseCasesRef = useRef(false);
   const lockRef = useRef(false); // ignore observer updates during a scripted scroll
+  const restoringRef = useRef(false); // restoring the selection after nav-back
 
   // Preview toggle for the cover play-control style. Press:
   //   1 (default) → floating white chip
@@ -91,10 +92,11 @@ export default function Landing({ content: contentProp }) {
       // Ignore modifier combos (e.g. Ctrl+Alt+1 toggles the language switcher).
       if (e.ctrlKey || e.altKey || e.metaKey) return;
       const root = document.documentElement;
-      if (e.key === '1') root.classList.remove('cover-cutout', 'cover-mask');
-      else if (e.key === '2') {
-        root.classList.add('cover-cutout');
-        root.classList.remove('cover-mask');
+      if (e.key === '1') {
+        root.classList.remove('cover-cutout', 'cover-mask');
+      } else if (e.key === '2') {
+        // Swap the use-cases chevron between up (default) and left ("back").
+        root.classList.toggle('uc-arrow-left');
       } else if (e.key === '3') {
         root.classList.add('cover-mask');
         root.classList.remove('cover-cutout');
@@ -103,6 +105,93 @@ export default function Landing({ content: contentProp }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // Remember the active chapter across navigation. Leaving for an industry page
+  // and coming back via the nav-back (/#use-cases) remounts the landing; without
+  // this the sidebar selection would reset to the first chapter.
+  useEffect(() => {
+    // Only when coming back to the industries view (nav-back → /#use-cases): put
+    // the page into that view and restore the chapter the sidebar was on.
+    if (typeof window === 'undefined' || window.location.hash !== '#use-cases') return;
+    let saved = 0;
+    try {
+      saved = Number(sessionStorage.getItem('lpActiveId')) || 0;
+    } catch {
+      /* sessionStorage unavailable */
+    }
+    // Freeze persistence + the observer while we settle back into Use Cases so
+    // nothing clobbers the restored selection with a chapter briefly in view.
+    restoringRef.current = true;
+    atUseCasesRef.current = true;
+    lockRef.current = true;
+    setAtUseCases(true);
+    // Cover the restore (jump + settle) with the logo loader so the reader never
+    // sees the page scrolling itself into place. On a full reload the head script
+    // already added this class before first paint; add it here too for client nav.
+    document.documentElement.classList.add('tm-boot-restore');
+    // is-free-scroll turns snapping off so Use Cases lands flush; lp-restoring
+    // tells the reel's snap handler to leave it alone while the remounted page
+    // settles (otherwise a drifting section top re-engages snap and half-covers).
+    document.documentElement.classList.add('is-free-scroll', 'lp-restoring');
+    if (saved) setActiveId(saved);
+    const root = document.documentElement;
+    const navH = parseInt(getComputedStyle(root).getPropertyValue('--nav-h'), 10) || 64;
+    const jump = () => smoothScrollTo('use-cases', { instant: true });
+    // The section is "in place" once its top has reached the nav line. We keep
+    // re-asserting the jump each frame until then (ScrollSmoother can take a few
+    // frames to init on a cold load), so the loader lifts the instant the page is
+    // actually positioned — not a frame before (which showed the scroll replay)
+    // and not on a long fixed timer (which felt slow).
+    const positioned = () => {
+      const uc = document.getElementById('use-cases');
+      return !!uc && Math.abs(uc.getBoundingClientRect().top - navH) <= 4;
+    };
+    let startTs = 0;
+    let rafId = 0;
+    let doneTimer = 0;
+    const finalize = () => {
+      if (saved) setActiveId(saved); // re-assert after the jump
+      lockRef.current = false;
+      restoringRef.current = false;
+      root.classList.remove('lp-restoring');
+      root.classList.add('tm-boot-restore-out'); // begin the fade
+      doneTimer = window.setTimeout(() => {
+        root.classList.remove('tm-boot-restore', 'tm-boot-restore-out');
+      }, 260);
+    };
+    const tick = (ts) => {
+      if (!startTs) startTs = ts;
+      jump();
+      const elapsed = ts - startTs;
+      // Hide once positioned (with a tiny floor so the fade never flickers), or
+      // after a 1500ms safety cap if something never settles.
+      if ((positioned() && elapsed > 150) || elapsed > 1500) {
+        finalize();
+      } else {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(doneTimer);
+      document.documentElement.classList.remove(
+        'lp-restoring',
+        'tm-boot-restore',
+        'tm-boot-restore-out'
+      );
+    };
+  }, []);
+  useEffect(() => {
+    // Don't persist while restoring — the mount-time write would overwrite the
+    // saved value before the restore applies.
+    if (restoringRef.current) return;
+    try {
+      sessionStorage.setItem('lpActiveId', String(activeId));
+    } catch {
+      /* ignore */
+    }
+  }, [activeId]);
 
   // Hold the lock until a scripted scroll actually settles (scroll events go
   // quiet), instead of a fixed timeout — a jump from chapter 3 down to the
@@ -125,7 +214,7 @@ export default function Landing({ content: contentProp }) {
   // left. When a chapter scrolls back into view (you went back up), clear that
   // state so the selector returns to the normal dropdown for the live chapter.
   const handleSelect = useCallback((id) => {
-    if (lockRef.current) return; // mid scripted scroll — keep the selector pinned
+    if (lockRef.current || restoringRef.current) return; // keep the selector pinned
     if (atUseCasesRef.current) {
       atUseCasesRef.current = false;
       setAtUseCases(false);
@@ -138,15 +227,42 @@ export default function Landing({ content: contentProp }) {
   const enterUseCases = useCallback(() => {
     atUseCasesRef.current = true;
     setAtUseCases(true);
+    // Turn OFF scroll-snap before the jump so nothing half-snaps a reel page
+    // above the section — Use Cases lands flush under the nav and covers the view.
+    document.documentElement.classList.add('is-free-scroll');
     smoothScrollTo('use-cases', { instant: true }); // jump, don't animate
     holdLockUntilSettled();
   }, [holdLockUntilSettled]);
 
-  // Back-up button → clear the state; the caller scrolls back to its chapter
-  // (desktop via #dchapter-<id>, mobile via the reel page).
-  const exitUseCases = useCallback(() => {
+  // Philosophy → the intro reel page (before Operations). Mark it active (so the
+  // Philosophy nav button highlights and the sidebar shows nothing selected) and
+  // lock the observer so scrolling up past chapter 1 doesn't reselect it.
+  const goToPhilosophy = useCallback(() => {
     atUseCasesRef.current = false;
     setAtUseCases(false);
+    setActiveId('philosophy');
+    holdLockUntilSettled();
+    const mobile =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
+    if (mobile) {
+      document
+        .querySelector('.reel-page[data-id="philosophy"]')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      smoothScrollTo('dchapter-philosophy');
+    }
+  }, [holdLockUntilSettled]);
+
+  // Back-up button → clear the state; the caller scrolls back to its chapter
+  // (desktop via #dchapter-<id>, mobile via the reel page). Explicitly drop the
+  // free-scroll/restoring classes so the sidebar reliably slides back in — the
+  // reel's scroll handler alone was sometimes missed after an instant jump (or
+  // while still restoring from an industry), leaving the menu stuck hidden.
+  const exitUseCases = useCallback(() => {
+    atUseCasesRef.current = false;
+    restoringRef.current = false;
+    setAtUseCases(false);
+    document.documentElement.classList.remove('is-free-scroll', 'lp-restoring');
     holdLockUntilSettled();
   }, [holdLockUntilSettled]);
 
@@ -165,9 +281,9 @@ export default function Landing({ content: contentProp }) {
       if (mobile) {
         document
           .querySelector(`.reel-page[data-id="${id}"]`)
-          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          ?.scrollIntoView({ behavior: 'auto', block: 'start' });
       } else {
-        smoothScrollTo(`dchapter-${id}`);
+        smoothScrollTo(`dchapter-${id}`, { instant: true });
       }
     },
     [holdLockUntilSettled]
@@ -194,6 +310,7 @@ export default function Landing({ content: contentProp }) {
         atUseCases={atUseCases}
         onIndustries={enterUseCases}
         onExitUseCases={exitUseCases}
+        onPhilosophy={goToPhilosophy}
       />
 
       {/* Right-hand outline sidebar (replaces the navbar chapter dropdown on
@@ -239,9 +356,10 @@ export default function Landing({ content: contentProp }) {
         <section className="lp-section" id="use-cases">
           <div className="lp-container">
             <div className="lp-head center">
-              <EditText as="span" className="lp-kicker" path={['useCases', 'kicker']} value={editCtx ? content.useCases?.kicker : t(content.useCases?.kicker || '')} />
-              <EditText as="h2" className="lp-h2" path={['useCases', 'h2']} value={editCtx ? content.useCases?.h2 : t(content.useCases?.h2 || '')} />
-              <EditText as="p" className="lp-lead" multiline path={['useCases', 'lead']} value={editCtx ? content.useCases?.lead : t(content.useCases?.lead || '')} />
+              <EditText as="h2" className="lp-kicker lp-kicker--title" path={['useCases', 'kicker']} value={editCtx ? content.useCases?.kicker : t(content.useCases?.kicker || '')} />
+              <p className="lp-kicker-sub">
+                {t('Taskmaverick works across every industry. Here are just a few examples.')}
+              </p>
             </div>
             <IndustryGrid />
           </div>

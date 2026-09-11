@@ -15,6 +15,7 @@ import CoverPlayer from '@/components/CoverPlayer';
 import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
+import { PHILOSOPHY } from '@/lib/chapters';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
 const SCENES = {
@@ -63,7 +64,7 @@ function CornerPlay() {
     }
   };
   return (
-    <button type="button" className="corner-play" aria-label="Play video" onClick={onClick}>
+    <button type="button" className="corner-play corner-play--inside" aria-label="Play video" onClick={onClick}>
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
         <path d="M8 5.14v13.72c0 .9 1 1.45 1.75.95l10.29-6.86a1.14 1.14 0 000-1.9L9.75 4.19A1.14 1.14 0 008 5.14z" />
       </svg>
@@ -89,6 +90,23 @@ export default function MobileReel({
   const pad = (n) => String(n).padStart(2, '0');
   const total = chapters.length;
 
+  // Alt+2 vertically centers the active reel page's content (mobile); Alt+1
+  // reverts to the default top alignment. Toggles a class on <html>.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (e.key === '2' || e.code === 'Digit2') {
+        e.preventDefault();
+        document.documentElement.classList.add('reel-vcenter');
+      } else if (e.key === '1' || e.code === 'Digit1') {
+        e.preventDefault();
+        document.documentElement.classList.remove('reel-vcenter');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   // Back-up button: clear the industries state and scroll back to the chapter
   // we left. Everything lives in the one window scroll now, so a plain
   // scrollIntoView (honouring scroll-padding-top) lands it below nav + selector.
@@ -107,7 +125,8 @@ export default function MobileReel({
           if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) best = e;
         }
         if (best && best.intersectionRatio >= 0.5) {
-          const id = Number(best.target.dataset.id);
+          const raw = best.target.dataset.id;
+          const id = raw === 'philosophy' ? 'philosophy' : Number(raw);
           if (id) onSelect?.(id);
           // Mark the most-visible page so its badges animate in; clearing the
           // others lets them re-animate when swiped back to.
@@ -133,7 +152,6 @@ export default function MobileReel({
   };
 
   const idx = chapters.findIndex((c) => c.id === activeId);
-  const pos = idx >= 0 ? idx + 1 : 1;
   const activeTitle = t(chapters[idx]?.title || chapters[0]?.title || '');
 
   const pick = (v) => {
@@ -162,9 +180,6 @@ export default function MobileReel({
           >
             {activeTitle}
           </button>
-          <span className="stage-chapters-count" aria-hidden="true">
-            {pad(pos)}
-          </span>
           <span className={`stage-chapters-chev${menuOpen || atUseCases ? ' is-open' : ''}`} aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 9l6 6 6-6" />
@@ -199,7 +214,7 @@ export default function MobileReel({
             >
               <span className="ch-menu-title">{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
               <svg className="ch-menu-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" />
+                <path d="M12 5v14M5 12l7 7 7-7" />
               </svg>
             </button>
         </div>
@@ -207,6 +222,41 @@ export default function MobileReel({
 
       {/* one snap page per chapter */}
       <div className="reel" ref={reelRef}>
+        {/* Intro page — Taskmaverick's philosophy — before Operations. */}
+        <section className="reel-page" data-id="philosophy" ref={(el) => (pages.current.philosophy = el)}>
+          <div className="reel-media video-frame-wrap">
+            <div className="video-frame">
+              <CtaPoster title={PHILOSOPHY.heroTitle} />
+            </div>
+            <CornerPlay />
+          </div>
+          <ul className="stage-badges reel-badges">
+            {PHILOSOPHY.badges.map((b, bi) => (
+              <li className="stage-badge" key={bi} style={{ '--bi': bi }}>
+                <span className="stage-badge-icon">
+                  <BadgeIcon name={b.icon} />
+                </span>
+                <span className="stage-badge-text">
+                  <b>{t(b.title)}</b>
+                  <small>{t(b.sub)}</small>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <a
+            className="stage-uc reel-uc"
+            href="#use-cases"
+            onClick={(e) => {
+              e.preventDefault();
+              onIndustries?.();
+            }}
+          >
+            <span>{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+          </a>
+        </section>
         {chapters.map((c) => (
           <section
             className="reel-page"
@@ -216,16 +266,14 @@ export default function MobileReel({
               pages.current[c.id] = el;
             }}
           >
-            {/* Every page reads like the hero: video up top, headline under it,
-                then the trust-badge cards. */}
+            {/* Every page reads like the hero: centered video with the corner
+                Play button, then the trust-badge cards. */}
             <div className="reel-media video-frame-wrap">
               <div className="video-frame">
                 <ChapterMedia chapter={c} src={src} poster={poster} />
               </div>
               <CornerPlay />
             </div>
-
-            <h1 className="reel-hero-title">{t(c.heroTitle || c.title)}</h1>
 
             <ul className="stage-badges reel-badges">
               {(c.badges || BADGES).slice(0, 2).map((b, bi) => (
@@ -240,6 +288,20 @@ export default function MobileReel({
                 </li>
               ))}
             </ul>
+
+            <a
+              className="stage-uc reel-uc"
+              href="#use-cases"
+              onClick={(e) => {
+                e.preventDefault();
+                onIndustries?.();
+              }}
+            >
+              <span>{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+            </a>
           </section>
         ))}
       </div>

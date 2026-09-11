@@ -1,15 +1,18 @@
-import AuthLayout from '@/components/AuthLayout';
-import ContactForm from '@/components/forms/ContactForm';
+import Navbar from '@/components/Navbar';
+import Contact from '@/components/Contact';
 
 export const metadata = {
   title: 'Contact · Taskmaverick',
-  description: 'Get in touch with the Taskmaverick team.',
+  description: 'Get in touch with the Taskmaverick team — talk to sales, book a demo, or send a message.',
 };
 
 export default function ContactPage() {
   return (
-    <AuthLayout heading="Get in touch">
-      <ContactForm />
-    </AuthLayout>
+    <div className="page">
+      <Navbar />
+      <div className="lp">
+        <Contact />
+      </div>
+    </div>
   );
 }

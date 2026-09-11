@@ -10,86 +10,77 @@ const SCENES = {
   'posted-missions': PostedMissionsScene,
 };
 
+// Filled / duotone glyphs (like the product menu icons): a solid shape in the
+// current color with the detail punched out (fill-rule: evenodd) so the soft
+// chip background shows through — no strokes.
 export function BadgeIcon({ name }) {
   const p = {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 2,
-    strokeLinecap: 'round',
-    strokeLinejoin: 'round',
+    fill: 'currentColor',
+    fillRule: 'evenodd',
+    clipRule: 'evenodd',
     'aria-hidden': true,
   };
-  if (name === 'check')
-    return (
-      <svg {...p}>
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-        <polyline points="22 4 12 14.01 9 11.01" />
-      </svg>
-    );
   if (name === 'users')
     return (
       <svg {...p}>
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+        <path d="M9 3a4 4 0 100 8 4 4 0 000-8zM2 19c0-3.3 3.1-5.5 7-5.5s7 2.2 7 5.5v1H2v-1zm15.5-8a3.5 3.5 0 10-2.3-6.1 5.5 5.5 0 010 5.2A3.5 3.5 0 0017.5 11zm.5 2.6c2.5.5 4 2.2 4 4.4v2h-4v-1c0-2-.8-3.7-2-5 .6-.3 1.3-.4 2-.4z" />
       </svg>
     );
   if (name === 'chart')
     return (
       <svg {...p}>
-        <line x1="12" y1="20" x2="12" y2="10" />
-        <line x1="18" y1="20" x2="18" y2="4" />
-        <line x1="6" y1="20" x2="6" y2="16" />
+        <path d="M4 13a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1v-7zm7-5a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V8zm7-4a1 1 0 011-1h2a1 1 0 011 1v16a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
       </svg>
     );
   if (name === 'book')
     return (
       <svg {...p}>
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        <path d="M6.5 2H20a1 1 0 011 1v15H6.5a1.5 1.5 0 000 3H20a1 1 0 011 1H6.5A3.5 3.5 0 013 18.5v-13A3.5 3.5 0 016.5 2zM9 6a1 1 0 000 2h7a1 1 0 100-2H9z" />
       </svg>
     );
   if (name === 'clock')
     return (
       <svg {...p}>
-        <circle cx="12" cy="12" r="9" />
-        <polyline points="12 7 12 12 15 14" />
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5a1 1 0 10-2 0v5c0 .27.1.52.29.71l3 3a1 1 0 001.42-1.42L13 11.59V7z" />
       </svg>
     );
   if (name === 'star')
     return (
       <svg {...p}>
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        <path d="M12 2.5l2.9 5.88 6.5.95-4.7 4.58 1.11 6.47L12 17.9l-5.81 3.06 1.11-6.47-4.7-4.58 6.5-.95L12 2.5z" />
       </svg>
     );
   if (name === 'compass')
     return (
       <svg {...p}>
-        <circle cx="12" cy="12" r="9" />
-        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.5 3.5l-2.1 6.3-6.9 2.7 2.1-6.3 6.9-2.7zM12 10.8a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" />
       </svg>
     );
   if (name === 'graduation')
     return (
       <svg {...p}>
-        <path d="M22 10 12 5 2 10l10 5 10-5z" />
-        <path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5" />
+        <path d="M12 3.2L1.5 8 12 12.8 20 9.14V14a1 1 0 002 0V8.4a1 1 0 00-.59-.91L12 3.2zM5 13.2V17c0 1.1 3.13 2.5 7 2.5s7-1.4 7-2.5v-3.8l-6.59 3.01a1 1 0 01-.82 0L5 13.2z" />
       </svg>
     );
   if (name === 'camera')
     return (
       <svg {...p}>
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-        <circle cx="12" cy="13" r="4" />
+        <path d="M9 3a1 1 0 00-.83.45L7.13 5H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.13l-1.04-1.55A1 1 0 0015 3H9zm3 5.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zm0 2a2.5 2.5 0 110 5 2.5 2.5 0 010-5z" />
       </svg>
     );
+  if (name === 'shield')
+    return (
+      <svg {...p}>
+        <path d="M12 2l8 3v6c0 5.05-3.4 8.76-8 10-4.6-1.24-8-4.95-8-10V5l8-3zm3.7 6.3a1 1 0 00-1.4 0L11 11.58l-1.3-1.3a1 1 0 10-1.4 1.42l2 2a1 1 0 001.4 0l4-4a1 1 0 000-1.4z" />
+      </svg>
+    );
+  // default / check — a filled disc with a check punched out
   return (
     <svg {...p}>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <polyline points="9 12 11 14 15 10" />
+      <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.7 7.3a1 1 0 00-1.4-1.4L11 12.18l-1.8-1.8a1 1 0 10-1.4 1.42l2.5 2.5a1 1 0 001.4 0l4.99-5z" />
     </svg>
   );
 }

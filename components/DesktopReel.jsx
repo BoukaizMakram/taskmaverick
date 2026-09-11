@@ -16,7 +16,8 @@ import CoverPlayer from '@/components/CoverPlayer';
 import CornerPlay from '@/components/CornerPlay';
 import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
-import { BADGES } from '@/components/HeroVideo';
+import { BADGES, BadgeIcon } from '@/components/HeroVideo';
+import { PHILOSOPHY } from '@/lib/chapters';
 import { useT } from '@/lib/i18n/LanguageProvider';
 import { useEdit, EditText, EditIcon, EditVideoButton } from '@/components/InlineEdit';
 
@@ -64,7 +65,8 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
           if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) best = e;
         }
         if (best && best.intersectionRatio >= 0.5) {
-          const id = Number(best.target.dataset.id);
+          const raw = best.target.dataset.id;
+          const id = raw === 'philosophy' ? 'philosophy' : Number(raw);
           if (id) {
             visibleId.current = id;
             onSelect?.(id);
@@ -89,7 +91,9 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
     if (window.matchMedia('(max-width: 900px)').matches) return;
     if (activeId === visibleId.current) return;
     const el = pages.current[activeId];
-    if (el) smoothScrollTo(el);
+    // Jump straight to the chosen page — no animated scroll racing past every
+    // chapter in between (the reel snaps hard between pages anyway).
+    if (el) smoothScrollTo(el, { instant: true });
   }, [activeId]);
 
   // Desktop: the reel hard-flips chapter-to-chapter (mandatory scroll-snap), but
@@ -102,6 +106,10 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
     const root = document.documentElement;
     const navH = parseInt(getComputedStyle(root).getPropertyValue('--nav-h'), 10) || 64;
     const update = () => {
+      // While the page is restoring back into Use Cases (nav-back from an
+      // industry), Landing owns is-free-scroll — don't fight it as the section
+      // top drifts during layout settle, or snap re-engages and half-covers it.
+      if (root.classList.contains('lp-restoring')) return;
       const uc = document.getElementById('use-cases');
       if (!uc) return;
       // Free-scroll once the Use Cases top has scrolled up to (or past) the nav.
@@ -121,6 +129,50 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
   return (
     <div className="dreel-wrap" ref={wrapRef}>
       <div className="dreel">
+        {/* Intro page — Taskmaverick's philosophy — before Operations. */}
+        <section
+          className="dreel-page"
+          id="dchapter-philosophy"
+          data-id="philosophy"
+          ref={(el) => {
+            pages.current.philosophy = el;
+          }}
+        >
+          <div className="stage-inner">
+            <div className="video-frame-wrap">
+              <div className="video-frame">
+                <CtaPoster title={PHILOSOPHY.heroTitle} />
+              </div>
+              <CornerPlay />
+            </div>
+            <ul className="stage-badges">
+              {PHILOSOPHY.badges.map((b, bi) => (
+                <li className="stage-badge" key={bi} style={{ '--bi': bi }}>
+                  <span className="stage-badge-icon">
+                    <BadgeIcon name={b.icon} />
+                  </span>
+                  <span className="stage-badge-text">
+                    <b>{t(b.title)}</b>
+                    <small>{t(b.sub)}</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <a
+              className="stage-uc"
+              href="#use-cases"
+              onClick={(e) => {
+                e.preventDefault();
+                onIndustries?.();
+              }}
+            >
+              <span>{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+            </a>
+          </div>
+        </section>
         {chapters.map((c, i) => (
           <section
             className="dreel-page"
@@ -143,34 +195,6 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                 </div>
                 <CornerPlay />
                 <EditVideoButton path={['chapters', c.baseIndex, 'src']} />
-
-                {/* Up / down chapter navigation on the right of the video. */}
-                <div className="reel-nav">
-                  <button
-                    type="button"
-                    className="reel-nav-btn"
-                    aria-label="Previous chapter"
-                    disabled={i === 0}
-                    onClick={() => i > 0 && smoothScrollTo(`dchapter-${chapters[i - 1].id}`)}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M18 15l-6-6-6 6" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className="reel-nav-btn"
-                    aria-label="Next chapter"
-                    onClick={() => {
-                      if (i < chapters.length - 1) smoothScrollTo(`dchapter-${chapters[i + 1].id}`);
-                      else onIndustries?.();
-                    }}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </button>
-                </div>
               </div>
 
               <ul className="stage-badges">
@@ -198,7 +222,7 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
               >
                 <span>{t('Cases')} <span className="uc-by">{t('by')}</span> {t('Industry')}</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
+                  <path d="M12 5v14M5 12l7 7 7-7" />
                 </svg>
               </a>
             </div>

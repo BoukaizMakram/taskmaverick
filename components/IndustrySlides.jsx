@@ -122,9 +122,16 @@ export default function IndustrySlides({ industry }) {
 
   const [active, setActive] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
-  // Which section's titles are expanded in the right-rail TOC. Independent of
-  // navigation: clicking a section only expands it (accordion), it never jumps.
-  const [expandedSec, setExpandedSec] = useState(0);
+  // Which sections are expanded in the TOC — a Set, so multiple can stay open
+  // at once. Scrolling opens the section in view without collapsing the others.
+  const [expandedSecs, setExpandedSecs] = useState(() => new Set()); // all collapsed on open
+  const toggleSec = (idx) =>
+    setExpandedSecs((cur) => {
+      const next = new Set(cur);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
   // TOC number-side option: '1' = number before the title ("01  Compliance"),
   // '2' = number after it at the right edge ("Compliance  01"). Press 1 / 2 (or
   // click the toggle) to switch.
@@ -163,6 +170,11 @@ export default function IndustrySlides({ industry }) {
   const activeTitle = t(pages[active]?.sectionName || '');
   const activeSecPos = sectionChapters.findIndex((c) => c.id === activeSection);
 
+  // No auto-expand on scroll: an industry opens with every section collapsed and
+  // stays that way until the reader clicks a section to expand it. The active
+  // section is still tracked (its rectangle sits on the collapsed title, and
+  // moves to the active item once the section is manually opened).
+
   const goTo = (id) => {
     const n = Math.max(0, Math.min(pages.length - 1, id));
     setActive(n);
@@ -177,7 +189,8 @@ export default function IndustrySlides({ industry }) {
     };
     window.addEventListener('scrollend', release, { once: true });
     navTimer.current = setTimeout(release, 1200);
-    pagesRef.current[n]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Jump straight to the slide — no animated scroll (matches the landing page).
+    pagesRef.current[n]?.scrollIntoView({ behavior: 'auto', block: 'start' });
   };
   // Jump to a section by its first page.
   const goToSection = (sectionIdx) => {
@@ -193,7 +206,6 @@ export default function IndustrySlides({ industry }) {
     const p = Number(raw);
     if (!Number.isInteger(p) || p < 0 || p >= pages.length) return;
     setActive(p);
-    setExpandedSec(pages[p].sectionIdx);
     requestAnimationFrame(() => {
       pagesRef.current[p]?.scrollIntoView({ block: 'start' });
     });
@@ -254,7 +266,7 @@ export default function IndustrySlides({ industry }) {
       {menuOpen && (
         <div className={`ch-menu ireel-menu${side === '1' ? ' is-num-left' : ''}`} role="listbox" aria-label="Jump to a section">
           {toc.map((sec, i) => {
-            const secOpen = expandedSec === sec.sectionIdx;
+            const secOpen = expandedSecs.has(sec.sectionIdx);
             return (
               <div className={`ch-menu-group${secOpen ? ' is-open' : ''}`} key={sec.sectionIdx}>
                 {/* Tapping a section only expands its titles (accordion); tapping
@@ -263,7 +275,7 @@ export default function IndustrySlides({ industry }) {
                   type="button"
                   aria-expanded={secOpen}
                   className={`ch-menu-item${sec.sectionIdx === activeSection ? ' is-active' : ''}`}
-                  onClick={() => setExpandedSec(secOpen ? -1 : sec.sectionIdx)}
+                  onClick={() => toggleSec(sec.sectionIdx)}
                 >
                   <span className="ch-menu-title">{t(sec.name)}</span>
                   <span className="ch-menu-num">{pad(i + 1)}</span>
@@ -311,68 +323,43 @@ export default function IndustrySlides({ industry }) {
         </div>
       )}
 
-      {/* Persistent table of contents on the right of the reel (desktop only —
-          mobile keeps the pinned selector / navbar dropdown). Plain clickable
-          text: just the section titles (e.g. Compliance, Maintenance). */}
-      <nav className={`ireel-toc${side === '2' ? ' is-num-right' : ''}`} aria-label={t('On this page')}>
-        {/* Up / down slide navigation — belongs to the sidebar, pinned just to
-            its left so it sits close to the rail. */}
-        <div className="ireel-side-nav">
-          <button
-            type="button"
-            className="ireel-side-btn"
-            aria-label="Previous slide"
-            disabled={active === 0}
-            onClick={() => goTo(active - 1)}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M18 15l-6-6-6 6" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            className="ireel-side-btn"
-            aria-label="Next slide"
-            disabled={active === pages.length - 1}
-            onClick={() => goTo(active + 1)}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </button>
-        </div>
-
+      {/* Persistent table of contents on the right of the reel (desktop only) —
+          the SAME tree design as the landing sidebar (.lp-toc.lp-opt-2): a left
+          ▶ toggle, numbered subsections, and L-shaped connectors. */}
+      <nav className="ireel-toc lp-toc lp-opt-2" aria-label={t('On this page')}>
         <div className="ireel-toc-list">
           {toc.map((sec) => {
             const secActive = pages[active]?.sectionIdx === sec.sectionIdx;
-            const secOpen = expandedSec === sec.sectionIdx;
+            const full = expandedSecs.has(sec.sectionIdx);
             return (
               <div
-                className={`ireel-toc-group${secActive ? ' is-active' : ''}${secOpen ? ' is-open' : ''}`}
+                className={`ireel-toc-group${secActive ? ' is-active' : ''}${full ? ' is-open' : ''}`}
                 key={sec.sectionIdx}
               >
                 <button
                   type="button"
                   className="ireel-toc-sec"
-                  aria-expanded={secOpen}
-                  onClick={() => setExpandedSec(secOpen ? -1 : sec.sectionIdx)}
+                  aria-expanded={full}
+                  onClick={() => toggleSec(sec.sectionIdx)}
                 >
+                  <span className="lp-tree-toggle" aria-hidden="true">
+                    <svg className={`lp-tree-chev${full ? ' is-open' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+                  </span>
                   <span className="ireel-toc-name">{t(sec.name)}</span>
                 </button>
-                {/* Slide titles as an indented tree (L-shaped connectors). Kept
-                    mounted so height can animate: the active section expands and
-                    the previous one collapses (grid-template-rows 0fr↔1fr). */}
+                {/* Collapsed shows NO items (0); expanding reveals all as an
+                    L-tree (grid-rows animation, see .isl-page .lp-items). */}
                 {sec.items.length > 0 && (
-                  <div className="ireel-toc-items-wrap">
+                  <div className={`lp-items${full ? ' is-open' : ''}`}>
                     <ul className="ireel-toc-items">
                       {sec.items.map((it, k) => (
-                        <li className="ireel-toc-item-li" key={k}>
+                        <li className="ireel-toc-item-li" key={it.page}>
                           <button
                             type="button"
                             className={`ireel-toc-item${it.page === active ? ' is-active' : ''}`}
-                            tabIndex={secOpen ? 0 : -1}
                             onClick={() => goTo(it.page)}
                           >
+                            <span className="lp-mark">{k + 1}.</span>
                             {t(it.title)}
                           </button>
                         </li>
@@ -453,12 +440,6 @@ export default function IndustrySlides({ industry }) {
             </div>
           </section>
         ))}
-      </div>
-
-      {/* Layout side option — 1 = content left, 2 = content right (also keys 1/2). */}
-      <div className="ireel-side-toggle" role="group" aria-label="Layout side">
-        <button type="button" className={side === '1' ? 'is-active' : ''} onClick={() => setSide('1')} aria-pressed={side === '1'}>1</button>
-        <button type="button" className={side === '2' ? 'is-active' : ''} onClick={() => setSide('2')} aria-pressed={side === '2'}>2</button>
       </div>
     </>
   );

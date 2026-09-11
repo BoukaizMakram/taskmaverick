@@ -203,6 +203,35 @@ code {
 .nav-industries svg {
   display: block;
 }
+/* Use-cases state chevron: up by default; pressing "2" (html.uc-arrow-left)
+   swaps it for a left ("back") chevron. */
+.nav-industries .uc-chev-left {
+  display: none;
+}
+html.uc-arrow-left .nav-industries .uc-chev-up {
+  display: none;
+}
+html.uc-arrow-left .nav-industries .uc-chev-left {
+  display: block;
+}
+/* Philosophy nav button, when its reel page is in view, reads as a selected
+   subsection: a blue-bordered pill with black bold text (matches the sidebar
+   active item). A transparent border on the base keeps its size stable. */
+.nav-philosophy {
+  padding: 4px 10px;
+  border: 3px solid transparent;
+  border-radius: 6px;
+}
+.nav-philosophy.is-active {
+  border-color: #1271b7;
+  color: #000;
+  font-weight: 700;
+}
+/* Mobile navigates via the burger menu; the "Industries" link moves under the
+   reel cards (see .reel-uc). Placed after the base so it wins the cascade. */
+@media (max-width: 900px) {
+  .nav-industries { display: none; }
+}
 
 /* ---------------- Chapters dropdown in the navbar (desktop) ---------------- */
 .nav-chapters {
@@ -305,6 +334,32 @@ code {
 .burger-menu:hover {
   border-color: #cbd5e1;
   color: var(--muted);
+}
+
+/* Mobile Home circle — same shape as the burger; desktop uses the text "Home"
+   link instead, so it's hidden there. Blue fill + white icon when on Home. */
+.nav-home-btn {
+  display: none;
+}
+@media (max-width: 900px) {
+  .nav-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--nav-border);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .nav-home-btn.is-active {
+    background: #1271b7;
+    border-color: #1271b7;
+    color: #fff;
+  }
 }
 
 .burger-dropdown {
@@ -767,10 +822,22 @@ code {
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
-  /* The Use Cases section is the next snap target after the last chapter. */
+  /* The Use Cases section is the next snap target after the last chapter, and
+     fills the viewport so, when scrolled to, it covers the reel entirely. Center
+     its content vertically (like a .dreel-page) so the grid fills the page
+     rather than leaving a dead band above the heading. */
   #use-cases {
-    scroll-margin-top: var(--nav-h);
+    /* No scroll-margin-top here: the scroll container already has
+       scroll-padding-top: var(--nav-h). Adding both stacks the offset, landing
+       the section ~2×nav-h down and leaving a strip of the reel above it. */
     scroll-snap-align: start;
+    min-height: calc(100vh - var(--nav-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Symmetric padding — no top-heavy gap; centering balances any slack. */
+    padding-top: clamp(24px, 3vw, 44px);
+    padding-bottom: clamp(24px, 3vw, 44px);
   }
 }
 
@@ -855,6 +922,11 @@ code {
   opacity: 0;
 }
 .cover-cta.is-revealed .cover-cta-stars {
+  animation: dots-fade-in 0.8s ease forwards;
+}
+/* The coded scene poster mounts already in view, so its starfield fades in on
+   mount (it isn't a .cover-cta, so the reveal rule above doesn't reach it). */
+.scene-poster .cover-cta-stars {
   animation: dots-fade-in 0.8s ease forwards;
 }
 
@@ -1208,7 +1280,8 @@ html.cover-mask .cover-play:hover {
 }
 /* Option 2 (press 2): tuck the Play button INSIDE the frame's bottom-right
    corner instead of letting it protrude past the edge (option 1 / press 1). */
-.corner-play--inside {
+/* Higher specificity so it wins over the mobile .corner-play offset too. */
+.corner-play.corner-play--inside {
   right: 14px;
   bottom: 14px;
 }
@@ -1219,10 +1292,49 @@ html.cover-mask .cover-play:hover {
     right: -4px;
     bottom: -6px; /* moved up so it stops crowding the content below */
   }
-  /* Shorter video on mobile frees vertical space so the badges + "Use Cases by
-     Industry" aren't cramped on the fixed-height reel page. */
+  /* Shorter video on mobile frees vertical space so the badges aren't cramped
+     on the fixed-height reel page. */
   .reel-media > .video-frame {
-    aspect-ratio: 2 / 1;
+    aspect-ratio: 16 / 10;
+  }
+  /* Centered, narrower column for the video + cards. */
+  .reel-media,
+  .reel-badges {
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Smaller trust-badge cards on mobile. */
+  .reel-page .stage-badge {
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 14px;
+  }
+  .reel-badges .stage-badge-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .reel-badges .stage-badge-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .reel-badges .stage-badge-text b {
+    font-size: 15px;
+  }
+  .reel-badges .stage-badge-text small {
+    font-size: 13px;
+  }
+  /* "Cases by Industry" link centered under the cards (mirrors the desktop
+     reel's .stage-uc, which the navbar drops on mobile). */
+  .reel-uc {
+    align-self: center;
+    margin-top: 2px;
+    padding: 8px 4px;
+    font-size: 16px;
+  }
+  /* Ctrl+2: vertically center the active page's content; Ctrl+1 reverts. */
+  .reel-vcenter .reel-page.is-in-view {
+    justify-content: center;
   }
 }
 
@@ -1668,6 +1780,28 @@ html.cover-mask .cover-play:hover {
   box-shadow: var(--shadow-sm);
   cursor: pointer;
 }
+/* Selector text = "Section - Subsection": the section a bit bolder than the
+   subsection, with a muted dash between them. */
+.stage-chapters-select .sc-sec { font-weight: 700; color: var(--ink); }
+.stage-chapters-select .sc-sep { font-weight: 500; color: var(--muted); }
+.stage-chapters-select .sc-sub { font-weight: 500; color: var(--muted); }
+/* Home mode: the bar lists every section name in dark gray (same font). The
+   whole list slides down + fades as the menu opens, so the bar looks empty. */
+.stage-chapters-select .sc-home-list {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 17px; /* match the dropdown section titles (.lp-menu .ch-menu-title) */
+  font-weight: 600;
+  color: #3a4149;
+  transition: opacity 0.26s ease, transform 0.3s ease;
+}
+.stage-chapters.is-open .sc-home-list {
+  opacity: 0;
+  transform: translateY(14px);
+}
 .stage-chapters-select:focus-visible {
   outline: none;
   border-color: var(--blue);
@@ -2069,6 +2203,53 @@ html.cover-mask .cover-play:hover {
   margin: 0 auto;
 }
 
+/* Restore loader — shown while the landing page settles back into the Use Cases
+   view after returning from an industry. Hidden by default; a blocking <head>
+   script adds .tm-boot-restore to <html> before first paint (so no flash), and
+   Landing removes it (via .tm-boot-restore-out to fade) once the page settles.
+   Petals dim to 18%, then a highlight rotates blue → orange → red → green. */
+.tm-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+html.tm-boot-restore .tm-loader {
+  display: flex;
+}
+html.tm-boot-restore-out .tm-loader {
+  opacity: 0;
+}
+.tm-loader-logo {
+  width: 64px;
+  height: auto;
+}
+.tm-loader-logo .tm-pet {
+  opacity: 0.2;
+  animation: tm-pet-pulse 1.6s ease-in-out infinite;
+}
+/* Delays are exactly 1/4 of the cycle apart; each petal eases up to full and
+   back down within its quarter, so the highlight glides blue → orange → red →
+   green (adjacent petals crossfade slightly for a smooth hand-off). */
+.tm-loader-logo .tm-pet--blue { animation-delay: 0s; }
+.tm-loader-logo .tm-pet--orange { animation-delay: 0.4s; }
+.tm-loader-logo .tm-pet--red { animation-delay: 0.8s; }
+.tm-loader-logo .tm-pet--green { animation-delay: 1.2s; }
+@keyframes tm-pet-pulse {
+  0% { opacity: 0.2; }
+  13% { opacity: 1; }
+  30% { opacity: 0.2; }
+  100% { opacity: 0.2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tm-loader-logo .tm-pet { animation: none; opacity: 0.7; }
+}
+
 /* Buttons */
 .btn-primary,
 .btn-secondary {
@@ -2265,6 +2446,26 @@ html.cover-mask .cover-play:hover {
   text-transform: uppercase;
   color: var(--blue);
   margin-bottom: 12px;
+}
+/* "Use cases by industry" used as the section's heading (no eyebrow) — blue,
+   sized to match the mobile treatment. */
+.lp-kicker--title {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--blue);
+}
+/* Supporting line under the heading — always visible. */
+.lp-kicker-sub {
+  display: block;
+  margin: 10px auto 0;
+  max-width: 640px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
 .lp-h2 {
@@ -5366,7 +5567,17 @@ html:has(.ireel) {
   margin: 0 auto;
   padding: 44px clamp(16px, 4vw, 40px) 96px;
 }
-.itoc-hero { max-width: 760px; margin: 0 auto 40px; text-align: center; }
+.itoc-hero { max-width: 900px; margin: 0 auto 40px; text-align: center; }
+/* "Use cases by industry" — the page's single, large heading. */
+.itoc-kicker-title {
+  margin: 0;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
 .itoc-title {
   margin: 10px 0 14px;
   font-family: var(--font-poppins), system-ui, sans-serif;
@@ -6785,7 +6996,43 @@ html[dir="rtl"] .itoc-nav-count {
 }
 
 /* ---- Industry reel: persistent table of contents on the right ---------- */
-.isl-page { --ireel-toc-w: min(440px, 36vw); }
+/* The industry sidebar reuses the landing tree design (.lp-toc.lp-opt-2), so it
+   also feeds --lp-toc-w (which .lp-toc's width reads) the reserved width. */
+.isl-page { --ireel-toc-w: min(440px, 36vw); --lp-toc-w: min(440px, 36vw); }
+/* Industry sidebar differs from the landing in two ways:
+   1) collapsed shows NO items (the whole list animates 0fr↔1fr, not a preview);
+   2) the toggle is a plain blue chevron (no square), like the open-state one. */
+.isl-page .lp-items {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.32s ease;
+}
+.isl-page .lp-items.is-open {
+  grid-template-rows: 1fr;
+}
+.isl-page .lp-items > ul {
+  overflow: hidden;
+  min-height: 0;
+}
+/* Active-section rectangle: sits on the section TITLE while the section is
+   collapsed, and moves down to the active item once the section is open (the
+   item keeps its own .is-active blue border). A reserved transparent border
+   keeps the header from shifting when the rectangle appears. */
+.isl-page .ireel-toc-sec {
+  border: 3px solid transparent;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+.isl-page .ireel-toc-group.is-active:not(.is-open) > .ireel-toc-sec {
+  border-color: #1271b7;
+  color: #000;
+}
+.isl-page .lp-tree-toggle,
+.isl-page .ireel-toc-group.is-open .lp-tree-toggle {
+  background: transparent;
+  color: #1271b7;
+}
 /* make room for the right sidebar so it never overlaps the centered video */
 @media (min-width: 861px) {
   .ireel-page { padding-right: calc(var(--ireel-toc-w, min(440px, 36vw)) + 24px); }
@@ -6811,6 +7058,8 @@ html[dir="rtl"] .itoc-nav-count {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  /* Keep wheel scrolling inside the sidebar — never chain to the reel/page. */
+  overscroll-behavior: contain;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -6948,6 +7197,23 @@ html[dir="rtl"] .itoc-nav-count {
      content (which keeps its own right inset), without being clipped. */
   padding: 26px 4px 30px 20px;
 }
+/* As you scroll down into the "Use cases by industry" section, the landing
+   sidebar slides UP out of view (rather than snapping to display:none), and
+   slides back down when you return to the reel. <html>.is-free-scroll is
+   toggled only on the landing reel, so industry pages keep their own sidebar. */
+.lp-toc.lp-opt-2 {
+  transition: transform 0.4s ease;
+}
+html.is-free-scroll .lp-toc.lp-opt-2 {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+/* While restoring back into the industries view (remount from an industry page)
+   the sidebar starts hidden — don't animate the slide, or it flashes in then
+   glides away. */
+html.lp-restoring .lp-toc.lp-opt-2 {
+  transition: none;
+}
 /* Blue scrollbar on the right of the landing sidebar — wide and easy to grab. */
 .lp-toc .ireel-toc-list {
   scrollbar-width: auto;
@@ -7006,8 +7272,8 @@ html[dir="rtl"] .itoc-nav-count {
 .lp-toc .ireel-toc-group { gap: 0; }
 .lp-toc .ireel-toc-sec {
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 8px;
   margin-right: 14px; /* keep the highlight clear of the wider scrollbar */
   padding: 5px 12px; /* match the subsection highlight's tighter box */
   border-radius: 6px;
@@ -7042,7 +7308,8 @@ html[dir="rtl"] .itoc-nav-count {
   margin: 0;
   border-left: 0;
 }
-/* Extra items (beyond the preview) collapse/expand smoothly via grid-rows. */
+/* Each section always shows its first 3 items (the "main" subsections). The
+   extra items (beyond that preview) collapse/expand smoothly via grid-rows. */
 .lp-rest {
   display: grid;
   grid-template-rows: 0fr;
@@ -7149,6 +7416,18 @@ html[dir="rtl"] .itoc-nav-count {
 /* ---- Landing sidebar layout OPTION 2 (press 2): a left-of-title expand
    toggle (▶ facing the title, rotating ▼) that opens the subsections as an
    L-shaped tree. Option 1 (press 1, default) keeps the "View more" button. --- */
+/* Numbering: "1." on section titles, "A." on subsection items. */
+.lp-mark {
+  flex: none;
+  margin-right: 5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.lp-mark--sec {
+  color: var(--ink);
+  font-weight: 700;
+}
+
 /* Option 1: no leading toggle. */
 .lp-opt-1 .lp-tree-toggle { display: none; }
 /* Option 2: show the leading toggle, hide the "View more" button. */
@@ -7175,7 +7454,13 @@ html[dir="rtl"] .itoc-nav-count {
   transform: rotate(-90deg); /* ▶ facing the title when collapsed */
 }
 .lp-tree-chev.is-open {
-  transform: rotate(0deg); /* ▼ down when expanded */
+  transform: rotate(0deg) scale(1.4); /* ▼ down, and bigger, when expanded */
+}
+/* Open section: drop the blue square fill and show a blue chevron instead. */
+.ireel-toc-group.is-open .lp-tree-toggle,
+.ch-menu-group.is-open .lp-tree-toggle {
+  background: transparent;
+  color: #1271b7;
 }
 /* Re-enable the L-shaped connectors (disabled for option 1's flat list). */
 .lp-opt-2 .ireel-toc-item-li {
@@ -7209,22 +7494,17 @@ html[dir="rtl"] .itoc-nav-count {
   border-bottom-left-radius: 6px;
 }
 /* Option 2 collapsed shows only the first 3 items (preview). */
-.lp-opt-2 .lp-items:not(.is-open) .ireel-toc-item-li:nth-child(n + 4) {
-  display: none;
-}
-/* Trunk ends (rounded L) at the last VISIBLE item: the 3rd when collapsed, the
-   actual last item when expanded. */
+/* Trunk ends (rounded L) at the last item of each list (10px = where the corner
+   radius begins, so no overshoot). */
 .lp-opt-2 .ireel-toc-item-li:last-child::before {
   bottom: auto;
-  height: 10px; /* stop where the rounded corner (radius 6) begins — no overshoot */
+  height: 10px;
 }
-.lp-opt-2 .lp-items.is-open .ireel-toc-item-li:not(:last-child)::before {
+/* When expanded and there are more items below the preview, the preview's last
+   item's trunk runs full-height so it connects to the revealed items. */
+.lp-opt-2 .lp-items.is-open:has(.lp-rest) > .ireel-toc-items .ireel-toc-item-li:last-child::before {
   bottom: 0;
   height: auto;
-}
-.lp-opt-2 .lp-items:not(.is-open) .ireel-toc-item-li:nth-child(3)::before {
-  bottom: auto;
-  height: 10px;
 }
 /* All tree connectors stay gray. (The base tree fills the active item's ::after
    with solid blue, so keep it transparent to preserve the plain gray elbow.) */
@@ -7437,46 +7717,219 @@ html[dir="rtl"] .itoc-nav-count {
 }
 .edit-savebar-btn--primary { background: var(--blue); border-color: var(--blue); }
 
-/* ---- Landing MOBILE dropdown — same style as the desktop landing sidebar
-   (.lp-toc): count badge, section pill on open, items behind a left guide line
-   (no A./B. markers, no tree). --------------------------------------------- */
+/* ---- Landing MOBILE dropdown — the desktop OPTION 2 layout, touch-friendly:
+   a left ▶ toggle (blue square) before the section title that rotates ▼ open,
+   subsections drawn as a gray L-shaped tree, active item in a blue-bordered box,
+   3-item preview when collapsed. ------------------------------------------- */
+/* The landing menu stays mounted (unlike the reel's) so it animates BOTH ways:
+   opening slides the sections down into view; closing slides them back up. */
+@media (min-width: 901px) {
+  .lp-menu { display: none; }
+}
+.lp-menu {
+  animation: none; /* replace the one-shot ch-menu-in with a two-way transition */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.34s ease, visibility 0.34s ease;
+}
+.lp-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
 .lp-menu .ch-menu-item {
-  justify-content: space-between;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 12px;
   margin: 1px 12px;
-  padding: 11px 16px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
   border-bottom: 0;
   background: transparent;
 }
-.lp-menu .ch-menu-title { flex: 1; font-size: 17px; color: var(--ink); }
-.lp-menu .ch-menu-group.is-open .ch-menu-item { background: var(--blue-soft); }
-.lp-menu .ch-menu-num {
-  order: 0;
-  flex: none;
-  width: auto;
-  min-width: 24px;
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: #d3e6f8;
-  color: var(--blue);
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-}
+.lp-menu .ch-menu-title { flex: 0 1 auto; font-size: 17px; color: #3a4149; }
+.lp-menu .ch-menu-group.is-open .ch-menu-item { background: transparent; }
+/* subsection tree */
 .lp-menu .ch-menu-subs {
-  padding: 4px 0;
-  margin: 0 12px 6px 24px;
-  border-left: 1.5px solid var(--divider);
+  padding: 2px 0 6px;
+  margin: 0 16px 2px 28px;
+  border-left: 0;
 }
-.lp-menu .ch-menu-sub-li { padding-left: 0; }
-.lp-menu .ch-menu-sub-li::before,
-.lp-menu .ch-menu-sub-li::after { display: none; }
+.lp-menu .ch-menu-sub-li {
+  position: relative;
+  margin: 0;
+  padding-left: 24px;
+}
+.lp-menu .ch-menu-sub-li::before {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--divider);
+}
+.lp-menu .ch-menu-sub-li::after {
+  display: block;
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  width: 12px;
+  height: 22px;
+  background: transparent;
+  border-bottom: 1.5px solid var(--divider);
+  border-bottom-left-radius: 8px;
+}
+/* trunk ends (rounded L) at the last VISIBLE item */
+.lp-menu .ch-menu-sub-li:last-child::before { bottom: auto; height: 14px; }
+.lp-menu .lp-items.is-open .ch-menu-sub-li:not(:last-child)::before { bottom: 0; height: auto; }
+.lp-menu .lp-items:not(.is-open) .ch-menu-sub-li:nth-child(3)::before { bottom: auto; height: 14px; }
+/* keep the active item's elbow gray (base fills it blue) */
+.lp-menu .ch-menu-sub-li:has(.ch-menu-sub.is-active)::after { background: transparent; }
 .lp-menu .ch-menu-sub-letter { display: none; }
 .lp-menu .ch-menu-sub {
-  padding: 9px 16px 9px 18px;
-  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 9px 14px;
+  border: 3px solid transparent;
+  border-radius: 8px;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 400;
 }
-.lp-menu .ch-menu-sub.is-active { background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+.lp-menu .ch-menu-sub.is-active {
+  background: transparent;
+  border-color: #1271b7;
+  color: #000;
+  font-weight: 600;
+}
+
+/* ============================================================
+   Contact page (components/Contact.jsx) — landing-page styling.
+   ============================================================ */
+.contact-hero { padding-bottom: 8px; }
+.contact-hero .lp-kicker--title {
+  font-size: clamp(44px, 7vw, 78px);
+  letter-spacing: -0.02em;
+}
+.contact-body { padding-top: 8px; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+/* Direct contact methods */
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--divider);
+  border-radius: 14px;
+  background: #fff;
+  text-decoration: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.contact-method:hover {
+  border-color: #cdd8e6;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.contact-method-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+.contact-method-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.contact-method-text b {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink);
+}
+.contact-method-text small {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+/* Message form card */
+.contact-card {
+  padding: 26px;
+  border: 1px solid var(--divider);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--shadow-md);
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contact-field label {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.contact-opt { font-weight: 400; color: var(--muted); }
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--divider);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.contact-field textarea { resize: vertical; min-height: 120px; }
+.contact-field input:focus,
+.contact-field textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(18, 113, 183, 0.16);
+}
+.contact-submit { align-self: flex-start; }
+.contact-sent {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+@media (max-width: 860px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+@media (max-width: 520px) {
+  .contact-row { grid-template-columns: 1fr; }
+  .contact-card { padding: 20px; }
+  .contact-submit { align-self: stretch; text-align: center; }
+}

@@ -173,6 +173,7 @@ export default function Navbar({
   atUseCases = false,
   onIndustries,
   onExitUseCases,
+  onPhilosophy,
   backTo,
 }) {
   const t = useT();
@@ -180,7 +181,29 @@ export default function Navbar({
   const [chOpen, setChOpen] = useState(false);
   // Which chapter's sub-titles are expanded in the dropdown (accordion).
   const [expandedId, setExpandedId] = useState(null);
+  // True whenever the Use Cases section has reached the top — set by CLICKING
+  // Industries (atUseCases) OR by simply SCROLLING down to it. Either way the
+  // button flips to "Back". Tracked here so the label follows scroll, not just
+  // the click state.
+  const [scrolledToUC, setScrolledToUC] = useState(false);
+  const inUseCases = atUseCases || scrolledToUC;
   const close = () => setOpen(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const navH = parseInt(getComputedStyle(root).getPropertyValue('--nav-h'), 10) || 64;
+    const update = () => {
+      const uc = document.getElementById('use-cases');
+      setScrolledToUC(!!uc && uc.getBoundingClientRect().top <= navH + 2);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
 
   const pad = (n) => String(n).padStart(2, '0');
   const activeIdx = chapters.findIndex((c) => c.id === activeId);
@@ -221,20 +244,11 @@ export default function Navbar({
   return (
     <>
       <nav className="nav js-nav">
-        {/* On the industry reel, the back button takes the brand's slot and is
-            styled like the Book Demo button; elsewhere the logo shows. */}
-        {backTo ? (
-          <a href={backTo.href} className="nav-back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            {t(backTo.label)}
-          </a>
-        ) : (
-          <a href="/" className="brand" aria-label="Taskmaverick home">
-            <img src="/logo.svg" alt="Taskmaverick" className="brand-logo" width="220" height="30" />
-          </a>
-        )}
+        {/* Logo always sits on the left (same as the main page). On industry
+            pages the back button lives in the right slot (see nav-right). */}
+        <a href="/" className="brand" aria-label="Taskmaverick home">
+          <img src="/logo.svg" alt="Taskmaverick" className="brand-logo" width="220" height="30" />
+        </a>
 
         {chapters.length > 0 && (
           <div className="nav-center">
@@ -320,25 +334,70 @@ export default function Navbar({
         )}
 
         <div className="nav-right">
-          {/* Hidden on the industry reel (where the back button already leads
-              out); shown everywhere else. */}
-          {!backTo && (
+          {/* Industry pages: a back link in the same slot as "Industries". */}
+          {backTo ? (
+            <a href={backTo.href} className="nav-industries nav-back">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+              {t(backTo.label)}
+            </a>
+          ) : (
             <a
               href="/#use-cases"
               className="nav-industries"
               onClick={(e) => {
-                // On the landing, scroll down to the industries section; elsewhere
-                // let the link navigate to /#use-cases.
-                if (onIndustries && document.getElementById('use-cases')) {
+                // Landing: toggle the industries (Use Cases) view. When we're
+                // already there — whether reached by click OR by scrolling — this
+                // goes back up to the reel.
+                if (document.getElementById('use-cases')) {
                   e.preventDefault();
-                  onIndustries();
+                  if (inUseCases) {
+                    onExitUseCases?.();
+                    smoothScrollTo(`dchapter-${activeId}`, { instant: true });
+                  } else {
+                    onIndustries?.();
+                  }
                 }
               }}
             >
-              {t('Industries')}
+              {/* Chevron always sits on the LEFT of the label. Reel state: down
+                  + "Industries". Use-cases state (clicked OR scrolled to): up
+                  chevron (or left when the user presses "2") + "Back". */}
+              {inUseCases ? (
+                <>
+                  <svg className="uc-chev-up" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 19V5M5 12l7-7 7 7" />
+                  </svg>
+                  <svg className="uc-chev-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                  </svg>
+                </>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+              )}
+              {inUseCases ? t('Back') : t('Industries')}
+            </a>
+          )}
+          {/* Home — the intro page, sits just right of Industries. */}
+          {!backTo && (
+            <a
+              href="#philosophy"
+              className={`nav-industries nav-philosophy${activeId === 'philosophy' && !inUseCases ? ' is-active' : ''}`}
+              onClick={(e) => {
+                if (onPhilosophy) {
+                  e.preventDefault();
+                  onPhilosophy();
+                }
+              }}
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 5v14M5 12l7 7 7-7" />
+                <path d="M3 10.5 12 4l9 6.5" />
+                <path d="M5 9.6V20h14V9.6" />
               </svg>
+              {t('Home')}
             </a>
           )}
 
@@ -351,6 +410,25 @@ export default function Navbar({
           </a>
 
           <LanguageSwitcher />
+
+          {/* Mobile-only Home button — a circle like the burger. Blue with a
+              white icon when we're on Home (activeId === 'philosophy'). */}
+          <a
+            href="/"
+            className={`nav-home-btn${activeId === 'philosophy' && !inUseCases ? ' is-active' : ''}`}
+            aria-label={t('Home')}
+            onClick={(e) => {
+              if (onPhilosophy && !backTo) {
+                e.preventDefault();
+                onPhilosophy();
+              }
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M3 10.5 12 4l9 6.5" />
+              <path d="M5 9.6V20h14V9.6" />
+            </svg>
+          </a>
 
           <button
             type="button"
