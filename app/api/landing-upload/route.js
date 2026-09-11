@@ -9,6 +9,17 @@ export const dynamic = 'force-dynamic';
 
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 
+// Files land in /public and are served same-origin, so only allow inert media
+// extensions — never .html/.svg/.js etc., which would execute on our own origin.
+const ALLOWED_EXT = new Set([
+  '.mp4', '.webm', '.mov', '.m4v', '.ogg',
+  '.png', '.jpg', '.jpeg', '.webp', '.gif', '.avif',
+]);
+const MAX_BYTES = 512 * 1024 * 1024; // 512 MB cap (cover videos can be large)
+
+// Dev-only editor upload; no auth, so it must never be reachable in production.
+const PROD = process.env.NODE_ENV === 'production';
+
 // Keep a filesystem-safe, collision-resistant name without relying on Date/random
 // (those are fine here, but a counter keeps it simple and predictable).
 function safeName(original) {
@@ -21,6 +32,8 @@ function safeName(original) {
 }
 
 export async function POST(request) {
+  if (PROD) return new Response(null, { status: 404 });
+
   let form;
   try {
     form = await request.formData();
@@ -32,7 +45,17 @@ export async function POST(request) {
     return Response.json({ error: 'No file provided' }, { status: 400 });
   }
 
+  // Only accept an allow-listed media extension — reject anything executable.
+  const ext = path.extname(String(file.name || '')).toLowerCase();
+  if (!ALLOWED_EXT.has(ext)) {
+    return Response.json({ error: 'Unsupported file type' }, { status: 415 });
+  }
+
   const buf = Buffer.from(await file.arrayBuffer());
+  if (buf.length === 0 || buf.length > MAX_BYTES) {
+    return Response.json({ error: 'File too large or empty' }, { status: 413 });
+  }
+
   await fs.mkdir(UPLOAD_DIR, { recursive: true });
 
   // Prefix with the incoming size so repeated uploads of the same name don't clash.

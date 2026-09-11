@@ -13,7 +13,14 @@ export const dynamic = 'force-dynamic';
 
 const FILE = path.join(process.cwd(), 'content', 'landing.local.json');
 
+// Dev-only editor "database". It has no auth, so it must never be reachable in a
+// production deploy (same rule as the preview pages, which 404 in prod). The
+// public landing falls back to the bundled DEFAULT_LANDING when this 404s.
+const PROD = process.env.NODE_ENV === 'production';
+const notInProd = () => new Response(null, { status: 404 });
+
 export async function GET() {
+  if (PROD) return notInProd();
   try {
     const raw = await fs.readFile(FILE, 'utf8');
     return Response.json(JSON.parse(raw));
@@ -24,6 +31,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  if (PROD) return notInProd();
   let body;
   try {
     body = await request.json();
