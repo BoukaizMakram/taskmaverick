@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { smoothScrollTo } from '@/lib/smoothScroll';
 import { useLang, useT } from '@/lib/i18n/LanguageProvider';
 import { LANGS } from '@/lib/i18n/languages';
+import contactNav from './ContactNav.module.css';
 
 // Compact language switcher — a blue rounded-square chip showing the current
 // two-letter code (EN / ES / AR); clicking opens a small menu of the three
@@ -175,6 +176,7 @@ export default function Navbar({
   onExitUseCases,
   onPhilosophy,
   backTo,
+  returnHome = false,
 }) {
   const t = useT();
   const [open, setOpen] = useState(false);
@@ -188,6 +190,17 @@ export default function Navbar({
   const [scrolledToUC, setScrolledToUC] = useState(false);
   const inUseCases = atUseCases || scrolledToUC;
   const close = () => setOpen(false);
+  const goBackHome = (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    // Use the original history entry so the browser restores its scroll position.
+    if (document.referrer && window.history.length > 1) {
+      const previous = new URL(document.referrer);
+      if (previous.origin === window.location.origin) {
+        event.preventDefault();
+        window.history.back();
+      }
+    }
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -243,7 +256,7 @@ export default function Navbar({
 
   return (
     <>
-      <nav className="nav js-nav">
+      <nav className={`nav js-nav${returnHome ? ` ${contactNav.navigation}` : ''}`}>
         {/* Logo always sits on the left (same as the main page). On industry
             pages the back button lives in the right slot (see nav-right). */}
         <a href="/" className="brand" aria-label="Taskmaverick home">
@@ -335,7 +348,12 @@ export default function Navbar({
 
         <div className="nav-right">
           {/* Industry pages: a back link in the same slot as "Industries". */}
-          {backTo ? (
+          {returnHome ? (
+            <a href="/" className={contactNav.back} onClick={goBackHome}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              {t('Home')}
+            </a>
+          ) : backTo ? (
             <a href={backTo.href} className="nav-industries nav-back">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -382,7 +400,7 @@ export default function Navbar({
             </a>
           )}
           {/* Home — the intro page, sits just right of Industries. */}
-          {!backTo && (
+          {!backTo && !returnHome && (
             <a
               href="#philosophy"
               className={`nav-industries nav-philosophy${activeId === 'philosophy' && !inUseCases ? ' is-active' : ''}`}
@@ -411,24 +429,33 @@ export default function Navbar({
 
           <LanguageSwitcher />
 
-          {/* Mobile-only Home button — a circle like the burger. Blue with a
-              white icon when we're on Home (activeId === 'philosophy'). */}
-          <a
-            href="/"
-            className={`nav-home-btn${activeId === 'philosophy' && !inUseCases ? ' is-active' : ''}`}
-            aria-label={t('Home')}
-            onClick={(e) => {
-              if (onPhilosophy && !backTo) {
-                e.preventDefault();
-                onPhilosophy();
-              }
-            }}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M3 10.5 12 4l9 6.5" />
-              <path d="M5 9.6V20h14V9.6" />
-            </svg>
-          </a>
+          {/* Mobile-only circle (like the burger). On an industry page it's a
+              Back button that returns to the Use Cases view (same as the desktop
+              back link); on the landing it's Home (blue when we're on Home). */}
+          {returnHome ? null : backTo ? (
+            <a href={backTo.href} className="nav-home-btn" aria-label={t('Back')}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </a>
+          ) : (
+            <a
+              href="/"
+              className={`nav-home-btn${activeId === 'philosophy' && !inUseCases ? ' is-active' : ''}`}
+              aria-label={t('Home')}
+              onClick={(e) => {
+                if (onPhilosophy) {
+                  e.preventDefault();
+                  onPhilosophy();
+                }
+              }}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 10.5 12 4l9 6.5" />
+                <path d="M5 9.6V20h14V9.6" />
+              </svg>
+            </a>
+          )}
 
           <button
             type="button"

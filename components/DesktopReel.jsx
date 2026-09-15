@@ -16,6 +16,7 @@ import CoverPlayer from '@/components/CoverPlayer';
 import CornerPlay from '@/components/CornerPlay';
 import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
+import AutoManagerScene from '@/components/scenes/AutoManagerScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 import { PHILOSOPHY } from '@/lib/chapters';
 import { useT } from '@/lib/i18n/LanguageProvider';
@@ -25,7 +26,21 @@ const SCENES = {
   'posted-missions': PostedMissionsScene,
 };
 
-function ChapterMedia({ chapter, src, poster, editPath }) {
+function ChapterMedia({ chapter, src, poster, editPath, bgPath }) {
+  const edit = useEdit();
+  // In the admin editor, always show the editable headline poster — never a
+  // playing video or coded scene — so the chapter's text can be edited in place.
+  if (edit && editPath) {
+    return (
+      <CtaPoster
+        title={chapter.heroTitle || chapter.title}
+        editPath={editPath}
+        bg={chapter.bg}
+        bgPath={bgPath}
+      />
+    );
+  }
+
   // A coded scene wins; the cover image is its poster (shown until you hit play).
   const Scene = chapter.scene ? SCENES[chapter.scene] : null;
   if (Scene) return <Scene poster={chapter.cover} title={chapter.heroTitle || chapter.title} />;
@@ -42,14 +57,28 @@ function ChapterMedia({ chapter, src, poster, editPath }) {
     );
   }
 
-  // No coded scene and no video → a black poster with the chapter's CTA inside
-  // the frame, matching the Automating Management scene poster.
-  return <CtaPoster title={chapter.heroTitle || chapter.title} editPath={editPath} />;
+  // No coded scene and no video → a poster with the chapter's CTA inside the
+  // frame (selectable background style).
+  return (
+    <CtaPoster
+      title={chapter.heroTitle || chapter.title}
+      editPath={editPath}
+      bg={chapter.bg}
+      bgPath={bgPath}
+    />
+  );
 }
 
-export default function DesktopReel({ chapters = [], activeId, onSelect, onIndustries, src, poster }) {
+export default function DesktopReel({ chapters = [], philosophy, activeId, onSelect, onIndustries, src, poster }) {
   const t = useT();
   const edit = useEdit();
+  // Field-level fallback: a partially-saved philosophy (e.g. only heroTitle)
+  // must still fall back to the seed badges/title, never hide them.
+  const phil = {
+    ...PHILOSOPHY,
+    ...(philosophy || {}),
+    badges: philosophy?.badges?.length ? philosophy.badges : PHILOSOPHY.badges,
+  };
   const wrapRef = useRef(null);
   const pages = useRef({});
   const visibleId = useRef(activeId);
@@ -141,19 +170,19 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
           <div className="stage-inner">
             <div className="video-frame-wrap">
               <div className="video-frame">
-                <CtaPoster title={PHILOSOPHY.heroTitle} />
+                <CtaPoster title={phil.heroTitle} editPath={['philosophy', 'heroTitle']} bg={phil.bg} bgPath={['philosophy', 'bg']} />
               </div>
               <CornerPlay />
             </div>
             <ul className="stage-badges">
-              {PHILOSOPHY.badges.map((b, bi) => (
+              {(phil.badges || []).map((b, bi) => (
                 <li className="stage-badge" key={bi} style={{ '--bi': bi }}>
                   <span className="stage-badge-icon">
-                    <BadgeIcon name={b.icon} />
+                    <EditIcon name={b.icon} path={['philosophy', 'badges', bi, 'icon']} />
                   </span>
                   <span className="stage-badge-text">
-                    <b>{t(b.title)}</b>
-                    <small>{t(b.sub)}</small>
+                    <EditText as="b" path={['philosophy', 'badges', bi, 'title']} value={edit ? b.title : t(b.title)} />
+                    <EditText as="small" path={['philosophy', 'badges', bi, 'sub']} value={edit ? b.sub : t(b.sub)} />
                   </span>
                 </li>
               ))}
@@ -191,6 +220,7 @@ export default function DesktopReel({ chapters = [], activeId, onSelect, onIndus
                     src={src}
                     poster={poster}
                     editPath={['chapters', c.baseIndex, 'heroTitle']}
+                    bgPath={['chapters', c.baseIndex, 'bg']}
                   />
                 </div>
                 <CornerPlay />

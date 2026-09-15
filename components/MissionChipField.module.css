@@ -1,0 +1,21 @@
+.field {
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, #132d43 0%, #091d30 65%, #040e1b 100%);
+}
+.field > div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.field :global(.pui-chip) { border: 1px solid #dae1e7; }
+@media (max-width: 600px) {
+  .field > div { width: 40%; }
+  .field > div:nth-child(n + 9) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field > div { will-change: auto; }
+}

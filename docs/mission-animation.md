@@ -1,5 +1,30 @@
 # Mission Animation Engine
 
+## Interactive recording previews
+
+`/phone` and `/tablet` default to interactive mode in the local development site.
+Both devices start at the personal home screen. My Board opens the personal board;
+L001 - Sweet Beverly opens the location grid, with each location opening its own
+team board. Mission state stays separate for each board during the preview session.
+On either device, selecting a mission opens only its content. Click Claim to open
+the personal-code keypad. Tablet content opens in the right-side drawer.
+Menus use the exported SVG artwork from Figma page 1:2, with separate personal
+and team action menus. Original icons are stored in public/board-icons.
+Claim and Close both require a valid personal code. The rainbow divider animates
+only while the completed six-digit code is being verified; typing controls are
+disabled during verification. No next-digit highlight
+or hover styling is applied to the interactive mission UI.
+Enter `123456` for Anna F. - Staff or `654321` for J. Maverick. These are local
+recording identities, not account authentication; Retrieve Codes displays them.
+The sixth digit starts a short verification animation and then submits automatically. An unknown code keeps the mission Open.
+Claiming places the mission first in Claimed, updates the counts, displays its
+performer, and starts the execution timer at zero. Reset interaction restores the
+initial board and timers for another take. State is local to each mounted preview.
+The original animation tools remain available through the mode switch.
+
+Shared implementation: `InteractiveMissionBoard` and `PersonalCodeDialog`; mission
+cards and details reuse `MissionChip`, `PhoneShell`, and `OpenedMission`.
+
 In-website animation software for Taskmaverick product demos. Instead of recording
 videos, we **rebuild the real product UI in code and script it** with controllable
 GSAP timelines. This keeps demos crisp at any size, editable in code, and cheap to

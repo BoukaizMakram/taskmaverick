@@ -1,0 +1,133 @@
+[
+  {
+    "name": "Automation",
+    "scenes": [
+      {
+        "text": "Taskmaverick automatically guides teams to take initiatives on their own",
+        "topic": "Automated Business Manager"
+      },
+      {
+        "text": "There is no need for a human manager to constantly remind people",
+        "topic": "Automated Business Manager"
+      },
+      {
+        "text": "Work Missions can be automatically assigned to people on their Personal Boards…",
+        "topic": "Automated Business Manager"
+      },
+      {
+        "text": "….or they can be posted on Team Boards to facilitate cooperation",
+        "topic": "Automated Business Manager"
+      },
+      {
+        "text": "Multiple people can share a single device to save on hardware costs",
+        "topic": "Device Sharing"
+      },
+      {
+        "text": "Each person enters their personal code to Claim a Mission",
+        "topic": "Device Sharing"
+      },
+      {
+        "text": "After performing the work, they enter their code again to Close the Mission",
+        "topic": "Device Sharing"
+      },
+      {
+        "text": "When clearly displayed, a shared device can effectively engage a whole team",
+        "topic": "Device Sharing"
+      },
+      {
+        "text": "No important task is ever forgotten or delayed",
+        "topic": "Device Sharing"
+      }
+    ]
+  },
+  {
+    "name": "Efficiency",
+    "scenes": [
+      {
+        "text": "Taskmaverick increases efficiency by keeping everyone engaged and informed",
+        "topic": "Engagement"
+      },
+      {
+        "text": "Everyone can see what Missions were completed…",
+        "topic": "Engagement"
+      },
+      {
+        "text": "…what Missions are being performed…",
+        "topic": "Engagement"
+      },
+      {
+        "text": "…and what Missions remain due…",
+        "topic": "Engagement"
+      },
+      {
+        "text": "No time is wasted on duplicating work that was performed by someone else…",
+        "topic": "Engagement"
+      },
+      {
+        "text": "…and no time is wasted wondering what to do next",
+        "topic": "Engagement"
+      },
+      {
+        "text": "Mission timers increase efficiency by creating a sense of urgency",
+        "topic": "Urgency"
+      },
+      {
+        "text": "They change in color as they age…from Green…to Orange…to Red",
+        "topic": "Urgency"
+      },
+      {
+        "text": "A critical Mission can escalate quicker than a regular Mission…",
+        "topic": "Urgency"
+      },
+      {
+        "text": "This allows important work to become automatically prioritized, without human input",
+        "topic": "Urgency"
+      },
+      {
+        "text": "Clever Gamification can also be used to boost efficiency",
+        "topic": "Gamification"
+      },
+      {
+        "text": "Taskmaverick allows reward points to be added to Missions",
+        "topic": "Gamification"
+      },
+      {
+        "text": "Undesirable Missions can offer higher points to increase motivation",
+        "topic": "Gamification"
+      },
+      {
+        "text": "Performance improves when individual contributions can be recognized and rewarded",
+        "topic": "Recognition"
+      },
+      {
+        "text": "That is why each performer’s name is clearly stamped on their Missions",
+        "topic": "Recognition"
+      },
+      {
+        "text": "Their execution duration is also tracked per Mission",
+        "topic": "Recognition"
+      },
+      {
+        "text": "A clear record is maintained per mission, per person and per team",
+        "topic": "Recognition"
+      },
+      {
+        "text": "Taskmaverick increases efficiency by engaging, motivating, and rewarding teams",
+        "topic": "Recognition"
+      }
+    ]
+  },
+  {
+    "name": "Management",
+    "scenes": [
+      {
+        "text": "Excessive delays can trigger Alerts to management",
+        "topic": ""
+      },
+      {
+        "text": "Excessive aging can flag managers with Alert Tickets",
+        "topic": ""
+      }
+    ]
+  }
+]

@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useT } from '@/lib/i18n/LanguageProvider';
-import { useEdit, EditText } from '@/components/InlineEdit';
-import Starfield from '@/components/Starfield';
+import { useEdit, EditText, EditBgButton } from '@/components/InlineEdit';
+import PosterBg from '@/components/PosterBg';
 
-// Black CTA poster for chapters without a coded scene or video: a forward-flying
-// starfield (hyperspace) behind the chapter's headline, which animates in (line
-// by line) each time the poster scrolls into view.
-export default function CtaPoster({ title, editPath }) {
+// CTA poster for chapters without a coded scene (or, in the editor, for any
+// chapter): a selectable animated background behind the chapter's headline,
+// which animates in line by line each time the poster scrolls into view.
+// `bg` picks the background style (default 'stars'); `bgPath` binds the style
+// selector shown in the admin editor.
+export default function CtaPoster({ title, editPath, bg = 'stars', bgPath }) {
   const t = useT();
   const edit = useEdit();
   const ref = useRef(null);
@@ -25,11 +27,13 @@ export default function CtaPoster({ title, editPath }) {
     return () => io.disconnect();
   }, []);
 
-  // Edit mode: a single editable headline (double-click), no line animation.
+  // Edit mode: a single editable headline (double-click), no line animation,
+  // plus a control to cycle the background style.
   if (edit && editPath) {
     return (
       <div className="cover-cta is-revealed">
-        <Starfield className="cover-cta-stars" />
+        <PosterBg variant={bg} />
+        {bgPath && <EditBgButton path={bgPath} current={bg} />}
         <EditText as="h2" className="stage-cta" multiline path={editPath} value={title || ''} />
       </div>
     );
@@ -39,7 +43,7 @@ export default function CtaPoster({ title, editPath }) {
 
   return (
     <div ref={ref} className={`cover-cta${revealed ? ' is-revealed' : ''}`}>
-      <Starfield className="cover-cta-stars" />
+      <PosterBg variant={bg} />
       <h2 className="stage-cta">
         {lines.map((line, i) => (
           <span className="cta-line" style={{ '--i': i }} key={i}>

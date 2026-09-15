@@ -1,0 +1,21 @@
+<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_673_37359)">
+<path d="M11.917 3C12.9933 3.00003 14.0238 3.43455 14.7764 4.2041L18.8604 8.37988C19.591 9.12717 19.9999 10.1307 20 11.1758V18.2373C20 18.9592 19.7176 19.6528 19.2129 20.1689C18.6933 20.7002 17.9814 20.9999 17.2383 21H6.76172C6.0186 20.9999 5.30672 20.7002 4.78711 20.1689C4.28239 19.6528 4.00003 18.9592 4 18.2373L4 5.7627C4.00003 5.04079 4.28239 4.3472 4.78711 3.83105C5.30672 3.2998 6.0186 3.00012 6.76172 3L11.917 3ZM6.21387 16.5C5.87505 16.5 5.59972 16.7745 5.59961 17.1133C5.59961 17.4522 5.87498 17.7275 6.21387 17.7275H16.9863C17.3252 17.7275 17.6006 17.4522 17.6006 17.1133C17.6005 16.7745 17.3251 16.5 16.9863 16.5H6.21387ZM6.21387 12.8184C5.87505 12.8184 5.59972 13.0928 5.59961 13.4316C5.59961 13.7705 5.87498 14.0459 6.21387 14.0459H12.1865C12.5254 14.0459 12.7998 13.7705 12.7998 13.4316C12.7997 13.0929 12.5253 12.8184 12.1865 12.8184H6.21387ZM13.5996 7.90918C13.5996 8.89096 14.4002 9.5459 15.2002 9.5459H18.4004L13.5996 4.63672V7.90918Z" fill="url(#paint0_linear_673_37359)"/>
+</g>
+<defs>
+<filter id="filter0_d_673_37359" x="0" y="0" width="24" height="26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.740347 0 0 0 0 0.59677 0 0 0 0 0.286946 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_673_37359"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_673_37359" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_673_37359" x1="4" y1="21" x2="20" y2="3" gradientUnits="userSpaceOnUse">
+<stop stop-color="#D27834"/>
+<stop offset="1" stop-color="#E0A975"/>
+</linearGradient>
+</defs>
+</svg>

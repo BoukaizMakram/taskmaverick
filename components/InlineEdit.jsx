@@ -5,10 +5,32 @@
 // place: double-click text to edit, click an icon to cycle it, click the frame
 // badge to upload a cover video. A floating <SaveBar> persists to the local API.
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  createContext,
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { DEFAULT_LANDING, BADGE_ICONS } from '@/lib/landingDefaults';
 import { BadgeIcon } from '@/components/HeroVideo';
+import { POSTER_BGS, POSTER_BG_LABELS } from '@/components/PosterBg';
+
+// Render a string with its `\n`s turned into real line breaks (so the line
+// breaks an editor adds actually show on the live page). No-op for plain text.
+function withBreaks(text) {
+  const s = String(text ?? '');
+  if (!s.includes('\n')) return s;
+  return s.split('\n').map((line, i) => (
+    <Fragment key={i}>
+      {i > 0 && <br />}
+      {line}
+    </Fragment>
+  ));
+}
 
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
@@ -78,9 +100,11 @@ export function EditProvider({ children }) {
   );
 }
 
-// Double-click-to-edit text bound to a content path. Outside edit mode it just
-// renders the value.
-export function EditText({ value, path, as = 'span', className = '', multiline = false, onActivate }) {
+// Double-click-to-edit text bound to a content path. Everything is multiline by
+// default, so Enter inserts a line break (blur/click-away commits, Esc cancels);
+// pass `multiline={false}` for a single-line field where Enter should commit.
+// Outside edit mode it renders the value with its line breaks preserved.
+export function EditText({ value, path, as = 'span', className = '', multiline = true, onActivate }) {
   const ctx = useEdit();
   const ref = useRef(null);
   const busy = useRef(false);
@@ -94,7 +118,7 @@ export function EditText({ value, path, as = 'span', className = '', multiline =
     }
   }, [value]);
 
-  if (!ctx?.editing) return <Tag className={className}>{value}</Tag>;
+  if (!ctx?.editing) return <Tag className={className}>{withBreaks(value)}</Tag>;
 
   return (
     <Tag
@@ -125,9 +149,24 @@ export function EditText({ value, path, as = 'span', className = '', multiline =
         ctx.patch(path, e.currentTarget.innerText.replace(/ /g, ' '));
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' && !multiline) {
+        if (e.key === 'Enter') {
           e.preventDefault();
-          e.currentTarget.blur();
+          if (!multiline) {
+            e.currentTarget.blur(); // single-line field: Enter commits
+            return;
+          }
+          // Insert a real newline at the caret (reliable even for inline tags).
+          const sel = window.getSelection();
+          if (sel && sel.rangeCount) {
+            const range = sel.getRangeAt(0);
+            range.deleteContents();
+            const node = document.createTextNode('\n');
+            range.insertNode(node);
+            range.setStartAfter(node);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
         } else if (e.key === 'Escape') {
           e.currentTarget.innerText = value ?? '';
           e.currentTarget.blur();
@@ -179,6 +218,29 @@ export function EditVideoButton({ path }) {
         onChange={(e) => ctx.uploadVideo(path, e.target.files?.[0])}
       />
     </>
+  );
+}
+
+// Dropdown to pick the CTA poster background style. Shown on the poster only in
+// edit mode. stopPropagation keeps clicks off the poster's edit-text handlers.
+export function EditBgButton({ path, current = 'stars' }) {
+  const ctx = useEdit();
+  if (!ctx?.editing) return null;
+  return (
+    <label className="edit-bg-select" title="Background style" onClick={(e) => e.stopPropagation()}>
+      <span className="edit-bg-select-icon" aria-hidden="true">◍</span>
+      <select
+        value={POSTER_BGS.includes(current) ? current : 'stars'}
+        onChange={(e) => ctx.patch(path, e.target.value)}
+        onDoubleClick={(e) => e.stopPropagation()}
+      >
+        {POSTER_BGS.map((v) => (
+          <option key={v} value={v}>
+            {POSTER_BG_LABELS[v] || v}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 

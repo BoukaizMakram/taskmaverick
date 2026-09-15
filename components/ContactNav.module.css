@@ -1,0 +1,8 @@
+.back { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-family: var(--font-poppins), sans-serif; font-size: 16px; font-weight: 600; white-space: nowrap; min-height: 44px; }
+.back:hover { color: var(--blue-dark); }
+.back:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; border-radius: 4px; }
+@media (max-width: 520px) {
+  .navigation :global(.brand-logo) { width: clamp(140px, 45vw, 190px); height: auto; }
+  .navigation :global(.nav-right) { gap: 10px; }
+  .back { font-size: 14px; gap: 5px; }
+}

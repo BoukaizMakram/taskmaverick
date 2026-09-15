@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import AnimatedMissions from '@/components/AnimatedMissions';
+import TabletLab from '@/components/TabletLab';
 
 export const metadata = {
   title: 'Tablet — Missions (animation prototype)',
@@ -25,7 +25,7 @@ export default function TabletPage() {
       }}
     >
       <div style={{ width: 'min(1174px, 100%)' }}>
-        <AnimatedMissions />
+        <TabletLab />
       </div>
     </main>
   );

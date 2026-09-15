@@ -41,7 +41,7 @@ function ChapterMedia({ chapter, src, poster }) {
 
   // No coded scene and no video → a black poster with the chapter's CTA inside
   // the frame, matching the Automating Management scene poster.
-  return <CtaPoster title={chapter.heroTitle || chapter.title} />;
+  return <CtaPoster title={chapter.heroTitle || chapter.title} bg={chapter.bg} />;
 }
 
 // Blue "Play" button pushed to the bottom-right corner, protruding outside the
@@ -75,6 +75,7 @@ function CornerPlay() {
 
 export default function MobileReel({
   chapters = [],
+  philosophy,
   activeId,
   onSelect,
   atUseCases = false,
@@ -84,6 +85,13 @@ export default function MobileReel({
   poster,
 }) {
   const t = useT();
+  // Field-level fallback: a partially-saved philosophy (e.g. only heroTitle)
+  // must still fall back to the seed badges/title, never hide them.
+  const phil = {
+    ...PHILOSOPHY,
+    ...(philosophy || {}),
+    badges: philosophy?.badges?.length ? philosophy.badges : PHILOSOPHY.badges,
+  };
   const reelRef = useRef(null);
   const pages = useRef({});
   const [menuOpen, setMenuOpen] = useState(false);
@@ -226,12 +234,12 @@ export default function MobileReel({
         <section className="reel-page" data-id="philosophy" ref={(el) => (pages.current.philosophy = el)}>
           <div className="reel-media video-frame-wrap">
             <div className="video-frame">
-              <CtaPoster title={PHILOSOPHY.heroTitle} />
+              <CtaPoster title={phil.heroTitle} editPath={['philosophy', 'heroTitle']} bg={phil.bg} bgPath={['philosophy', 'bg']} />
             </div>
             <CornerPlay />
           </div>
           <ul className="stage-badges reel-badges">
-            {PHILOSOPHY.badges.map((b, bi) => (
+            {(phil.badges || []).map((b, bi) => (
               <li className="stage-badge" key={bi} style={{ '--bi': bi }}>
                 <span className="stage-badge-icon">
                   <BadgeIcon name={b.icon} />

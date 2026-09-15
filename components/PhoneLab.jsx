@@ -9,9 +9,11 @@
 import { useState } from 'react';
 
 import PhoneBoard, { PHONE_CHIPS } from '@/components/PhoneBoard';
+import SoftwarePreview from '@/components/SoftwarePreview';
 
 export default function PhoneLab() {
   const [paused, setPaused] = useState(false);
+  const [interactive, setInteractive] = useState(true);
   const [highlight, setHighlight] = useState({ chip: null, effects: ['dim'] });
 
   const active = highlight.chip != null;
@@ -20,29 +22,30 @@ export default function PhoneLab() {
 
   return (
     <div className="ov-lab">
-      <PhoneBoard highlight={highlight} paused={paused} />
+      {interactive ? <SoftwarePreview onAnimationTools={() => setInteractive(false)}/> : <PhoneBoard highlight={highlight} paused={paused} />}
+      <button type="button" className="ov-btn" onClick={() => setInteractive(v => !v)}>{interactive ? 'Animation tools' : 'Interactive mode'}</button>
 
       <div className="ov-controls" style={{ maxWidth: 520 }}>
-        <div className="ov-ctrl-row">
+        {!interactive && <div className="ov-ctrl-row">
           <span className="ov-ctrl-label">Timers</span>
           <button type="button" className="ov-btn" onClick={() => setPaused((p) => !p)}>{paused ? '▶ Play' : '⏸ Pause'}</button>
-        </div>
+        </div>}
 
-        <div className="ov-ctrl-row">
+        {!interactive && <div className="ov-ctrl-row">
           <span className="ov-ctrl-label">Chip</span>
           <button type="button" className={`ov-btn${highlight.chip === null ? ' is-on' : ''}`} onClick={() => setHighlight((h) => ({ ...h, chip: null }))}>None</button>
           {PHONE_CHIPS.map((c, i) => (
             <button key={c.title} type="button" className={`ov-btn${highlight.chip === i ? ' is-on' : ''}`} onClick={() => setHighlight((h) => ({ ...h, chip: i }))}>{c.title}</button>
           ))}
-        </div>
+        </div>}
 
-        <div className="ov-ctrl-row">
+        {!interactive && <div className="ov-ctrl-row">
           <span className="ov-ctrl-label">Effects</span>
           {[['dim', 'Dim others'], ['pop', 'Pop out'], ['zoom', 'Zoom in']].map(([s, label]) => (
             <button key={s} type="button" disabled={!active} className={`ov-btn${highlight.effects.includes(s) ? ' is-on' : ''}`} onClick={() => toggleEffect(s)}>{label}</button>
           ))}
           <span className="ov-ctrl-hint">combine freely — e.g. Dim + Zoom</span>
-        </div>
+        </div>}
       </div>
     </div>
   );

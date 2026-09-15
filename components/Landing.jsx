@@ -329,6 +329,7 @@ export default function Landing({ content: contentProp }) {
       {/* ---------------- Demo hero (desktop: snap-scroll chapter reel) --- */}
       <DesktopReel
         chapters={chapters}
+        philosophy={content.philosophy}
         activeId={activeId}
         onSelect={handleSelect}
         onIndustries={enterUseCases}
@@ -339,6 +340,7 @@ export default function Landing({ content: contentProp }) {
       {/* ---------------- Demo hero (mobile: TikTok-style chapter reel) --- */}
       <MobileReel
         chapters={chapters}
+        philosophy={content.philosophy}
         activeId={activeId}
         onSelect={handleSelect}
         atUseCases={atUseCases}
@@ -357,9 +359,7 @@ export default function Landing({ content: contentProp }) {
           <div className="lp-container">
             <div className="lp-head center">
               <EditText as="h2" className="lp-kicker lp-kicker--title" path={['useCases', 'kicker']} value={editCtx ? content.useCases?.kicker : t(content.useCases?.kicker || '')} />
-              <p className="lp-kicker-sub">
-                {t('Taskmaverick works across every industry. Here are just a few examples.')}
-              </p>
+              <EditText as="p" className="lp-kicker-sub" path={['useCases', 'sub']} value={editCtx ? content.useCases?.sub : t(content.useCases?.sub || '')} />
             </div>
             <IndustryGrid />
           </div>

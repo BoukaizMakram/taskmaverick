@@ -1,0 +1,78 @@
+.page {
+  min-height: calc(100svh - var(--nav-h));
+  background: linear-gradient(145deg, #fff 25%, #f3f8fc 100%);
+  padding: clamp(40px, 6vw, 80px) max(24px, calc((100% - 1120px) / 2)) 0;
+}
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 6vw, 80px); align-items: start; }
+.intro { padding-top: 12px; }
+.eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 22px; color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: .14em; }
+.eyebrow > span { height: 7px; width: 7px; border-radius: 2px; background: var(--blue); }
+.intro h1 { margin: 0; font-family: var(--font-poppins), sans-serif; font-size: clamp(34px, 3.3vw, 46px); line-height: 1.22; font-weight: 600; letter-spacing: -.045em; color: #142b3e; }
+.intro h1 span { color: var(--blue); }
+.description { margin: 22px 0 28px; color: #5b6b79; font-size: 15px; line-height: 1.8; max-width: 420px; }
+.methods { margin-bottom: 25px; }
+.method { display: flex; align-items: center; gap: 15px; padding: 19px 0; border-bottom: 1px solid #dfe7ee; }
+.method > svg { margin-inline-start: auto; width: 18px; flex-shrink: 0; color: #8a9bab; transition: transform .18s ease; }
+.icon { display: grid; place-items: center; width: 43px; height: 43px; flex-shrink: 0; border-radius: 10px; background: #eaf4fb; color: var(--blue); }
+.methodText { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.methodText strong { font-family: var(--font-poppins), sans-serif; font-size: 14px; font-weight: 600; }
+.methodText > span { font-size: 13px; color: #5b6b79; line-height: 1.6; overflow-wrap: anywhere; }
+.method:hover strong { color: var(--blue); }
+.method:hover > svg, .demo:hover > svg { transform: translateX(3px); }
+.demo { display: flex; align-items: center; gap: 14px; padding: 22px; border-radius: 12px; background: #123e62; color: white; transition: background .18s ease; }
+.demo:hover { background: #0d3250; }
+.demoIcon { color: #91c9ee; display: flex; flex-shrink: 0; }
+.demo .methodText > span { color: #d3e5f2; font-size: 12px; }
+.demo > svg { margin-inline-start: auto; flex-shrink: 0; width: 18px; transition: transform .18s ease; }
+.card { padding: clamp(26px, 3vw, 38px); background: #fff; border: 1px solid #dfe7ee; border-radius: 16px; box-shadow: 0 14px 45px -20px #173e632b; }
+.cardHeader { margin-bottom: 29px; }
+.cardHeader h2 { margin: 0 0 9px; font-family: var(--font-poppins), sans-serif; font-size: 23px; line-height: 1.4; font-weight: 600; letter-spacing: -.035em; color: #142b3e; }
+.cardHeader p { margin: 0; font-size: 13px; line-height: 1.7; color: #667788; }
+.form { display: flex; flex-direction: column; gap: 21px; }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 9px; }
+.field label { font-size: 13px; font-weight: 600; color: #273e50; }
+.field label > span { color: var(--blue); }
+.field label .optional { color: #758391; font-weight: 400; }
+.field input, .field textarea { width: 100%; min-width: 0; border: 1px solid #d9e2e9; border-radius: 7px; padding: 13px 14px; background: #fcfdfe; color: #172e40; font: inherit; font-size: 14px; transition: border-color .15s, box-shadow .15s; }
+.field input { height: 47px; }
+.field textarea { resize: vertical; min-height: 134px; line-height: 1.6; }
+.field input::placeholder, .field textarea::placeholder { color: #7c8996; opacity: 1; }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px #1271b718; background: white; }
+.submit { display: flex; justify-content: center; align-items: center; gap: 12px; min-height: 49px; border: 0; border-radius: 7px; background: var(--blue); color: white; font-family: var(--font-poppins), sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .18s; }
+.submit:hover { background: var(--blue-dark); }
+.submit svg { width: 18px; }
+.note { margin: -9px 0 0; color: #6b7b89; font-size: 11px; line-height: 1.6; text-align: center; }
+.status { margin: 0; padding: 14px; border-radius: 8px; background: var(--blue-soft); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
+.status a { color: var(--blue); text-decoration: underline; }
+.page a:focus-visible, .submit:focus-visible { outline: 3px solid var(--blue); outline-offset: 5px; }
+.footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 25px 0; margin-top: 54px; border-top: 1px solid #dfe7ee; font-size: 12px; color: #6b7b89; }
+.footer a { display: flex; align-items: center; gap: 9px; color: var(--blue); font-weight: 600; }
+.footer svg { width: 16px; height: 16px; }
+@media (min-width: 1500px) { .page { padding-top: 90px; } }
+@media (max-width: 860px) {
+  .page { padding-top: 36px; }
+  .layout { grid-template-columns: 1fr; gap: 32px; max-width: 580px; margin-inline: auto; }
+  .intro h1 { font-size: clamp(34px, 6vw, 44px); }
+  .description { max-width: none; }
+  .footer { max-width: 580px; margin-inline: auto; margin-top: 36px; }
+}
+@media (max-width: 480px) {
+  .page { padding-inline: 20px; }
+  .intro { padding-top: 0; }
+  .eyebrow { margin-bottom: 17px; }
+  .row { grid-template-columns: 1fr; gap: 21px; }
+  .card { padding: 24px 20px; }
+  .cardHeader h2 { font-size: 21px; }
+  .demo { padding: 19px 16px; }
+  .footer { align-items: flex-start; flex-direction: column; gap: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page *, .page *::before, .page *::after { transition: none; }
+}
+
+.benefits { list-style: none; padding: 0; margin: 32px 0 0; }
+.benefit { display: flex; gap: 17px; padding: 21px 0; border-top: 1px solid #dfe7ee; }
+.benefitNumber { color: var(--blue); font-family: var(--font-poppins), sans-serif; font-weight: 600; font-size: 13px; line-height: 25px; }
+.benefit h2 { margin: 0 0 7px; font-family: var(--font-poppins), sans-serif; font-size: 16px; line-height: 1.5; font-weight: 600; letter-spacing: -.02em; color: #142b3e; }
+.benefit p { margin: 0; color: #5b6b79; font-size: 13px; line-height: 1.75; }

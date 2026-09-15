@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+import MissionEntries, { entriesComplete } from './MissionEntries';
 import { OPENED_MISSIONS } from '@/lib/openedMissions';
 
 const RUN = 3600; // run timers as a long real-time stopwatch (no visible reset)
@@ -316,24 +317,11 @@ const BODIES = {
 
 // =====================  the shell  =====================
 
-function HeaderRight({ variant }) {
-  const es = <span className="om-es" aria-hidden="true">ES</span>;
-  if (variant === 'plus-menu') {
-    return (
-      <div className="om-head-actions">
-        <button type="button" className="om-hbtn" aria-label="Add"><IconPlus /></button>
-        <button type="button" className="om-hbtn" aria-label="Menu"><IconMenu /></button>
-      </div>
-    );
-  }
-  return (
-    <div className="om-head-actions">
-      {es}
-      {variant === 'es-undo' && <button type="button" className="om-hbtn" aria-label="Undo"><IconUndo /></button>}
-      {variant === 'es-close' && <button type="button" className="om-hbtn" aria-label="Close"><IconClose /></button>}
-      {variant === 'es-menu' && <button type="button" className="om-hbtn" aria-label="Menu"><IconMenu /></button>}
-    </div>
-  );
+function HeaderRight() {
+  return <div className="om-head-actions om-mission-actions">
+    <button type="button" className="om-hbtn" aria-label="Unboost mission" title="Unboost mission"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22V3m0 1c5-4 9 4 15 0v11c-6 4-10-4-15 0" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+    <button type="button" className="om-hbtn" aria-label="Cancel mission" title="Cancel mission"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="m6 4 12 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg></button>
+  </div>;
 }
 
 // Presentational shell. `state` is 'open' | 'claimed' | 'closed'. Whether a
@@ -341,28 +329,29 @@ function HeaderRight({ variant }) {
 // a "Close"/"Continue" footer = already claimed. The type body is ALWAYS shown
 // (it's the mission content, visible open or claimed) — claiming only swaps the
 // footer, reveals the Execution timer, and changes `who` to the claimer.
-export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose }) {
+export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose, onBack, execTime = '00:00:00', showStatusBar = true, onEntryChange }) {
   const Body = BODIES[mission.type] || (() => null);
   const who =
     state === 'open'
       ? mission.openWho || mission.postedBy
       : mission.claimedWho || `Posted by: ${mission.claimer}`;
-  const claimedFooter = mission.claimedFooter || { label: 'Close', variant: 'muted' };
+  const canClose = !mission.entries || entriesComplete(mission.entries);
+  const claimedFooter = mission.entries ? { label: 'Close', variant: canClose ? 'primary' : 'muted' } : mission.claimedFooter || { label: 'Close', variant: 'muted' };
 
   return (
     <div className={`om ${mission.pillClass || 'chip--green'}${state === 'closed' ? ' is-closed' : ''}`}>
       {/* status bar */}
-      <div className="ph-status">
+      {showStatusBar && <div className="ph-status">
         <span className="ph-time">9:41</span>
         <span className="ph-island" aria-hidden="true" />
         <StatusIcons />
-      </div>
+      </div>}
 
       {/* nav header */}
       <header className="om-header">
-        <button type="button" className="om-hbtn om-hbtn--back" aria-label="Back"><IconBack /></button>
+        <button type="button" className="om-hbtn om-hbtn--back" aria-label="Back" onClick={onBack}><IconBack /></button>
         <span className="om-header-title">Mission Details</span>
-        <HeaderRight variant={mission.headerRight} />
+        <HeaderRight />
       </header>
 
       {/* mission summary */}
@@ -374,7 +363,7 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
             {mission.points != null ? <span className="chip-points">{mission.points}</span> : null}
           </span>
           <span className="chip-timers">
-            {showExec ? <span className="chip-exec">00:00:00</span> : null}
+            {showExec ? <span className="chip-exec">{execTime}</span> : null}
             <span className="chip-pill">{mission.pillTime}</span>
           </span>
         </div>
@@ -395,7 +384,7 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
 
       {/* body: the mission content — visible whether open or claimed (per Figma) */}
       <div className={`om-body om-body--${mission.type.toLowerCase()}`}>
-        <Body mission={mission} />
+        <>{mission.entries ? <MissionEntries mission={mission} state={state} onChange={onEntryChange}/> : <Body mission={mission} />}</>
       </div>
 
       {/* footer button — Claim (open) -> Close/Continue (claimed) -> Closed (closed) */}
@@ -404,7 +393,7 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
           <button type="button" className="om-cta om-cta--primary" onClick={onClaim}>Claim</button>
         )}
         {state === 'claimed' && (
-          <button type="button" className={`om-cta om-cta--${claimedFooter.variant}`} onClick={onClose}>
+          <button type="button" className={`om-cta om-cta--${claimedFooter.variant}`} onClick={onClose} disabled={!canClose}>
             {claimedFooter.label}
           </button>
         )}
