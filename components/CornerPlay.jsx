@@ -12,9 +12,9 @@ export default function CornerPlay() {
   const onClick = (e) => {
     const wrap = e.currentTarget.closest('.video-frame-wrap');
     if (!wrap) return;
-    const scene = wrap.querySelector('.scene');
+    const scene = wrap.querySelector('.scene, .ad-stage');
     if (scene) {
-      scene.click(); // the scene toggles play/pause on click
+      scene.click(); // the scene / demo stage toggles play/pause on click
       return;
     }
     const video = wrap.querySelector('video');

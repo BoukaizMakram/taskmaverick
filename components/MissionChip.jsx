@@ -20,7 +20,9 @@ const MissionChip = forwardRef(function MissionChip(
     kind = 'Checklist',
     points = 25,
     title,
+    reference,
     who,
+    avatar,
     date,
     time,
     execTime = '00:00:00',
@@ -36,7 +38,7 @@ const MissionChip = forwardRef(function MissionChip(
         <div className="chip-id">
           <img className="chip-logo" src="/mission-logo.png" alt="" aria-hidden="true" />
           <span className="chip-kind">{kind}</span>
-          <span className="chip-points">{points}</span>
+          {points != null && <span className="chip-points">{points}</span>}
         </div>
         <div className="chip-timers">
           {showExec ? <span className="chip-exec">{execTime}</span> : null}
@@ -45,9 +47,10 @@ const MissionChip = forwardRef(function MissionChip(
       </div>
 
       <h3 className="chip-title">{title}</h3>
+      {reference && <div className="chip-reference">Ref: <strong>{reference}</strong></div>}
 
       <div className="chip-bottom">
-        {who ? <span className="chip-who">{who}</span> : null}
+        {avatar ? <img className="chip-performer-avatar" src={avatar} alt={who || 'Mission performer'} /> : who ? <span className="chip-who">{who}</span> : null}
         <span className="chip-when">
           <span className="chip-date">{date}</span>
           <span className="chip-time">{time}</span>

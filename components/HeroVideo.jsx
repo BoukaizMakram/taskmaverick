@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
+import AutomationDemoScene from '@/components/scenes/AutomationDemoScene';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
 // Chapters can render a code-driven animation scene instead of a <video>.
 const SCENES = {
   'posted-missions': PostedMissionsScene,
+  'automation-demo': AutomationDemoScene,
 };
 
 // Filled / duotone glyphs (like the product menu icons): a solid shape in the

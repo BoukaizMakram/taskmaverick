@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {QUALITY_SCENES,QUALITY_LENGTH,qualityFrame} from '../lib/qualityDemo.mjs';
+assert.equal(QUALITY_SCENES.length,28);
+assert.equal(new Set(QUALITY_SCENES.map(s=>s.id)).size,28);
+assert.deepEqual(QUALITY_SCENES.filter(s=>s.view==='title').map(s=>s.id),['precision','coaching','evidence','touring','accountability','conclusion']);
+QUALITY_SCENES.forEach((s,i)=>{
+  assert.equal(s.number,i+1);
+  assert.equal(s.start,i?QUALITY_SCENES[i-1].end:0);
+  assert.ok(s.end>s.start&&s.script.length>0);
+  assert.equal(qualityFrame(s.start+.01).scene.id,s.id);
+});
+const at=(id,offset)=>qualityFrame(QUALITY_SCENES.find(s=>s.id===id).start+offset);
+assert.equal(at('steps',.1).steps,0);
+assert.equal(at('steps',2.5).steps,3);
+assert.equal(at('quiz',1.7).passed,false);
+assert.equal(at('quiz',1.9).passed,true);
+assert.equal(at('translate',.5).translated,false);
+assert.equal(at('translate',1.2).translated,true);
+assert.equal(at('capture',.5).captured,false);
+assert.equal(at('capture',1.2).captured,true);
+assert.equal(at('low-rating',2).rating,2);
+assert.ok(at('mobile',3).scroll>at('mobile',1).scroll);
+const before=at('quiz',.7);
+at('conclusion',2);
+assert.deepEqual(at('quiz',.7),before,'Backward seeking restores the pre-answer state');
+assert.equal(qualityFrame(QUALITY_LENGTH).scene.id,'conclusion');
+assert.ok(QUALITY_LENGTH<90);
+console.log(`Quality demo checks passed: 28 ordered scenes, quiz gating, capture, translation, ratings, scrolling, and deterministic seeking (${QUALITY_LENGTH}s).`);

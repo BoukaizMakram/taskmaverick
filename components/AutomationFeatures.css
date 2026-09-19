@@ -1,0 +1,38 @@
+.ad-birthday-notice { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: calc(100vw - 32px); margin: 0; padding: 12px 20px; border: 1px solid #bfa16b66; border-radius: 10px; background: #111d2b; color: #f6f1e7; box-shadow: 0 8px 32px #0004; font-size: 14px; text-align: center; pointer-events: none; }
+.adx-feature-caption { position: absolute; top: 65%; left: 10%; width: 53%; z-index: 21; text-align: center; pointer-events: none; color: #111; }
+.adx-tablet:is([data-feature="closed"],[data-feature="names"],[data-feature="execution"],[data-feature="efficient"]) .adx-feature-caption { top: 64%; left: 25%; width: 37%; }
+.adx-tablet[data-feature="overview"] .adx-feature-caption { top: 68%; left: 13%; width: 49%; }
+.adx-feature-caption .adx-feature-copy { position: relative; inset: auto; padding: 0; }
+.adx-feature-caption .adx-feature-copy p { margin: 0; font-size: 24px; line-height: 1.3; font-weight: 600; }
+.adx-tablet[data-feature] .mi-columns > section { opacity: calc(1 - var(--feature-focus) * .6); }
+.adx-tablet[data-feature="overview"] .mi-columns > section,
+.adx-tablet[data-feature="closed"] section[aria-label="closed missions"],
+.adx-tablet[data-feature="claimed"] section[aria-label="claimed missions"],
+.adx-tablet[data-feature="open"] section[aria-label="open missions"],
+.adx-tablet:is([data-feature="timers"],[data-feature="timer-colors"],[data-feature="priority"],[data-feature="points"],[data-feature="extra-points"]) section[aria-label="open missions"],
+.adx-tablet:is([data-feature="names"],[data-feature="execution"],[data-feature="efficient"]) section[aria-label="closed missions"] { opacity: 1; }
+.adx-tablet:is([data-feature="names"],[data-feature="execution"]) section[aria-label="claimed missions"] { opacity: 1; }
+.adx-tablet[data-feature="closed"] section[aria-label="closed missions"] .tbl-tab,
+.adx-tablet[data-feature="claimed"] section[aria-label="claimed missions"] .tbl-tab,
+.adx-tablet[data-feature="open"] section[aria-label="open missions"] .tbl-tab { transform: translateY(calc(-2px * var(--feature-focus))) scale(calc(1 + var(--feature-focus) * .045)); transform-origin: center; position: relative; z-index: 2; }
+.adx-tablet:is([data-feature="timers"],[data-feature="timer-colors"]) section[aria-label="open missions"] .chip-pill,
+.adx-tablet[data-feature="points"] section[aria-label="open missions"] .chip-points,
+.adx-tablet[data-feature="extra-points"] [data-mission-id="new-restock"] .chip-points,
+.adx-tablet[data-feature="names"] :is(section[aria-label="closed missions"],section[aria-label="claimed missions"]) .chip-who,
+.adx-tablet[data-feature="execution"] :is(section[aria-label="closed missions"],section[aria-label="claimed missions"]) .chip-exec { display: inline-flex; align-items: center; justify-content: center; position: relative; z-index: 2; transform: translateY(calc(-3px * var(--feature-focus))) scale(calc(1 + var(--feature-focus) * .4)); }
+.adx-tablet[data-feature] :is(.chip-pill,.chip-points) { display: inline-flex; align-items: center; justify-content: center; text-align: center; line-height: 1; }
+.adx-tablet:is([data-feature="timers"],[data-feature="timer-colors"]) .chip-pill,
+.adx-tablet[data-feature="execution"] .chip-exec { transform-origin: right center; }
+.adx-tablet[data-feature="names"] .chip-who { transform-origin: left center; }
+.adx-tablet[data-feature="points"] section[aria-label="open missions"] .chip-points,
+.adx-tablet[data-feature="extra-points"] [data-mission-id="new-restock"] .chip-points { transform-origin: left bottom; transform: translateY(calc(-2px * var(--feature-focus))) scale(calc(1 + var(--feature-focus) * .7)); }
+.adx-tablet[data-feature="efficient"] :is([data-mission-id="sig"],[data-mission-id="prep"]) { position: relative; z-index: 2; }
+.adx-tablet[data-feature="efficient"] :is([data-mission-id="sig"],[data-mission-id="prep"]) .chip { transform: scale(calc(1 + var(--feature-focus) * .035)); transform-origin: center; }
+.adx-tablet[data-feature="efficient"] :is(.mi-status-bar,.tbl-header,.tbl-tab),
+.adx-tablet[data-feature="efficient"] .mi-columns > section:not([aria-label="closed missions"]),
+.adx-tablet[data-feature="efficient"] section[aria-label="closed missions"] [data-mission-id]:not([data-mission-id="sig"]):not([data-mission-id="prep"]) { opacity: calc(1 - var(--feature-focus) * .82); }
+.adx-tablet[data-feature="efficient"] :is([data-mission-id="sig"],[data-mission-id="prep"]) .chip-exec { display: inline-flex; align-items: center; justify-content: center; transform-origin: right center; z-index: 2; }
+.adx-tablet[data-feature] .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-who { font-size: calc(11 * var(--ref-u)); }
+.adx-tablet[data-feature="names"] .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-who { font-size: calc(13 * var(--ref-u)); font-weight: 750; line-height: 1.2; border-radius: calc(4 * var(--ref-u)); box-shadow: 0 0 0 calc(1.5 * var(--ref-u)) rgb(139 92 246 / var(--feature-focus)); padding: calc(3 * var(--ref-u)) calc(5 * var(--ref-u)); transform: translateY(calc(-10 * var(--ref-u) * var(--feature-focus))) scale(calc(1 + var(--feature-focus) * .35)); }
+.adx-tablet[data-feature="efficient"] .mi-reference.mi-interactive--tablet .mi-tablet-board :is([data-mission-id="sig"],[data-mission-id="prep"]) .chip-exec,
+.adx-tablet[data-feature="execution"] .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-exec { position: relative; background: #fff; font-weight: 750; line-height: 1; border-radius: calc(4 * var(--ref-u)); box-shadow: 0 0 0 calc(1.5 * var(--ref-u)) rgb(139 92 246 / var(--feature-focus)); padding: calc(3 * var(--ref-u)); transform: none; }

@@ -1,0 +1,60 @@
+/* 1080 × 808 reference canvas. All tablet measurements scale together. */
+.sp-preview--reference.sp-preview--full .sp-surface { width: min(100vw, 133.6634vh); margin: 0 auto; }
+.sp-preview--reference.sp-preview--full { background: #eceeed; }
+.sp-preview--reference.sp-preview--full .tbl-screen { inset: 0; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board { container-type: inline-size; background: #f8f9f6; scrollbar-width: none; --ref-u: calc(100cqw / 1080); }
+.mi-reference .mi-status-icons { display: flex; align-items: center; gap: calc(4 * var(--ref-u)); }
+.mi-reference .mi-status-icons svg { width: calc(17 * var(--ref-u)); height: calc(14 * var(--ref-u)); }
+.mi-reference .mi-status-icons svg:last-child { width: calc(28 * var(--ref-u)); }
+.mi-reference .mi-status-bar { height: calc(22 * var(--ref-u)); padding: 0 calc(7 * var(--ref-u)); display: flex; justify-content: space-between; align-items: center; background: white; font: 600 calc(12 * var(--ref-u))/1 Arial, sans-serif; color: #303030; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-header { height: calc(58 * var(--ref-u)); padding: 0 calc(22 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .mi-brand { gap: calc(22 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .mi-full-logo { width: calc(245 * var(--ref-u)); height: calc(36 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .mi-department { font-size: calc(15 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .ph-iconbtn { width: calc(40 * var(--ref-u)); height: calc(40 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .ph-iconbtn svg { width: calc(24 * var(--ref-u)); height: calc(24 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-header-actions { gap: calc(5 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .mi-columns { padding: calc(12 * var(--ref-u)) calc(21 * var(--ref-u)); gap: calc(18 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-tab { height: calc(38 * var(--ref-u)); margin-bottom: calc(20 * var(--ref-u)); font-size: calc(14 * var(--ref-u)); border-radius: calc(7 * var(--ref-u)); background: #167fc1; box-shadow: 0 0 0 calc(3 * var(--ref-u)) white; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-tab svg { width: calc(20 * var(--ref-u)); height: calc(20 * var(--ref-u)); right: calc(8 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .mi-column-cards { gap: calc(18 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip { height: calc(129 * var(--ref-u)); padding: calc(11 * var(--ref-u)) calc(15 * var(--ref-u)); gap: calc(4 * var(--ref-u)); border-radius: calc(14 * var(--ref-u)); background: #fff; box-shadow: 0 calc(1 * var(--ref-u)) calc(9 * var(--ref-u)) #1e293b1c; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-top { gap: calc(5 * var(--ref-u)); min-height: calc(28 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-id { gap: calc(6 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-logo { width: calc(18 * var(--ref-u)); height: calc(18 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-kind { font-size: calc(14 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-points { min-width: calc(20 * var(--ref-u)); height: calc(24 * var(--ref-u)); padding: 0 calc(4 * var(--ref-u)); font-size: calc(10 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-timers { gap: calc(9 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-exec { font-size: calc(14 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-pill { height: calc(28 * var(--ref-u)); padding: 0 calc(9 * var(--ref-u)); font-size: calc(16 * var(--ref-u)); border-radius: calc(16 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-title { font-size: calc(20 * var(--ref-u)); line-height: 1.3; letter-spacing: -.025em; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-reference { font-size: calc(13 * var(--ref-u)); line-height: 1.4; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-bottom { margin-top: auto; flex-wrap: nowrap; gap: calc(6 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-who, .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-when { font-size: calc(13 * var(--ref-u)); line-height: 1.4; }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-when { gap: calc(5 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip--reference-highlight { background: #fff3c2; border-left: calc(3 * var(--ref-u)) solid #df4785; padding-left: calc(13 * var(--ref-u)); }
+@media (max-width: 767px) { .sp-preview--reference.sp-preview--full .sp-surface { width: 100%; } }
+
+/* Overlays measure their own surface, never the board's typography unit. */
+.mi-reference .bn-menu-layer { container-type: size; }
+.mi-reference .bn-menu-layer > * { --menu-u: clamp(.75px, .123762cqh, 1.1px); }
+.mi-reference .bn-menu-layer .bn-menu { top: calc(84 * var(--menu-u)); right: calc(18 * var(--menu-u)); width: min(calc(310 * var(--menu-u)), calc(100% - 24px)); max-height: calc(100% - 100 * var(--menu-u)); padding: calc(10 * var(--menu-u)) calc(16 * var(--menu-u)); overscroll-behavior: contain; scrollbar-width: thin; }
+.mi-reference .bn-menu-layer .bn-menu-item { min-height: calc(40 * var(--menu-u)); padding: calc(5 * var(--menu-u)) 0; gap: calc(10 * var(--menu-u)); font-size: calc(15 * var(--menu-u)); line-height: 1.3; }
+.mi-reference .bn-menu-item > span:last-child { min-width: 0; overflow-wrap: break-word; }
+.mi-reference .bn-menu-layer .bn-menu-icon { flex-basis: calc(30 * var(--menu-u)); width: calc(30 * var(--menu-u)); height: calc(30 * var(--menu-u)); }
+.mi-reference .bn-menu-layer .bn-menu-icon img { width: 100%; height: 100%; }
+.mi-reference .bn-menu-layer .bn-menu-group-end { margin-bottom: calc(6 * var(--menu-u)); padding-bottom: calc(6 * var(--menu-u)); }
+.mi-reference .bn-menu-layer .bn-menu-close { top: calc(26 * var(--menu-u)); right: calc(22 * var(--menu-u)); width: calc(40 * var(--menu-u)); height: calc(40 * var(--menu-u)); }
+.mi-reference .bn-menu-layer .bn-demo-codes { padding-left: calc(40 * var(--menu-u)); font-size: calc(12 * var(--menu-u)); }
+.mi-reference .pc-backdrop { container-type: size; }
+.mi-reference .pc-dialog { --code-u: clamp(.65px, .123762cqh, 1px); width: min(calc(400 * var(--code-u)), 100%); max-height: 100%; overscroll-behavior: contain; }
+.mi-reference .pc-header { min-height: calc(48 * var(--code-u)); padding: calc(10 * var(--code-u)) calc(34 * var(--code-u)); }
+.mi-reference .pc-header h2 { font-size: calc(15 * var(--code-u)); }
+.mi-reference .pc-content { padding: calc(14 * var(--code-u)); }
+.mi-reference .pc-digits { gap: calc(6 * var(--code-u)); }
+.mi-reference .pc-digits span { height: calc(58 * var(--code-u)); font-size: calc(23 * var(--code-u)); }
+.mi-reference .pc-keypad { gap: calc(6 * var(--code-u)); }
+.mi-reference .pc-keypad button { height: calc(58 * var(--code-u)); font-size: calc(32 * var(--code-u)); }
+.mi-reference .pc-retrieve { margin-top: calc(16 * var(--code-u)); font-size: calc(14 * var(--code-u)); }
+.mi-reference .mi-drawer { max-width: 100%; }
+.mi-reference .bn-demand-header, .mi-reference .bn-demand-tabs { flex-shrink: 0; }

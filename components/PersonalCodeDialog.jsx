@@ -5,6 +5,8 @@ import { useEffect, useId, useRef, useState } from 'react';
 // Recording identities only: this prototype never authenticates a real account.
 export const DEMO_PERFORMERS = {
   '123456': 'Anna F. - Staff',
+  '456456': 'Ben R. - Staff',
+  '789789': 'Carla M. - Staff',
   '654321': 'J. Maverick',
 };
 
@@ -49,9 +51,19 @@ export function CodeKey({ children, onClick, ...props }) {
   </button>;
 }
 
-export default function PersonalCodeDialog({ onClaim, onDismiss, action = 'Claim' }) {
-  const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
+export function PersonalCodeKeypad({ activeKey, disabled = false, onDigit, onDelete, tabIndex }) {
+  return <fieldset className="pc-keypad" disabled={disabled}>
+    {[1,2,3,4,5,6,7,8,9].map(n => <CodeKey key={n} tabIndex={tabIndex} data-demo-active={activeKey === String(n) || undefined} onClick={() => onDigit?.(String(n))}>{n}</CodeKey>)}
+    <CodeKey tabIndex={tabIndex} aria-label="Delete last digit" onClick={onDelete}><svg width="27" height="22" viewBox="0 0 27 22" aria-hidden="true"><path d="M8 1h17v20H8L1 11Z" fill="currentColor"/><path d="m12 7 8 8m0-8-8 8" stroke="white" strokeWidth="2.5"/></svg></CodeKey>
+    <CodeKey tabIndex={tabIndex} className="pc-zero" data-demo-active={activeKey === '0' || undefined} onClick={() => onDigit?.('0')}>0</CodeKey>
+  </fieldset>;
+}
+
+export default function PersonalCodeDialog({ onClaim, onDismiss, action = 'Claim', demo = null }) {
+  const [internalCode, setCode] = useState('');
+  const [internalLoading, setLoading] = useState(false);
+  const code = demo?.code ?? internalCode;
+  const loading = demo?.loading ?? internalLoading;
   const [error, setError] = useState('');
   const [showCodes, setShowCodes] = useState(false);
   const input = useRef(null);
@@ -68,7 +80,7 @@ export default function PersonalCodeDialog({ onClaim, onDismiss, action = 'Claim
   }, []);
 
   useEffect(() => {
-    if (code.length !== 6) return;
+    if (demo || code.length !== 6) return;
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
@@ -97,14 +109,10 @@ export default function PersonalCodeDialog({ onClaim, onDismiss, action = 'Claim
       <header className="pc-header"><h2 id={titleId}>Enter Personal Code to {action}</h2><button type="button" aria-label="Cancel personal code" onClick={onDismiss}>×</button></header>
       <div className="pc-content">
         <div className="pc-entry" onClick={() => input.current?.focus()}>
-          <div className="pc-digits" aria-hidden="true">{Array.from({ length: 6 }, (_, i) => <span key={i}>{code[i] ? '●' : ''}</span>)}</div>
+          <div className="pc-digits" aria-hidden="true">{Array.from({ length: 6 }, (_, i) => <span key={i} data-demo-active={demo?.activeDigit === i || undefined}>{code[i] ? (demo?.revealCode ? code[i] : '●') : ''}</span>)}</div>
           <input ref={input} className="pc-input" aria-label="Personal code" aria-describedby={error ? errorId : undefined} aria-invalid={!!error} type="text" inputMode="numeric" autoComplete="off" disabled={loading} maxLength={6} value={code} onChange={e => change(e.target.value)} />
         </div>
-        <fieldset className="pc-keypad" disabled={loading}>
-          {[1,2,3,4,5,6,7,8,9].map(n => <CodeKey key={n} onClick={() => key(String(n))}>{n}</CodeKey>)}
-          <CodeKey aria-label="Delete last digit" onClick={() => { change(code.slice(0,-1)); input.current?.focus(); }}><svg width="27" height="22" viewBox="0 0 27 22" aria-hidden="true"><path d="M8 1h17v20H8L1 11Z" fill="currentColor"/><path d="m12 7 8 8m0-8-8 8" stroke="white" strokeWidth="2.5"/></svg></CodeKey>
-          <CodeKey className="pc-zero" onClick={() => key('0')}>0</CodeKey>
-        </fieldset>
+        <PersonalCodeKeypad disabled={loading} activeKey={demo?.activeKey} onDigit={key} onDelete={() => { change(code.slice(0,-1)); input.current?.focus(); }}/>
         {error && <p className="pc-error" role="alert" id={errorId}>{error}</p>}
         <button type="button" className="pc-retrieve" disabled={loading} onClick={() => setShowCodes(v => !v)} aria-expanded={showCodes}>Retrieve Codes</button>
         {showCodes && <div className="pc-codes"><strong>Recording codes</strong>{Object.entries(DEMO_PERFORMERS).map(([value,name]) => <div key={value}>{name}: <b>{value}</b></div>)}</div>}
@@ -112,3 +120,4 @@ export default function PersonalCodeDialog({ onClaim, onDismiss, action = 'Claim
     </section>
   </div>;
 }
+

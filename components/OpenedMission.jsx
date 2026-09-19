@@ -19,6 +19,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 import MissionEntries, { entriesComplete } from './MissionEntries';
+import MediaTraining, { mediaComplete } from './MediaTraining';
 import { OPENED_MISSIONS } from '@/lib/openedMissions';
 
 const RUN = 3600; // run timers as a long real-time stopwatch (no visible reset)
@@ -329,33 +330,15 @@ function HeaderRight() {
 // a "Close"/"Continue" footer = already claimed. The type body is ALWAYS shown
 // (it's the mission content, visible open or claimed) — claiming only swaps the
 // footer, reveals the Execution timer, and changes `who` to the claimer.
-export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose, onBack, execTime = '00:00:00', showStatusBar = true, onEntryChange }) {
-  const Body = BODIES[mission.type] || (() => null);
-  const who =
-    state === 'open'
-      ? mission.openWho || mission.postedBy
-      : mission.claimedWho || `Posted by: ${mission.claimer}`;
-  const canClose = !mission.entries || entriesComplete(mission.entries);
-  const claimedFooter = mission.entries ? { label: 'Close', variant: canClose ? 'primary' : 'muted' } : mission.claimedFooter || { label: 'Close', variant: 'muted' };
-
-  return (
-    <div className={`om ${mission.pillClass || 'chip--green'}${state === 'closed' ? ' is-closed' : ''}`}>
-      {/* status bar */}
-      {showStatusBar && <div className="ph-status">
-        <span className="ph-time">9:41</span>
-        <span className="ph-island" aria-hidden="true" />
-        <StatusIcons />
-      </div>}
-
-      {/* nav header */}
-      <header className="om-header">
-        <button type="button" className="om-hbtn om-hbtn--back" aria-label="Back" onClick={onBack}><IconBack /></button>
-        <span className="om-header-title">Mission Details</span>
-        <HeaderRight />
-      </header>
-
-      {/* mission summary */}
-      <div className="om-card">
+export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose, onBack, execTime = '00:00:00', showStatusBar = true, onEntryChange, onLessonComplete }) {
+  const [activeLesson,setActiveLesson]=useState(null);
+  const previousState=useRef(state);
+  useEffect(()=>{if(mission.lessons&&previousState.current==='open'&&state==='claimed')setActiveLesson(0);previousState.current=state;},[state,mission.lessons]);
+  const Body=BODIES[mission.type]||(()=>null);
+  const who=state==='open'?mission.openWho||mission.postedBy:mission.claimedWho||`Posted by: ${mission.claimer}`;
+  const canClose=mission.lessons?mediaComplete(mission):!mission.entries||entriesComplete(mission.entries);
+  const claimedFooter=mission.entries||mission.lessons?{label:'Close',variant:canClose?'primary':'muted'}:mission.claimedFooter||{label:'Close',variant:'muted'};
+  const summary = (<div className="om-card">
         <div className="om-sum-top">
           <span className="om-sum-id">
             <img className="chip-logo" src="/mission-logo.png" alt="" aria-hidden="true" />
@@ -372,7 +355,7 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
           <span className="om-sum-info">
             <h3 className="om-sum-title">{mission.title}</h3>
             <span className="om-sum-loc">{mission.location}</span>
-            <span className="om-sum-by">{who}</span>
+            <span key={who} className="om-sum-by">{who}</span>
           </span>
           <span className="om-sum-date">{mission.date}&nbsp;&nbsp;{mission.time}</span>
         </div>
@@ -380,34 +363,17 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
         <div className="om-sum-divider" />
         {mission.description ? <p className="om-sum-desc">{mission.description}</p> : null}
         {mission.notice ? <div className="om-notice"><span>{mission.notice}</span></div> : null}
-      </div>
-
-      {/* body: the mission content — visible whether open or claimed (per Figma) */}
-      <div className={`om-body om-body--${mission.type.toLowerCase()}`}>
-        <>{mission.entries ? <MissionEntries mission={mission} state={state} onChange={onEntryChange}/> : <Body mission={mission} />}</>
-      </div>
-
-      {/* footer button — Claim (open) -> Close/Continue (claimed) -> Closed (closed) */}
-      <div className="om-footer">
-        {state === 'open' && (
-          <button type="button" className="om-cta om-cta--primary" onClick={onClaim}>Claim</button>
-        )}
-        {state === 'claimed' && (
-          <button type="button" className={`om-cta om-cta--${claimedFooter.variant}`} onClick={onClose} disabled={!canClose}>
-            {claimedFooter.label}
-          </button>
-        )}
-        {state === 'closed' && (
-          <button type="button" className="om-cta om-cta--closed" disabled>Closed</button>
-        )}
-      </div>
-    </div>
-  );
+        {mission.resourceLink ? <a className="om-resource-link" href={mission.resourceLink.href}>{mission.resourceLink.label} ↗</a> : null}
+      </div>);
+  const footer=<div className="om-footer">{state==='open'?<button className="om-cta om-cta--primary" onClick={onClaim}>Claim</button>:state==='claimed'?<button className={`om-cta om-cta--${claimedFooter.variant}`} disabled={!canClose} onClick={onClose}>{claimedFooter.label}</button>:<button className="om-cta om-cta--closed" disabled>Closed</button>}</div>;
+  return <div data-mission-state={state} className={`om ${mission.pillClass||'chip--green'}${state==='closed'?' is-closed':''}`}>
+    {showStatusBar&&<div className="ph-status"><span className="ph-time">9:41</span><span className="ph-island" aria-hidden="true"/><StatusIcons/></div>}
+    <header className="om-header"><button className="om-hbtn om-hbtn--back" aria-label="Back" onClick={activeLesson!=null?()=>setActiveLesson(null):onBack}><IconBack/></button><span className="om-header-title">Mission Details</span>{mission.lessons?<button className="om-hbtn" aria-label="Lesson list" onClick={()=>setActiveLesson(null)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="3" width="6" height="5" rx="1"/><rect x="16" y="10" width="6" height="5" rx="1"/><rect x="16" y="18" width="6" height="4" rx="1"/><path d="M8 5h4v15h4m-4-7h4"/></svg></button>:<HeaderRight/>}</header>
+    {!mission.lessons&&summary}
+    <div className={`om-body om-body--${mission.type.toLowerCase()}${mission.lessons?' mt-body':''}`}>{mission.lessons?<MediaTraining summary={summary} footer={footer} mission={mission} state={state} active={activeLesson} onSelect={setActiveLesson} onComplete={onLessonComplete}/>:mission.entries?<MissionEntries mission={mission} state={state} onChange={onEntryChange}/>:<Body mission={mission}/>}</div>
+    {!mission.lessons&&footer}
+  </div>;
 }
-
-// A device-framed opened mission (bezel + scaler) with the live lifecycle:
-// Open -> Claim -> Closed. Timers follow the rules (green pill counts up; exec
-// starts on claim; both freeze + pill snaps gray on close).
 export default function OpenedMissionPhone({ mission }) {
   const root = useRef(null);
   const [state, setState] = useState(mission.initialState || 'open');

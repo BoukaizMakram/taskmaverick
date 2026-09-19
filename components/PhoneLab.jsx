@@ -22,7 +22,7 @@ export default function PhoneLab() {
 
   return (
     <div className="ov-lab">
-      {interactive ? <SoftwarePreview onAnimationTools={() => setInteractive(false)}/> : <PhoneBoard highlight={highlight} paused={paused} />}
+      {interactive ? <SoftwarePreview referenceBoard onAnimationTools={() => setInteractive(false)}/> : <PhoneBoard highlight={highlight} paused={paused} />}
       <button type="button" className="ov-btn" onClick={() => setInteractive(v => !v)}>{interactive ? 'Animation tools' : 'Interactive mode'}</button>
 
       <div className="ov-controls" style={{ maxWidth: 520 }}>

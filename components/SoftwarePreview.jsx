@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import InteractiveMissionBoard from './InteractiveMissionBoard';
+import { REFERENCE_MISSIONS } from '@/lib/referenceMissions';
 
-export default function SoftwarePreview({ onAnimationTools }) {
+export default function SoftwarePreview({ onAnimationTools, referenceBoard = false }) {
   const [mode, setMode] = useState('full');
   const [mobile, setMobile] = useState(false);
   useEffect(() => {
@@ -13,8 +14,8 @@ export default function SoftwarePreview({ onAnimationTools }) {
     return () => query.removeEventListener('change', update);
   }, []);
   const device = mode === 'full' ? (mobile ? 'phone' : 'tablet') : mode;
-  return <div className={`sp-preview sp-preview--${mode}`}>
-    <div className="sp-surface"><InteractiveMissionBoard device={device}/></div>
+  return <div className={`sp-preview sp-preview--${mode}${referenceBoard ? ' sp-preview--reference' : ''}`}>
+    <div className="sp-surface"><InteractiveMissionBoard key={device} device={device} referenceLayout={referenceBoard} initialScreen={referenceBoard ? 'board' : 'home'} initialMissions={referenceBoard ? REFERENCE_MISSIONS : null}/></div>
     <details className="sp-options"><summary>View options</summary><div>
       <label>Display<select aria-label="Display mode" value={mode} onChange={event => setMode(event.target.value)}><option value="full">Full screen · responsive</option><option value="phone">Phone frame</option><option value="tablet">Tablet frame</option></select></label>
       <button onClick={onAnimationTools}>Animation tools</button>

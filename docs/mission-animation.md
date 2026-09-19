@@ -1,5 +1,14 @@
 # Mission Animation Engine
 
+## Automation demo page
+
+`/automation-demo` plays a 104-second, 11-scene Automation demo using the actual
+`InteractiveMissionBoard` in tablet mode. `components/AutomationDemo.jsx` owns the
+caption timings and GSAP camera/cursor timeline. The scripted clicks go through
+the existing Personal Board, Team Board, Claim, personal-code, and Close controls.
+Replay remounts the software to start a fresh take. Play/Pause and fullscreen are
+available below the film. This is a browser-rendered film, not a pre-rendered MP4.
+
 ## Interactive recording previews
 
 `/phone` and `/tablet` default to interactive mode in the local development site.

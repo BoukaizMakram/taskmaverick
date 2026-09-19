@@ -14,12 +14,14 @@ import { useEffect, useRef, useState } from 'react';
 import CoverPlayer from '@/components/CoverPlayer';
 import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
+import AutomationDemoScene from '@/components/scenes/AutomationDemoScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 import { PHILOSOPHY } from '@/lib/chapters';
 import { useT } from '@/lib/i18n/LanguageProvider';
 
 const SCENES = {
   'posted-missions': PostedMissionsScene,
+  'automation-demo': AutomationDemoScene,
 };
 
 function ChapterMedia({ chapter, src, poster }) {
@@ -52,9 +54,9 @@ function CornerPlay() {
   const onClick = (e) => {
     const wrap = e.currentTarget.closest('.video-frame-wrap');
     if (!wrap) return;
-    const scene = wrap.querySelector('.scene');
+    const scene = wrap.querySelector('.scene, .ad-stage');
     if (scene) {
-      scene.click(); // the scene toggles play/pause on click
+      scene.click(); // the scene / demo stage toggles play/pause on click
       return;
     }
     const video = wrap.querySelector('video');

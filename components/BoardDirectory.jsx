@@ -4,12 +4,13 @@ import { useState } from 'react';
 import { IconBack, IconMenu } from './PhoneShell';
 import { MenuIcon } from './BoardNavigation';
 import TabletHome from './TabletHome';
+import PersonalDashboard from './PersonalDashboard';
 
 export const LOCATIONS = ['Back Up Storage', 'Controls', 'Crepe Station', 'Deliveries', 'Food Preparation', 'Kitchen', 'Outside Duties', 'Register', 'Training'];
 
 export default function BoardDirectory({ view, onNavigate, onBoard, getCounts, onMenu, device = 'phone' }) {
   const [period, setPeriod] = useState('1W');
-  if (device === 'tablet' && view === 'home') return <TabletHome onNavigate={onNavigate} onBoard={onBoard} onMenu={onMenu}/>;
+  if (view === 'home') return <PersonalDashboard device={device} onNavigate={onNavigate} onBoard={onBoard} getCounts={getCounts}/>;
   return <section className={`bd-directory ${view === 'home' ? 'bd-directory--home' : ''}`} aria-label={view === 'home' ? 'My personal board home' : 'L001 - Sweet Beverly'}>
     <header className="bd-header">
       {view === 'unit' && <button className="ph-iconbtn" aria-label="Back to home" onClick={() => onNavigate('home')}><IconBack/></button>}

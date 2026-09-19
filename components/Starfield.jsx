@@ -14,8 +14,15 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function Starfield({ className = '', speed = 1, density = 1 }) {
+export default function Starfield({ className = '', speed = 1, density = 1, paused = false, fitParent = false }) {
   const canvasRef = useRef(null);
+  const pausedRef = useRef(paused);
+  const playbackRef = useRef(null);
+
+  useEffect(() => {
+    pausedRef.current = paused;
+    playbackRef.current?.();
+  }, [paused]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -57,14 +64,14 @@ export default function Starfield({ className = '', speed = 1, density = 1 }) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
+      canvas.style.width = fitParent ? '100%' : `${w}px`;
+      canvas.style.height = fitParent ? '100%' : `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cx = w / 2;
       cy = h / 2;
       D = Math.max(w, h);
       build();
-      if (reduce) drawStatic();
+      if (reduce || pausedRef.current) drawStatic();
     }
 
     const halfDiag = () => Math.hypot(w, h) / 2 || 1;
@@ -131,7 +138,7 @@ export default function Starfield({ className = '', speed = 1, density = 1 }) {
     }
 
     function start() {
-      if (reduce || raf) return;
+      if (reduce || pausedRef.current || raf) return;
       running = true;
       last = 0;
       raf = requestAnimationFrame(frame);
@@ -141,11 +148,15 @@ export default function Starfield({ className = '', speed = 1, density = 1 }) {
       if (raf) { cancelAnimationFrame(raf); raf = 0; }
     }
 
+    playbackRef.current = () => pausedRef.current ? stop() : start();
+
     resize();
     start();
 
     const ro = new ResizeObserver(resize);
     ro.observe(parent);
+    // A scaled demo stage changes its visual size without changing its layout size.
+    if (fitParent) window.addEventListener('resize', resize);
 
     // Pause when scrolled out of view or the tab is hidden — keeps it cheap.
     const io = new IntersectionObserver(
@@ -159,11 +170,13 @@ export default function Starfield({ className = '', speed = 1, density = 1 }) {
 
     return () => {
       stop();
+      playbackRef.current = null;
       ro.disconnect();
+      if (fitParent) window.removeEventListener('resize', resize);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [speed, density]);
+  }, [speed, density, fitParent]);
 
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 }

@@ -17,6 +17,7 @@ import CornerPlay from '@/components/CornerPlay';
 import CtaPoster from '@/components/CtaPoster';
 import PostedMissionsScene from '@/components/scenes/PostedMissionsScene';
 import AutoManagerScene from '@/components/scenes/AutoManagerScene';
+import AutomationDemoScene from '@/components/scenes/AutomationDemoScene';
 import { BADGES, BadgeIcon } from '@/components/HeroVideo';
 import { PHILOSOPHY } from '@/lib/chapters';
 import { useT } from '@/lib/i18n/LanguageProvider';
@@ -24,6 +25,7 @@ import { useEdit, EditText, EditIcon, EditVideoButton } from '@/components/Inlin
 
 const SCENES = {
   'posted-missions': PostedMissionsScene,
+  'automation-demo': AutomationDemoScene,
 };
 
 function ChapterMedia({ chapter, src, poster, editPath, bgPath }) {

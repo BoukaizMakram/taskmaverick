@@ -86,7 +86,7 @@ const Logo = () => <img className="chip-logo" src="/mission-logo.png" alt="" ari
 
 // ------------------------------ primitives ------------------------------
 
-function Stars({ value = 0, total = 5, size = 22 }) {
+export function Stars({ value = 0, total = 5, size = 22 }) {
   return (
     <span className="q-stars" aria-label={`${value} of ${total}`}>
       {Array.from({ length: total }).map((_, i) => (
@@ -100,7 +100,7 @@ function Stars({ value = 0, total = 5, size = 22 }) {
 
 // A self-contained "photo" tile — a soft scene illustration, optional
 // timestamp watermark and optional corner badge (cloud / lock).
-function ProofPhoto({ tone = 'a', stamp, badge, label, ratio = '4 / 3' }) {
+export function ProofPhoto({ tone = 'a', stamp, badge, label, ratio = '4 / 3' }) {
   return (
     <div className={`q-photo q-photo--${tone}`} style={{ aspectRatio: ratio }}>
       <svg className="q-photo-art" viewBox="0 0 120 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
