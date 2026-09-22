@@ -30,23 +30,23 @@ const ROW_H = 38;
 const DATA_TOP = BODY_TOP + GROUP_H * 2; // below the two group rows
 
 export const RUNNING_ROWS = [
-  { n: 1, name: '10-Min Break AM', flag: true, ref: 'Staff - Angel', state: 'open', tone: 'red', trig: '07/10/2026 09:29 AM', by: '', open: '05:06:54', claimed: null, dur: '05:06:54', closed: '', type: 'Task', hl: true },
-  { n: 2, name: 'Salad Station Quality Check', ref: '', state: 'open', tone: 'green', trig: '07/10/2026 02:30 PM', by: '', open: '00:06:16', claimed: null, dur: '00:06:16', closed: '', type: 'Checklist' },
-  { n: 3, name: 'Sanitizer Bucket', ref: '', state: 'open', tone: 'green', trig: '07/10/2026 02:25 PM', by: '', open: '00:11:15', claimed: null, dur: '00:11:15', closed: '', type: 'Task' },
-  { n: 4, name: 'Touchscreens', ref: '', state: 'open', tone: 'orange', trig: '07/10/2026 02:00 PM', by: '', open: '00:36:16', claimed: null, dur: '00:36:16', closed: '', type: 'Task' },
-  { n: 5, name: 'Missing (B6) Items', ref: '', state: 'open', tone: 'orange', trig: '07/10/2026 02:00 PM', by: '', open: '00:36:16', claimed: null, dur: '00:36:16', closed: '', type: 'Survey' },
-  { n: 6, name: 'Trash Check', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 12:00 PM', by: 'Freddy Espain', open: '02:06:54', claimed: '00:00:03', dur: '02:06:57', closed: '07/10/2026 02:06 PM', type: 'Task' },
-  { n: 7, name: 'Order Items', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 11:30 AM', by: 'Freddy Espain', open: '01:57:58', claimed: '00:00:14', dur: '01:58:13', closed: '07/10/2026 01:28 PM', type: 'Survey' },
-  { n: 8, name: 'Station Inventory', ref: 'Inventory - Stations', state: 'closed', tone: 'red', trig: '07/10/2026 11:00 AM', by: 'Freddy Espain', open: '02:23:24', claimed: '00:04:25', dur: '02:27:49', closed: '07/10/2026 01:27 PM', type: 'Survey' },
-  { n: 9, name: '10-Min Break AM', ref: 'Staff - Guillermo', state: 'closed', tone: 'red', trig: '07/10/2026 10:29 AM', by: 'Guillermo Herna…', open: '03:50:03', claimed: '00:10:40', dur: '04:00:44', closed: '07/10/2026 02:30 PM', type: 'Task' },
-  { n: 10, name: 'Protein Prep Salmon', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Guillermo Herna…', open: '01:51:25', claimed: '00:00:13', dur: '01:51:38', closed: '07/10/2026 11:51 AM', type: 'Checklist' },
-  { n: 11, name: 'Protein Prep Beef Tenderloin', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Freddy Espain', open: '02:44:10', claimed: '00:00:09', dur: '02:44:19', closed: '07/10/2026 12:44 PM', type: 'Checklist' },
-  { n: 12, name: 'Protein Prep Chicken', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Freddy Espain', open: '02:44:26', claimed: '00:00:11', dur: '02:44:38', closed: '07/10/2026 12:44 PM', type: 'Checklist' },
-  { n: 13, name: 'Kitchen Hand Sink', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Guillermo Herna…', open: '01:51:47', claimed: '00:00:12', dur: '01:52:00', closed: '07/10/2026 11:52 AM', type: 'Checklist' },
-  { n: 14, name: 'Pastry Quality Check', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Guillermo Herna…', open: '01:52:08', claimed: '00:00:05', dur: '01:52:14', closed: '07/10/2026 11:52 AM', type: 'Checklist' },
-  { n: 15, name: 'Maintenance Needed', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Guillermo Herna…', open: '01:52:20', claimed: '00:00:46', dur: '01:53:07', closed: '07/10/2026 11:53 AM', type: 'Survey' },
-  { n: 16, name: 'Touchscreens', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Guillermo Herna…', open: '01:53:14', claimed: '00:03:01', dur: '01:56:16', closed: '07/10/2026 11:56 AM', type: 'Task' },
-  { n: 17, name: 'Food Labels', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Freddy Espain', open: '02:44:44', claimed: '00:19:37', dur: '03:04:22', closed: '07/10/2026 01:04 PM', type: 'Checklist' },
+  { n: 1, name: 'Take a short break', flag: true, ref: 'Team Member - James', state: 'open', tone: 'red', trig: '07/10/2026 09:29 AM', by: '', open: '05:06:54', claimed: null, dur: '05:06:54', closed: '', type: 'Task', hl: true },
+  { n: 2, name: 'Check work area', ref: '', state: 'open', tone: 'green', trig: '07/10/2026 02:30 PM', by: '', open: '00:06:16', claimed: null, dur: '00:06:16', closed: '', type: 'Checklist' },
+  { n: 3, name: 'Check supplies', ref: '', state: 'open', tone: 'green', trig: '07/10/2026 02:25 PM', by: '', open: '00:11:15', claimed: null, dur: '00:11:15', closed: '', type: 'Task' },
+  { n: 4, name: 'Check shared equipment', ref: '', state: 'open', tone: 'orange', trig: '07/10/2026 02:00 PM', by: '', open: '00:36:16', claimed: null, dur: '00:36:16', closed: '', type: 'Task' },
+  { n: 5, name: 'Report missing items', ref: '', state: 'open', tone: 'orange', trig: '07/10/2026 02:00 PM', by: '', open: '00:36:16', claimed: null, dur: '00:36:16', closed: '', type: 'Survey' },
+  { n: 6, name: 'Tidy work area', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 12:00 PM', by: 'Michael Davis', open: '02:06:54', claimed: '00:00:03', dur: '02:06:57', closed: '07/10/2026 02:06 PM', type: 'Task' },
+  { n: 7, name: 'Request supplies', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 11:30 AM', by: 'Michael Davis', open: '01:57:58', claimed: '00:00:14', dur: '01:58:13', closed: '07/10/2026 01:28 PM', type: 'Survey' },
+  { n: 8, name: 'Review available supplies', ref: 'Shared Supplies', state: 'closed', tone: 'red', trig: '07/10/2026 11:00 AM', by: 'Michael Davis', open: '02:23:24', claimed: '00:04:25', dur: '02:27:49', closed: '07/10/2026 01:27 PM', type: 'Survey' },
+  { n: 9, name: 'Take a short break', ref: 'Team Member - Emily', state: 'closed', tone: 'red', trig: '07/10/2026 10:29 AM', by: 'Sarah Wilson', open: '03:50:03', claimed: '00:10:40', dur: '04:00:44', closed: '07/10/2026 02:30 PM', type: 'Task' },
+  { n: 10, name: 'Review daily tasks', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Sarah Wilson', open: '01:51:25', claimed: '00:00:13', dur: '01:51:38', closed: '07/10/2026 11:51 AM', type: 'Checklist' },
+  { n: 11, name: 'Update task status', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Michael Davis', open: '02:44:10', claimed: '00:00:09', dur: '02:44:19', closed: '07/10/2026 12:44 PM', type: 'Checklist' },
+  { n: 12, name: 'Prepare for handoff', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Michael Davis', open: '02:44:26', claimed: '00:00:11', dur: '02:44:38', closed: '07/10/2026 12:44 PM', type: 'Checklist' },
+  { n: 13, name: 'Check shared spaces', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Sarah Wilson', open: '01:51:47', claimed: '00:00:12', dur: '01:52:00', closed: '07/10/2026 11:52 AM', type: 'Checklist' },
+  { n: 14, name: 'Review completed work', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Sarah Wilson', open: '01:52:08', claimed: '00:00:05', dur: '01:52:14', closed: '07/10/2026 11:52 AM', type: 'Checklist' },
+  { n: 15, name: 'Report an issue', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Sarah Wilson', open: '01:52:20', claimed: '00:00:46', dur: '01:53:07', closed: '07/10/2026 11:53 AM', type: 'Survey' },
+  { n: 16, name: 'Check shared equipment', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Sarah Wilson', open: '01:53:14', claimed: '00:03:01', dur: '01:56:16', closed: '07/10/2026 11:56 AM', type: 'Task' },
+  { n: 17, name: 'Organize shared files', ref: '', state: 'closed', tone: 'red', trig: '07/10/2026 10:00 AM', by: 'Michael Davis', open: '02:44:44', claimed: '00:19:37', dur: '03:04:22', closed: '07/10/2026 01:04 PM', type: 'Checklist' },
 ];
 
 const Dots = () => (
@@ -214,7 +214,7 @@ const RunningBoard = forwardRef(function RunningBoard(
           <div className="rb-nav-right">
             <svg className="rb-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3a4 4 0 0 0-4 4v3l-1.5 2.5h11L14 10V7a4 4 0 0 0-4-4ZM8 15a2 2 0 0 0 4 0" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
             <svg className="rb-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.4" /><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.4 1.4M13.6 13.6 15 15M15 5l-1.4 1.4M6.4 13.6 5 15" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
-            <span className="rb-avatar">MB</span>
+            <span className="rb-avatar">JM</span>
           </div>
         </div>
 
@@ -262,8 +262,8 @@ const RunningBoard = forwardRef(function RunningBoard(
           </div>
 
           <div className="rb-body">
-            <GroupRow label="L001 – Sweet Beverly" count="7" open="75" claimed="5" duration="88" />
-            <GroupRow label="Kitchen" count="25" open="5" claimed="0" duration="20" indent={1} />
+            <GroupRow label="L001 – Main Location" count="7" open="75" claimed="5" duration="88" />
+            <GroupRow label="Operations" count="25" open="5" claimed="0" duration="20" indent={1} />
 
             {rows.map((r) => (
               <div className={`rb-row rb-drow${r.hl ? ' is-hl' : ''}`} key={r.n}>

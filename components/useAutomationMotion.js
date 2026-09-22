@@ -13,6 +13,31 @@ const mix = (a, b, p) => a + (b - a) * p;
 const COLUMNS = ['open', 'claimed', 'closed'];
 const APPROACH_DURATION = BOARD_PHASES.approach;
 
+// Reorder the actual card elements on either device, using playback time so
+// pause, reverse seeking, and replay all produce the same positions.
+function animatePriority(surface, column, time, missions) {
+  if (!surface || !column) return;
+  const cards = surface.querySelectorAll('[data-mission-id]');
+  cards.forEach(card => { card.style.transform = ''; card.style.position = ''; card.style.zIndex = ''; });
+  if (time < PRIORITY_BOOST.move || time >= PRIORITY_BOOST.move + PRIORITY_BOOST.duration) return;
+  const progress = ease((time - PRIORITY_BOOST.move) / PRIORITY_BOOST.duration);
+  let previousTop = column.getBoundingClientRect().top;
+  const poses = missions.filter(m => m.status === 'open').map(m => {
+    const card = surface.querySelector(`[data-mission-id="${m.id}"]`);
+    if (!card) return null;
+    const rect = card.getBoundingClientRect();
+    const scale = rect.width / card.offsetWidth;
+    const dy = (previousTop - rect.top) / scale;
+    previousTop += rect.height + (parseFloat(getComputedStyle(column).rowGap) || 0) * scale;
+    return { card, dy, boosted: m.boosted };
+  });
+  poses.filter(Boolean).forEach(({card, dy, boosted}) => {
+    card.style.transform = `translateY(${dy * (1 - progress)}px)`;
+    card.style.position = 'relative';
+    card.style.zIndex = boosted ? '3' : '1';
+  });
+}
+
 // Measure the real cards, then derive every pose from playback time. No delayed
 // callbacks or independent animations can drift when playback pauses or seeks.
 export default function useAutomationMotion({ time, state, root, tablet, avatars, codePanel, people, boardEnd = BOARD_END }) {
@@ -22,6 +47,11 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     const featureScene = SCENES.find(scene => scene.feature && time >= scene.start && time < scene.end);
     const featureFocus = featureScene ? ease((time-featureScene.start)/.3) * (1-ease((time-featureScene.end+.25)/.25)) : 0;
     board.style.setProperty('--feature-focus', String(featureFocus));
+    const phone = root.current.querySelector('.adx-feature-phone');
+    if (phone) {
+      phone.style.setProperty('--feature-focus', String(featureFocus));
+      animatePriority(phone, phone.querySelector('.mi-phone-cards'), time, state.missions);
+    }
     board.querySelectorAll('[data-mission-id]').forEach(card => {
       card.style.transform = '';
       card.style.position = '';
@@ -29,6 +59,49 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       card.style.removeProperty('--demo-active-border');
     });
     board.querySelectorAll('.chip-performer-avatar').forEach(img => { img.style.visibility = ''; });
+    const callout = board.querySelector('.adx-feature-callout');
+    if (callout && featureScene) {
+      const section = board.querySelector(`section[aria-label="${featureScene.feature} missions"]`);
+      const copy = board.querySelector('.adx-feature-caption p');
+      const targets = section?.querySelectorAll('.tbl-tab, [data-mission-id]');
+      if (copy && targets?.length) {
+        const bounds = board.getBoundingClientRect();
+        const scale = bounds.width / board.offsetWidth;
+        const rects = [...targets].map(node => node.getBoundingClientRect());
+        const x = (Math.min(...rects.map(rect => rect.left)) - bounds.left) / scale - 6;
+        const y = (Math.min(...rects.map(rect => rect.top)) - bounds.top) / scale - 6;
+        const width = (Math.max(...rects.map(rect => rect.right)) - bounds.left) / scale + 6 - x;
+        const height = (Math.max(...rects.map(rect => rect.bottom)) - bounds.top) / scale + 6 - y;
+        const textRange = document.createRange();
+        textRange.selectNodeContents(copy);
+        const text = textRange.getBoundingClientRect();
+        const closed = featureScene.feature === 'closed';
+        const startX = ((closed ? text.right : text.left + text.width / 2) - bounds.left) / scale + (closed ? 10 : 0);
+        const startY = ((closed ? text.top + text.height / 2 : text.top) - bounds.top) / scale - (closed ? 0 : 8);
+        const endX = closed ? x - 3 : x + width / 2;
+        const endY = closed ? Math.min(y + height - 12, Math.max(y + 12, startY)) : y + height + 3;
+        const arrow = callout.querySelector('[data-callout-arrow]');
+        arrow.setAttribute('d', `M ${startX} ${startY} L ${endX} ${endY}`);
+        const head = callout.querySelector('[data-callout-head]');
+        const angle = Math.atan2(endY - startY, endX - startX);
+        const backX = endX - 6 * Math.cos(angle);
+        const backY = endY - 6 * Math.sin(angle);
+        const sideX = 4 * Math.sin(angle);
+        const sideY = 4 * Math.cos(angle);
+        head.setAttribute('d', `M ${backX + sideX} ${backY - sideY} L ${endX} ${endY} L ${backX - sideX} ${backY + sideY}`);
+        const ring = callout.querySelector('[data-callout-ring]');
+        Object.entries({ x, y, width, height }).forEach(([key, value]) => ring.setAttribute(key, String(value)));
+        const elapsed = time - featureScene.start;
+        const arrowProgress = ease((elapsed - .15) / .45);
+        const ringProgress = ease((elapsed - .6) / .45);
+        arrow.style.strokeDasharray = '1';
+        arrow.style.strokeDashoffset = String(1 - arrowProgress);
+        head.style.opacity = String(arrowProgress);
+        ring.style.strokeDasharray = '1';
+        ring.style.strokeDashoffset = String(1 - ringProgress);
+        callout.style.opacity = String(featureFocus);
+      }
+    }
     if (codePanel.current) codePanel.current.style.opacity = '0';
     const action = state.action;
     // Finish lifting the spotlight as the card starts its transfer.
@@ -66,8 +139,15 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       });
       return;
     }
-    const claims = BOARD_ACTIONS.filter(a => a.to === 'claimed');
-    const remaining = at => people.map((_, i) => i).filter(i => !claims.some(a => a.person === i && at >= a.start + APPROACH_DURATION));
+    // Claims leave the rail; completed missions return their performer to its
+    // bottom. Appending there lets the other teammates settle upward.
+    const remaining = at => BOARD_ACTIONS.reduce((rail, event) => {
+      if (event.to === 'claimed' && at >= event.start + APPROACH_DURATION)
+        return rail.filter(i => i !== event.person);
+      if (event.to === 'closed' && at >= event.end && !rail.includes(event.person))
+        return [...rail, event.person];
+      return rail;
+    }, people.map((_, i) => i));
     const rail = (i, list) => ({ x: TEAM_REVEAL.avatarX, y: centerY - 37 + (list.indexOf(i) - (list.length - 1) / 2) * 100 });
     const fade = 1 - ease((time - boardEnd) / .6);
     const transfer = action ? ease((time - action.confirm) / (action.arrive - action.confirm)) : 0;
@@ -82,6 +162,12 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
           const regroup = ease((time - action.start) / APPROACH_DURATION);
           pos = { x: mix(pos.x, next.x, regroup), y: mix(pos.y, next.y, regroup) };
         }
+      }
+      if (action?.to === 'closed' && i !== action.person) {
+        const after = [...remaining(action.start), action.person];
+        const next = rail(i, after);
+        const regroup = ease((time - (action.end - .3)) / .3);
+        pos = { x: mix(pos.x, next.x, regroup), y: mix(pos.y, next.y, regroup) };
       }
       gsap.set(avatars.current[i], { ...pos, scale: 1, autoAlpha: currentRail.includes(i) ? fade * (1 - focus * .78) : 0, filter: 'drop-shadow(0 6px 16px rgba(0,0,0,.35))', transformOrigin: '0 0' });
     });
@@ -157,7 +243,51 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     if (embedded) embedded.style.visibility = 'hidden';
     const slot = stagePoint(slotRect.left, slotRect.top);
     const slotScale = slotRect.width / stageScale / 74;
+    const missionRect = card.getBoundingClientRect();
+    const missionCenterY = stagePoint(0, missionRect.top + missionRect.height / 2).y;
+    const waitingScale = .84;
+    const waitingSize = 74 * waitingScale;
+    const waiting = {
+      x: stagePoint(missionRect.right, 0).x - 20,
+      y: missionCenterY - waitingSize / 2,
+    };
+    if (state.showCode && codePanel.current) {
+      const pop = ease((time - action.start - BOARD_PHASES.codeIn) / .12);
+      const dismiss = ease((time - action.start - BOARD_PHASES.codeOut) / (BOARD_PHASES.codeHidden - BOARD_PHASES.codeOut));
+      gsap.set(codePanel.current, {
+        x: waiting.x + waitingSize / 2,
+        y: waiting.y + waitingSize - 12,
+        opacity: pop * (1 - dismiss), scale: mix(.94, 1, pop) - .03 * dismiss, transformOrigin: 'left top',
+      });
+    }
     const approach = ease((time - action.start) / (action.direct ? .42 : APPROACH_DURATION));
+    if (action.to === 'closed') {
+      // Only the code-assisted close moves to the card's right edge. Direct
+      // closes stay in the performer slot before returning to the rail.
+      const sourceWaiting = {
+        x: stagePoint(missionRect.right + (source.left - natural.left) * transfer, 0).x - 20,
+        y: stagePoint(0, missionRect.top + missionRect.height / 2 + (sourceTop - natural.top) * transfer).y - waitingSize / 2,
+      };
+      const sourceSlot = stagePoint(
+        bottom.left + (source.left - natural.left) * transfer,
+        bottom.top + (sourceTop - natural.top) * transfer,
+      );
+      const returnOrigin = action.direct ? sourceSlot : sourceWaiting;
+      const sourceScale = action.direct ? slotScale : waitingScale;
+      const destination = rail(action.person, [...remaining(action.start), action.person]);
+      const returning = ease((time - action.confirm) / (action.end - action.confirm));
+      const pos = time < action.confirm
+        ? { x: mix(slot.x, returnOrigin.x, approach), y: mix(slot.y, returnOrigin.y, approach) }
+        : { x: mix(returnOrigin.x, destination.x, returning), y: mix(returnOrigin.y, destination.y, returning) };
+      gsap.set(avatars.current[action.person], {
+        ...pos, scale: time < action.confirm
+          ? mix(slotScale, sourceScale, approach)
+          : mix(sourceScale, 1, returning),
+        autoAlpha: fade, zIndex: 13,
+        filter: `drop-shadow(0 6px 16px rgba(0,0,0,${.35 * (action.direct ? returning : approach)}))`,
+      });
+      return;
+    }
     if (action.direct) {
       const from = action.from === 'open' ? rail(action.person, remaining(action.start)) : slot;
       gsap.set(avatars.current[action.person], {
@@ -169,14 +299,6 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       return;
     }
     // Follow the mission's row while keeping the avatar at its right edge.
-    const missionRect = card.getBoundingClientRect();
-    const missionCenterY = stagePoint(0, missionRect.top + missionRect.height / 2).y;
-    const waitingScale = .84;
-    const waitingSize = 74 * waitingScale;
-    const waiting = {
-      x: stagePoint(missionRect.right, 0).x - 20,
-      y: missionCenterY - waitingSize / 2,
-    };
     const from = action.from === 'open' ? rail(action.person, remaining(action.start)) : slot;
     const fromScale = action.from === 'open' ? 1 : slotScale;
     const docking = ease((time - action.arrive) / (action.end - action.arrive));
@@ -194,14 +316,5 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       filter: `drop-shadow(0 6px 16px rgba(0,0,0,${shadowOpacity}))`,
     });
 
-    if (state.showCode && codePanel.current) {
-      const pop = ease((time - action.start - BOARD_PHASES.codeIn) / .12);
-      const dismiss = ease((time - action.start - BOARD_PHASES.codeOut) / (BOARD_PHASES.codeHidden - BOARD_PHASES.codeOut));
-      gsap.set(codePanel.current, {
-        x: waiting.x + waitingSize / 2,
-        y: waiting.y + waitingSize - 12,
-        opacity: pop * (1 - dismiss), scale: mix(.94, 1, pop) - .03 * dismiss, transformOrigin: 'left top',
-      });
-    }
   }, [time, state, root, tablet, avatars, codePanel, people, boardEnd]);
 }

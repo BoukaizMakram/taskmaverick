@@ -6,24 +6,27 @@ import InteractiveMissionBoard from './InteractiveMissionBoard';
 import PhoneShell from '@/components/PhoneShell';
 import MissionChip from '@/components/MissionChip';
 import { PersonalCodeKeypad } from './PersonalCodeDialog';
-import { automationState, BOARD_END } from '@/lib/automationState.mjs';
-import { SCENES, TIMING, TABLET_NOTES, BOARD_ACTION_DURATION, BOARD_PHASES, ENGAGED_ACTION_DURATION } from '@/lib/demoNarration.mjs';
+import { automationState, BOARD_END, simulatedTime } from '@/lib/automationState.mjs';
+import { SCENE, SCENES, TIMING, TABLET_NOTES, BOARD_ACTION_DURATION, BOARD_PHASES, ENGAGED_ACTION_DURATION } from '@/lib/demoNarration.mjs';
 import { AUTOMATION_SCENES, AUTOMATION_LENGTH, EFFICIENCY_START, EFFICIENCY_LENGTH, EFFICIENCY_SCENES } from '@/lib/demoNarration.mjs';
 import useDemoPlayback from './useDemoPlayback';
 import DemoTypedText from './DemoTypedText';
 import useAutomationMotion from './useAutomationMotion';
 import Starfield from './Starfield';
 import GabrielMessage from './GabrielMessage';
+import EfficiencyMissionSequence, { SETTLED_AT } from './EfficiencyMissionSequence';
 import './AutomationFeatures.css';
 import { PERSONAL_REVEAL, TEAM_REVEAL, easeOutArrival } from '@/lib/automationMotion.mjs';
 
 const timeLabel = value => `${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,'0')}`;
 const BIRTHDAY_ENABLED_KEY = 'taskmaverick:gabriel-birthday-enabled';
+const URGENCY_START = SCENES.find(scene => scene.id === 'urgency-title').start;
+const RECOGNITION_START = SCENES.find(scene => scene.id === 'recognition-stamped').start;
 
 // Three people's Personal Boards. Missions POP IN on a stagger (see `pop`, in
 // timeline seconds) over empty boards.
 const PHONES = [
-  { name: 'Anna F.', missions: [
+  { name: 'Adam F.', missions: [
     { kind: 'Checklist', title: 'Prep Stations',   points: 15, date: '09-15-26', time: '08:02 AM', pill: '00:12:00', pop: TIMING.personal + 2.9 },
     { kind: 'Task',      title: 'Temperature Log',  points: 10, date: '09-15-26', time: '08:02 AM', pill: '00:07:30', pop: TIMING.personal + 3.6 },
   ] },
@@ -38,7 +41,7 @@ const PHONES = [
 ];
 
 // The shared board demonstrates two claims and one completion directly on cards.
-const dm = { type: 'Checklist', points: 20, location: 'Store / Aisle 3', postedBy: 'System', claimer: 'Anna F. - Staff', date: '09-15-26', time: '08:02 AM', pillClass: 'chip--green', headerRight: 'es-menu', status: 'open' };
+const dm = { type: 'Checklist', points: 20, location: 'Store / Aisle 3', postedBy: 'System', claimer: 'Adam F. - Staff', date: '09-15-26', time: '08:02 AM', pillClass: 'chip--green', headerRight: 'es-menu', status: 'open' };
 const DEMO_MISSIONS = [
   { ...dm, id: 'inv', performerAvatar: '/avatars/01.png', title: 'Inventory Audit', age: 540, points: 20,
     description: 'Count each item and record the quantity on hand.',
@@ -60,11 +63,21 @@ const DEMO_MISSIONS = [
 
 // Five teammates share the device; the first two demonstrate personal codes.
 const AVATARS = [
-  { src: '/avatars/01.png', name: 'Anna F. - Staff', phoneX: 476, code: '123456' },
+  { src: '/avatars/01.png', name: 'Adam F. - Staff', phoneX: 476, code: '123456' },
   { src: '/avatars/05.png', name: 'Ben R. - Staff', phoneX: 800, code: '456456' },
   { src: '/avatars/04.png', name: 'Carla M. - Staff', phoneX: 1124, code: '789789' },
   { src: '/avatars/02.png', name: 'Maya R. - Staff', code: '248135' },
   { src: '/avatars/03.png', name: 'Leo T. - Staff', code: '963852' },
+];
+
+// Start the efficiency chapter with three Open and two Claimed missions while
+// retaining the four completions from the automation walkthrough.
+const EFFICIENCY_MISSIONS = [
+  ...DEMO_MISSIONS,
+  { ...dm, id: 'team-updates', title: 'Review Team Updates', points: 10, appearsAt: EFFICIENCY_START - 1 },
+  { ...dm, id: 'schedule', title: 'Confirm Work Schedule', points: 15, status: 'claimed',
+    performer: AVATARS[3].name, performerAvatar: AVATARS[3].src,
+    appearsAt: EFFICIENCY_START - 1, claimedAt: simulatedTime(EFFICIENCY_START - .5) },
 ];
 
 export default function AutomationDemo({ scene=false, efficiency=false, personalMessage=false }) {
@@ -131,8 +144,14 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
     else toggle();
   };
   const time = playbackTime + offset;
-  const demoState = useMemo(()=>automationState(time, DEMO_MISSIONS, AVATARS),[time]);
-  const teamBoard=<InteractiveMissionBoard device="tablet" referenceLayout initialScreen="board" initialMissions={DEMO_MISSIONS} demoState={demoState}/>;
+  const missionTemplates = efficiency ? EFFICIENCY_MISSIONS : DEMO_MISSIONS;
+  const demoState = useMemo(()=>{
+    const state=automationState(time, missionTemplates, AVATARS);
+    if(efficiency&&time>=URGENCY_START) state.missions=state.missions.map(m=>['prep','sig'].includes(m.id)?{...m,ageSeconds:(m.id==='prep'?3300:1500)+Math.max(0,Math.min(time,RECOGNITION_START)-URGENCY_START)}:m);
+    if(efficiency&&time>=SCENE['gamification-extra'].start) state.missions=state.missions.map(m=>m.id==='prep'?{...m,points:30}:m);
+    return state;
+  },[time,missionTemplates,efficiency]);
+  const teamBoard=<InteractiveMissionBoard device="tablet" referenceLayout initialScreen="board" initialMissions={missionTemplates} demoState={demoState}/>;
 
   useLayoutEffect(()=>{
     const tl=gsap.timeline({paused:true});
@@ -145,13 +164,13 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
       const el=chips.current[`${i}-${j}`];
       if(el) tl.fromTo(el,{autoAlpha:0,y:18,scale:.9},{autoAlpha:1,y:0,scale:1,duration:.5,ease:'back.out(1.6)'},m.pop);
     }));
-    gsap.set(tablet.current,{xPercent:-50,x:TEAM_REVEAL.tabletX,y:TEAM_REVEAL.originY,scale:TEAM_REVEAL.tabletScale,autoAlpha:0,transformOrigin:`50% ${tablet.current.querySelector('.tbl-fit').offsetHeight/2}px`});
+    gsap.set(tablet.current,{xPercent:-50,x:TEAM_REVEAL.tabletX,y:TEAM_REVEAL.originY,scale:TEAM_REVEAL.tabletScale,rotationY:0,filter:'blur(0px)',autoAlpha:0,transformOrigin:`50% ${tablet.current.querySelector('.tbl-fit').offsetHeight/2}px`});
     tl.to(phones.current,{autoAlpha:0,duration:.4,ease:'sine.inOut'},TIMING.team-.4);
     tl.to(tablet.current,{y:TEAM_REVEAL.tabletY,autoAlpha:1,duration:TEAM_REVEAL.duration,ease:easeOutArrival},TEAM_REVEAL.tabletAt);
     tl.to(tablet.current,{scale:1.32,duration:BOARD_PHASES.approach,ease:'sine.inOut'},TIMING.claim);
     tl.to(tablet.current,{scale:TEAM_REVEAL.tabletScale,duration:.6,ease:'sine.inOut'},TIMING.close+BOARD_ACTION_DURATION+.1);
     // Move the entire device as one object; its screen retains its native layout.
-    (efficiency ? SCENES.filter(s=>s.feature) : []).forEach(s=>{
+    (efficiency ? SCENES.filter(s=>s.feature && s.start < URGENCY_START) : []).forEach(s=>{
       const right=['closed','names','execution','efficient'].includes(s.feature);
       const left=['open','timers','timer-colors','priority','points','extra-points'].includes(s.feature);
       const overview=s.feature==='overview';
@@ -159,6 +178,10 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
       const zoom=overview?TEAM_REVEAL.tabletScale:detail?1.75:right?1.6:1.65;
       tl.to(tablet.current,{scale:zoom,x:overview?0:right?-210:left?230:0,y:overview?TEAM_REVEAL.tabletY:right?-45:15,duration:.85,ease:'sine.inOut'},s.start);
     });
+    if (efficiency) {
+      tl.to(tablet.current,{scale:.62,x:0,y:20,rotationY:9,filter:'blur(8px)',autoAlpha:0,duration:1.15,ease:'power2.inOut'},URGENCY_START);
+      tl.to(tablet.current,{scale:1.35,x:-110,y:0,rotationY:0,filter:'blur(0px)',autoAlpha:1,duration:.85,ease:'power2.inOut'},RECOGNITION_START);
+    }
     tl.to(tablet.current,{autoAlpha:0,duration:.6,ease:'power2.in'},boardEnd);
     tl.to({},{duration:.4},offset+length-.4);
     return ()=>{tl.kill();};
@@ -170,6 +193,7 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
   const fullscreen=()=>root.current?.parentElement.requestFullscreen?.();
   const openCount=i=>PHONES[i].missions.filter(m=>time>=m.pop).length;
   const activeScene=scenes.find(s=>time>=s.start&&time<s.end)??scenes.at(-1);
+  const phoneFeature=efficiency && time>=URGENCY_START && time<RECOGNITION_START && Boolean(activeScene.feature);
   const opening=time<TIMING.personal;
   const personalIntro=activeScene.id==='cue-personal';
   const teamIntro=activeScene.id==='cue-team';
@@ -180,7 +204,7 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
 
   // Only the stage background toggles playback; controls handle their own clicks.
   const stageClick=e=>{if(e.target===e.currentTarget)requestPlayback();};
-  const stageEl=<div className={`ad-fit${scene?' ad-fit--embed':''}`}><div className="ad-stage" ref={root} onClick={stageClick} role="button" tabIndex={-1} aria-label={playing?'Pause':'Play'}>
+  const stageEl=<div className={`ad-fit${scene?' ad-fit--embed':''}`}><div className={`ad-stage${efficiency?' ad-stage--efficiency':''}`} ref={root} onClick={stageClick} role="button" tabIndex={-1} aria-label={playing?'Pause':'Play'}>
     <Starfield className="ad-stars" speed={speed} paused={!playing} fitParent />
     {(!activeScene.feature&&activeScene.id!=='cue-shared'&&(!sharedDeviceIntro||time<TIMING.claim))&&<DemoTypedText key={activeScene.id} text={activeScene.display} elapsed={time-activeScene.start} remaining={textRemaining} center={opening||personalIntro||teamIntro||sharedDeviceIntro||activeScene.center} offsetY={titleDrop} className={!['title-main','msg-end'].includes(activeScene.id)?'adx-script-intro-copy':''}/>}
 
@@ -196,11 +220,14 @@ export default function AutomationDemo({ scene=false, efficiency=false, personal
       ))}
     </div>
 
-    <div className={`adx-tablet${time>=TIMING.shared ? ' adx-tablet--engaged' : ''}`} ref={tablet} data-feature={activeScene.feature || undefined}>
+    <div className={`adx-tablet${time>=TIMING.shared ? ' adx-tablet--engaged' : ''}${efficiency&&time>=RECOGNITION_START&&time<SETTLED_AT?' ef-awaiting-performers':''}`} ref={tablet} data-feature={activeScene.feature || undefined} style={efficiency&&time>=RECOGNITION_START?{'--performer-reveal':Math.max(0,Math.min(1,(time-SETTLED_AT)/.45))}:undefined}>
       {teamBoard}
-      {activeScene.feature && <div className="adx-feature-caption"><DemoTypedText key={activeScene.id} text={activeScene.display} elapsed={time-activeScene.start} remaining={activeScene.end-time} center className="adx-feature-copy"/></div>}
+      {['closed','claimed','open'].includes(activeScene.feature) && <svg className="adx-feature-callout" aria-hidden="true"><path data-callout-arrow pathLength="1"/><path data-callout-head/><rect data-callout-ring rx="10" pathLength="1"/></svg>}
+      {activeScene.feature && !phoneFeature && !(efficiency&&time>=RECOGNITION_START&&time<SETTLED_AT) && <div className="adx-feature-caption"><DemoTypedText key={activeScene.id} text={activeScene.display} elapsed={time-Math.max(activeScene.start,activeScene.feature==='names'?SETTLED_AT:0)} remaining={activeScene.end-time} center className="adx-feature-copy"/></div>}
       {tabletNote&&<DemoTypedText key={tabletNote.id} text={tabletNote.text} elapsed={time-tabletNote.start} remaining={tabletNote.end-time} center className={`adx-tablet-note${tabletNote.lower ? ' adx-tablet-note--lower' : ''}`}/>}
     </div>
+
+    {efficiency && <EfficiencyMissionSequence time={time} state={demoState} tablet={tablet} stage={root}/>}
 
     {AVATARS.map((a,i)=>(
       <img key={a.src} className="adx-avatar" ref={el=>{avatars.current[i]=el;}} src={a.src} alt="" aria-hidden="true"/>

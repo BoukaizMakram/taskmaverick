@@ -1,9 +1,44 @@
 .ad-birthday-notice { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; max-width: calc(100vw - 32px); margin: 0; padding: 12px 20px; border: 1px solid #bfa16b66; border-radius: 10px; background: #111d2b; color: #f6f1e7; box-shadow: 0 8px 32px #0004; font-size: 14px; text-align: center; pointer-events: none; }
-.adx-feature-caption { position: absolute; top: 65%; left: 10%; width: 53%; z-index: 21; text-align: center; pointer-events: none; color: #111; }
-.adx-tablet:is([data-feature="closed"],[data-feature="names"],[data-feature="execution"],[data-feature="efficient"]) .adx-feature-caption { top: 64%; left: 25%; width: 37%; }
-.adx-tablet[data-feature="overview"] .adx-feature-caption { top: 68%; left: 13%; width: 49%; }
+.ef-phone { position: absolute; left: 545px; top: -12px; width: 510px; height: 1066px; transform-origin: 50% 40%; pointer-events: none; opacity: 0; }
+.ef-phone .ph-fit { width: 510px; max-width: none; }
+.ef-phone .ph-tabs { visibility: hidden; }
+.ef-phone-caption { position: absolute; left: 38px; top: 780px; width: 434px; margin: 0; text-align: center; font-size: 18px; font-weight: 400; line-height: 1.5; color: #111; }
+.ef-travel-card { position: absolute; left: 0; top: 0; z-index: 12; visibility: hidden; container-type: inline-size; pointer-events: none; will-change: transform, width, height; }
+.ef-travel-card .chip { height: 100%; box-sizing: border-box; padding: 3cqw 4cqw; gap: 1cqw; border: 0; border-radius: 4cqw; background: white; box-shadow: 0 2px 12px #142c4320; font-family: var(--font-montserrat),sans-serif; }
+.ef-travel-card .chip-top { min-height: 7cqw; gap: 1cqw; }
+.ef-travel-card .chip-id { gap: 1.6cqw; }
+.ef-travel-card .chip-logo { width: 5cqw; height: 5cqw; }
+.ef-travel-card .chip-kind { font-size: 3.9cqw; }
+.ef-travel-card .chip-points { font-size: 2.8cqw; min-width: 5.5cqw; height: 6cqw; padding: 0 1cqw; }
+.ef-travel-card .chip-pill { font-size: 4.5cqw; height: 7.5cqw; padding: 0 2.5cqw; border-radius: 5cqw; background: var(--mission-color); font-variant-numeric: tabular-nums; }
+.ef-travel-card .chip-title { font-size: 5.5cqw; line-height: 1.3; }
+.ef-travel-card .chip-bottom { margin-top: auto; }
+.ef-travel-card .chip-when { font-size: 3cqw; gap: 1.5cqw; }
+.ef-reward-caption { position: absolute; top: 720px; left: 360px; width: 880px; text-align: center; font-size: 18px; font-weight: 400; color: #111; }
+.ef-awaiting-performers :is(.chip-who,.chip-exec) { visibility: hidden; }
+.ad-stage--efficiency .adx-tablet:is([data-feature="names"],[data-feature="execution"],[data-feature="efficient"]) :is(.chip-who,.chip-exec) { box-shadow: none !important; transform: none !important; }
+.adx-feature-caption { position: absolute; top: 82%; left: 12%; width: 44%; z-index: 21; text-align: center; pointer-events: none; color: #111; }
+.adx-feature-callout { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 20; pointer-events: none; fill: none; stroke: #8b5cf6; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .adx-feature-caption .adx-feature-copy { position: relative; inset: auto; padding: 0; }
-.adx-feature-caption .adx-feature-copy p { margin: 0; font-size: 24px; line-height: 1.3; font-weight: 600; }
+.adx-feature-caption .adx-feature-copy p { margin: 0; font-size: 18px; line-height: 1.3; font-weight: 400; }
+.adx-feature-phone { position: absolute; top: 26px; left: 50%; width: 401px; height: 838px; z-index: 9; visibility: hidden; pointer-events: none; will-change: transform, opacity, filter; }
+.adx-feature-phone .ph-fit { width: 401px; max-width: none; margin: 0; }
+.adx-feature-phone .mi-recording-controls { display: none; }
+.adx-feature-phone .mi-card-button { animation: none; }
+.adx-feature-phone .chip--green .chip-pill { background: var(--demo-timer-color, #007a33); }
+.adx-feature-phone .chip--reference-highlight { background: #fff3c2; border-left: 3px solid #df4785; padding-left: 10px; }
+.adx-feature-phone .chip-timers { font-variant-numeric: tabular-nums; }
+.adx-phone-feature-caption { position: absolute; top: 340px; left: 440px; width: 520px; color: #111; text-align: left; }
+.adx-phone-feature-caption .adx-feature-copy { position: relative; inset: auto; padding: 0; }
+.adx-phone-feature-caption .adx-feature-copy p { margin: 0; font-size: 18px; line-height: 1.3; font-weight: 400; }
+.adx-feature-phone[data-feature="timers"] .chip-pill,
+.adx-feature-phone[data-feature="timer-colors"] .chip-pill,
+.adx-feature-phone[data-feature="points"] .chip-points,
+.adx-feature-phone[data-feature="extra-points"] [data-mission-id="new-restock"] .chip-points,
+.adx-feature-phone[data-feature="execution"] .chip-exec,
+.adx-feature-phone[data-feature="names"] .chip-who { outline: 2px solid rgb(139 92 246 / var(--feature-focus, 1)); outline-offset: 3px; }
+.adx-feature-phone[data-feature="priority"] [data-mission-id="new-restock"] .chip,
+.adx-feature-phone[data-feature="efficient"] :is([data-mission-id="sig"],[data-mission-id="prep"]) .chip { outline: 2px solid #8b5cf6; outline-offset: 2px; }
 .adx-tablet[data-feature] .mi-columns > section { opacity: calc(1 - var(--feature-focus) * .6); }
 .adx-tablet[data-feature="overview"] .mi-columns > section,
 .adx-tablet[data-feature="closed"] section[aria-label="closed missions"],
@@ -36,3 +71,6 @@
 .adx-tablet[data-feature="names"] .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-who { font-size: calc(13 * var(--ref-u)); font-weight: 750; line-height: 1.2; border-radius: calc(4 * var(--ref-u)); box-shadow: 0 0 0 calc(1.5 * var(--ref-u)) rgb(139 92 246 / var(--feature-focus)); padding: calc(3 * var(--ref-u)) calc(5 * var(--ref-u)); transform: translateY(calc(-10 * var(--ref-u) * var(--feature-focus))) scale(calc(1 + var(--feature-focus) * .35)); }
 .adx-tablet[data-feature="efficient"] .mi-reference.mi-interactive--tablet .mi-tablet-board :is([data-mission-id="sig"],[data-mission-id="prep"]) .chip-exec,
 .adx-tablet[data-feature="execution"] .mi-reference.mi-interactive--tablet .mi-tablet-board .chip-exec { position: relative; background: #fff; font-weight: 750; line-height: 1; border-radius: calc(4 * var(--ref-u)); box-shadow: 0 0 0 calc(1.5 * var(--ref-u)) rgb(139 92 246 / var(--feature-focus)); padding: calc(3 * var(--ref-u)); transform: none; }
+.ef-phone-caption, .ef-reward-caption { font-size: var(--ef-caption-size, 18px); font-weight: 400; }
+.ef-travel-card .chip-pill { transition: background-color .3s ease; }
+.ad-stage--efficiency .adx-tablet :is(.chip-who,.chip-exec) { opacity: var(--performer-reveal, 1); }
