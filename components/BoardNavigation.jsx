@@ -30,7 +30,7 @@ const personalEntries = [
   ['Home', 'home', 'purple'], ['Lock User', 'lock', 'blue'],
 ];
 
-export function BoardMenu({ onDismiss, boardType = 'team', onNavigate, anchor }) {
+export function BoardMenu({ onDismiss, boardType = 'team', onNavigate, anchor, businessMediaLabel }) {
   const ref = useRef(null);
   const closeRef = useRef(null);
   const [codes, setCodes] = useState(false);
@@ -74,7 +74,7 @@ export function BoardMenu({ onDismiss, boardType = 'team', onNavigate, anchor })
     <button ref={closeRef} className="ph-iconbtn bn-menu-close" aria-label="Close menu" onClick={onDismiss}><svg viewBox="0 0 20 20"><path d="M4 4l12 12M16 4 4 16" fill="none" stroke="currentColor" strokeWidth="1.5"/></svg></button>
     <div className="bn-menu">
       {(boardType === 'personal' ? personalEntries : entries).map(([label, kind, color, locked], index) => <div key={kind} className={(boardType === 'personal' ? [0,3,5] : [0,3,6]).includes(index) ? 'bn-menu-group-end' : ''}>
-        {kind === 'codes' ? <button className="bn-menu-item" onClick={() => setCodes(value => !value)} aria-expanded={codes}><MenuIcon kind={kind} color={color} menu={boardType}/><span>{label}</span></button> : ['person', 'building', 'units', 'home'].includes(kind) ? <button className="bn-menu-item" onClick={() => onNavigate(kind === 'person' ? 'personal' : kind === 'home' ? 'home' : 'unit')}><MenuIcon kind={kind} color={color} menu={boardType}/><span>{label}</span></button> : <div className="bn-menu-item"><MenuIcon kind={kind} color={color} menu={boardType}/><span>{label}</span>{locked && <img className="bn-lock" src="/board-icons/lock.svg" alt="Locked"/>}</div>}
+        {kind === 'codes' ? <button className="bn-menu-item" onClick={() => setCodes(value => !value)} aria-expanded={codes}><MenuIcon kind={kind} color={color} menu={boardType}/><span>{label}</span></button> : ['person', 'building', 'units', 'home'].includes(kind) ? <button className="bn-menu-item" onClick={() => onNavigate(kind === 'person' ? 'personal' : kind === 'home' ? 'home' : 'unit')}><MenuIcon kind={kind} color={color} menu={boardType}/><span>{label}</span></button> : <div className="bn-menu-item" data-iq-target={kind === 'image' && businessMediaLabel ? 'business-media' : undefined}><MenuIcon kind={kind} color={color} menu={boardType}/><span>{kind === 'image' && businessMediaLabel ? businessMediaLabel : label}</span>{locked && <img className="bn-lock" src="/board-icons/lock.svg" alt="Locked"/>}</div>}
         {kind === 'codes' && codes && <div className="bn-demo-codes">Anna F. — <b>123456</b><br/>J. Maverick — <b>654321</b></div>}
       </div>)}
     </div>

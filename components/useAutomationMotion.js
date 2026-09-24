@@ -2,14 +2,29 @@
 
 import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
-import { BOARD_ACTIONS, BOARD_END, PRIORITY_BOOST, demoColumnMissions } from '@/lib/automationState.mjs';
+import { BOARD_ACTIONS, BOARD_END, PRIORITY_BOOST, demoColumnMissions, avatarRailAt } from '@/lib/automationState.mjs';
 import { PERSONAL_REVEAL, TEAM_REVEAL, easeInOut80 } from '@/lib/automationMotion.mjs';
 import { TIMING, BOARD_PHASES, SCENES } from '@/lib/demoNarration.mjs';
 
 const clamp = value => Math.max(0, Math.min(1, value));
 // Zero velocity and acceleration at both ends prevents abrupt starts/stops.
 const ease = value => { const p = clamp(value); return p * p * p * (10 + p * (-15 + 6 * p)); };
+const easeOut = value => 1 - (1 - clamp(value)) ** 3;
 const mix = (a, b, p) => a + (b - a) * p;
+const arc = (from,to,p,height) => ({x:mix(from.x,to.x,p),y:mix(from.y,to.y,p)-Math.sin(Math.PI*p)*height});
+const claimCurve=(from,to,p)=>{
+  const q=1-p;
+  return {x:q*q*q*from.x+3*q*q*p*(from.x+35)+3*q*p*p*(to.x-90)+p*p*p*to.x,
+    y:q*q*q*from.y+3*q*q*p*(from.y-135)+3*q*p*p*(to.y-85)+p*p*p*to.y};
+};
+// Leave the mission downward, then sweep along the bottom into the avatar rail.
+const returnCurve=(from,to,p)=>{
+  const q=1-p;
+  return {
+    x:q*q*q*from.x+3*q*q*p*from.x+3*q*p*p*mix(from.x,to.x,.25)+p*p*p*to.x,
+    y:q*q*q*from.y+3*q*q*p*mix(from.y,to.y,.8)+3*q*p*p*to.y+p*p*p*to.y,
+  };
+};
 const COLUMNS = ['open', 'claimed', 'closed'];
 const APPROACH_DURATION = BOARD_PHASES.approach;
 
@@ -40,7 +55,7 @@ function animatePriority(surface, column, time, missions) {
 
 // Measure the real cards, then derive every pose from playback time. No delayed
 // callbacks or independent animations can drift when playback pauses or seeks.
-export default function useAutomationMotion({ time, state, root, tablet, avatars, codePanel, people, boardEnd = BOARD_END }) {
+export default function useAutomationMotion({ time, state, root, tablet, avatars, codePanel, people, boardEnd = BOARD_END, highlightMode = 'spotlight', avatarChoreography = 'default', actions = BOARD_ACTIONS, avatarRailPose = null, codePanelScale = 1 }) {
   useLayoutEffect(() => {
     const board = tablet.current;
     if (!board || !root.current) return;
@@ -104,8 +119,9 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     }
     if (codePanel.current) codePanel.current.style.opacity = '0';
     const action = state.action;
+    const moveEase=avatarChoreography==='highlight'?easeOut:ease;
     // Finish lifting the spotlight as the card starts its transfer.
-    const focus = action?.to === 'claimed' ? ease((time - action.start) / .32) * (1 - ease((time - action.confirm + .24) / .24)) : 0;
+    const focus = highlightMode === 'spotlight' && action?.to === 'claimed' ? ease((time - action.start) / .32) * (1 - ease((time - action.confirm + .24) / .24)) : 0;
     const shade = board.querySelector('.mi-demo-shade');
     if (shade) shade.style.opacity = String(focus * .72);
     const caption = root.current.querySelector('.adx-lower-third');
@@ -119,15 +135,24 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     const centerY = time < TIMING.claim
       ? 120 + board.querySelector('.tbl-fit').offsetHeight / 2 + TEAM_REVEAL.tabletY
       : stagePoint(0, tabletRect.top + tabletRect.height / 2).y;
+    // Intro avatars use the device's destination, so they can appear before it.
+    const railBottom=avatarRailPose
+      ? 120+board.querySelector('.tbl-fit').offsetHeight/2+avatarRailPose.y+board.querySelector('.tbl-fit').offsetHeight*avatarRailPose.scale/2
+      : stagePoint(0,tabletRect.bottom).y;
+    const railLeft=avatarRailPose?800+avatarRailPose.x-board.offsetWidth*avatarRailPose.scale/2:stagePoint(tabletRect.left,0).x;
+    const railY=(index,count)=>avatarChoreography==='highlight'
+      ? railBottom-142-(count-1-index)*100
+      : centerY-37+(index-(count-1)/2)*100;
+    const railX=avatarChoreography==='highlight'?railLeft-102:TEAM_REVEAL.avatarX;
     if (time < TIMING.claim) {
       people.forEach((person, i) => {
         const team = time >= TIMING.team;
         const pop = team
-          ? clamp((time - TEAM_REVEAL.avatarAt - i * TEAM_REVEAL.avatarStagger) / TEAM_REVEAL.popDuration)
+          ? clamp((time - TEAM_REVEAL.avatarAt - i * TEAM_REVEAL.avatarStagger) / (avatarChoreography==='highlight'?.5:TEAM_REVEAL.popDuration))
           : clamp((time - PERSONAL_REVEAL.crossfadeAt - i * PERSONAL_REVEAL.avatarStagger) / PERSONAL_REVEAL.crossfadeDuration);
-        const popEase = 1 + 2.70158 * (pop - 1) ** 3 + 1.70158 * (pop - 1) ** 2;
+        const popEase = avatarChoreography==='highlight'?ease(pop):1 + 2.70158 * (pop - 1) ** 3 + 1.70158 * (pop - 1) ** 2;
         const position = team
-          ? { x: TEAM_REVEAL.avatarX, y: centerY - 37 + (i - (people.length - 1) / 2) * 100 }
+          ? { x: railX, y: railY(i,people.length) }
           : { x: (person.phoneX ?? 220) - 37, y: PERSONAL_REVEAL.avatarRestY };
         const appear = team || person.phoneX ? easeInOut80(pop) : 0;
         const visibility = !team ? 1 - ease((time - (TIMING.team - .4)) / .4) : 1;
@@ -141,16 +166,10 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     }
     // Claims leave the rail; completed missions return their performer to its
     // bottom. Appending there lets the other teammates settle upward.
-    const remaining = at => BOARD_ACTIONS.reduce((rail, event) => {
-      if (event.to === 'claimed' && at >= event.start + APPROACH_DURATION)
-        return rail.filter(i => i !== event.person);
-      if (event.to === 'closed' && at >= event.end && !rail.includes(event.person))
-        return [...rail, event.person];
-      return rail;
-    }, people.map((_, i) => i));
-    const rail = (i, list) => ({ x: TEAM_REVEAL.avatarX, y: centerY - 37 + (list.indexOf(i) - (list.length - 1) / 2) * 100 });
+    const remaining = at => avatarRailAt(at, people.length, actions);
+    const rail = (i, list) => ({ x: railX, y: railY(list.indexOf(i),list.length) });
     const fade = 1 - ease((time - boardEnd) / .6);
-    const transfer = action ? ease((time - action.confirm) / (action.arrive - action.confirm)) : 0;
+    const transfer = action ? moveEase((time - action.confirm) / (action.arrive - action.confirm)) : 0;
     const currentRail = remaining(time);
 
     people.forEach((_, i) => {
@@ -159,14 +178,14 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
         const after = remaining(action.start + APPROACH_DURATION);
         if (after.includes(i)) {
           const next = rail(i, after);
-          const regroup = ease((time - action.start) / APPROACH_DURATION);
+          const regroup = moveEase((time - action.start) / APPROACH_DURATION);
           pos = { x: mix(pos.x, next.x, regroup), y: mix(pos.y, next.y, regroup) };
         }
       }
       if (action?.to === 'closed' && i !== action.person) {
         const after = [...remaining(action.start), action.person];
         const next = rail(i, after);
-        const regroup = ease((time - (action.end - .3)) / .3);
+        const regroup = moveEase(action.returnProgress!=null?(action.returnProgress-.75)/.25:(time - (action.end - .3)) / .3);
         pos = { x: mix(pos.x, next.x, regroup), y: mix(pos.y, next.y, regroup) };
       }
       gsap.set(avatars.current[i], { ...pos, scale: 1, autoAlpha: currentRail.includes(i) ? fade * (1 - focus * .78) : 0, filter: 'drop-shadow(0 6px 16px rgba(0,0,0,.35))', transformOrigin: '0 0' });
@@ -229,7 +248,9 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
     const dy = moving ? (sourceTop - natural.top) * (1 - transfer) : 0;
     card.style.position = 'relative';
     card.style.zIndex = '3';
-    const borderOpacity = ease((time - action.start) / .15) * (1 - ease((time - action.arrive) / (action.end - action.arrive)));
+    const borderOpacity = highlightMode === 'outline'
+      ? ease((time - action.start) / .65) * ease((action.end - time) / .65)
+      : ease((time - action.start) / .15) * (1 - ease((time - action.arrive) / (action.end - action.arrive)));
     card.style.setProperty('--demo-active-border', `rgba(139, 92, 246, ${borderOpacity})`);
     card.style.transform = `translate(${dx / cardScale}px, ${dy / cardScale}px)`;
 
@@ -257,10 +278,10 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       gsap.set(codePanel.current, {
         x: waiting.x + waitingSize / 2,
         y: waiting.y + waitingSize - 12,
-        opacity: pop * (1 - dismiss), scale: mix(.94, 1, pop) - .03 * dismiss, transformOrigin: 'left top',
+        opacity: pop * (1 - dismiss), scale: codePanelScale * (mix(.94, 1, pop) - .03 * dismiss), transformOrigin: 'left top',
       });
     }
-    const approach = ease((time - action.start) / (action.direct ? .42 : APPROACH_DURATION));
+    const approach = moveEase((time - action.start) / (avatarChoreography==='highlight'?.75:action.direct ? .42 : APPROACH_DURATION));
     if (action.to === 'closed') {
       // Only the code-assisted close moves to the card's right edge. Direct
       // closes stay in the performer slot before returning to the rail.
@@ -275,16 +296,35 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       const returnOrigin = action.direct ? sourceSlot : sourceWaiting;
       const sourceScale = action.direct ? slotScale : waitingScale;
       const destination = rail(action.person, [...remaining(action.start), action.person]);
-      const returning = ease((time - action.confirm) / (action.end - action.confirm));
-      const pos = time < action.confirm
-        ? { x: mix(slot.x, returnOrigin.x, approach), y: mix(slot.y, returnOrigin.y, approach) }
-        : { x: mix(returnOrigin.x, destination.x, returning), y: mix(returnOrigin.y, destination.y, returning) };
+      const returning = moveEase(action.returnProgress??((time - action.confirm) / (action.end - action.confirm)));
+      const pos = avatarChoreography==='highlight'
+        ? (time<action.confirm?arc(slot,returnOrigin,approach,action.direct?0:45):returnCurve(returnOrigin,destination,returning))
+        : time < action.confirm
+          ? { x: mix(slot.x, returnOrigin.x, approach), y: mix(slot.y, returnOrigin.y, approach) }
+          : { x: mix(returnOrigin.x, destination.x, returning), y: mix(returnOrigin.y, destination.y, returning) };
       gsap.set(avatars.current[action.person], {
         ...pos, scale: time < action.confirm
           ? mix(slotScale, sourceScale, approach)
           : mix(sourceScale, 1, returning),
         autoAlpha: fade, zIndex: 13,
         filter: `drop-shadow(0 6px 16px rgba(0,0,0,${.35 * (action.direct ? returning : approach)}))`,
+      });
+      return;
+    }
+    if(avatarChoreography==='highlight'&&action.to==='claimed'){
+      const from=rail(action.person,remaining(action.start));
+      const elapsed=time-action.start;
+      const travel=moveEase(elapsed/.86);
+      const shrink=moveEase((elapsed-.72)/.4);
+      const dock=moveEase((time-action.arrive)/(action.end-action.arrive));
+      const {x,y}=claimCurve(from,waiting,travel);
+      const settled=arc({x,y},slot,dock,-24);
+      const targetScale=waitingScale;
+      gsap.set(avatars.current[action.person],{
+        ...settled,
+        scale:mix(mix(1+.22*Math.sin(Math.PI*travel),targetScale,shrink),slotScale,dock),
+        autoAlpha:fade,zIndex:13,transformOrigin:'0 0',
+        filter:`drop-shadow(0 9px 20px rgba(0,0,0,${.4*(1-(action.direct?shrink:dock))}))`,
       });
       return;
     }
@@ -316,5 +356,5 @@ export default function useAutomationMotion({ time, state, root, tablet, avatars
       filter: `drop-shadow(0 6px 16px rgba(0,0,0,${shadowOpacity}))`,
     });
 
-  }, [time, state, root, tablet, avatars, codePanel, people, boardEnd]);
+  }, [time, state, root, tablet, avatars, codePanel, people, boardEnd, highlightMode, avatarChoreography, actions, avatarRailPose, codePanelScale]);
 }

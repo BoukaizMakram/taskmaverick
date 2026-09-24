@@ -33,7 +33,7 @@ const initial = device => [
   ...(device === 'tablet' ? [{ ...checklist, id: 'cleaning', title: 'Closing Checklist', status: 'claimed', age: 200, started: 0, performer: 'J. Maverick' }] : []),
 ];
 
-export default function InteractiveMissionBoard({ device = 'phone', initialScreen = 'home', initialMissions = null, demoState = null, referenceLayout = false, demoDetail = null }) {
+export default function InteractiveMissionBoard({ device = 'phone', initialScreen = 'home', initialMissions = null, demoState = null, referenceLayout = false, demoDetail = null, demoOverlay = null }) {
   const [transitioning, setTransitioning] = useState(false);
   const transitionTimer = useRef(null);
   useEffect(() => () => clearTimeout(transitionTimer.current), []);
@@ -57,7 +57,8 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
   const selected = demoState ? demoState.selected : internalselected;
   const codeAction = demoState?.codeAction ?? internalcodeAction;
   const codeOpen = demoState?.codeOpen ?? internalcodeOpen;
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [internalMenuOpen, setMenuOpen] = useState(false);
+  const menuOpen = demoState?.menuOpen ?? internalMenuOpen;
   const [onDemand, setOnDemand] = useState(false);
   const navigationTrigger = useRef(null);
   const openNavigation = (event, kind) => { navigationTrigger.current = event.currentTarget; if (kind === 'menu') setMenuOpen(true); else { showTransition(); setOnDemand(true); } };
@@ -119,12 +120,12 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
     if (destination === 'personal') return switchBoard('personal');
     showTransition(); setMenuOpen(false); setOnDemand(false); setSelected(null); setCodeOpen(false); setScreen(destination);
   };
-  const department = boardId === 'personal' ? 'Personal Board' : boardId;
+  const department = demoState?.boardTitle ?? (boardId === 'personal' ? 'Personal Board' : boardId);
   const directory = screen !== 'board' && <BoardDirectory device={device} onMenu={event => openNavigation(event, 'menu')} view={screen} onNavigate={navigate} onBoard={switchBoard} getCounts={id => {
     const list = id === boardId ? missions : savedBoards.current[id] || initial(id === 'personal' ? 'phone' : 'tablet');
     return ['open','claimed','closed'].map(status => list.filter(m => m.status === status).length);
   }}/>;
-  const navigation = menuOpen && <BoardMenu anchor={navigationTrigger.current} boardType={boardId === 'personal' ? 'personal' : 'team'} onNavigate={navigate} onDismiss={closeNavigation}/>;
+  const navigation = menuOpen && <BoardMenu businessMediaLabel={demoState?.businessMediaLabel} anchor={navigationTrigger.current ?? boardRef.current?.querySelector('[aria-label="Menu"]')} boardType={boardId === 'personal' ? 'personal' : 'team'} onNavigate={navigate} onDismiss={closeNavigation}/>;
   const demand = onDemand && <OnDemand department={department} onBack={closeNavigation}/>;
   const loader = transitioning && <div className="mi-screen-loader" role="status" aria-label="Loading screen"><LoadingLogo/></div>;
   const dialog = codeOpen && <PersonalCodeDialog demo={demoState} action={codeAction} onClaim={codeAction === 'Close' ? close : claim} onDismiss={() => setCodeOpen(false)} />;
@@ -149,6 +150,7 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
       {mission && <><button type="button" className="mi-drawer-shade" aria-label="Back to board" onClick={back}/><aside className="mi-drawer" aria-label="Mission Details">{demoDetail ?? detail}</aside></>}
       {onDemand && <><button type="button" className="mi-drawer-shade" aria-label="Back to board" onClick={closeNavigation}/><aside className="mi-drawer" aria-label="On-Demand panel">{demand}</aside></>}
       {directory && <div className="bd-tablet-overlay">{directory}</div>}
+      {demoOverlay}
       {navigation}
       {dialog}
       {loader}

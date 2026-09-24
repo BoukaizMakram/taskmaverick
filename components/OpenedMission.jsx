@@ -318,9 +318,10 @@ const BODIES = {
 
 // =====================  the shell  =====================
 
-function HeaderRight() {
+function HeaderRight({ translation }) {
   return <div className="om-head-actions om-mission-actions">
     <button type="button" className="om-hbtn" aria-label="Unboost mission" title="Unboost mission"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 22V3m0 1c5-4 9 4 15 0v11c-6 4-10-4-15 0" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
+    {translation && <button type="button" className="om-hbtn om-translate" aria-label={translation.label} onClick={translation.onClick}>{translation.language}</button>}
     <button type="button" className="om-hbtn" aria-label="Cancel mission" title="Cancel mission"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.4"/><path d="m6 4 12 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg></button>
   </div>;
 }
@@ -330,7 +331,7 @@ function HeaderRight() {
 // a "Close"/"Continue" footer = already claimed. The type body is ALWAYS shown
 // (it's the mission content, visible open or claimed) — claiming only swaps the
 // footer, reveals the Execution timer, and changes `who` to the claimer.
-export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose, onBack, execTime = '00:00:00', showStatusBar = true, onEntryChange, onLessonComplete }) {
+export function OpenedMission({ mission, state = 'open', showExec = false, onClaim, onClose, onBack, execTime = '00:00:00', showStatusBar = true, onEntryChange, onLessonComplete, translation }) {
   const [activeLesson,setActiveLesson]=useState(null);
   const previousState=useRef(state);
   useEffect(()=>{if(mission.lessons&&previousState.current==='open'&&state==='claimed')setActiveLesson(0);previousState.current=state;},[state,mission.lessons]);
@@ -342,7 +343,7 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
         <div className="om-sum-top">
           <span className="om-sum-id">
             <img className="chip-logo" src="/mission-logo.png" alt="" aria-hidden="true" />
-            <span className="om-sum-kind">{mission.type}</span>
+            <span className="om-sum-kind">{mission.typeLabel || mission.type}</span>
             {mission.points != null ? <span className="chip-points">{mission.points}</span> : null}
           </span>
           <span className="chip-timers">
@@ -365,10 +366,10 @@ export function OpenedMission({ mission, state = 'open', showExec = false, onCla
         {mission.notice ? <div className="om-notice"><span>{mission.notice}</span></div> : null}
         {mission.resourceLink ? <a className="om-resource-link" href={mission.resourceLink.href}>{mission.resourceLink.label} ↗</a> : null}
       </div>);
-  const footer=<div className="om-footer">{state==='open'?<button className="om-cta om-cta--primary" onClick={onClaim}>Claim</button>:state==='claimed'?<button className={`om-cta om-cta--${claimedFooter.variant}`} disabled={!canClose} onClick={onClose}>{claimedFooter.label}</button>:<button className="om-cta om-cta--closed" disabled>Closed</button>}</div>;
+  const footer=<div className="om-footer">{state==='open'?<button className="om-cta om-cta--primary" onClick={onClaim}>{mission.claimLabel || 'Claim'}</button>:state==='claimed'?<button className={`om-cta om-cta--${claimedFooter.variant}`} disabled={!canClose} onClick={onClose}>{claimedFooter.label}</button>:<button className="om-cta om-cta--closed" disabled>Closed</button>}</div>;
   return <div data-mission-state={state} className={`om ${mission.pillClass||'chip--green'}${state==='closed'?' is-closed':''}`}>
     {showStatusBar&&<div className="ph-status"><span className="ph-time">9:41</span><span className="ph-island" aria-hidden="true"/><StatusIcons/></div>}
-    <header className="om-header"><button className="om-hbtn om-hbtn--back" aria-label="Back" onClick={activeLesson!=null?()=>setActiveLesson(null):onBack}><IconBack/></button><span className="om-header-title">Mission Details</span>{mission.lessons?<button className="om-hbtn" aria-label="Lesson list" onClick={()=>setActiveLesson(null)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="3" width="6" height="5" rx="1"/><rect x="16" y="10" width="6" height="5" rx="1"/><rect x="16" y="18" width="6" height="4" rx="1"/><path d="M8 5h4v15h4m-4-7h4"/></svg></button>:<HeaderRight/>}</header>
+    <header className="om-header"><button className="om-hbtn om-hbtn--back" aria-label="Back" onClick={activeLesson!=null?()=>setActiveLesson(null):onBack}><IconBack/></button><span className="om-header-title">Mission Details</span>{mission.lessons?<button className="om-hbtn" aria-label="Lesson list" onClick={()=>setActiveLesson(null)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="2" y="3" width="6" height="5" rx="1"/><rect x="16" y="10" width="6" height="5" rx="1"/><rect x="16" y="18" width="6" height="4" rx="1"/><path d="M8 5h4v15h4m-4-7h4"/></svg></button>:<HeaderRight translation={translation}/>}</header>
     {!mission.lessons&&summary}
     <div className={`om-body om-body--${mission.type.toLowerCase()}${mission.lessons?' mt-body':''}`}>{mission.lessons?<MediaTraining summary={summary} footer={footer} mission={mission} state={state} active={activeLesson} onSelect={setActiveLesson} onComplete={onLessonComplete}/>:mission.entries?<MissionEntries mission={mission} state={state} onChange={onEntryChange}/>:<Body mission={mission}/>}</div>
     {!mission.lessons&&footer}
