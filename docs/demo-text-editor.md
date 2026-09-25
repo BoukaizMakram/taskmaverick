@@ -1,0 +1,17 @@
+# Demo text editor
+
+Both `/increased-efficiency-demo` and `/improved-quality-demo` have a second, editable video preview below the main player. The two previews share playback, scene selection, and saved text settings. Double-click text in the lower preview to edit it in place. A compact floating toolbar appears above the selection with bold, italic, underline, size, color, and Done. Enter inserts a line break. Escape or clicking away finishes editing; Save persists changes.
+
+The toolbar's More menu contains font, alignment, spacing, and Reset. Captions also have timing, placement, width, case, and per-line start controls there. Scene duration changes stretch that scene's existing device choreography without changing its order. Text size is relative to the original (100% preserves the current size).
+
+Double-click software labels, mission titles, buttons, names, dates, and timers just like captions. Seek to the desired frame to reveal additional text. These overrides are scoped to the scene and text location. A timer override fixes its display; Reset restores the live timer. Text already baked into a screenshot or video is part of that media file, not an editable text layer.
+
+In development, Save writes validated JSON atomically to `content/demo-text/{demo}.json`. The files are bundled into builds, so committed edits appear in deployed videos. The write API is disabled in production. In production, the editor saves private browser overrides in localStorage; Export/Import transfers them to another browser or the local project. API failures and stale save revisions are shown without discarding the draft. Export is also available as a backup.
+
+Software labels are adapted at the text-node boundary. The editor never inserts, removes, or reorders React-owned elements. It tracks source values, applies overrides after React commits, and restores source text when reset or changing scenes. Stable scene/location keys normalize timer digits so the timer can continue updating underneath an override. Text styling uses scoped selectors on the existing text containers.
+
+The lower preview owns a DOM mirror of the live stage. A batched observer copies text, attributes, and structural changes, including GSAP transforms. Canvas and video frames are synchronized too. The editable textarea and toolbar sit over that mirror; they do not mutate the React-managed scene. The observer and media frame loop are disconnected on unmount.
+
+Run `node --test lib/demoTextSettings.test.mjs lib/automationState.test.mjs lib/improvedQualityStory.test.mjs` to check validation, timing remapping, caption beats, and existing playback behavior.
+
+Caption movement: double-click a caption, choose Position, and use the scene-time slider. Add keyframe holds the current position; dragging the caption or changing X/Y adds or updates a keyframe at that time. Add a later keyframe to animate smoothly between the two. Keyframe chips jump to their times; Delete removes one, and Use original movement restores the original choreography. One key holds a static position throughout the scene. Positions use the whole video canvas (1600 × 900), not a device's bounds. Custom-position captions render above the devices, with a stable font size and text box. Caption line breaks follow Enter and no longer rewrap when the camera/device changes; an explicit Text width still enables user-controlled wrapping. Keyframes are saved/exported with the other settings. Position editing is for narrative captions; software labels retain their software layout.

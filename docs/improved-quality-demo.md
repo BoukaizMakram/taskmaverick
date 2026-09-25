@@ -1,14 +1,27 @@
 # Improved Quality demo
 
-Route: `/improved-quality-demo`. The silent, seekable animation has 23 chapters and runs for 107.1 seconds. Script slashes become explicit line breaks. Captions reuse the Increased Efficiency letter animation at 1.18 times its reveal rate; panel reveals take approximately 0.3–0.6 seconds.
+Route: `/improved-quality-demo`. This is a silent, seekable animation. It has 8 chapters and runs for 43.9 seconds, ending on "Micro-Trainings Are Delivered / In Context Of Actual Work". Script slashes become explicit line breaks. Everything is derived from the single demo clock in `lib/improvedQualityStory.mjs`, so seeking in either direction is exact.
 
-Knowledge Base opens Cooking Food Temps directly, then Start, the text lesson, and the chart. This sequence is independent of team missions: it never claims a mission, asks for a code, or adds an item to Closed. The guided workplace checklist is a separate mission.
+| # | Chapter | On screen |
+|---|---|---|
+| 1 | Teams Are Constantly Guided | Title words only |
+| 2 | Knowledge Base | Tablet: press Menu, zoom in; open Knowledge Base. No mission is opened: the list of knowledge missions shows and three are highlighted in turn (`KB_TOUR`) |
+| 3 | Instructions | Straight to the phone: the tablet steps back (it never opens the mission) as the phone arrives with Mission Details open. The camera zooms in (top-anchored), then the words type inside the phone and the instructions are highlighted |
+| 4 | Alerts | Phone: camera pans to the alert |
+| 5 | Links | Phone: camera pans to the link inside the instructions |
+| 6 | Translate | Phone: press the ES button, the content crossfades to Spanish, then the camera eases out |
+| 7 | Step-by-step | Phone pushes to the checklist mission; Yes is pressed three times. The whole phone is framed, top visible, with the words lowered beneath it (`LAYOUT.phoneCaptionTop`) |
+| 8 | Micro-training | The phone grows down into the space the words left while the checklist scrolls to step 4; the words type inside the phone under it; Play is pressed; the video pops out beside the phone as the camera pans to frame both |
 
-The single demo clock controls Yes selections, quiz answers and the passing gate, photo/video captures, media playback, ratings, scrolling, and emphasis. Backward seeking resets those states. Shared components provide the tablet board, menu, mission details, and phone frame. Knowledge Base media screens follow the supplied screenshots. Capture and rating data are fictional demonstration fixtures; Media Proofs uses the user's reference images and their displayed mission metadata.
+## Motion rules
 
-The reference link is present as soon as mission instructions open. Three paired Yes/No checkbox rows precede the fourth-step Play row. The training viewer expands into a separate video-topped quiz with three checkbox statements, sequential selections, and Submit & Close. After passing, it fades away and enables Continue. Phone and gallery entrances run once across their consecutive chapters to keep each device visible between captions.
-
-Media Proofs follows `C:/Users/makra/Documents/images UI/image 30.png` and `image 31.png`: the mission type, timers, category, title, performer and timestamp sit above a three-column photo mosaic. The original reference images are copied unchanged to `public/demo-quality/media-proofs-temperature.png` and `media-proofs-pest.png`; CSS clips their existing headers so animated HTML metadata can be emphasized without duplication. The evidence chapter shows the phone layout followed by the tablet layout, then the web gallery retains the same grouping. The menu label is Media Proofs, matching the supplied software UI.
+- **Text never overlaps UI.** Captions own a column on the left, from x 80 to 520 (`LAYOUT`). Devices are centered in the area to the right (anchor 1060,450). `cameraAt()` clamps every zoom so the device edge never crosses x = 570 on screen. A test scans the whole timeline to enforce this.
+- **Center the main object** within the device area. The tablet (1.1×) holds through the start of chapter 3, then the phone takes over. In chapter 8 the camera frames the phone and the video together.
+- **Highlight with a purple rounded rectangle** (`highlights`, `.iq-highlight`). A rectangle pops onto each subject once the camera arrives (instructions, alert, link) and onto each pressed control. It pulses with a light fill on the press. It sits outside the camera layer, so the stroke never scales.
+- **Camera** zooms and pans with smootherstep, about 0.8–0.9 s per move. Phone zooms are **top-anchored** (`topAnchored()`): the top of the phone always stays on screen, with `LAYOUT.topMargin` above it.
+- **UI pops use expo-out:** quick start, long settle. The phone arrives from 0.88× with a short blur-to-sharp, and the side video grows out of the phone.
+- **One caption size** for device captions (`--iq-caption-size`). The title style is used only in chapter 1.
+- Focus points in `FOCUS` are stage coordinates measured from the live UI. Re-measure them if the layout changes.
 
 ## Sample media
 
@@ -29,4 +42,10 @@ Damaged-equipment prompt:
 
 ## Validation
 
-Run `node --test lib/improvedQualityStory.test.mjs lib/automationState.test.mjs` and `npm run build`. The story tests cover all 23 chapters, explicit line breaks, Knowledge Base independence, sequential Yes selections, quiz gating, ordered evidence capture, and translation reset on seek.
+Run `node --test lib/improvedQualityStory.test.mjs lib/automationState.test.mjs` and `npm run build`. The story tests cover:
+
+- the 8-chapter script and its line breaks
+- the Knowledge Base steps and presses
+- the tablet-to-phone handoff
+- the camera: no jumps, zoom-in on each subject, zoom-out for the video
+- the translate, Yes and training presses, including reset on seek

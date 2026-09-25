@@ -7,6 +7,10 @@ import MissionChip from './MissionChip';
 import InteractiveMissionBoard from './InteractiveMissionBoard';
 import {PersonalCodeKeypad} from './PersonalCodeDialog';
 import DemoTypedText from './DemoTypedText';
+import DemoTextEditor from './DemoTextEditor';
+import {DemoTextContext} from './DemoTextContext';
+import useDemoTextEditor from './useDemoTextEditor';
+import savedText from '@/content/demo-text/increased-efficiency.json';
 import Starfield from './Starfield';
 import useDemoPlayback from './useDemoPlayback';
 import useAutomationMotion from './useAutomationMotion';
@@ -50,9 +54,13 @@ const TABLET_CAPTIONS={
 };
 
 export default function EfficiencyStoryDemo(){
-  const {time,playing,speed,toggle,replay,seek,cycleSpeed}=useDemoPlayback(STORY_LENGTH);
+  const [duration,setDuration]=useState(STORY_LENGTH);
+  const {time:playerTime,playing,speed,toggle,replay,seek,cycleSpeed}=useDemoPlayback(duration);
   const [viewportRevision,setViewportRevision]=useState(0);
   const root=useRef(null),camera=useRef(null),tablet=useRef(null),avatars=useRef({}),codePanel=useRef(null),phones=useRef(null),deviceTimeline=useRef(null),player=useRef(null),scheduleLines=useRef([]),schedulePanels=useRef([]),rings=useRef([]),tabletCaption=useRef(null);
+  const editor=useDemoTextEditor('increased-efficiency',EFFICIENCY_STORY,savedText,playerTime,root);
+  const time=editor.clock.originalTime;
+  useEffect(()=>setDuration(editor.clock.duration),[editor.clock.duration]);
   const scene=EFFICIENCY_STORY.find(s=>time>=s.start&&time<s.end)??EFFICIENCY_STORY.at(-1);
   const elapsed=time-scene.start;
   const scheduleVisibility=1-ease((time-STORY.schedule.end+SCHEDULE_FADE_DURATION)/SCHEDULE_FADE_DURATION);
@@ -302,7 +310,9 @@ export default function EfficiencyStoryDemo(){
   };
   return <div className="page"><Navbar returnHome/><main className="ad-page">
     <header className="ad-head"><span className="ad-kicker">Product Demo</span><h1>Increased Efficiency</h1><p>Automatic Assignments. Clear Priorities. Motivated Teams.</p></header>
-    <div ref={player} className="es-player">
+    <DemoTextContext.Provider value={{stageRef:root,settings:editor.config.captions[scene.id]||{},text:scene.text,elapsed:editor.clock.elapsed,remaining:editor.clock.remaining,defaultDelay:scene.id==='conclusion'?.5:0}}>
+    <div ref={player} className="es-player demo-text-scope">
+      <style>{editor.uiStyles}</style>
       <div className="ad-fit"><div className={`ad-stage es-stage es-scene-${scene.id}`} ref={root} onClick={handleStageClick} onKeyDown={handleStageKeyDown} role="button" tabIndex={0} aria-label={playing?'Pause demo':'Play demo'}>
         <Starfield className="ad-stars" paused={!playing} speed={speed} fitParent/>
         <div className="es-camera" ref={camera}>
@@ -334,12 +344,14 @@ export default function EfficiencyStoryDemo(){
         {scene.id==='teams'&&<div ref={teamsCaption} className="es-caption es-teams-caption"><DemoTypedText lineBeats text={scene.text} elapsed={elapsed} remaining={scene.end-time} center/></div>}
         {title?<DemoTypedText lineBeats key={scene.id} className="es-title" text={scene.text} elapsed={elapsed-(scene.id==='conclusion'?.5:0)} remaining={scene.id==="conclusion"?Infinity:scene.end-time} center/>:!insideCaption&&!cycleScene&&scene.id!=='teams'&&<div className="es-caption" style={{top:captionY}}><DemoTypedText lineBeats key={scene.id} text={scene.text} elapsed={elapsed} remaining={scene.end-time} center/></div>}
       </div></div>
-      <div className="ad-controls es-controls"><button onClick={toggle}>{playing?'Pause':time>=STORY_LENGTH?'Replay':'Play'}</button><button onClick={replay}>Restart</button>
-        <input className="ad-scrub" type="range" min="0" max={STORY_LENGTH} step="0.05" value={time} onChange={seek} aria-label="Seek demo" style={{'--fill':`${time/STORY_LENGTH*100}%`}}/>
-        <span>{label(time)} / {label(STORY_LENGTH)}</span><button onClick={cycleSpeed} aria-label={`Playback speed: ${speed}×`}>{speed}×</button>
+      <div className="ad-controls es-controls"><button onClick={toggle}>{playing?'Pause':playerTime>=duration?'Replay':'Play'}</button><button onClick={replay}>Restart</button>
+        <input className="ad-scrub" type="range" min="0" max={duration} step="0.05" value={playerTime} onChange={seek} aria-label="Seek demo" style={{'--fill':`${playerTime/duration*100}%`}}/>
+        <span>{label(playerTime)} / {label(duration)}</span><button onClick={cycleSpeed} aria-label={`Playback speed: ${speed}×`}>{speed}×</button>
         <button onClick={()=>document.fullscreenElement?document.exitFullscreen():player.current.requestFullscreen()}>Fullscreen</button>
       </div>
     </div>
-    <nav className="es-chapters" aria-label="Demo chapters">{EFFICIENCY_STORY.map((s,i)=><button key={s.id} aria-current={scene.id===s.id?'step':undefined} onClick={()=>seek({target:{value:s.start}})}><span>{String(i+1).padStart(2,'0')}</span>{s.text}</button>)}</nav>
+    </DemoTextContext.Provider>
+    <DemoTextEditor editor={editor} seek={seek} toggle={toggle} playing={playing}/>
+    <nav className="es-chapters" aria-label="Demo chapters">{editor.clock.timeline.map((s,i)=><button key={s.id} aria-current={scene.id===s.id?'step':undefined} onClick={()=>seek({target:{value:s.start}})}><span>{String(i+1).padStart(2,'0')}</span>{s.text}</button>)}</nav>
   </main></div>;
 }

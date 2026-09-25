@@ -19,6 +19,7 @@ export default function SoftwarePreview({ onAnimationTools, referenceBoard = fal
     <details className="sp-options"><summary>View options</summary><div>
       <label>Display<select aria-label="Display mode" value={mode} onChange={event => setMode(event.target.value)}><option value="full">Full screen · responsive</option><option value="phone">Phone frame</option><option value="tablet">Tablet frame</option></select></label>
       <button onClick={onAnimationTools}>Animation tools</button>
+      {process.env.NODE_ENV !== 'production' && <a href="/quality-assets" style={{display:'block',marginTop:12,color:'#1271b7',textAlign:'center'}}>Improved Quality asset library ↗</a>}
     </div></details>
   </div>;
 }

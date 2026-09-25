@@ -11,6 +11,10 @@ export default function useDemoPlayback(duration = DEMO_LENGTH) {
   const commit = value => { clock.current = value; setTime(value); };
 
   useEffect(() => {
+    if (clock.current > duration) { commit(duration); setPlaying(false); }
+  }, [duration]);
+
+  useEffect(() => {
     if (!playing) return;
     let frame, last = performance.now();
     const tick = now => {
@@ -35,7 +39,7 @@ export default function useDemoPlayback(duration = DEMO_LENGTH) {
     if (clock.current >= duration) { replay(); return; }
     setPlaying(value => !value);
   };
-  const seek = event => { setPlaying(false); commit(Number(event.target.value)); };
+  const seek = event => { setPlaying(false); commit(Math.max(0,Math.min(duration,Number(event.target.value)))); };
   const cycleSpeed = () => setSpeed(value => value === 3 ? 1 : value + 1);
   return { time, playing, speed, replay, toggle, seek, cycleSpeed };
 }
