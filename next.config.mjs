@@ -23,7 +23,12 @@ const nextConfig = {
   // Don't advertise the framework/version in the X-Powered-By header.
   poweredByHeader: false,
   async headers() {
-    return [{ source: '/:path*', headers: securityHeaders }];
+    return [
+      { source: '/:path*', headers: securityHeaders },
+      // The AI demo call listens to the visitor, so it alone may ask for the
+      // microphone. Later entries win for a key.
+      { source: '/demo-ai', headers: [{ key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=()' }] },
+    ];
   },
 };
 

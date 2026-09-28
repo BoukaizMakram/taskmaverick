@@ -15,7 +15,9 @@ function Glyph({ name }) {
 const catalog = [['Baked Cake Donuts','Task'],['Ice Bags Fill','Checklist'],['Resampling','Task'],['Area Sweep','Task'],['zxzx','Task','Draft'],['Soda Tower Deep Cleaning','Checklist'],['Test Global','Test'],['Test Person Type','Test'],['Test New Features','Checklist'],['Floor Cleaning 1','Task'],['Entry Way Vents','Checklist'],['Drains Check','Checklist'],['Coffee Machine Check','Checklist'],['Restroom Check','Checklist']];
 const units = ['Makram Location', "Makram’s Location", 'TM Training & Onboarding'];
 const ticketUnits = ['M001 - Makram Location', "M002 - Makram’s Location", 'T002 - TM Training & Onboarding', 'T002 - TM Training & Onboarding - OMC Inc', 'T002 - TM Training & Onboarding - OMC Inc - First Floor'];
-export default function PersonalDashboard({ device, onBoard, onNavigate, getCounts }) {
+// Optional (software simulator): userName / company, `units` rows
+// ({ name, teams, onClick }), and `onTickets` + `ticketCount` for the Tickets tile.
+export default function PersonalDashboard({ device, onBoard, onNavigate, getCounts, userName = 'Makram Boukaiz', company = 'TM Training', units: unitRows = null, onTickets, ticketCount = '00' }) {
   const [page, setPage] = useState('home');
   const [menu, setMenu] = useState(false);
   const [panel, setPanel] = useState(null);
@@ -39,15 +41,15 @@ export default function PersonalDashboard({ device, onBoard, onNavigate, getCoun
     <div className="pd-layout">
       {(page === 'home' || page === 'missions' || !mobile) && <nav className="pd-nav" aria-label="Main navigation">{['home','missions','activity','profile'].map(name => <button key={name} aria-current={page === name ? 'page' : undefined} onClick={() => name === 'profile' || name === 'activity' ? setPanel(name === 'profile' ? 'Profile' : 'Activity') : go(name)}>{name === 'home' && page === 'home' && !mobile ? <img src="/board-icons/home.svg" alt=""/> : <Glyph name={name}/>}<span>{name[0].toUpperCase()+name.slice(1)}</span></button>)}{!mobile && <button className="pd-logout" aria-label="Log out" onClick={() => setPanel('Log Out')}><Glyph name="logout"/></button>}</nav>}
       <main className={`pd-main pd-main--${page}`}>
-        {page === 'home' ? <div className="pd-home-grid"><section className="pd-home-card"><div className="pd-name"><h1>Makram Boukaiz</h1>{mobile && actions}</div>{!mobile && <p className="pd-personal-label">Personal Board</p>}<p className="pd-company">TM Training</p><div className="pd-tiles">
+        {page === 'home' ? <div className="pd-home-grid"><section className="pd-home-card"><div className="pd-name"><h1>{userName}</h1>{mobile && actions}</div>{!mobile && <p className="pd-personal-label">Personal Board</p>}<p className="pd-company">{company}</p><div className="pd-tiles">
           {tile('profile-green','My Board',String(getCounts('personal').slice(0,2).reduce((a,b)=>a+b,0)).padStart(2,'0'),'Personal Assignments',() => onBoard('personal'))}
           {tile('course','My Courses','00','Knowledge Center',() => go('courses'))}
-          {tile('units','My Teams','05',null,() => go('units'))}
-          {tile('ticket','Tickets','00',null,() => go('tickets'))}
+          {tile('units','My Teams',String(unitRows ? unitRows.length : 5).padStart(2,'0'),null,() => go('units'))}
+          {tile('ticket','Tickets',ticketCount,null,() => onTickets ? onTickets() : go('tickets'))}
         </div></section><section className="pd-performance"><h2>{mobile ? 'My Performance' : 'Performance'}</h2><div className="pd-periods">{['1W','4W','12W','52W','All'].map(p => <button key={p} aria-pressed={period === p} onClick={() => setPeriod(p)}>{p}</button>)}</div><div className="pd-stats">{[['Objectivity','Avg. Objectivity','0.0'],['Work Quality','Avg. Rating','0.0'],['Total Closed','Missions',getCounts('personal')[2]]].map(([label,sub,value],i) => <div key={label} className={`pd-stat pd-stat--${i}`}><span>{label}<small>{sub}</small></span><b>{value}</b></div>)}</div></section></div> : <>
           <div className="pd-page-title">{page !== 'missions' && iconButton('back','Back to home',() => go('home'))}<h2>{({courses:'Course',units:'Units',tickets:'Ticket Boards',ticket:ticket+' Tickets',missions:'Missions'})[page]}</h2></div>
           {page === 'courses' && tabs(['Pending','In Progress','Completed'])}
-          {page === 'units' && <><div className="pd-list-heading">Units <span>Teams</span></div>{units.map((name,i) => <button className="pd-unit-row" key={name} onClick={() => onNavigate('unit')}><u>{name}</u><span>♧ &nbsp;{['01','02','01'][i]}</span></button>)}</>}
+          {page === 'units' && <><div className="pd-list-heading">Units <span>Teams</span></div>{unitRows ? unitRows.map(row => <button className="pd-unit-row" key={row.name} onClick={row.onClick}><u>{row.name}</u><span>♧ &nbsp;{String(row.teams).padStart(2,'0')}</span></button>) : units.map((name,i) => <button className="pd-unit-row" key={name} onClick={() => onNavigate('unit')}><u>{name}</u><span>♧ &nbsp;{['01','02','01'][i]}</span></button>)}</>}
           {page === 'tickets' && <>{tabs(['Unit-5','Organization-2'])}{(tab === 0 ? ticketUnits : ticketUnits.slice(2,4)).map(name => <button className="pd-unit-row" key={name} onClick={() => {setTicket(name);go('ticket');}}><u>{name}</u><span>▤ &nbsp;00</span></button>)}</>}
           {page === 'ticket' && tabs(['Open - 0','Claimed - 0','Closed - 0'])}
           {page === 'missions' && <><div className="pd-search"><input aria-label="Search missions" placeholder="Search" value={query} onChange={event => setQuery(event.target.value)}/><select aria-label="Sort missions"><option>Last Updated</option><option>Title</option></select></div><div className="pd-catalog"><div className="pd-catalog-head"><span>Title</span><span>Type</span><span>Source</span><span>Status</span><span>Last Update</span></div>{catalog.filter(row => row[0].toLowerCase().includes(query.toLowerCase())).map(([title,type,status='Published'],i) => <div className="pd-catalog-row" key={title}><span className="pd-catalog-title"><small>{i+1}.</small>{title}</span><span className="pd-catalog-type">{type}</span><span className="pd-source">▦</span><span>{status}</span><span className="pd-date">09-14-26</span></div>)}</div></>}
@@ -55,7 +57,7 @@ export default function PersonalDashboard({ device, onBoard, onNavigate, getCoun
       </main>
     </div>
     {menu && <><button className="pd-shade" aria-label="Dismiss home menu" onClick={() => setMenu(false)}/><div className="pd-menu">{[['team-book','Knowledge Base'],['logout','Log Out']].map(([icon,label]) => <button key={label} onClick={() => {setMenu(false);setPanel(label);}}><img src={`/board-icons/${icon}.svg`} alt=""/>{label}</button>)}</div></>}
-    {panel && <><button className="pd-shade" aria-label="Dismiss panel" onClick={() => setPanel(null)}/><aside className="pd-panel" aria-label={panel}><header>{iconButton('back','Back to dashboard',() => setPanel(null))}<h2>{panel}</h2></header><div className="pd-panel-content">{panel === 'Notifications' ? 'No Notifications' : panel === 'Profile' ? 'Makram Boukaiz' : panel === 'Activity' ? 'No Activity' : panel === 'Knowledge Base' ? 'No Articles' : <button onClick={() => {setPanel(null);go('home');}}>Return to Home</button>}</div></aside></>}
+    {panel && <><button className="pd-shade" aria-label="Dismiss panel" onClick={() => setPanel(null)}/><aside className="pd-panel" aria-label={panel}><header>{iconButton('back','Back to dashboard',() => setPanel(null))}<h2>{panel}</h2></header><div className="pd-panel-content">{panel === 'Notifications' ? 'No Notifications' : panel === 'Profile' ? userName : panel === 'Activity' ? 'No Activity' : panel === 'Knowledge Base' ? 'No Articles' : <button onClick={() => {setPanel(null);go('home');}}>Return to Home</button>}</div></aside></>}
   </section>;
 }
 

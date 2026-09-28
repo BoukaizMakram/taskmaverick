@@ -23,7 +23,7 @@ export default function PhonePage() {
         background: '#eef1f5',
       }}
     >
-      <div style={{ width: 'min(460px, 100%)' }}>
+      <div style={{ width: 'min(1500px, 100%)' }}>
         <PhoneLab />
       </div>
     </main>

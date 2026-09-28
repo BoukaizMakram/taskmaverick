@@ -1,5 +1,5 @@
-import AuthLayout from '@/components/AuthLayout';
-import DemoForm from '@/components/forms/DemoForm';
+import Navbar from '@/components/Navbar';
+import BookDemo from '@/components/BookDemo';
 
 export const metadata = {
   title: 'Book a demo · Taskmaverick',
@@ -8,8 +8,11 @@ export const metadata = {
 
 export default function BookDemoPage() {
   return (
-    <AuthLayout heading="Book a demo">
-      <DemoForm />
-    </AuthLayout>
+    <div className="page">
+      <Navbar returnHome />
+      <div className="lp">
+        <BookDemo />
+      </div>
+    </div>
   );
 }

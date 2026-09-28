@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen:tts": "node scripts/generate-tts.mjs"
+    "gen:tts": "node scripts/generate-tts.mjs",
+    "fetch:proofs": "node scripts/fetch-proof-images.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

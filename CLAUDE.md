@@ -69,11 +69,13 @@ components **only as needed** — do not pre-build.
 - **Lower-third captions (RULE):** narration text under a scene uses the
   `.lower-third` class — **34px Inter Medium (weight 500)**, white, centered
   horizontally, positioned in the **lower third** (near the bottom).
-- **To build later** (not now): library view, overview/history/running/timeline
-  (Team Board + Personal Board), marketplace, reports, gallery view, tickets,
-  ticket board, media proof, and opened-mission *secondary states* (content
-  viewer, number-pad, Test answer states, Survey photo/video capture, confirm
-  modal). Opened-mission primary views for all types are **built**.
+- **Built from the sales-demo recording:** the software simulator on `/phone`
+  (`components/sim/`, phone + shared tablet on one store: tickets, guided
+  checklists with proof, lessons, tests, Media Proofs, ratings), the web app on
+  `/running` (`components/web/`: Overview, Missions library / builder /
+  marketplace / processes, Reports, Dashboards) and the AI demo call `/demo-ai`
+  (`components/demo-ai/`, Gemini + ElevenLabs). See `docs/mission-animation.md`.
+  Still to build: number-pad entry beat, "Personal Missions Assigned" modal.
 
 ### Timer names & rules (do NOT change without being asked)
 
@@ -95,9 +97,19 @@ components **only as needed** — do not pre-build.
 
 ## Project structure
 
-- `app/` — routes (`page.jsx` landing, `tablet/`, `phone/`, `demo/`), `layout.jsx`,
+- `app/` — routes (`page.jsx` landing, `tablet/`, `phone/`, `running/`, `demo/`, `demo-ai/`, `api/demo-ai/*`), `layout.jsx`,
   `globals.css`.
 - `components/` — `Landing`, `HeroVideo`, `Chapters`, `FeatureShowcase`, mission
   components above.
 - `lib/chapters.js` — landing chapters + per-chapter video/subtitle data.
 - `docs/` — `mission-animation.md`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

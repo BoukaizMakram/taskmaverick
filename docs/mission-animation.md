@@ -238,18 +238,132 @@ section — so new mission variants are data, not new components. Preview at
 **To build (later, as needed — do not pre-build):**
 
 - **Opened-mission secondary states** (animation beats layered on the shell):
-  number-pad entry, correct-vs-answer states for Test, photo/video capture for
-  Survey, the "Personal Missions Assigned" confirm modal. (The **content viewer /
+  number-pad entry, correct-vs-answer states for Test, the "Personal Missions
+  Assigned" confirm modal. (The **in-app camera is built** for the Improved
+  Quality demo — `CaptureCamera` in `components/ImprovedQualityPanels.jsx`, an
+  "Add Photo" / "Add Video" screen with no gallery button, since proof is captured
+  live inside the mission, never picked from the device.) (The **content viewer /
   video player is built** — `components/MediaViewer.jsx`, a `.mv-*` full-screen
   player that takes over the phone as a second overlay layer; see `PhoneShell`'s
   `viewer` prop and `PostedMissionsScene` Act 4.)
-- **Library view.**
-- **Overview / timeline** — history, running, timeline; for **Team Board** and
-  **Personal Board**.
-- **Marketplace.**
-- **Reports.**
-- **Gallery view.**
-- **Tickets**, **Ticket board**, **Media proof**, etc.
+- Everything else that used to be listed here (library, overview / timeline,
+  marketplace, reports, gallery view, tickets, ticket board, media proof, test
+  results, survey capture) is **built** — see *Software simulator*, *Web app* and
+  *AI demo call* below. Still to build: the number-pad entry animation beat and
+  the "Personal Missions Assigned" confirm modal.
+
+## Software simulator (`/phone`, `components/sim/`)
+
+The interactive product on a phone and the team's shared tablet, recreated from
+the recorded sales demo. **One store backs both devices**
+(`lib/sim/store.mjs` + `useSyncExternalStore`), so claim on the phone and the
+tablet's Claimed column updates — "whatever happens on this phone happens on the
+tablet". Seed data: `lib/sim/data.mjs` (restaurant unit L001 with Team A,
+Kitchen, Register, Food Preparation…; factory unit P001 with QC Line
+Inspections; the personal board; Maintenance / HR / QC ticket boards).
+
+- `SimDevice` — screens (home dashboard, unit grid/list, ticket boards, board),
+  Mission Details (reuses `OpenedMission` via its new `body` / `closable` props),
+  personal code, board menu (`BoardMenu`'s new `onAction`), On-Demand requests,
+  tablet column expand (scoreboard view), day badges and boosted cards on
+  `MissionChip` (`days`, `chip--boosted`), ticket chips, live toasts.
+- `SimMissionBody` — interactive question types: Yes/No(/N/A) with per-answer
+  photo/video proof and ticket triggers, numeric entries with photo and range
+  flags, text, Pass/Fail, embedded lessons, media playlists, tests.
+- `SimLayers` — in-app camera (no gallery), lesson player (skip to quiz; fail →
+  back to the lesson), photo/video viewer, Media Proofs feed, Rate panel,
+  Knowledge Base, Test Completed.
+- Automations run on Close (store): an answer with `ticketOn` raises a ticket
+  carrying the question, answer, evidence and performer; a failed Test assigns
+  the missed topics (Media) to the personal board. Tests: `lib/sim/store.test.mjs`.
+- `remote = { id, cmd, … }` drives a device (open / claim / answer / capture /
+  close / translate / board / expand …) — used by the AI demo call.
+- Timer rules still hold: pills are green unless a mission opts into `aging`
+  (as in Mission Settings → Timer Settings); closed snaps gray.
+- Units live in the store (`state.units`, `state.industry`): `loadPack()` adds
+  an industry's unit, boards (with their own On-Demand `requests`) and missions
+  on top of the seed data (see *Your industry* below). Tests:
+  `lib/sim/packs.test.mjs`.
+
+## Web app (`/running`, `components/web/`)
+
+`WebApp` routes the top nav: **Overview** (`OverviewWorkspace` — now with
+Response / Info / Content drawer tabs, a photo lightbox, and schedule frequency
+Once / Time period / At Specific Times), **Missions** (Library with folders,
+Create Mission, the mission builder with live phone preview, content/step
+builder, Mission Settings; In Teams, As Tickets, Within Processes with the flow
+canvas, Within Courses, Marketplace catalogs and bundles), **Reports** (All
+Reports → report with summary sidebar, Group by, Closed % bars, drill-down to
+every answer, Gallery View) and **Dashboards** (Reference with flagged values,
+Aging, Execution, scoreboards). `?section=` keeps the section in the URL.
+`embedded` + `remote` let the AI demo drive it inside a scaled window. Data:
+`lib/web/data.mjs`. Styles: `components/web/web.css` (`.wa-*`).
+
+## AI demo call (`/demo-ai`, `components/demo-ai/`)
+
+A video-call page where **Mav**, an AI product specialist, talks with the
+visitor and shares its screen (`DemoStage`: web window + phone + shared tablet,
+GSAP layouts devices / phone / tablet / web / all, an AI cursor that clicks).
+Pipeline: speech recognition (`listener.js`: ElevenLabs Scribe v2 Realtime
+over a WebSocket with a single-use token from `/api/demo-ai/stt-token`, mic
+with echo cancellation; Web Speech API and record-then-transcribe as
+fallbacks) → `/api/demo-ai/chat` (Gemini `gemini-3.5-flash`, streamed, with
+`DemoStage.describe()` — the live contents of every screen) → `createSegmenter`
+(`lib/demoAi/commands.mjs`: sentences + `[[commands]]`) → `VoiceQueue`
+(`voice.js`: ElevenLabs `eleven_flash_v2_5` via `/api/demo-ai/tts`, commands
+run in sync). Talking over Mav interrupts it.
+
+The cursor is Mav's hand (`DemoStage` + `pointing.js`): while a sentence
+plays it glides to each on-screen thing the sentence names (mission titles,
+columns, "the timer", "History"…), timed to the word in the audio, first
+uncovering it if a drawer / expanded column / other phone tab hides it.
+Commands click the real elements in order (Back → Home → Tickets → board;
+tab → card; Reports → report → Group by); mission actions go to the device
+that has the mission open, and "open" follows the device named in the
+sentence. Every action is logged in the call's chat transcript.
+What Mav knows and the command vocabulary: `lib/demoAi/prompt.mjs`. Env:
+`GEMINI_API_KEY` (required), `ELEVENLABS_API_KEY`, optional `GEMINI_MODEL`,
+`DEMO_AI_VOICE_ID`, `DEMO_AI_TTS_MODEL`, `DEMO_AI_STT_MODEL`.
+
+**Fully visible before pointing (RULE).** Mav only rings / clicks what the
+visitor can see *entirely*. `pointing.js` `reach()` counts an element as shown
+only when all of it is inside every clipping box up to the stage (and nothing
+covers it); a mission further down a list is still pointable because the list
+can scroll to it. `DemoStage` `reveal()` scrolls that list — the phone's card
+list, a tablet column, a web table — until the whole element is in view (above
+the caption bar when there's room; otherwise the captions fade while the ring
+is on), then points. Lists scroll on their own like the app (header, tabs and
+column titles stay put: `.sim-device--*` rules in `sim.css`); a board or tab
+starts at the top, and after a claim / close / request the lists go back to
+the top, where the moved mission lands.
+
+**Guided tour** (`lib/demoAi/tour.mjs`): after the greeting Mav plays a fixed
+19-chapter script that follows the recorded sales demo step by step (steps are
+plain sentences with inline `[[commands]]`; `[[stage restore X]]` puts a
+mission back to its seed state so a flow can run again). Talking pauses it and
+keeps what was cut; Gemini answers with `tourContext()` in its instructions and
+ends by offering to continue; a short "yes / sí / نعم / oui…" (`isContinue`)
+resumes at once without an AI round-trip, and `[[tour continue | chapter N |
+stop | start]]` lets Mav steer it. The side panel lists the chapters.
+
+**Your industry** (`lib/sim/packs.mjs`): `[[stage industry hotel]]` sets the
+app up for the visitor's industry — a unit with 3 team boards of missions
+(open / claimed / closed), a ticket board for its alerts, a personal training
+and On-Demand requests (`store.loadPack()`; the unit goes first on the home
+dashboard and becomes CURRENT INDUSTRY in `describe()`), also shown as a
+Library folder and under In Teams in the web app. Premade always wins: the
+recorded demo's restaurant (L001) and factory (P001), then the reviewed packs
+in `lib/sim/industryPacks.mjs` (14 industries, `findPremade` by name/alias —
+generic extra words only, so "dental clinic" is not a hospital); any other
+industry is generated live by `/api/demo-ai/industry` (Gemini structured
+output, `PACK_SCHEMA`; two staggered requests, first complete wins; cleaned by
+`cleanPack`, cached per server) while a "Setting up…" card shows. When it's on
+screen the stage calls `onIndustry` and Mav gets a hidden "screen update" turn
+(in the visitor's language) to present it with the real mission names.
+`[[stage mission board=…; type=…; title=…; items=…]]` posts one new mission
+live (items: plain = Yes/No, `!No` = alert ticket, `# label (unit) min-max`,
+`photo:`, `text:`, `pass:`). Regenerate / add premade packs:
+`node scripts/generate-industry-packs.mjs [ids…] [--force]`, then review.
 
 ## Demo animation vocabulary
 
@@ -262,6 +376,48 @@ compose from:
 - **Moving** — objects travel between places (e.g. a mission Open → Claimed → Closed).
 - **"Things working"** — live activity: timers ticking, counts updating, items
   checking off, proof arriving, etc.
+
+### Web films
+
+`/improved-quality-demo` and `/live-oversight-demo` share one engine (stage,
+camera layer, captions, press rings, `MOTION`). Web pages sit in a
+`.iq-report-window` (1600x760 page at 0.9 scale) with the words centered below
+it. Reuse the product's web UI rather than inventing screens:
+
+- **Overview** — `components/OverviewScene.jsx`: the `/running` workspace's
+  markup and `ow-*` styles, frame-driven (Running / History, mission sidebar
+  with proofs and measurements).
+- **Reports** — `components/UsageReport.jsx` (Usage Report: Group by menu,
+  Gallery View with photo / video rows, grouped `ReportTree`) and
+  `components/DataReport.jsx` (Data Board: risk summary, unit → person →
+  mission, checkpoint table with flagged out-of-range responses). Group by and
+  Gallery View live in **reports**, not in the Overview.
+- Data and photos: `lib/businessProofs.mjs`, `lib/liveOversightData.mjs`
+  (`npm run fetch:proofs` self-hosts the CC0 photos).
+
+### Pacing (RULE)
+
+Reference implementation: `lib/improvedQualityStory.mjs` (the Improved Quality
+demo); its tests enforce these rules.
+
+1. **Words first, then action.** Each chapter: the scene settles (a device
+   enters or the camera moves), the words type out completely, and only then do
+   the actions run — one at a time. Never tap, scroll or capture while the words
+   are still typing. (A chapter may deliberately open with its action when the
+   script says so, e.g. "words pop in as the menu is open".)
+2. **One motion vocabulary.** All transitions share the same durations
+   (`MOTION`): device out .45s, device in .8s, camera .9s, screen slide in .5s /
+   out .4s, menu pop .4s, press ring leads its press by .6s, and what a press
+   opens follows .35s later (once the ring has faded); presses on one screen are
+   .7s apart; every tour scroll is 4.5s. Derive beat times from these — don't
+   hand-tune one-off durations.
+3. **No idle tails.** After a chapter's last beat, hold about a second (enough
+   to read), then move on. No long pauses after an animation.
+4. **Fade-outs keep their screen.** A device that fades out keeps its last
+   state until it is gone — never let it swap to a different UI (e.g. snap back
+   to the board) mid-fade.
+5. **Cuts only on an empty frame.** The camera may cut only while nothing is
+   visible; otherwise it moves.
 
 ## Scenes (hero animations)
 

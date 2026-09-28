@@ -3570,6 +3570,11 @@ html.tm-boot-restore-out .tm-loader {
 .chip-reference strong { font-weight: 600; }
 .chip-who { font-weight: 500; font-size: 13px; color: #000; white-space: nowrap; }
 .chip-when { display: flex; align-items: baseline; margin-left: auto; gap: 10px; font-weight: 500; font-size: 13px; color: #000; white-space: nowrap; }
+.chip-rate { display: flex; align-items: center; gap: 7px; padding-top: 8px; border-top: 1px solid #e3e7ea; font-weight: 500; font-size: 14px; color: #c9922e; }
+.chip-rating { position: relative; display: grid; place-items: center; width: 26px; height: 26px; border: 1.5px solid #1277bc; border-radius: 50%; color: #1277bc; font-size: 11px; font-weight: 500; }
+.chip-rating sup { position: absolute; top: -7px; right: -7px; display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; background: #1277bc; color: white; font-size: 9px; font-weight: 600; }
+.chip-ratings { gap: 14px; }
+.chip-rate-plus { display: grid; place-items: center; width: 18px; height: 18px; border: 1.5px solid currentColor; border-radius: 50%; font-size: 15px; line-height: 1; }
 
 /* ---- Animated variant (GSAP-driven) ---- */
 .am-board { position: relative; height: 470px; }

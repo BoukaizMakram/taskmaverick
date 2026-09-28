@@ -35,3 +35,5 @@ next-env.d.ts
 
 # Local authenticated product references; served only by the dev asset library.
 /assets/quality-references/
+
+.claude/settings.local.json

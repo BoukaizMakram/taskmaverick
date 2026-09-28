@@ -26,9 +26,11 @@ const montserrat = Montserrat({
 
 // Arabic-capable face, applied via CSS when the document is dir="rtl" / lang="ar"
 // (the Latin faces above don't carry Arabic glyphs).
+// Cairo is a variable font: load it as one variable face (all weights) rather
+// than a weight list, which yields duplicate font-file entries that Turbopack's
+// dev server fails to resolve.
 const cairo = Cairo({
   subsets: ['arabic'],
-  weight: ['400', '500', '600', '700'],
   variable: '--font-arabic',
   display: 'swap',
 });

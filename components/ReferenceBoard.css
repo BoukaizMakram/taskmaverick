@@ -58,3 +58,12 @@
 .mi-reference .pc-retrieve { margin-top: calc(16 * var(--code-u)); font-size: calc(14 * var(--code-u)); }
 .mi-reference .mi-drawer { max-width: 100%; }
 .mi-reference .bn-demand-header, .mi-reference .bn-demand-tabs { flex-shrink: 0; }
+/* Closed missions that can be rated grow to fit the Rate row. */
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip:has(.chip-rate) { height: calc(144 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-rate { margin-top: calc(3 * var(--ref-u)); padding-top: calc(6 * var(--ref-u)); gap: calc(7 * var(--ref-u)); font-size: calc(14 * var(--ref-u)); }
+/* The performer row sheds its demo min-height so the badges keep their padding. */
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip:has(.chip-rate) .chip-bottom { min-height: calc(24 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-ratings { gap: calc(16 * var(--ref-u)); padding-top: calc(7 * var(--ref-u)); padding-left: calc(2 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-rating { width: calc(23 * var(--ref-u)); height: calc(23 * var(--ref-u)); font-size: calc(10 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-rating sup { top: calc(-6 * var(--ref-u)); right: calc(-7 * var(--ref-u)); width: calc(14 * var(--ref-u)); height: calc(14 * var(--ref-u)); font-size: calc(8.5 * var(--ref-u)); }
+.mi-reference.mi-interactive--tablet .mi-tablet-board .chip-rate-plus { width: calc(18 * var(--ref-u)); height: calc(18 * var(--ref-u)); font-size: calc(15 * var(--ref-u)); }

@@ -6,6 +6,9 @@
 // Layout: [logo · kind · points]  ...  [execution timer · aging pill]
 //         Title
 //         performer                                     date   time
+//         (+) Rate                  — closed missions that can be rated (rate);
+//         (AF⁵) (BR⁴)               — once rated, one badge per rater (ratings)
+// A timer older than a day shows a day badge (days) before the pill.
 // The execution timer only shows when claimed (showExec). The pill color is the
 // aging state (chip--green default, chip--red, or an inline color from GSAP).
 // Sizes are tuned for a ~350px-wide card; scales with the board around it.
@@ -29,6 +32,9 @@ const MissionChip = forwardRef(function MissionChip(
     showExec = false,
     pillTime = '00:15:00',
     pillClass = 'chip--green',
+    rate = false,
+    ratings = [],
+    days = 0,
   },
   ref
 ) {
@@ -42,6 +48,7 @@ const MissionChip = forwardRef(function MissionChip(
         </div>
         <div className="chip-timers">
           {showExec ? <span className="chip-exec">{execTime}</span> : null}
+          {days > 0 ? <span className="chip-days">{days}d</span> : null}
           <span className="chip-pill">{pillTime}</span>
         </div>
       </div>
@@ -56,6 +63,9 @@ const MissionChip = forwardRef(function MissionChip(
           <span className="chip-time">{time}</span>
         </span>
       </div>
+      {rate && (ratings.length
+        ? <div className="chip-rate chip-ratings">{ratings.map(r => <span className="chip-rating" key={r.initials} aria-label={`${r.name || r.initials}: ${r.score} out of 5`} style={{ opacity: r.pop ?? 1, transform: `scale(${.6 + .4 * (r.pop ?? 1)})` }}>{r.initials}<sup>{r.score}</sup></span>)}</div>
+        : <div className="chip-rate"><span className="chip-rate-plus" aria-hidden="true">+</span>Rate</div>)}
     </article>
   );
 });

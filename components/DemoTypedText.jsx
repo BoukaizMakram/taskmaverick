@@ -14,7 +14,7 @@ export default function DemoTypedText({ text, elapsed, remaining, center = false
   const position=textPositionAt(settings.positions,editor?.elapsed??elapsed);
   const detached=position&&editor?.stageRef?.current;
   if(editor){text=settings.text??editor.text;elapsed=editor.elapsed-(settings.delay??editor.defaultDelay??0);if(remaining!==Infinity)remaining=editor.remaining;}
-  const displayText = settings.casing==='original'?text:settings.casing==='uppercase'?text.toUpperCase():text.replace(/\b[a-z]/g, letter => letter.toUpperCase());
+  const displayText = settings.casing==='original'?text:settings.casing==='uppercase'?text.toUpperCase():text.replace(/(^|[^\p{L}\p{N}'’])(\p{Ll})/gu, (match, before, letter) => before + letter.toUpperCase());
   const enter = ease(elapsed / Math.max(.001,settings.fadeIn??(editor ? .35/speed : .35)));
   const fade = clamp(remaining / Math.max(.001,settings.fadeOut??.28));
   const starts=textLineStarts(text,settings,speed);
