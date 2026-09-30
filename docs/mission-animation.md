@@ -483,3 +483,35 @@ reference implementation:
 - **True data-driven reflow** (real cards rearranging, not scripted actors): switch to
   GSAP's **Flip** plugin — snapshot layout, change React state, `Flip.from(state)`.
 - **New columns/statuses:** add an X constant and extend the lifecycle path.
+
+## Storytelling cuts: the hand and the speech bubble
+
+`/improved-quality-v2` and `/increased-efficiency-v2` (CEO notes of 2026-09-28)
+show one thing at a time, in this order: the hand flies to what the words are
+about, clicks it, the bubble comes out of the click, the words type.
+
+- **Timing** (pure, tested): `lib/demoHand.mjs` (`tap`, `speak`, `handPose`) and each
+  story's beats. `HAND_STOPS[chapter]` lists where the hand goes and when it
+  clicks; `SAY[chapter]` is when the bubble starts, `TEXT_AT[chapter]` when the
+  words do (bubble + 0.3s). The action (a scroll, a timer turning, the original
+  claim and close) is keyed to the click, never to the words being typed.
+- **Drawing:** the demo measures each target (`components/demoHandDom.js`,
+  `components/captionBubbleDom.js`); the hand's fingertip is the bubble's tail tip.
+  A target that has gone (Add photo once the photo is in) is found where it went.
+- **Looks:** `lib/captionBubbles.mjs`: one style, the yellow message (`#ffec00`,
+  black outline, the form of a chat message). There is no style picker.
+- **Clips:** `/…/embed?clip=<chapter>&mode=player|preview|still` plays one chapter
+  (`components/useClipSlice.js`); `/assets-library` lists every chapter as a
+  building block. `npm run gen:posters` makes the stills.
+- **Each clip is one thing.** A clip of a chapter starts when that chapter's own
+  art has begun (`CLIP_SKIP` in each story), so it never shows a bit of another
+  part — e.g. the mission clip does not open on the tablet fading out.
+- **The hand scrolls only when scrolling through a lot is the point** (mobile,
+  tour, remote). Everywhere else the mission scrolls by itself to the checkpoint
+  and the hand just clicks or points. In *Step by step* the hand answers three
+  questions one after another **in one spot** (`STEP_SPOT` below the chip); after
+  each answer the list scrolls up one question so the next Yes lands under the
+  hand.
+- **The mission chip stays on top.** When the opened mission scrolls, the chip
+  (type, points, timer, name, performer, date) stays pinned under the back / ES
+  bar and everything else scrolls beneath it; checkpoints land just below it.

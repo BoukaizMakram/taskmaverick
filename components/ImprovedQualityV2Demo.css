@@ -1,0 +1,140 @@
+/* Improved Quality — storytelling cut (/improved-quality-v2). Builds on
+   ImprovedQualityDemo.css; every rule here is an iq2-* class or scoped to the
+   v2 stage, so the original demo is untouched. */
+
+/* Words: sized to their text; the page places them beside what they describe,
+   wrapping long lines to the room there. White over the dark (chapters 20-21). */
+.iq2-caption { width:max-content; z-index:11; color:#202a37; transition:color .25s; }
+.iq2-caption .adx-title p { flex:none; max-width:none; color:inherit; transform-origin:var(--iq2-origin,50% 50%); }
+/* Fixed lines: each line of the script is one line on screen and never wraps
+   (a caption too wide for its room shrinks as a whole instead). */
+.iq2-caption .adx-title p > span { white-space:nowrap; }
+/* Chapters 20-21: the dark, with spotlight holes over the cells talked about. */
+.iq2-dim { position:absolute; inset:0; width:100%; height:100%; z-index:5; pointer-events:none; }
+.iq2-dim > rect { fill:rgb(12 18 26 / 64%); }
+
+/* Chapters 3-11: the mission by itself (360x573 camera px, shown at 1.5x). */
+.iq2-mission { position:absolute; z-index:9; transform-origin:50% 50%; filter:drop-shadow(0 18px 34px rgb(21 39 54 / 20%)); will-change:transform,opacity; }
+.iq2-m { height:100%; display:flex; flex-direction:column; overflow:hidden; border-radius:18px; background:#f8f9f6; color:#111; font:15px/1.4 var(--font-montserrat),sans-serif; }
+.iq2-m-head { position:relative; z-index:4; box-shadow:0 2px 0 #fff; flex:none; height:52px; display:flex; align-items:center; justify-content:center; background:#fff; border-bottom:1px solid #e0e5e8; }
+.iq2-m-head>b { font-size:17px; font-weight:600; }
+.iq2-m-back { position:absolute; left:12px; width:30px; height:30px; display:grid; place-items:center; border:1px solid #e3e7ea; border-radius:50%; color:#1271b7; }
+.iq2-m-back svg { width:18px; height:18px; }
+.iq2-m-translate { position:absolute; right:12px; width:34px; height:34px; display:grid; place-items:center; border-radius:9px; background:#1271b7; color:#fff; font-size:13px; font-weight:600; }
+.iq2-m-window { position:relative; flex:1; min-height:0; overflow:hidden; } /* (the header's white 2px shadow covers the pixel row where the window's top edge falls, so nothing scrolling under the pinned chip shows there) */
+/* Room below the last checkpoint so any checkpoint can scroll to the top. */
+.iq2-m-content { position:relative; padding-bottom:280px; } /* no will-change: its own layer rounds apart from the pinned chip's and lets the text under it show through by a pixel */
+.iq2-m-summary { position:relative; z-index:3; padding:14px 16px; background:#fff; border-bottom:1px solid #e0e5e8; } /* pinned: the page moves it back as the rest scrolls */
+.iq2-m-kind { display:flex; align-items:center; gap:6px; font-size:13px; }
+.iq2-m-kind img { width:17px; height:17px; }
+.iq2-m-kind b { padding:2px 4px; border-radius:4px; background:#ffc900; font-size:10px; font-weight:600; }
+.iq2-m-kind em { margin-left:auto; padding:3px 9px; border-radius:20px; background:#007a33; color:#fff; font-style:normal; font-weight:700; font-variant-numeric:tabular-nums; }
+.iq2-m-summary h3 { margin:8px 0 2px; font-size:19px; font-weight:600; }
+.iq2-m-summary small { font-size:12px; color:#444; }
+.iq2-m-meta { display:flex; justify-content:space-between; margin-top:8px; font-size:12px; font-weight:500; }
+.iq2-m-brief { display:flex; flex-direction:column; gap:12px; padding:14px 16px 16px; background:#fff; border-bottom:1px solid #e0e5e8; }
+.iq2-m-brief p { margin:0; font-size:15px; font-weight:500; line-height:1.5; }
+.iq2-m-alert { padding:10px 12px; border-radius:6px; background:#bd1f59; color:#fff; font-size:14px; font-weight:500; line-height:1.4; }
+.iq2-m-link { align-self:flex-start; color:#1271b7; font-size:14px; text-decoration:underline; text-underline-offset:3px; }
+.iq2-m-group { display:flex; justify-content:space-between; margin-top:10px; padding:12px 16px; background:#fff; border-top:1px solid #e0e5e8; border-bottom:1px solid #e0e5e8; font-size:16px; font-weight:600; }
+.iq2-m-cp { padding:14px 16px; background:#fff; border-bottom:1px solid #e0e5e8; }
+.iq2-m-cp>b { font-size:15px; font-weight:600; }
+.iq2-m-options { display:flex; gap:8px; margin-top:12px; }
+.iq2-m-options>span { flex:1; display:flex; align-items:center; gap:9px; padding:10px 11px; border:1px solid #cdd2d5; border-radius:10px; background:#fff; font-size:15px; }
+.iq2-m-options>span.is-selected { background:#e6eef8; border-color:#7da3cf; }
+/* Chapter 8: the training is a media tile; it opens into its video, then the quiz. */
+.iq2-m-tile { display:flex; align-items:center; gap:12px; margin-top:12px; padding:8px; border:1px solid #cfe0ee; border-radius:10px; background:#f4f9fd; }
+.iq2-m-tile.is-done { border-color:#bfe6d3; background:#f2fbf6; }
+.iq2-m-thumb { position:relative; flex:none; width:96px; height:58px; border-radius:7px; background:#223 center / cover no-repeat; }
+.iq2-m-thumb i { position:absolute; inset:0; margin:auto; width:30px; height:30px; display:grid; place-items:center; border-radius:50%; background:#1271b7e6; color:#fff; }
+.iq2-m-tile.is-done .iq2-m-thumb i { background:#4bbf8f; }
+.iq2-m-thumb svg { width:15px; height:15px; }
+.iq2-m-tile-text { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.iq2-m-tile-text b { font-size:15px; font-weight:600; }
+.iq2-m-tile-text small { font-size:12px; color:#5d6a75; }
+.iq2-m-done { margin-left:auto; display:flex; align-items:center; gap:5px; padding:5px 10px; border-radius:20px; background:#4bbf8f; color:#fff; font-size:13px; font-style:normal; font-weight:600; }
+.iq2-m-done svg { width:14px; height:14px; }
+.iq2-reveal { display:grid; overflow:hidden; }
+.iq2-reveal>div { min-height:0; }
+.iq2-m-player { margin-top:10px; }
+.iq2-m-frame { position:relative; aspect-ratio:16/9; overflow:hidden; border-radius:8px; background:#10151a; }
+.iq2-m-frame video { display:block; width:100%; height:100%; object-fit:cover; }
+.iq2-bar { display:flex; align-items:center; gap:10px; height:34px; padding:0 4px; color:#1271b7; }
+.iq2-bar>span:first-child { display:grid; }
+.iq2-bar svg { width:16px; height:16px; }
+.iq2-bar-track { flex:1; height:5px; overflow:hidden; border-radius:5px; background:#deeef9; }
+.iq2-bar-track i { display:block; height:100%; background:#1271b7; }
+.iq2-bar time { font-size:12px; color:#333; font-variant-numeric:tabular-nums; }
+.iq2-m-quiz { margin-top:6px; padding:10px; border:1px solid #e3e7ea; border-radius:10px; background:#fbfcfd; }
+.iq2-m-quiz header { display:flex; align-items:baseline; gap:8px; margin-bottom:8px; }
+.iq2-m-quiz header small { font-size:11px; color:#6b7580; }
+.iq2-m-quiz header b { font-size:14px; }
+.iq2-m-quiz section { margin-bottom:10px; }
+.iq2-m-quiz p { display:flex; gap:4px; margin:0 0 7px; font-size:13px; font-weight:500; line-height:1.4; }
+.iq2-m-quiz section>div { display:flex; gap:8px; }
+.iq2-m-quiz section>div>span { flex:1; display:flex; align-items:center; gap:8px; height:34px; padding:0 9px; border:1px solid #cfd4d8; border-radius:8px; background:#fff; font-size:13px; }
+.iq2-m-quiz .iq-checkbox { width:16px; height:16px; font-size:12px; }
+.iq2-m-submit { display:grid; place-items:center; height:38px; border-radius:8px; background:#e4e4e4; color:#555; font-size:14px; font-weight:600; }
+.iq2-m-submit.is-ready { background:#1271b7; color:#fff; }
+/* Chapters 10-11: the photo and the video appear under their checkpoints. */
+.iq2-m-proof { margin-top:12px; }
+.iq2-m-shot { background:center / cover no-repeat; }
+.iq2-flash { position:absolute; inset:0; background:#fff; }
+.iq2-m-file { display:flex; align-items:center; gap:8px; margin-top:8px; color:#2f7ec2; font-size:13px; white-space:nowrap; }
+.iq2-m-file svg { flex:none; width:20px; height:20px; }
+.iq2-m-file span { overflow:hidden; text-overflow:ellipsis; }
+.iq2-rec { position:absolute; top:10px; left:10px; display:flex; align-items:center; gap:6px; padding:3px 9px; border-radius:6px; background:#000a; color:#fff; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; }
+.iq2-rec i { width:8px; height:8px; border-radius:50%; background:#d6246e; }
+
+/* Chapter 2: Onboarding opens its video inside the Knowledge Base drawer. */
+.iq2-kb-viewer { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; background:#f8f9f6; will-change:transform; }
+.iq2-kb-body { flex:1; display:flex; flex-direction:column; gap:calc(10 * var(--kb-u)); padding:calc(14 * var(--kb-u)); color:#111; }
+.iq2-kb-step small { display:block; font-size:calc(12 * var(--kb-u)); color:#6b7580; }
+.iq2-kb-step b { font-size:calc(16 * var(--kb-u)); }
+.iq2-kb-video { position:relative; aspect-ratio:16/9; overflow:hidden; border-radius:calc(10 * var(--kb-u)); background:#10151a; }
+.iq2-kb-video video { display:block; width:100%; height:100%; object-fit:cover; }
+.iq2-bigplay { position:absolute; inset:0; margin:auto; width:calc(56 * var(--kb-u)); height:calc(56 * var(--kb-u)); display:grid; place-items:center; border-radius:50%; background:#1271b7b3; color:#fff; }
+.iq2-bigplay svg { width:45%; height:45%; }
+.iq2-kb-body .iq2-bar { height:calc(34 * var(--kb-u)); }
+.iq2-kb-body .iq2-bar time { font-size:calc(13 * var(--kb-u)); }
+.iq2-kb-body h3 { margin:calc(6 * var(--kb-u)) 0 0; font-size:calc(20 * var(--kb-u)); font-weight:600; }
+.iq2-kb-body p { margin:0; font-size:calc(15 * var(--kb-u)); line-height:1.45; color:#333; }
+
+/* Chapters 12-15: the mission lifted out of Team A's board (stage px). Its
+   board wrapper is 1080px wide, so the tablet's card styles apply at 1:1. */
+.iq2-iso-layer { position:absolute; left:0; top:0; z-index:9; transform-origin:0 0; pointer-events:none; will-change:transform; }
+.iq2-iso-layer .mi-interactive { width:1080px; }
+.iq2-iso-layer .mi-reference.mi-interactive--tablet .mi-tablet-board.iq2-iso-board { width:1080px; height:auto; overflow:visible; background:none; }
+.iq2-iso-stack { display:flex; flex-direction:column; }
+.iq2-iso-stack .chip { box-shadow:0 12px 34px #1e293b30; }
+.iq2-isolating [data-mission-id="emphasis-Opening Quality Check"] .chip { visibility:hidden; }
+.iq2-rate { margin-top:10px; padding:14px 16px 16px; border-radius:14px; background:#fff; box-shadow:0 4px 18px #1e293b24; color:#111; font-family:var(--font-montserrat),sans-serif; }
+.iq2-rate>p { margin:0; font-size:13px; color:#333; }
+.iq2-rate>h4 { margin:6px 0 14px; text-align:center; font-size:22px; font-weight:600; }
+.iq2-rate-submit { display:grid; place-items:center; height:38px; margin-top:16px; border-radius:8px; background:#e4e4e4; color:#222; font-size:14px; font-weight:500; }
+.iq2-rate-submit.is-ready { background:#1271b7; color:#fff; }
+.iq2-peer { position:relative; align-self:flex-start; display:flex; align-items:center; gap:8px; margin-top:12px; padding:8px 12px 8px 8px; border-radius:12px; background:#fff; box-shadow:0 4px 16px #1e293b2e; color:#111; font:500 13px/1.25 var(--font-montserrat),sans-serif; white-space:nowrap; }
+.iq2-peer::before { content:''; position:absolute; left:20px; top:-5px; width:10px; height:10px; background:#fff; transform:rotate(45deg); }
+.iq2-peer b { font-weight:700; }
+.iq2-peer strong { color:#1271b7; font-weight:700; }
+
+/* Chapters 18-21: the report, cut at the Date & Time column. */
+.iq2-report { position:absolute; z-index:4; overflow:hidden; border:1px solid #d9dee2; border-radius:12px; background:#fff; box-shadow:0 20px 50px rgb(21 39 54 / 14%); transform-origin:0 0; will-change:transform,opacity; }
+.iq2-report-page { width:1600px; height:100%; }
+/* Chapters 20-21: a report item scaled up out of its cell (same font and
+   content as the report row; the page scales and places it). */
+.iq2-pop { position:absolute; left:0; top:0; z-index:10; display:inline-flex; align-items:center; padding:5px 9px 5px 27px; border-radius:6px; background:#fff; box-shadow:0 10px 30px rgb(0 0 0 / 28%); color:#161919; font:500 13px/1.35 var(--font-poppins),sans-serif; white-space:nowrap; transform-origin:0 0; will-change:transform,opacity; }
+.iq2-pop .iq-ur-branch { height:12px; margin-top:-8px; }/* the report's tree line, kept inside the box */
+.iq2-pop em { margin-right:9px; color:#3c4347; font-style:normal; }
+.iq2-pop b { font-weight:500; }
+.iq2-pop--date { padding-left:9px; }
+
+/* Embedded in the Assets Library (/improved-quality-v2/embed): only the
+   player, with compact controls. A preview or a still is the stage alone,
+   filling its frame. */
+.iq2-embed { padding:0 2px 2px; background:#fff; }
+@media (min-width:701px) { .iq2-embed .ad-controls { margin-top:10px; flex-wrap:nowrap; } }
+.iq2-embed--bare { position:fixed; inset:0; padding:0; overflow:hidden; }
+.iq2-embed--bare .iq-player .ad-fit::after { display:none; }
+.iq2-embed--bare .ad-stage { cursor:default; }
+body:has(.iq2-embed) nextjs-portal { display:none; }

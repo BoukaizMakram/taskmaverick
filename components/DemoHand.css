@@ -1,0 +1,6 @@
+/* The demos' big yellow hand (components/DemoHand.jsx). Its fingertip is the
+   point it moves: demoHandDom.js puts the tip (32px, 2px into its 84x104px box)
+   on the target. */
+.dh-hand { position:absolute; left:0; top:0; z-index:12; width:84px; height:104px; transform-origin:32px 2px; opacity:0; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 8px 9px rgb(0 0 0 / 26%)); }
+.dh-hand img { display:block; width:100%; height:100%; user-select:none; }
+.dh-ripple { position:absolute; left:0; top:0; z-index:12; box-sizing:border-box; width:10px; height:10px; border:5px solid #ffec00; border-radius:50%; background:rgb(255 236 0 / 28%); box-shadow:0 0 0 3px #111; opacity:0; pointer-events:none; will-change:transform,opacity; }

@@ -23,7 +23,12 @@ const copy={
  en:{title:'Ice Maker Filter Check',instructions:'Please verify the ice maker IOMQ filter has been replaced.',alert:'Ensure the label is updated with the new replacement date.',link:'View filter replacement guide',claim:'Claim',category:'Operations',type:'Task'},
  es:{title:'Revisar Filtro Máquina de Hielo',instructions:'Por favor, verifica que el filtro IOMQ de la máquina de hielo haya sido reemplazado.',alert:'Asegúrate de que la etiqueta se actualice con la nueva fecha de reemplazo.',link:'Ver guía de reemplazo del filtro',claim:'Reclamar',category:'Operaciones',type:'Tarea'},
 };
-const BOARD_MISSIONS=['Ice Maker Filter Check','Opening Quality Check','Equipment Inspection'].map((title,i)=>({id:`quality-${i}`,type:i===1?'Checklist':'Task',title,status:'open',points:null,date:'08-02-26',time:'11:19 AM',ageSeconds:10563-i*180}));
+const BOARD_MISSIONS=[
+ ...['Ice Maker Filter Check','Opening Quality Check','Equipment Inspection'].map((title,i)=>({id:`quality-${i}`,type:i===1?'Checklist':'Task',title,status:'open',points:null,date:'08-02-26',time:'11:19 AM',ageSeconds:10563-i*180})),
+ // Claimed: performer + execution timer; the Timer pill stays green.
+ ...[['Walk-In Cooler Temp Log','Checklist','Anna F',734,11412,'10:48 AM'],['Restroom Cleaning','Task','Gabriel F',1512,12105,'10:37 AM']]
+  .map(([title,type,performer,executionSeconds,ageSeconds,time],i)=>({id:`quality-claimed-${i}`,type,title,status:'claimed',points:null,performer,executionSeconds,ageSeconds,date:'08-02-26',time})),
+];
 const RATED='[data-mission-id="emphasis-Opening Quality Check"]';
 const TARGETS={'tablet-menu':'.iq-emphasis-tablet .tbl-header [aria-label="Menu"]','phone-menu':'.ph-header [aria-label="Menu"]','rate-0':`${RATED} .chip-rate`,'ratings-0':`${RATED} .chip-ratings`,'mission-card':'[data-mission-id="quality-0"]',menu:'.tbl-header [aria-label="Menu"]',knowledge:'.bn-menu-item:has(img[src="/board-icons/team-book.svg"])',translate:'.om-translate',instructions:'.om-sum-desc',alert:'.om-notice',link:'.om-resource-link'};
 // Words start once each chapter's scene has settled (see TEXT_AT).
@@ -37,7 +42,7 @@ const EMPHASIS_MISSIONS=[
 ];
 const PROOF_TABS=[{label:'Open - 0'},{label:'Claimed - 0'},{label:'Closed - 4',active:true}];
 const clockOf=s=>[s/3600,s/60%60,s%60].map(n=>String(Math.floor(n)).padStart(2,'0')).join(':');
-const PHONE_TABS=[{label:'Open - 3',active:true},{label:'Claimed - 0'},{label:'Closed - 0'}];
+const PHONE_TABS=[{label:'Open - 3',active:true},{label:'Claimed - 2'},{label:'Closed - 0'}];
 function Mission({translated,statusBar=false}){
  const c=copy[translated?'es':'en'];
  return <OpenedMission showStatusBar={statusBar} mission={{...BOARD_MISSIONS[0],title:c.title,typeLabel:c.type,location:c.category,description:<>{c.instructions}<a className="om-resource-link" href="#filter-guide">{c.link} ↗</a></>,notice:c.alert,pillTime:'02:56:03',pillClass:'chip--red',claimLabel:c.claim}} translation={{language:translated?'EN':'ES',label:translated?'Translate to English':'Translate to Spanish'}}/>;

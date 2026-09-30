@@ -1,0 +1,44 @@
+/* Increased Efficiency — storytelling cut (/increased-efficiency-v2). Builds on
+   EfficiencyStoryDemo.css (player, title, chapters); everything here is an
+   ev2-* class, so the original demo is untouched. */
+/* The original choreography's world (useAutomationMotion measures in it): the
+   tablet (the original .adx-tablet, 860px at 1.3), the team and the code. */
+.ev2-board-root { position:absolute; left:0; top:0; width:1600px; height:900px; pointer-events:none; }
+.ev2-tablet .mi-reference.mi-interactive--tablet .mi-tablet-board, .ev2-tablet .tbl-screen { background:#F6F7F9; }
+.ev2-lifting [data-mission-id="sig"] .chip, .ev2-lifting [data-mission-id="front"] .chip { visibility:hidden; }
+
+/* A mission card outside the tablet, in the tablet's own card styles (its board
+   wrapper is 1080px wide, so the card units are 1:1); the page places it. */
+.ev2-card { position:absolute; left:0; top:0; transform-origin:0 0; will-change:transform,opacity; pointer-events:none; }
+.ev2-card-frame.mi-interactive { width:1080px; }
+.ev2-card .mi-reference.mi-interactive--tablet .mi-tablet-board.ev2-board { width:1080px; height:auto; overflow:visible; background:none; }
+.ev2-card .chip { box-shadow:0 10px 30px #1e293b26; }
+.ev2-card .chip--green .chip-pill { background:var(--demo-timer-color,#007a33); }
+.ev2-card .chip-timers { font-variant-numeric:tabular-nums; }
+.ev2-card .chip-points { scale:calc(1 + var(--ev2-points-pop,0) * .7); transform-origin:center bottom; }
+.ev2-iso .ev2-card { z-index:9; }
+/* Chapter 2: each mission's schedule, left of it. */
+.ev2-schedule { position:absolute; z-index:3; display:flex; align-items:center; gap:8px; padding:9px 16px; border:2px solid #8b5cf6; border-radius:999px; background:#fff; color:#5b21b6; font:600 17px var(--font-montserrat),sans-serif; white-space:nowrap; box-shadow:0 3px 12px #8b5cf62e; transform-origin:right center; }
+.ev2-schedule svg { width:20px; height:20px; }
+/* Chapter 13: three personal boards. */
+.ev2-phones { position:absolute; z-index:3; display:flex; gap:56px; transform-origin:center top; pointer-events:none; }
+.ev2-phones .chip { min-height:128px; gap:8px; }
+
+/* Words: sized to their text; the page places them beside what they describe. */
+.ev2-caption { position:absolute; z-index:11; width:max-content; color:#202a37; pointer-events:none; }
+.ev2-caption .adx-title { position:relative; inset:auto; padding:0; display:flex; justify-content:center; }
+.ev2-caption .adx-title p { margin:0; font:400 var(--ev2-caption-size,27px)/1.45 var(--font-poppins),sans-serif; letter-spacing:normal; color:inherit; text-align:center; text-shadow:none; flex:none; max-width:none; scale:var(--ev2-fit,1); transform-origin:var(--ev2-origin,50% 50%); }
+/* Fixed lines: each line of the script is one line on screen and never wraps
+   (a caption too wide for its room shrinks as a whole instead). */
+.ev2-caption .adx-title p > span { white-space:nowrap; }
+/* A purple rounded rectangle circling what the words talk about. */
+.ev2-ring { position:absolute; z-index:12; box-sizing:border-box; border:3px solid #8b5cf6; border-radius:12px; box-shadow:0 0 0 4px rgb(139 92 246 / 14%); pointer-events:none; transform-origin:center; will-change:transform,opacity; }
+
+/* Embedded in the Assets Library (/increased-efficiency-v2/embed): only the
+   player, with compact controls. A preview or a still is the stage alone,
+   filling its frame. */
+.ev2-embed { padding:0 2px 2px; background:#fff; }
+@media (min-width:701px) { .ev2-embed .ad-controls { margin-top:10px; flex-wrap:nowrap; } }
+.ev2-embed--bare { position:fixed; inset:0; padding:0; overflow:hidden; }
+.ev2-embed--bare .ad-stage { cursor:default; }
+body:has(.ev2-embed) nextjs-portal { display:none; }

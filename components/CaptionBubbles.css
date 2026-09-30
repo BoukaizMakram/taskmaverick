@@ -1,0 +1,9 @@
+/* The caption bubble (.cb-*): the demos' words in a yellow message whose tail
+   reaches what the hand points at. The bubble itself is SVG drawn by
+   drawBubble; these rules set the words inside it. */
+.cb-layer { position:absolute; left:0; top:0; z-index:10; width:1600px; height:900px; overflow:visible; pointer-events:none; }
+.cb-layer g { will-change:transform,opacity; }
+.iq2-caption.cb-caption .adx-title p, .ev2-caption.cb-caption .adx-title p { color:#111; font-family:var(--font-inter),sans-serif; font-weight:600; text-transform:none; letter-spacing:normal; line-height:1.3; }
+.iq2-caption.cb-caption .adx-title p { font-size:calc(var(--iq-caption-size,27px) * 1.08); }
+.ev2-caption.cb-caption .adx-title p { font-size:calc(var(--ev2-caption-size,27px) * 1.08); }
+.cb-caption { color:#111; }

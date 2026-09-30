@@ -12,7 +12,7 @@ Taskmaverick product UI (mission boards) with GSAP instead of using demo videos.
   existing tokens in `:root` (`--blue #1271b7`, `--ink #111`, `--muted`, etc.).
   Namespaced class prefixes: `.tbl-*` (tablet chrome), `.ph-*` (phone chrome),
   `.chip-*` (mission card), `.om-*` (opened-mission detail view), `.am-*`
-  (animation overlay), `.fs-*` (feature showcase).
+  (animation overlay), `.fs-*` (feature showcase), `.al-*` (assets library).
 - **Fonts** are registered in `app/layout.jsx` via `next/font`: Poppins
   (`--font-poppins`), Inter (`--font-inter`), Montserrat (`--font-montserrat`).
   Don't add font `<link>`s.
@@ -69,6 +69,20 @@ components **only as needed** — do not pre-build.
 - **Lower-third captions (RULE):** narration text under a scene uses the
   `.lower-third` class — **34px Inter Medium (weight 500)**, white, centered
   horizontally, positioned in the **lower third** (near the bottom).
+- **Storytelling cuts (`/improved-quality-v2`, `/increased-efficiency-v2`) — point, click, then talk (RULE):**
+  every chapter goes *the hand flies to what the words are about → it does the
+  action (clicks it, or just points when it happens by itself; it swipes up
+  **only where scrolling through a lot is the point** — Business Proofs, the
+  tour, the report — never just to reach a checkpoint) → a speech-bubble teardrop comes out of the fingertip (at the
+  target's right edge, never over its text) → the bubble grows → the hand fades
+  out → the words type*. Never words first, never a
+  bubble without its tail. The hand is a big yellow pointer
+  (`components/DemoHand.jsx`, timing in `lib/demoHand.mjs`); the caption is
+  always the yellow message (`#ffec00`, black outline, `lib/captionBubbles.mjs`) —
+  the only style; there is nothing to choose. What the click does
+  (scroll, timer turning red, the original claim/close…) starts at the click, not
+  after the words. Title chapters are words only. Each chapter is also one
+  asset in `/assets-library` (one part at a time, no runs of several).
 - **Built from the sales-demo recording:** the software simulator on `/phone`
   (`components/sim/`, phone + shared tablet on one store: tickets, guided
   checklists with proof, lessons, tests, Media Proofs, ratings), the web app on
@@ -97,7 +111,7 @@ components **only as needed** — do not pre-build.
 
 ## Project structure
 
-- `app/` — routes (`page.jsx` landing, `tablet/`, `phone/`, `running/`, `demo/`, `demo-ai/`, `api/demo-ai/*`), `layout.jsx`,
+- `app/` — routes (`page.jsx` landing, `tablet/`, `phone/`, `running/`, `demo/`, `demo-ai/`, `assets-library/`, `api/demo-ai/*`), `layout.jsx`,
   `globals.css`.
 - `components/` — `Landing`, `HeroVideo`, `Chapters`, `FeatureShowcase`, mission
   components above.
