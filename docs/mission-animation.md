@@ -484,32 +484,284 @@ reference implementation:
   GSAP's **Flip** plugin — snapshot layout, change React state, `Flip.from(state)`.
 - **New columns/statuses:** add an X constant and extend the lifecycle path.
 
+## Storyboard (`/storyboard`)
+
+The videos as a board of frames to plan on, built like Figma on a dark canvas
+(`#1e1e1e`, laid out like the reference board): each frame a 1600×900 picture of the
+video with its **number on a navy bar above** (each row counts from 1) and a **notes box below**, one row per
+chapter with its name on a green label at the left; a few floating controls and, at the right, a
+sidebar like Figma's design panel (what is picked: its position, size, look, text). `?video=improved-quality-v2` or
+`increased-efficiency-v2` picks the video. **Editing it for the user, its lines, export / import
+and backups: `docs/storyboard.md`.**
+
+- **One frame per action** (`lib/storyboardFrames.mjs`, from each chapter's beats):
+  a chapter that shows something: scene in → the outline → **the bubble with no words**
+  (it has no tail) → **the words** → end of the chapter; a chapter where the hand acts with
+  nothing on screen (words first): scene in → **the bubble with no words** → **the words** →
+  **the hand coming out, the tail halfway** → **the tail and the hand on the target** (kind
+  `hand`, so the storyboard's edits keep pointing at it) → **it clicks**, the tail still
+  out → **the tail fading out** (about two thirds still showing) → what the click did → the
+  next clicks (the hand on it, the click, what it did) → end; a chapter that goes on with the
+  hand of the one before: scene in (the hand where it was) → **the hand on its new target**
+  → **the tail out of the hand, alone** → **the bubble with no words** → **the words** → the
+  click → the tail fading → what it did → end. A
+  captured bubble keeps how far its tail reaches (`reach`) and how much of it shows
+  (`tailOpacity`), so the board draws those two frames as the video does (plus a frame
+  in the middle of any quiet stretch over 2.6 s). **No duplicates (the user,
+  2026-10-05):** the capture compares each frame with the last one kept in its chapter
+  *without the hand and its ripple*: same words (digits aside: timers tick) and under
+  0.4% of a 160-px-wide picture different beyond 2 px of movement = the same frame, and
+  only the more telling of the two stays (a click over the hand arriving on it, what a
+  click did over the end of the chapter). So a frame where only the cursor moved, or an
+  animation that is all but done, is not a frame. Scene in, the outline, the tail, the
+  empty bubble, the words, the hand coming out and the tail fading always stay, and so
+  does any frame the storyboard's edits point at. Pictures no frame uses are deleted.
+  Frames are states, not clock ticks.
+- **Making the frames:** `npm run gen:storyboard -- [--video id] [--only chapter,chapter]`
+  with the site running. It scrubs each demo's player to every frame's time and takes the
+  stage apart into layers (tablet, mission, hand, circle, chat bubble…) as the demo's own
+  HTML (so they look exactly like the video), into `public/storyboard/<video>.json`
+  and thumbnails in `public/storyboard/<video>/`. Run it again after the video changes.
+- **Editing** (the font never changes): drag an asset or use the arrow keys
+  (Shift = 10) or the X / Y boxes; double-click goes one level into a group
+  (Ctrl/⌘+click picks the deepest); double-click on **any text** retypes it: the bubble's
+  words, a text on its own, or a text beside an icon in the same element (kept as `key#n`,
+  the n-th child node; the icon stays). It reaches text under the demo's clear overlays (the
+  shade over the tablet) but not through what covers it (`editTargetAt` in
+  `components/storyboardDom.js`). **Tab** goes to the next text of the asset (Shift+Tab the one
+  before), like the cells of a table; Enter keeps, Esc drops. **Shift+click** picks several
+  assets of a frame (drag or the arrows move them together, Delete takes them out). The chat bubble is
+  drawn by the storyboard itself (`lib/storyboardBubble.mjs`) so it grows with its words
+  and keeps its tail on the same spot when moved (drag the dot to move where the tail points).
+  Notes, moves and retyped words are kept per frame in `content/storyboard/<video>.json`
+  (through `/api/storyboard` in local development, and in this browser), apart from the frames.
+- **Adding frames:** hover the gap between two frames (or past the last frame of a row) and a **+**
+  appears on a blue line; clicking it adds a **blank frame** there (white, numbered, with its own
+  notes box; Shift+A fills it with UI). Blank frames, like duplicates, are kept in
+  `copies` of the edits file (`from: null`) and can be deleted.
+- **Reordering and motion:** hold a frame's number bar (or its empty background) and drag: the
+  frame lifts and follows the pointer, a dashed slot and the other frames show where it would
+  land (they slide apart to make room), the board scrolls when the pointer is at an edge, and
+  letting go puts it straight in its place; Esc puts it back. **The frame held never animates**
+  (no transition while it is carried or when it lands: only the others slide). It can go to
+  another row. Numbers always
+  count 1.. along their row, and a frame's note, moved assets and retyped words are kept by its id,
+  so they travel with it. The order is kept per row in `rows` of the edits file (`moveFrame` /
+  `orderedFrames` in `lib/storyboardEdits.mjs`, `dropTarget` in `lib/storyboardView.mjs`).
+  Frames glide (CSS transitions on `left` / `top`) whenever something is added, moved or removed,
+  and a new frame pops in (`.is-new`).
+- **Scale:** the selected asset has handles. A **UI element always keeps its proportions** (four
+  corner handles, CSS `scale`, kept in `scales`); the **chat bubble and the spotlight stretch any
+  way** (side handles too; Shift keeps the proportions); a **picture or a drawing** keeps its
+  proportions unless Shift is held. Boxes (pictures, drawings, the spotlight, the chat bubble) get
+  a new width and height (`sizes`) so nothing in them is distorted; the opposite corner stays where
+  it was. **A chat bubble's words are never scaled**: its handles resize its yellow box, the words
+  stay their size in the middle (`bubbleBoxOf`; the box is never smaller than its words).
+  **Its tail is turned off by dragging its dot inside the box** (a point inside the bubble makes no
+  tail, `tailShape`). A tail that is off stays off: the dot goes along when the box is moved,
+  nudged or resized (`tailOff`), and the tail only comes back when the dot is dragged out of the
+  box. A tail that is on keeps pointing at its spot when the box moves.
+- **Pencil (P):** drag on a frame to draw; the stroke becomes an asset of that frame
+  (`lib/storyboardDraw.mjs`: a box holding an SVG path, picked by its line only) that is moved,
+  scaled, copied and deleted like the others. Its color and width are in the inspector: a **color
+  wheel** (hue around, saturation from the middle, a brightness slider, ready colors, hex) and a
+  width slider; **Alt+click with the pencil picks the color under the pointer** (`colorAt`: the
+  text's color, a picture's pixel, a shape's stroke or fill, else the first background that
+  shows). A drawing picked with the Move tool has the same wheel to recolor it. "Put asset back" takes the
+  move and the scale off (`resizeKind` in `components/storyboardDom.js`).
+- **Pictures:** paste one from the clipboard (Ctrl/⌘+V) or drop image files on a frame (it lands
+  where it is dropped). The file is saved by `/api/storyboard/upload` to
+  `public/storyboard/uploads/<hash>.<ext>` (local development; elsewhere a small picture is kept
+  inside the frame) and the frame gets an asset for it (`lib/storyboardImages.mjs`).
+- **Duplicates are linked along a line:** the same asset shown in several frames of one row (the
+  captured asset with the same key, its copies made by paste or Alt+drag, everything in a
+  duplicated frame) is one thing: **retyping its words in one frame retypes them in the others**
+  that still say the same (`lib/storyboardLinks.mjs`; one undo step). **Right-click > Make unique**
+  takes an asset out (`unique` in its frame's record); the menu also links it again. Moves and
+  scale are never shared. **A chat bubble is always unique** (never linked: its words are its own
+  in every frame).
+- **Alt+drag** pulls a duplicate out of an asset (the whole asset; several if several are picked):
+  **the original does not move; the copy follows the pointer** (a stage of its own drawn over the
+  board, `.sb-ghost`, so it shows across frames) and is dropped in its own frame or on another one,
+  where the pointer lets go.
+- **Copy and paste (Ctrl/⌘ + C, X, V):** the picked assets, or with no asset picked the picked
+  frames (Shift+click or a rectangle), are copied with their own HTML and their changes
+  (`lib/storyboardClipboard.mjs`, kept in memory and in the browser's storage), so they paste on
+  any frame of **any board** (the other video's too, or another tab). An asset pasted into the
+  frame it came from lands 24px down and right, elsewhere in the same place; a captured asset is
+  put back inside its own stage's classes so it looks the same anywhere. Frames pasted on their
+  own board are duplicates right after the selected frame; on another board they arrive as blank
+  frames holding all their assets and their note.
+- **Duplicating and bringing things in:** Ctrl/⌘+D duplicates the selected frame (a copy right
+  after it, with the same moves and words but an empty note; the frame inspector has the same
+  button). Delete takes an asset out of a frame (Reset frame brings it back) or **deletes the
+  frame, any frame, into the Trash** (next bullet). **Shift+A** opens the product's **UI as a grid of
+  thumbnails by category** (a search box on top; arrows move, Enter adds, Esc closes): **Missions**
+  (task, checklist, media, survey, test, audit, claimed, closed, rated — drawn as on the iPad: the
+  reference board's chip, 334 wide, not the phone's wider card; `IPAD_CHIP` in `StoryboardUi.jsx`), **Mission details** (the
+  opened mission: task, checklist, media, survey, test, audit, entries, lesson), **Boards** (tablet,
+  phone, personal, mission on a tablet), **Navigation** (home on the phone and the tablet, units,
+  the tablet menu, personal code), **Screens** (knowledge base, business proofs), **Web app**
+  (overview, missions, reports, dashboards, usage report) and **Annotations** (hand, speech bubble, spotlight). Always a whole piece of UI,
+  never a bare text like a performer's name. Choosing one adds **only that piece** to the frame, in
+  the middle, at the size it has in the product (a tablet or phone is cropped to the device), as an
+  asset that can be moved, retyped and deleted; each one brought in sits above the last
+  (`z-index`). Where the pieces come from: the real components are laid out on `/storyboard-ui`
+  (dev-only, `components/StoryboardUi.jsx`, the `ITEMS` list: id, category, name, width, search
+  words, piece) and the web app on `/running`; `npm run gen:storyboard -- --parts` (site running)
+  captures them into `public/storyboard/ui-parts.json` plus a thumbnail per piece in
+  `public/storyboard/ui/<id>.jpg`. To offer a new piece: add it to `ITEMS` and re-run that. The
+  hand, the speech bubble and the spotlight are made by `lib/storyboardParts.mjs`. What you
+  bring in lives in `content/storyboard/<video>.json` (`inserts`, `library`, `hidden`; duplicates in
+  `copies`), so it undoes and survives a new capture.
+- **The Trash (`/storyboard?video=trash`, the bin at the top or "Trash" in the board menu):**
+  Delete on a selected frame (or the inspector's Delete frame, or Ctrl+X) deletes **any** frame — a
+  captured one is hidden (`deleted` in its board's edits), a duplicate or blank one is removed — and
+  a note under the board says so, with Undo and a link to the Trash. The frame goes to the **Trash
+  board**: a board like the others (rows = the video each frame came from, newest deleted first, each
+  frame drawn live with the look of its video) kept in `content/storyboard/trash.json` (`trash` =
+  where it came from; its assets are the inserts of `frames[id]`, like a blank frame's), so it is
+  saved through the same `/api/storyboard` and in the browser (`lib/storyboardTrash.mjs`). **Copy a
+  frame there (Ctrl+C) and paste it on a storyboard (Ctrl+V)**: it arrives as a new frame holding
+  the same assets, moves, words and note. The Trash keeps what was deleted for as long as the delete
+  stands: **undo takes the frame out of the Trash again and redo puts it back** (the history's
+  states that deleted frames are remembered and the Trash is brought in line with them). In the
+  Trash, Delete (or "Delete for good", or **Empty Trash**, which asks first) removes frames for
+  good; adding, duplicating, resetting and pasting are off there.
+- **Assets Library (`/assets-library`):** the same catalog as Shift+A as a page: every UI piece
+  as a thumbnail, by category, with a search box (`/` focuses it), a category filter and a larger
+  preview (arrows step, Esc closes; the address keeps `?q=`, `?category=`, `?asset=`). It reads
+  `public/storyboard/ui-parts.json` on the server (`slimParts`, no HTML) and shows
+  `public/storyboard/ui/<id>.jpg` (captured at up to 2x). Nothing is stored on it. Add a piece to
+  `ITEMS` (see above) and re-capture, and it shows up here and in Shift+A. The animation clips are
+  not here: they are in the **Video Library** (`/video-library`, `components/VideoLibrary.jsx`,
+  `lib/videoLibrary.mjs`, ratings and notes in `content/video-library.json`, stills in
+  `public/video-library/`), which was `/assets-library` until 2026-10-02.
+- **Smooth panning:** the board and what is drawn over it (selection) are moved directly while
+  you scroll or drag, and React only catches up (which frames are live, the zoom %) when the
+  movement settles; `.sb-world.is-moving` lifts the board onto its own layer meanwhile.
+- **Navigation like Figma:** scroll pans, Ctrl/⌘ + scroll or pinch zooms at the pointer,
+  Space + drag / middle button / H pans, V is the move tool, Shift 1 fits everything, Shift 2
+  the selection, Shift 0 is 100%, a rectangle on the empty board picks frames, Ctrl+Z / Ctrl+Shift+Z undo
+  and redo. Double-click a frame to zoom to it. Far out, frames are pictures; the ones in view are live.
+
 ## Storytelling cuts: the hand and the speech bubble
 
 `/improved-quality-v2` and `/increased-efficiency-v2` (CEO notes of 2026-09-28)
-show one thing at a time, in this order: the hand flies to what the words are
-about, clicks it, the bubble comes out of the click, the words type.
+show one thing at a time. There are two orders, by what the chapter does:
 
-- **Timing** (pure, tested): `lib/demoHand.mjs` (`tap`, `speak`, `handPose`) and each
+- **Where the hand acts, the words come first (RULE, the user, 2026-10-05; replaces the
+  2026-10-02 order).** In every chapter with a click, a drag or a swipe (Improved Quality:
+  Knowledge Base, translate, step-by-step, micro-training, photo, video, emphasis,
+  self-rating, visibility, mobile, tour, web, remote; `ACTING` in
+  `lib/improvedQualityV2Story.mjs`). **With nothing on screen yet** (`WORDS_FIRST`:
+  knowledge, translation, photo, emphasis, visibility, web):
+  1. **the chat box pops empty**, from its own middle, already at the size of the words
+     it will hold, level with what will be clicked (no tail, no hand);
+  2. **the words type** into it;
+  3. **the tail reaches out** of the bubble to what will be clicked, **with the hand on
+     its tip**: the hand comes out of the bubble, from where the tail leaves it;
+  4. **the hand clicks** (the tail still out), and what the click does starts there;
+  5. **then the tail fades out** (the bubble stays, closed).
+  **More clicks with the same words:** the hand stays on screen (never fades and comes
+  back) and moves to the next one; the box moves with it, level with it (no tail).
+  **The next chapter goes on with the hand** (other words, same screen; `GOES_ON`: steps,
+  micro, rate, mobile, tour, remote; Videos is words first, the user 2026-10-05): the words before fade where they are at the
+  end of their chapter (they do not follow the hand); the hand stays across the cut, moves
+  to what it will click, **a new bubble comes out of the hand** (the tail, then the box,
+  then the words: `middle: false`), it clicks, then the tail fades.
+  Timing: `launch(say, ready)` / `relaunch(ring, ready)` → `{say, text, typed, ring,
+  arrive, press, fade, open}` and `LAUNCH` in `lib/demoHand.mjs`; the chapter's first stop
+  is a `launchStop` (`launch: true`) or a `carryStop` (`carry: {target, kind}` = where the
+  chapter before left the hand; that chapter's last stop has `stay: true` so it does not
+  fade); `launchTail(stops, e)` gives the tail's reach and opacity; `handPose` says `from:
+  'bubble'` (or the carried target, with `fromSwipe` when a swipe left it up). Drawing:
+  `bubbleFrame(…, {middle, tailP, tailOpacity})` (the fading tail is drawn over the closed
+  bubble) returns `base`, where the tail leaves the outline, which the page hands to
+  `drawHand` as `home`. A swipe presses near the list's right edge, level with where the
+  tail meets it, so the words come out of the hand. A mission that has to scroll to its
+  checkpoint does it before the box comes.
+- **Where something is only shown there is no tail of any kind**: the yellow rectangle
+  appears, the box comes on the right side of it (from its own middle: the `CLOSED`
+  bubble), the words type (below). All of Increased Efficiency is only shown.
+
+- **The hand acts, the yellow rectangle shows (RULE, 2026-10-02).** The hand is used
+  only for an action: a click, a drag, a scroll. What a chapter **only shows** (an alert,
+  a link, the proof block, the ratings, a timer, a mission card, the tablet, the phones)
+  has **no hand at all**: a **thick yellow rounded rectangle** is drawn around it
+  (`.iq2-mark` in `components/DemoHand.css`: 6px, `#ffc800`, a darker yellow than the
+  bubble's so it shows on white), it appears first, then the box comes on its right (no tail).
+  In code: a stop of kind `point` in `HAND_STOPS` = shown, not clicked. `marksOf(stops)`
+  (`lib/demoHand.mjs`) gives the rectangles; a stop can say `mark: false` (nothing),
+  `mark: 'key'` / `[keys]` (mark that instead: the whole tablet, each of two cells),
+  `markAt`, `markUntil`. `drawMarks` (`components/demoHandDom.js`) places them each frame
+  around the measured target. Improved Quality: instructions, alert, link, proof block,
+  peer ratings, who performed, date & time. Increased Efficiency: every chapter (nothing
+  there is clicked). The storyboard has an **"Outline on …" frame** for these instead of a
+  hand frame. **The report is never darkened** for who performed / date & time (the user,
+  2026-10-02): it stays as bright as ever, the two cells are marked.
+- **The report scenes use the frame (chapters 18-21, the user, 2026-10-02).** The web report
+  is shown big (`LAYOUT.report`: scale 1.02, from the left margin to the words' room, nearly
+  top to bottom) instead of small in a corner; **the words stay on the right of the report**
+  in all four scenes. Only a window of its width shows (`reportWindow`): its left part for
+  Gallery View, the tour and who performed; for date & time the page **slides over** to its
+  Date & Time column (it is not shrunk to fit). Who performed / when: a plain bubble (no
+  tail) right of the report, level with the two marked cells.
+
+- **Timing** (pure, tested): `lib/demoHand.mjs` (`tap`, `speak`, `launch`, `handPose`) and each
   story's beats. `HAND_STOPS[chapter]` lists where the hand goes and when it
   clicks; `SAY[chapter]` is when the bubble starts, `TEXT_AT[chapter]` when the
-  words do (bubble + 0.3s). The action (a scroll, a timer turning, the original
+  words do (bubble + 0.3s; words first: + 0.45s, once the empty box has popped; going on with
+  the hand: the bubble comes once the hand is on its target). The action (a scroll, a timer turning, the original
   claim and close) is keyed to the click, never to the words being typed.
 - **Drawing:** the demo measures each target (`components/demoHandDom.js`,
-  `components/captionBubbleDom.js`); the hand's fingertip is the bubble's tail tip.
+  `components/captionBubbleDom.js`); the hand's fingertip is the bubble's tail tip (while
+  there is a tail: it fades after the click).
   A target that has gone (Add photo once the photo is in) is found where it went.
 - **Looks:** `lib/captionBubbles.mjs`: one style, the yellow message (`#ffec00`,
   black outline, the form of a chat message). There is no style picker.
 - **Clips:** `/…/embed?clip=<chapter>&mode=player|preview|still` plays one chapter
-  (`components/useClipSlice.js`); `/assets-library` lists every chapter as a
-  building block. `npm run gen:posters` makes the stills.
+  (`components/useClipSlice.js`); `/video-library` (the **Video Library**) lists every
+  chapter as a building block. `npm run gen:posters` makes the stills.
 - **Each clip is one thing.** A clip of a chapter starts when that chapter's own
   art has begun (`CLIP_SKIP` in each story), so it never shows a bit of another
   part — e.g. the mission clip does not open on the tablet fading out.
+- **The hand presses only what is really clicked.** A `point` stop lands and
+  stays still (no press, no nudge, no ripple); only `click` / `scroll` press.
+  One target is enough when one makes the point (Best Performers: one name).
+- **The tail never touches the text:** it stops 14 stage px past the target's
+  right edge (`pointOf(key,'tail')`); a swipe presses 22 px inside that edge, level with it.
+- **Words follow what the action made.** A story's `SETTLE[chapter] = [time,
+  target]` glides the words (and the tail) to a new target once the action is
+  done — Self-Ratings: up to the new rating when it is sent.
+- **The ratings (chapters 13-14): exactly the user's drawing, in our UI (2026-10-05).**
+  Each rating is our Rate box (`RateCard` in `ImprovedQualityV2Panels.jsx`: "Rate this
+  mission:", the label, the slider with 1-5 under it, Submit Rate) with the **avatar** of
+  who rates on its corner (`/avatars/*.png`: Anna F. 02, Ben R. 03 green, Leo T. 01
+  orange); the card's rating row shows the same avatars with their score (self left, the
+  peers right). Purple (`#7b3cf0`) lines, **no words on them** (the user removed the
+  labels): under the card's left, a line down to the self rating; from the card's right,
+  level with the peers' avatars, a line and a **bracket** with a tick into each peer's
+  rating (no yellow rectangle there: the bracket points). **What is on the slide is always
+  centered** (art and words as one group): the card moves as the ratings come (`ISO_AT`,
+  `isoBox` in `devicesAt`). 13: centered with its words; the hand presses Rate, the self
+  rating appears under it as everything glides up to stay centered; the hand drags it to
+  Excellent and sends it, Anna's 5 pops onto the card and the self rating **stays**. 14:
+  everything glides left to make room (`PEER.shift`), then the peers' ratings appear one
+  after the other (the bracket grows down to each), each slider goes to its rating by
+  itself (Great, Good), it is sent and the peer's avatar pops onto the card. The words sit
+  beyond the peers' ratings. Everything but the card fades as it goes back into the tablet (15).
+- **Boxed chapters (a trial, Improved Quality's instructions only):** `BOXED`
+  chapters show no hand and a plain yellow box (`BOX` in `lib/captionBubbles.mjs`, no
+  tail); the words come with the closed card, the card opens by itself, then
+  `MARKS[chapter]` draws a glowing yellow outline around what they talk about
+  (`.iq2-mark`). Where the hand acts the bubble has a tail while it brings the hand out (or
+  comes out of it); what is only shown never has one.
 - **The hand scrolls only when scrolling through a lot is the point** (mobile,
   tour, remote). Everywhere else the mission scrolls by itself to the checkpoint
   and the hand just clicks or points. In *Step by step* the hand answers three
-  questions one after another **in one spot** (`STEP_SPOT` below the chip); after
+  questions one after another **in one spot** (`STEP_SPOT` = 105 stage px below the chip: high enough that
+  the instructions link under the chip is never seen; the user, 2026-10-06); after
   each answer the list scrolls up one question so the next Yes lands under the
   hand.
 - **The mission chip stays on top.** When the opened mission scrolls, the chip

@@ -1,4 +1,4 @@
-// Makes the still frame of every Assets Library card (public/assets-library/*.jpg).
+// Makes the still frame of every Video Library card (public/video-library/*.jpg).
 // Run it after the animations change, against a running site (the dev server
 // or `npm run start`):
 //   npm run gen:posters -- [--base http://localhost:3000] [--only id,id] [--wait 1200]
@@ -9,7 +9,7 @@ import {existsSync} from 'node:fs';
 import {mkdir, mkdtemp, rm, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
-import {ASSETS} from '../lib/assetsLibrary.mjs';
+import {ASSETS} from '../lib/videoLibrary.mjs';
 
 const args = process.argv.slice(2);
 const option = (name, fallback) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : fallback; };
@@ -50,7 +50,7 @@ try {
   await send('Page.enable');
 
   const list = ASSETS.filter(asset => !only?.length || only.includes(asset.id));
-  await mkdir('public/assets-library', {recursive: true});
+  await mkdir('public/video-library', {recursive: true});
   for (const [n, asset] of list.entries()) {
     const url = `${base}${asset.src}?clip=${asset.clip}&mode=still&still=${asset.poster}`;
     await send('Page.navigate', {url: 'about:blank'});

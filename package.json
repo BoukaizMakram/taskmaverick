@@ -8,7 +8,8 @@
     "start": "next start",
     "gen:tts": "node scripts/generate-tts.mjs",
     "fetch:proofs": "node scripts/fetch-proof-images.mjs",
-    "gen:posters": "node scripts/generate-asset-posters.mjs"
+    "gen:posters": "node scripts/generate-asset-posters.mjs",
+    "gen:storyboard": "node scripts/capture-storyboard.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

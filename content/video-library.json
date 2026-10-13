@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "reviews": {
+    "improved-quality-v2/knowledge": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): the tablet pops up with people working → bubble \"As teams work, information is readily available\" first: closed, no tail, stays → the hand comes OUT OF THE BUBBLE → Menu → Knowledge Base → Onboarding → it opens and the video just plays (don't press the video).\nWhen the menu drops, the tablet darkens (bubble and menu stay on top). Remove the old yellow ring on the menu button. Slower: \"too fast, you already moved\".",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/instructions": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): the mission starts closed with the bubble beside it (\"Within each mission, instructions can be added\"); it opens by itself (no click on the mission). A circle goes round the instructions, no finger. Make the yellow of the circle DARKER.\nThen the bubble collapses and reappears at the next thing.",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/alerts": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): no hand (not a button). The bubble is shot out of the alert, words inside, circle the alert; the bubble disappears before the next one is shot out of the next thing. Collapse → reappear, never travel.",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/links": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): same as the alert: no hand, the bubble is shot out of the link, words inside, gone before the next one. (He did not give a separate note.)",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/translation": {
+      "rating": null,
+      "notes": "CEO 10-01: it is a button, so the hand presses it (\"if it's press you use the hand\"). Keep the hand here. To confirm: hand first, or words first?",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/steps": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): the closed bubble comes first, once (\"Executions can be guided step by step\"): no tail, it does not move. Then the hand is shot out of the bubble and clicks, clicks, clicks.",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/visibility": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): not pointing at anything: the bubble is closed (no tail) and its sentence finishes in the next chapter (\"…from any mobile device\").",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/mobile": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): \"You don't need to point because we're not pointing to anything.\" The bubble is closed (no tail) and it finishes the sentence from the chapter before. To confirm: keep the swipe on the photos?",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/performer": {
+      "rating": null,
+      "notes": "CEO 10-01 (final): don't move the performer cells; keep Who performed on the right. No dimming: just highlight the two names in yellow instead of white. No hand. The dashboard is too small: there is room, make it bigger. Keep the bubble the same size as in the other chapters. Later: a little burst (\"a star, boom\").",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    },
+    "improved-quality-v2/timestamp": {
+      "rating": null,
+      "notes": "CEO 10-01 (not said, expected): same treatment as Who performed: highlight in yellow, no dimming, no moving, no hand, bigger dashboard, same bubble size.",
+      "updatedAt": "2026-10-01T22:38:04.968Z"
+    }
+  }
+}

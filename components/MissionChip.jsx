@@ -64,7 +64,7 @@ const MissionChip = forwardRef(function MissionChip(
         </span>
       </div>
       {rate && (ratings.length
-        ? <div className="chip-rate chip-ratings">{ratings.map(r => <span className="chip-rating" key={r.initials} aria-label={`${r.name || r.initials}: ${r.score} out of 5`} style={{ opacity: r.pop ?? 1, transform: `scale(${.6 + .4 * (r.pop ?? 1)})` }}>{r.initials}<sup>{r.score}</sup></span>)}</div>
+        ? <div className="chip-rate chip-ratings">{ratings.map(r => <span className={`chip-rating${r.avatar ? ' chip-rating--avatar' : ''}`} key={r.initials} aria-label={`${r.name || r.initials}: ${r.score} out of 5`} style={{ opacity: r.pop ?? 1, transform: `scale(${.6 + .4 * (r.pop ?? 1)})` }}>{r.avatar ? <img src={r.avatar} alt="" /> : r.initials}<sup>{r.score}</sup></span>)}</div>
         : <div className="chip-rate"><span className="chip-rate-plus" aria-hidden="true">+</span>Rate</div>)}
     </article>
   );

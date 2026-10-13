@@ -1,0 +1,422 @@
+/* Storyboard (/storyboard): an endless dark board of the video's frames, laid out
+   like the reference board: a green label per chapter at the left, a navy bar with
+   the frame's number above each frame, the notes under it. Prefix .sb-. The frames'
+   insides are the demo's own HTML and use the demo's CSS. */
+.sb-root { position:fixed; inset:0; z-index:50; overflow:hidden; background:#1e1e1e; color:#e6e6e6; font:13px/1.4 var(--font-inter),system-ui,sans-serif; user-select:none; -webkit-user-select:none; --sb-blue:#0d99ff; --sb-chrome:#2c2c2c; --sb-line:#434343; }
+.sb-root button { font:inherit; color:inherit; }
+.sb-message { display:grid; place-items:center; text-align:center; user-select:text; }
+.sb-message h1 { margin:0 0 8px; font:600 22px var(--font-poppins),sans-serif; }
+.sb-message p { margin:0 0 14px; color:#aaa; }
+.sb-message a { color:var(--sb-blue); }
+
+/* the few controls, floating over the board */
+.sb-float { position:absolute; top:14px; z-index:5; display:flex; align-items:center; gap:4px; padding:4px 6px; border:1px solid var(--sb-line); border-radius:12px; background:var(--sb-chrome); box-shadow:0 6px 20px rgb(0 0 0 / 30%); }
+.sb-float--left { left:14px; }
+.sb-float--right { right:14px; }
+.sb-back { display:grid; place-items:center; width:28px; height:28px; border-radius:8px; color:#ddd; text-decoration:none; font-size:16px; }
+.sb-back:hover { background:#3d3d3d; }
+.sb-name { padding:0 6px 0 2px; font:600 13px var(--font-inter),sans-serif; }
+.sb-video { padding:4px 6px; border:0; border-radius:8px; background:#3a3a3a; color:#eee; font:500 12px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-video:hover { background:#454545; }
+.sb-status { padding:0 6px; color:#8d8d8d; font-size:12px; }
+.sb-icon { display:grid; place-items:center; width:30px; height:30px; border:0; border-radius:8px; background:transparent; cursor:pointer; }
+.sb-icon svg { width:17px; height:17px; }
+.sb-icon:hover:not(:disabled) { background:#3d3d3d; }
+.sb-icon.is-on { background:var(--sb-blue); color:#fff; }
+.sb-icon:disabled { opacity:.35; cursor:default; }
+a.sb-icon { color:inherit; text-decoration:none; }
+.sb-text-btn { padding:6px 10px; border:0; border-radius:8px; background:#3a3a3a; font:500 12px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-text-btn:hover:not(:disabled) { background:#c0392b; color:#fff; }
+.sb-text-btn:disabled { opacity:.35; cursor:default; }
+
+/* the board */
+.sb-viewport { position:absolute; inset:0; overflow:hidden; touch-action:none; }
+.sb-world { position:absolute; left:0; top:0; transform-origin:0 0; }
+
+/* a chapter's label, level with the number bars (green, like the reference) */
+.sb-section { position:absolute; box-sizing:border-box; display:grid; place-items:center; padding:0 50px; background:linear-gradient(180deg,#32d197,#06986a); color:#fff; font:700 62px/1.05 var(--font-inter),sans-serif; letter-spacing:.01em; text-transform:uppercase; text-align:center; pointer-events:none; }
+.sb-section.is-long { font-size:46px; padding:0 40px; }
+.sb-section span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+.sb-frame { position:absolute; }
+/* Speed (the user, 2026-10-07: "scrolling panning is so slow ... I want the Figma performance"). The page is ~150 live frames of
+   the demos' own HTML; each frame the browser draws costs the main thread a rebuild of its layers on EVERY pan / zoom frame, so
+   what is not on screen is not drawn at all (content-visibility; the size is the frame's own, so nothing moves), and what the
+   demos add to make their own animations fast (will-change layers, scrolling boards) has no use on a still: it only makes the
+   browser keep ~1000 layers. A frame being measured or worked on is always drawn (is-solid). */
+.sb-frame { content-visibility:auto; contain-intrinsic-size:1600px 1470px; }
+.sb-frame.is-solid, .sb-frame.is-dragging { content-visibility:visible; }
+.sb-stage, .sb-stage * { will-change:auto !important; }
+.sb-stage .bn-menu { overflow:hidden !important; }
+/* the menu opening dims everything else in the tablet (the user, 2026-10-13, on the video of Documented evidence): the shade the software has, which the demo hides (ImprovedQualityDemo.css), shown in the videos that ask for it (PROFILES: dimMenu) and as strong as the menu is */
+.sb-stage.sb-dim-menu .iq-tablet .bn-shade { display:block; opacity:var(--iq-menu-pop,1); pointer-events:none; }
+/* the yellow rounded rectangle around a row of the menu the cursor rests on (the user, 2026-10-13: "highlight business media using the yellow rectangle"): the demos' outline (.iq2-mark) at the size of the row, a little wider than its words, fading in with the hover (opacity set by the player) */
+.sb-stage .bn-menu-item > .sb-row-mark { position:absolute; inset:0 -10px; z-index:2; box-sizing:border-box; border:5px solid #ffc800; border-radius:12px; box-shadow:0 0 12px 2px rgb(255 200 0 / 55%); opacity:0; pointer-events:none; }
+/* the number bar above a frame: navy, the number in white in the middle */
+.sb-fhead { box-sizing:border-box; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 44px; background:linear-gradient(180deg,#121928,#364050); color:#fff; cursor:default; }
+.sb-fnum { font:700 66px/1 var(--font-inter),sans-serif; text-align:center; }
+.sb-fname, .sb-ftime { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:500 32px/1 var(--font-inter),sans-serif; font-style:normal; color:rgb(255 255 255 / 55%); }
+.sb-ftime { text-align:right; }
+.sb-frame.is-selected .sb-fhead { background:linear-gradient(180deg,#0b5a99,#0d99ff); }
+.sb-frame.is-edited .sb-fnum::after { content:""; display:inline-block; width:14px; height:14px; margin-left:14px; border-radius:50%; background:var(--sb-blue); vertical-align:middle; }
+
+.sb-art { position:relative; width:1600px; height:900px; background:#fff; overflow:hidden; }
+.sb-thumb { position:absolute; inset:0; width:100%; height:100%; display:block; pointer-events:none; }
+/* Once the live stage is drawn, what is behind it (the capture of the frame, the white of the art) is not needed and must not show:
+   at the stage's anti-aliased edge a hairline of it appeared round every slide (a light outline, once the slides turned dark). */
+.sb-art[data-drawn] { background:transparent; }
+.sb-art[data-drawn] .sb-thumb { display:none; }
+.sb-player { position:absolute; inset:0; width:1600px; }
+.sb-player .ad-fit { background:transparent; }
+.sb-art .ad-stage { cursor:default; }
+.sb-stage * { animation:none !important; transition:none !important; }
+/* every asset can be picked, even where the demo lets clicks through; the dark overlay never blocks */
+.sb-stage [data-sb-root], .sb-stage [data-sb-root] * { pointer-events:auto; }
+.sb-stage [data-sb-root="dim"], .sb-stage [data-sb-root="dim"] * { pointer-events:none; }
+.sb-stage .iq-camera { pointer-events:none; }
+.sb-shape { position:absolute; left:0; top:0; z-index:10; width:1600px; height:900px; overflow:visible; pointer-events:none; }
+.sb-shape path { pointer-events:visiblePainted; }
+.sb-stage [contenteditable] { outline:2px solid var(--sb-blue); outline-offset:3px; user-select:text; -webkit-user-select:text; cursor:text; }
+/* a chat bubble given a width (sizeTo in storyboardDom.js): its words wrap to it, the next line when it gets narrower */
+.sb-stage [data-sb-fit] p[aria-label] { width:var(--sb-fit) !important; max-width:none !important; }
+.sb-stage [data-sb-fit] p[aria-label] > span { white-space:normal !important; overflow-wrap:break-word; }
+/* ... its words as captured flow as one text (the demo's lines were made for its own width); words you typed keep your lines */
+.sb-stage [data-sb-fit] p[aria-label]:not([data-sb-typed]) > span { display:inline !important; }
+.sb-stage [data-sb-fit] p[aria-label]:not([data-sb-typed]) > span + span::before { content:' '; }
+/* what the inspector set on an asset's text (applyStyle in storyboardDom.js): every text in it takes it */
+.sb-stage [data-sb-color], .sb-stage [data-sb-color] * { color:var(--sb-color) !important; }
+.sb-stage [data-sb-font], .sb-stage [data-sb-font] * { font-family:var(--sb-font) !important; }
+.sb-stage [data-sb-font-size], .sb-stage [data-sb-font-size] * { font-size:var(--sb-font-size) !important; }
+.sb-stage [data-sb-weight], .sb-stage [data-sb-weight] * { font-weight:var(--sb-weight) !important; }
+.sb-stage [data-sb-align], .sb-stage [data-sb-align] * { text-align:var(--sb-align) !important; }
+.sb-stage [data-sb-line], .sb-stage [data-sb-line] * { line-height:var(--sb-line) !important; }
+.sb-stage [data-sb-spacing], .sb-stage [data-sb-spacing] * { letter-spacing:var(--sb-spacing) !important; }
+
+.sb-notes-wrap { width:1600px; }
+.sb-notes { width:100%; height:100%; box-sizing:border-box; resize:none; padding:22px 28px; border:2px solid #3b3b3b; border-radius:14px; background:#262626; color:#ececec; font:400 34px/1.45 var(--font-inter),sans-serif; user-select:text; -webkit-user-select:text; }
+.sb-notes::placeholder { color:#6f6f6f; }
+.sb-notes:focus { outline:none; border-color:var(--sb-blue); background:#2a2a2a; }
+
+/* drawn over the board, in screen px */
+.sb-overlay { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.sb-frame-outline, .sb-outline { position:absolute; box-sizing:border-box; border:2px solid var(--sb-blue); }
+.sb-outline span { position:absolute; left:50%; top:100%; margin-top:6px; padding:2px 7px; transform:translateX(-50%); border-radius:4px; background:var(--sb-blue); color:#fff; font:600 11px/1.4 var(--font-inter),sans-serif; white-space:nowrap; }
+.sb-tip { position:absolute; width:14px; height:14px; margin:-7px 0 0 -7px; box-sizing:border-box; border:2px solid var(--sb-blue); border-radius:50%; background:#fff; pointer-events:auto; cursor:move; }
+/* the handles of the selected asset: drag one to scale it (corners; sides too when it can be stretched) */
+.sb-handle { position:absolute; width:11px; height:11px; margin:-5.5px 0 0 -5.5px; box-sizing:border-box; border:2px solid var(--sb-blue); border-radius:2px; background:#fff; pointer-events:auto; }
+.sb-handle--nw, .sb-handle--se { cursor:nwse-resize; }
+.sb-handle--ne, .sb-handle--sw { cursor:nesw-resize; }
+.sb-handle--n, .sb-handle--s { cursor:ns-resize; }
+.sb-handle--e, .sb-handle--w { cursor:ew-resize; }
+/* the right-click menu on an asset */
+.sb-ctx { position:absolute; z-index:9; min-width:250px; padding:6px; border:1px solid var(--sb-line); border-radius:10px; background:var(--sb-chrome); box-shadow:0 12px 34px rgb(0 0 0 / 50%); }
+.sb-ctx button { display:flex; justify-content:space-between; align-items:center; gap:18px; width:100%; padding:7px 10px; border:0; border-radius:6px; background:transparent; text-align:left; cursor:pointer; }
+.sb-ctx button:hover:not(:disabled) { background:var(--sb-blue); color:#fff; }
+.sb-ctx button:disabled { opacity:.45; cursor:default; }
+.sb-ctx kbd { color:#8d8d8d; font:inherit; font-size:11px; }
+.sb-ctx button:hover:not(:disabled) kbd { color:#dff1ff; }
+.sb-ctx hr { margin:5px 4px; border:0; border-top:1px solid var(--sb-line); }
+/* a picture brought in is one thing: it is picked as a whole */
+.sb-stage [data-sb-box="image"] img { pointer-events:none; user-select:none; -webkit-user-drag:none; }
+/* the stroke being drawn with the pencil (it becomes an asset of its frame when the pointer lets go) */
+.sb-ink { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+/* Alt+drag: the duplicate while it is carried, a stage of its own over the board (the original stays) */
+.sb-ghost { position:absolute; left:0; top:0; width:1600px; height:900px; transform-origin:0 0; opacity:.92; pointer-events:none; }
+.sb-ghost .ad-fit, .sb-ghost .sb-stage { background:transparent !important; overflow:visible !important; border:0 !important; box-shadow:none !important; }
+.sb-ghost .ad-fit::after { display:none; }
+/* The demo draws a 2px light border round its player (ImprovedQualityDemo.css, .iq-player .ad-fit::after, #c9d2da). On the white
+   slides it hardly showed; on the dark ones it is a white outline round every slide (and round the video). A slide has no frame of its own. */
+.sb-art .sb-player .ad-fit::after, .sb-pl-shell .ad-fit::after, .sb-pl-over .ad-fit::after { display:none !important; }
+.sb-ghost * { pointer-events:none !important; }
+/* the color wheel in the sidebar: hue around, saturation from the middle, brightness under it */
+.sb-color { margin-top:12px; }
+.sb-wheel { position:relative; margin:0 auto; border-radius:50%; background:radial-gradient(closest-side,#fff,rgb(255 255 255 / 0)),conic-gradient(from 90deg,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00); box-shadow:0 0 0 1px #111; cursor:crosshair; touch-action:none; }
+.sb-wheel b { position:absolute; inset:0; border-radius:50%; background:#000; pointer-events:none; }
+.sb-wheel i { position:absolute; width:14px; height:14px; margin:-7px 0 0 -7px; box-sizing:border-box; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 1px rgb(0 0 0 / 65%); pointer-events:none; }
+.sb-swatches { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:10px; }
+.sb-swatches button { width:20px; height:20px; padding:0; border:1px solid #6a6a6a; border-radius:50%; cursor:pointer; }
+.sb-swatches button.is-on { outline:2px solid var(--sb-blue); outline-offset:1px; }
+.sb-swatches input { flex:1; min-width:0; padding:4px 7px; border:1px solid #4a4a4a; border-radius:6px; background:#1f1f1f; color:#eee; font:inherit; font-size:12px; user-select:text; }
+.sb-tools button { position:relative; }
+.sb-pen-color { position:absolute; right:5px; bottom:5px; width:8px; height:8px; border:1px solid rgb(255 255 255 / 80%); border-radius:50%; }
+.sb-marquee { position:absolute; box-sizing:border-box; border:1px solid var(--sb-blue); background:rgb(13 153 255 / 14%); }
+
+/* tools, zoom, help */
+.sb-bottom { position:absolute; left:50%; bottom:18px; z-index:5; transform:translateX(-50%); }
+.sb-tools { display:flex; gap:4px; padding:5px; border:1px solid var(--sb-line); border-radius:12px; background:var(--sb-chrome); box-shadow:0 6px 20px rgb(0 0 0 / 35%); }
+.sb-tools button { display:grid; place-items:center; width:34px; height:34px; border:0; border-radius:8px; background:transparent; color:#fff; cursor:pointer; }
+.sb-tools button svg { width:18px; height:18px; }
+.sb-tools button:hover { background:#3d3d3d; }
+.sb-tools button.is-on { background:var(--sb-blue); }
+.sb-zoom { position:absolute; right:14px; bottom:18px; z-index:5; }
+.sb-zoom > button { min-width:64px; padding:7px 12px; border:1px solid var(--sb-line); border-radius:10px; background:var(--sb-chrome); cursor:pointer; font-weight:600; box-shadow:0 6px 20px rgb(0 0 0 / 30%); }
+.sb-zoom > button:hover { background:#383838; }
+.sb-zoom-menu { position:absolute; right:0; bottom:calc(100% + 6px); min-width:230px; padding:6px; border:1px solid var(--sb-line); border-radius:10px; background:var(--sb-chrome); box-shadow:0 8px 28px rgb(0 0 0 / 40%); }
+.sb-zoom-menu button { display:flex; justify-content:space-between; gap:18px; width:100%; padding:7px 10px; border:0; border-radius:6px; background:transparent; text-align:left; cursor:pointer; }
+.sb-zoom-menu button:hover { background:var(--sb-blue); color:#fff; }
+.sb-zoom-menu kbd { color:#8d8d8d; font:inherit; font-size:11px; }
+.sb-zoom-menu button:hover kbd { color:#dff1ff; }
+.sb-help { position:absolute; left:14px; bottom:18px; z-index:6; width:340px; padding:14px 16px; border:1px solid var(--sb-line); border-radius:12px; background:var(--sb-chrome); box-shadow:0 8px 28px rgb(0 0 0 / 40%); }
+.sb-help h3 { margin:6px 0; font:600 12px var(--font-inter),sans-serif; text-transform:uppercase; letter-spacing:.04em; color:#8d8d8d; }
+.sb-help dl { display:grid; grid-template-columns:1fr auto; gap:5px 14px; margin:0 0 8px; }
+.sb-help dt { color:#eee; }
+.sb-help dd { margin:0; color:#9a9a9a; text-align:right; }
+
+/* moving the board: lifted onto its own layer so it pans smoothly, dropped again when it stops (so it is drawn sharp) */
+.sb-world.is-moving { will-change:transform; }
+.sb-overlay { transform-origin:0 0; }
+
+/* Shift+A: the product's UI as a grid of thumbnails by category */
+.sb-menu-wrap { position:absolute; inset:0; z-index:8; }
+.sb-menu { position:absolute; left:50%; top:62px; width:min(860px,calc(100vw - 28px)); max-height:calc(100vh - 90px); display:flex; flex-direction:column; transform:translateX(-50%); padding:10px; border:1px solid var(--sb-line); border-radius:14px; background:var(--sb-chrome); box-shadow:0 22px 60px rgb(0 0 0 / 60%); user-select:none; }
+.sb-menu > input { flex:none; width:100%; box-sizing:border-box; padding:10px 12px; border:0; border-radius:9px; background:#1f1f1f; color:#f0f0f0; font:14px var(--font-inter),sans-serif; user-select:text; }
+.sb-menu > input:focus { outline:2px solid var(--sb-blue); outline-offset:-2px; }
+.sb-menu-body { flex:1; min-height:0; margin-top:8px; overflow-y:auto; padding:0 2px 4px; }
+.sb-menu-body h4 { margin:14px 4px 8px; color:#a8a8a8; font:600 11px var(--font-inter),sans-serif; letter-spacing:.07em; text-transform:uppercase; }
+.sb-menu-body section:first-child h4 { margin-top:4px; }
+.sb-tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.sb-tile { display:flex; flex-direction:column; gap:6px; min-width:0; padding:6px; border:2px solid transparent; border-radius:11px; background:#353535; text-align:left; cursor:pointer; }
+.sb-tile.is-on { border-color:var(--sb-blue); background:#3a4552; }
+.sb-tile-pic { position:relative; height:118px; overflow:hidden; border-radius:7px; background:#f3f5f8; }
+.sb-tile-pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; }
+.sb-tile-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:500 12px var(--font-inter),sans-serif; color:#e8e8e8; }
+.sb-menu-none { margin:18px 6px; color:#8d8d8d; }
+
+/* the + between two frames: a line where the new frame goes, and the button on it */
+.sb-gap { position:absolute; width:2px; margin-left:-1px; background:var(--sb-blue); border-radius:1px; }
+.sb-gap-add { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:grid; place-items:center; width:32px; height:32px; padding:0 0 2px; border:0; border-radius:50%; background:var(--sb-blue); color:#fff; font:400 24px/1 var(--font-inter),sans-serif; cursor:pointer; pointer-events:auto; box-shadow:0 4px 14px rgb(0 0 0 / 45%); }
+.sb-gap-add:hover { background:#34aaff; transform:translate(-50%,-50%) scale(1.12); }
+
+/* frames glide to their place when one is added, moved or taken away */
+.sb-frame { transform-origin:50% 25%; transition:left .36s cubic-bezier(.22,.9,.28,1), top .36s cubic-bezier(.22,.9,.28,1), transform .32s cubic-bezier(.22,.9,.28,1); }
+.sb-section { transition:top .36s cubic-bezier(.22,.9,.28,1); }
+.sb-fhead { cursor:grab; }
+/* a new frame pops in */
+.sb-frame.is-new { animation:sb-pop .5s cubic-bezier(.2,.9,.3,1.15) both; }
+@keyframes sb-pop { from { opacity:0; transform:translateY(34px) scale(.9); } to { opacity:1; transform:none; } }
+/* the frame being carried: lifted, under the pointer; where it would land is a dashed slot */
+.sb-frame.is-dragging { z-index:40; transition:none; filter:drop-shadow(0 34px 60px rgb(0 0 0 / 55%)); }/* the frame held never animates: it stays under the pointer (the others slide to make room) */
+.sb-frame.is-dragging .sb-fhead { cursor:grabbing; }
+.sb-slot { position:absolute; box-sizing:border-box; border:4px dashed var(--sb-blue); border-radius:16px; background:rgb(13 153 255 / 9%); pointer-events:none; transition:left .36s cubic-bezier(.22,.9,.28,1), top .36s cubic-bezier(.22,.9,.28,1); }
+
+/* the Trash: said when nothing is in it, and the note that follows a delete */
+.sb-empty { position:absolute; left:50%; top:46%; z-index:4; width:min(420px,calc(100vw - 48px)); transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+.sb-empty b { display:block; margin-bottom:8px; font:600 18px var(--font-poppins),sans-serif; color:#f0f0f0; }
+.sb-empty p { margin:0; color:#8d8d8d; font-size:13px; line-height:1.5; }
+.sb-toast { position:absolute; left:50%; bottom:72px; z-index:7; display:flex; align-items:center; gap:14px; padding:9px 10px 9px 16px; transform:translateX(-50%); border:1px solid var(--sb-line); border-radius:12px; background:var(--sb-chrome); box-shadow:0 10px 30px rgb(0 0 0 / 45%); font-size:13px; white-space:nowrap; }
+.sb-toast button, .sb-toast a { padding:5px 10px; border:0; border-radius:7px; background:#3d3d3d; color:#fff; font:500 12px var(--font-inter),sans-serif; text-decoration:none; cursor:pointer; }
+.sb-toast button:hover, .sb-toast a:hover { background:var(--sb-blue); }
+
+/* the sidebar (the inspector), like Figma's design panel: the board leaves room for it */
+.sb-root { --sb-side:248px; }
+.sb-viewport { right:var(--sb-side); }
+.sb-float--right, .sb-zoom { right:calc(var(--sb-side) + 14px); }
+.sb-bottom, .sb-toast, .sb-empty { left:calc((100% - var(--sb-side)) / 2); }
+.sb-side { position:absolute; top:0; right:0; bottom:0; z-index:6; width:var(--sb-side); box-sizing:border-box; overflow-y:auto; overscroll-behavior:contain; border-left:1px solid var(--sb-line); background:var(--sb-chrome); font-size:11px; scrollbar-width:thin; scrollbar-color:#4a4a4a transparent; }
+.sb-side-head { display:flex; flex-direction:column; gap:2px; padding:14px 16px 12px; border-bottom:1px solid var(--sb-line); }
+.sb-side-head b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 12px var(--font-inter),sans-serif; color:#f0f0f0; }
+.sb-side-head small { color:#8d8d8d; font-size:11px; }
+.sb-sec { padding:10px 12px 12px 16px; border-bottom:1px solid var(--sb-line); }
+.sb-sec > header { display:flex; align-items:center; min-height:24px; }
+.sb-sec h4 { flex:1; margin:0; font:600 11px var(--font-inter),sans-serif; color:#e6e6e6; }
+.sb-root .sb-sec-btn { display:grid; place-items:center; flex:none; width:24px; height:24px; padding:0; border:0; border-radius:5px; background:transparent; color:#bbb; cursor:pointer; }
+.sb-sec-btn svg { width:15px; height:15px; }
+.sb-root .sb-sec-btn:hover { background:#3d3d3d; color:#fff; }
+.sb-row { display:flex; align-items:center; gap:8px; margin-top:6px; }
+.sb-row > .sb-field, .sb-row-fill { flex:1 1 0; min-width:0; }
+.sb-field { display:flex; align-items:center; height:28px; box-sizing:border-box; border:1px solid transparent; border-radius:5px; background:#383838; color:#ddd; }
+.sb-field:hover { border-color:#4d4d4d; }
+.sb-field:focus-within { border-color:var(--sb-blue); }
+.sb-field.is-off { opacity:.45; pointer-events:none; }
+.sb-field.is-wide { width:100%; margin-top:6px; }
+.sb-field-k { display:grid; place-items:center; flex:none; width:24px; height:100%; color:#8d8d8d; font-size:11px; cursor:ew-resize; touch-action:none; }
+.sb-field-k svg { width:13px; height:13px; }
+.sb-field input { flex:1; width:100%; min-width:0; height:100%; padding:0 6px 0 0; border:0; background:transparent; color:#eee; font:inherit; font-size:11px; outline:none; user-select:text; -webkit-user-select:text; }
+.sb-field.is-wide input { padding-left:8px; }
+.sb-field i { padding-right:7px; color:#8d8d8d; font-style:normal; }
+.sb-field--select select { flex:1; min-width:0; height:100%; padding:0 6px; border:0; background:transparent; color:#eee; font:inherit; font-size:11px; outline:none; cursor:pointer; }
+.sb-field--select option { background:#2c2c2c; color:#eee; }
+.sb-colorfield { margin-top:6px; }
+.sb-colorfield > .sb-row { margin-top:0; }
+.sb-field--color { padding-left:5px; }
+.sb-root .sb-chip { flex:none; width:18px; height:18px; margin-right:7px; padding:0; border:1px solid rgb(255 255 255 / 20%); border-radius:3px; cursor:pointer; }
+.sb-iconrow { display:flex; gap:2px; margin-top:6px; padding:2px; border-radius:6px; background:#383838; }
+.sb-root .sb-iconrow button { flex:1; display:grid; place-items:center; height:24px; padding:0; border:0; border-radius:4px; background:transparent; color:#bbb; cursor:pointer; }
+.sb-iconrow button svg { width:15px; height:15px; }
+.sb-root .sb-iconrow button:hover { background:#464646; color:#fff; }
+.sb-root .sb-iconrow button.is-on { background:#4d4d4d; color:#fff; }
+.sb-lock { display:grid; place-items:center; flex:none; width:24px; height:24px; color:#5e5e5e; }
+.sb-lock.is-on { color:#ddd; }
+.sb-lock svg { width:14px; height:14px; }
+.sb-effect { color:#ddd; }
+.sb-effect > span:nth-child(2) { flex:1; }
+.sb-effect-icon { display:grid; place-items:center; width:24px; height:24px; border-radius:5px; background:#383838; color:#bbb; }
+.sb-effect-icon svg { width:15px; height:15px; }
+.sb-sublabel { margin-top:10px; color:#8d8d8d; }
+.sb-buttons { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.sb-root .sb-buttons button { flex:1 1 40%; padding:7px 8px; border:1px solid #4a4a4a; border-radius:6px; background:#363636; font-size:11px; font-weight:500; cursor:pointer; }
+.sb-root .sb-buttons button:hover:not(:disabled) { background:#444; }
+.sb-buttons button:disabled { opacity:.4; cursor:default; }
+.sb-root .sb-buttons button.is-on { border-color:var(--sb-blue); background:rgb(13 153 255 / 18%); color:#fff; }
+.sb-backups { max-height:300px; margin:6px 0 0; padding:0; overflow-y:auto; list-style:none; }
+.sb-backups li { display:flex; align-items:center; gap:8px; padding:6px 0; border-top:1px solid #383838; }
+.sb-backups li:first-child { border-top:0; }
+.sb-backups span { flex:1; display:flex; flex-direction:column; min-width:0; }
+.sb-backups b { font-weight:500; color:#ddd; }
+.sb-backups i { color:#8d8d8d; font-style:normal; }
+.sb-root .sb-backups button { padding:4px 8px; border:1px solid #4a4a4a; border-radius:5px; background:#363636; font-size:11px; cursor:pointer; }
+.sb-root .sb-backups button:hover { border-color:var(--sb-blue); background:var(--sb-blue); color:#fff; }
+.sb-side-none { margin:6px 0 0; color:#8d8d8d; }
+.sb-side .sb-color { margin-top:8px; }
+.sb-light { display:flex; align-items:center; gap:8px; margin-top:10px; color:#9a9a9a; }
+.sb-light input { flex:1; min-width:0; accent-color:var(--sb-blue); }
+.sb-num { min-width:20px; color:#ddd; text-align:right; }
+
+/* a line: picked by its label, renamed on it; an empty one, a new one */
+.sb-section { pointer-events:auto; cursor:default; }
+.sb-section.is-selected { outline:12px solid var(--sb-blue); outline-offset:10px; }
+.sb-section .sb-section-edit { display:block; overflow:visible; -webkit-line-clamp:unset; min-width:1ch; outline:none; cursor:text; user-select:text; -webkit-user-select:text; }
+.sb-world .sb-line-empty, .sb-world .sb-line-add { position:absolute; box-sizing:border-box; display:grid; place-items:center; padding:0; border:6px dashed #4a4a4a; border-radius:18px; background:transparent; color:#8d8d8d; font:600 56px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-line-empty span, .sb-line-add span { display:flex; align-items:center; gap:24px; }
+.sb-line-empty svg { width:72px; height:72px; }
+.sb-world .sb-line-add { border-width:5px; border-radius:0; font-size:44px; }
+.sb-line-add svg { width:52px; height:52px; }
+.sb-world .sb-line-empty:hover, .sb-world .sb-line-add:hover { border-color:var(--sb-blue); background:rgb(13 153 255 / 6%); color:var(--sb-blue); }
+
+/* far out, the frames' names, times and notes are too small to read: hidden by a class the zoom sets (nothing is rendered again) */
+.sb-world.is-far .sb-fname, .sb-world.is-far .sb-ftime, .sb-world.is-far .sb-notes { visibility:hidden; }
+/* snapping: the red lines an asset being dragged lines up with (lib/storyboardSnap.mjs) */
+.sb-guide { position:absolute; background:#f24822; pointer-events:none; }
+.sb-guide--x { width:1px; margin-left:-.5px; }
+.sb-guide--y { height:1px; margin-top:-.5px; }
+/* effects: one row each (drop shadow, layer blur, background blur); a section's + that offers a short list */
+.sb-effect .sb-effect-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sb-effect .sb-field { flex:0 0 78px; }
+.sb-sec-menu { position:relative; }
+.sb-sec-menu select { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+.sb-root .sb-sec-btn:disabled { opacity:.35; background:transparent; cursor:default; }
+/* the W / H locks: dim when off, bright when on */
+.sb-root .sb-lockbtn { color:#6a6a6a; }
+.sb-root .sb-lockbtn.is-on { color:#fff; background:#3d3d3d; }
+.sb-row > .sb-lockbtn { margin-left:-4px; }
+
+/* the video, at the right of the first line: the frames played one after the other as the board shows them */
+.sb-pl { position:absolute; user-select:none; -webkit-user-select:none; transition:left .36s cubic-bezier(.22,.9,.28,1); }
+.sb-pl-head { box-sizing:border-box; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 44px; background:linear-gradient(180deg,#32236f,#6a4bd0); color:#fff; cursor:default; }
+.sb-pl-screen { position:relative; width:1600px; height:900px; background:transparent; overflow:hidden; cursor:pointer; }/* (every frame paints its own background layer, white by default: a white screen behind it only showed as a hairline at the edge) */
+.sb-pl-screen * { pointer-events:none !important; }/* a click anywhere on the picture plays or pauses it */
+.sb-pl-screen.is-hit { cursor:text; }/* (a double-click on a text: the words take the pointer while they are retyped) */
+.sb-pl-screen.is-hit [data-sb-root], .sb-pl-screen.is-hit [data-sb-root] * { pointer-events:auto !important; }
+.sb-pl-screen [contenteditable] { outline:none; user-select:text; -webkit-user-select:text; cursor:text; }
+.sb-pl-shell { position:absolute; inset:0; width:1600px; }
+.sb-pl-over, .sb-pl-over .ad-fit, .sb-pl-over .sb-stage { background:transparent !important; }
+/* an iPad's frame in another color (Device color): the photo of the frame lightened to it, only where the frame is
+   (its own shape as a mask), so the black becomes the color and the highlights stay */
+.sb-stage .tbl-tablet[data-sb-bezel]::after, .sb-pl-shell .tbl-tablet[data-sb-bezel]::after { content:''; position:absolute; inset:0; background:var(--sb-bezel); -webkit-mask:url('/tablet-frame.png') center / 100% 100% no-repeat; mask:url('/tablet-frame.png') center / 100% 100% no-repeat; mix-blend-mode:lighten; pointer-events:none; }
+.sb-stage .tbl-tablet[data-sb-bezel="paint"]::after, .sb-pl-shell .tbl-tablet[data-sb-bezel="paint"]::after { mix-blend-mode:normal; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1285 896'%3E%3Cpath fill-rule='evenodd' d='M83 22H1199A36 36 0 0 1 1235 58V838A36 36 0 0 1 1199 874H83A36 36 0 0 1 47 838V58A36 36 0 0 1 83 22ZM112 64H1171A20 20 0 0 1 1191 84V810A20 20 0 0 1 1171 830H112A20 20 0 0 1 92 810V84A20 20 0 0 1 112 64Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1285 896'%3E%3Cpath fill-rule='evenodd' d='M83 22H1199A36 36 0 0 1 1235 58V838A36 36 0 0 1 1199 874H83A36 36 0 0 1 47 838V58A36 36 0 0 1 83 22ZM112 64H1171A20 20 0 0 1 1191 84V810A20 20 0 0 1 1171 830H112A20 20 0 0 1 92 810V84A20 20 0 0 1 112 64Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }/* (its own outline, corners less round than the photo's: 36 px for 55) *//* a gradient (chrome, gold...) takes the frame's place, a plain color only lifts its black */
+/* the UI is always on top of the frame: a bigger screen covers part of the frame, so the frame is thinner */
+.sb-stage .tbl-tablet[data-sb-bezel] > .tbl-screen, .sb-pl-shell .tbl-tablet[data-sb-bezel] > .tbl-screen { z-index:1; }
+/* rim light, so the frame feels solid: a steel-colored edge where the light hits it (top left), a dark one on the far side
+   (bottom right) a thin glow all round and a soft one along the top; the frame's own shape (the mask) gives the edges */
+.sb-stage .tbl-tablet[data-sb-bezel="paint"]::after, .sb-pl-shell .tbl-tablet[data-sb-bezel="paint"]::after { filter:drop-shadow(-2px -2px 0 rgb(120 132 144 / 85%)) drop-shadow(2px 3px 0 rgb(0 0 0 / 68%)) drop-shadow(0 0 2px rgb(100 112 124 / 60%)) drop-shadow(0 -3px 6px rgb(110 122 134 / 30%)); }
+.sb-stage .tbl-tablet[data-sb-bezel="paint"][data-sb-flat]::after, .sb-pl-shell .tbl-tablet[data-sb-bezel="paint"][data-sb-flat]::after { filter:none; }/* a plain frame (Black): no rim light, no stroke */
+.sb-bezel-rim { position:absolute; inset:0; pointer-events:none; }/* the polished edge (a paint with edge) */
+.sb-bezel-rim svg { display:block; width:100%; height:100%; overflow:visible; }
+.sb-pl-backdrop, .sb-pl-bg { position:absolute; inset:0; }
+.sb-pl-backdrop { z-index:0; visibility:hidden; }
+.sb-pl-shell .sb-stage { background:transparent !important; }/* (the frame's background is its own layer behind it) */
+.sb-pl-over .sb-pl-bg { visibility:hidden; }/* (a frame gliding in over the one before: that one shows through) */
+.sb-pl-bar { box-sizing:border-box; display:grid; grid-template-columns:150px 1fr auto; grid-template-rows:1fr auto; align-items:center; column-gap:44px; row-gap:6px; padding:34px 44px 30px; border-radius:20px; background:#252525; }
+.sb-pl-play { grid-row:1 / span 2; display:grid; place-items:center; width:150px; height:150px; padding:0; border:0; border-radius:50%; background:#6a4bd0; color:#fff; cursor:pointer; box-shadow:0 8px 28px rgb(0 0 0 / 45%); }
+.sb-pl-play svg { width:70px; height:70px; }
+.sb-pl-play:hover { background:#7d62dc; }
+.sb-pl-seek { align-self:center; padding:36px 0; cursor:pointer; touch-action:none; }/* (a tall grip around the thin bar) */
+.sb-pl-track { position:relative; height:30px; border-radius:15px; background:#444; }
+.sb-pl-fill { position:absolute; inset:0; border-radius:15px; background:#8f73f0; transform:scaleX(0); transform-origin:0 50%; }
+.sb-pl-mark { position:absolute; top:-9px; width:6px; height:48px; margin-left:-3px; border-radius:3px; background:#bdbdbd; opacity:.7; }/* where a line starts */
+.sb-pl-knob { position:absolute; top:50%; left:0; width:62px; height:62px; margin:-31px 0 0 -31px; border-radius:50%; background:#fff; box-shadow:0 4px 16px rgb(0 0 0 / 55%); }
+.sb-pl-clock { justify-self:end; font:600 58px/1 var(--font-inter),sans-serif; font-variant-numeric:tabular-nums; color:#fff; }
+/* a video of a line of videos (the user, 2026-10-12: "make them videos not slides"): it takes the place of a slide's picture, in the slide's own frame (its header is purple, a
+   video's, and says VIDEO; its notes are the video's); the controls are over the screen: a big play button until it is played, a bar at the bottom */
+.sb-art--cell { background:#1b1c20; }
+.sb-frame.is-cell:not(.is-selected):not(.is-playing) .sb-fhead { background:linear-gradient(180deg,#32236f,#6a4bd0); }
+.sb-frame.is-cell .sb-ftime { font-weight:700; letter-spacing:.14em; color:rgb(255 255 255 / 80%); }
+.sb-pl-cell { left:0; top:0; width:1600px; height:900px; transition:none; }
+.sb-pl-cell .sb-pl-screen { position:absolute; inset:0; z-index:0; }/* (z-index: its own stacking, the frames drawn in it have theirs: the controls are over all of them) */
+.sb-pl-over-bar { position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; display:grid; grid-template-columns:130px 1fr auto; align-items:center; column-gap:44px; height:300px; padding:96px 56px 18px; z-index:3; background:linear-gradient(0deg, rgb(10 10 14 / 84%) 36%, rgb(10 10 14 / 0%)); transition:opacity .25s; }
+.sb-pl-cell.is-playing .sb-pl-over-bar { opacity:.6; }
+.sb-pl-cell.is-playing:hover .sb-pl-over-bar { opacity:1; }
+.sb-pl-over-bar .sb-pl-play { grid-row:auto; width:130px; height:130px; }
+.sb-pl-over-bar .sb-pl-play svg { width:60px; height:60px; }
+.sb-pl-over-bar .sb-pl-seek { padding:44px 0; }
+.sb-pl-over-bar .sb-pl-clock { font-size:50px; }
+.sb-pl-big { position:absolute; left:50%; top:25%; width:170px; height:170px; margin:-85px 0 0 -85px; display:grid; place-items:center; border-radius:50%; z-index:2; background:rgb(106 75 208 / 82%); color:#fff; box-shadow:0 0 0 6px rgb(255 255 255 / 70%), 0 14px 56px rgb(0 0 0 / 50%); pointer-events:none; transition:opacity .25s, transform .25s; }
+.sb-pl-big svg { width:82px; height:82px; margin-left:8px; }
+.sb-pl-cell.is-started .sb-pl-big, .sb-pl-cell.is-playing .sb-pl-big { opacity:0; transform:scale(.8); }
+.sb-pl-label { grid-column:2 / span 2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:500 42px/1.1 var(--font-inter),sans-serif; color:rgb(255 255 255 / 55%); }
+/* a color or a gradient (the Background of a frame, the Fill of an asset) */
+.sb-paint { display:grid; gap:8px; margin-top:4px; }
+.sb-paint-bar { height:26px; border:1px solid #4a4a4a; border-radius:8px; }
+.sb-stop { display:grid; gap:4px; padding-top:6px; border-top:1px solid #333; }
+.sb-paint-tools { align-items:center; justify-content:space-between; }
+.sb-paint-add { padding:5px 10px; border:0; border-radius:7px; background:#3a3a3a; color:#eee; font:500 12px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-paint-add:hover { background:#4a4a4a; }
+.sb-paint-brushed { display:flex; align-items:center; gap:6px; color:#bdbdbd; font:500 12px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-presets { display:grid; grid-template-columns:repeat(4, 1fr); gap:6px; }
+.sb-presets button { height:36px; padding:0; border:1px solid #6a6a6a; border-radius:7px; cursor:pointer; transition:transform .12s; }
+.sb-presets button:hover { transform:scale(1.07); }
+.sb-presets button.is-on { outline:2px solid var(--sb-blue); outline-offset:1px; }
+/* the frame the video is on, while it plays */
+.sb-frame.is-playing .sb-fhead { background:linear-gradient(180deg,#0b6b45,#1fc27d); }
+
+/* the pen: a slide with a handwriting animation has a small blue round play button at its top right while it is selected */
+.sb-play { position:absolute; z-index:6; width:30px; height:30px; padding:0; display:grid; place-items:center; border:0; border-radius:50%; background:#0d99ff; box-shadow:0 2px 8px rgb(0 0 0 / 45%), 0 0 0 2px rgb(255 255 255 / 14%); cursor:pointer; pointer-events:auto; transition:transform .12s, background .12s; }
+.sb-play:hover { background:#34aaff; transform:scale(1.08); }
+.sb-play svg { width:15px; height:15px; margin-left:1px; }
+.sb-play.is-playing svg { margin-left:0; }
+.sb-play.is-playing { background:#0b7fd6; }
+
+/* The lesson screen of a training (lib/storyboardLesson.mjs; the user, 2026-10-13): the training's video on top (blurred, a play button), under it a quiz of statements to tick, Submit & Close.
+   It is drawn in the place of the mission details, 360 x 573 like them. */
+.sb-lq { background:#fff; font:13px/1.4 var(--font-poppins),Poppins,sans-serif; color:#111; }
+.sb-lq-video { position:relative; flex:none; height:168px; overflow:hidden; background:#59636c; }
+/* (the user, 2026-10-13: "make the video on top playing before answering the quiz") the video is the clip itself, sharp; paused (`is-wait`, before the cursor presses play) its picture is blurred, scaled a
+   little so the blur does not show the edge; the player clears the blur, the play button and the bar by the clock (inline styles) once it plays */
+.sb-lq-video video { position:absolute; inset:0; width:100%; height:100%; display:block; object-fit:cover; background:#59636c; }
+.sb-lq.is-wait .sb-lq-video video { transform:scale(1.16); filter:blur(9px) saturate(.9); }
+.sb-lq-play { position:absolute; left:50%; top:50%; width:64px; height:64px; margin:-32px 0 0 -32px; display:grid; place-items:center; border-radius:50%; background:#fff; color:#1271b7; box-shadow:0 4px 14px rgb(0 0 0 / 18%); }
+.sb-lq-play svg { width:30px; height:30px; margin-left:3px; }
+.sb-lq:not(.is-wait) .sb-lq-play { display:none; }
+.sb-lq-track { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:9px; padding:20px 12px 9px; color:#fff; background:linear-gradient(rgb(0 0 0 / 0%), rgb(0 0 0 / 38%)); }
+.sb-lq.is-wait .sb-lq-track { opacity:0; }
+.sb-lq-rail { flex:1; height:4px; border-radius:2px; overflow:hidden; background:rgb(255 255 255 / 45%); }
+.sb-lq-rail i { display:block; height:100%; border-radius:2px; background:#3db3e2; }
+.sb-lq-track time { font:600 11px/1 var(--font-poppins),Poppins,sans-serif; font-variant-numeric:tabular-nums; text-shadow:0 1px 3px rgb(0 0 0 / 50%); }
+.sb-lq-bar { flex:none; height:42px; display:flex; align-items:center; justify-content:space-between; padding-left:15px; border-bottom:1px solid #e3e7ea; }
+.sb-lq-bar b { font-size:14px; font-weight:600; }
+.sb-lq-arrows { display:flex; height:100%; }
+.sb-lq-arrows i { width:42px; height:100%; display:grid; place-items:center; border-left:1px solid #e3e7ea; color:#1271b7; }
+.sb-lq-arrows svg { width:17px; height:17px; }
+.sb-lq-body { flex:1; min-height:0; padding:15px 15px 0; }
+.sb-lq-q { margin:0 0 20px; }
+.sb-lq-q b { display:block; font-size:12.5px; font-weight:600; line-height:1.35; }
+.sb-lq-q small { display:block; margin:5px 0 0 11px; font-size:7px; }
+.sb-lq-opt { display:flex; align-items:flex-start; gap:9px; margin-top:14px; }
+.sb-lq-box { flex:none; width:18px; height:18px; margin-top:1px; box-sizing:border-box; display:grid; place-items:center; border:2px solid #6b7480; border-radius:4px; background:#fff; }
+.sb-lq-box svg { width:14px; height:14px; }
+.sb-lq-opt.is-on .sb-lq-box { border-color:#1271b7; background:#1271b7; }
+.sb-lq-text { font-size:12.5px; line-height:1.55; }
+.sb-lq-submit { flex:none; height:40px; display:grid; place-items:center; background:#1271b7; color:#fff; font-size:13.5px; font-weight:600; }
+/* the videos do not show the file name under a photo (the user, 2026-10-13: the blue text under the photo, barely seen, cut by the next card) */
+.sb-stage.sb-in-video .iq2-m-file { display:none !important; }
+/* The peers' ratings in a video (the user, 2026-10-13: "don't show the avatar in mission until it hits submit", "fix the purple line to be connected here, it connects afterwards but it didn't connect before",
+   "make it has an animation like trim path in After Effects, where it smoothly goes from mission to rating 1 then rating 2"): the connector is drawn as a path out of the mission, down the bracket, into the
+   first card's tick, on down, into the second's; the cards pop as it gets to them; the faces on the mission pop when their Submit is pressed. The clock sets custom properties (`pensAt`, `peerDraw`)
+   and these rules turn them into clips and opacity: never the elements' own inline styles, which a move got ready ahead would read and take half drawn as where the next slide goes from. The bracket is
+   always its full height (the slides had it as far as the demo had got when each was taken). Not set (no mark) = as the slide has it. */
+.sb-stage.sb-in-video [data-sb-peers] .iq2-line--out { clip-path: inset(0 calc((1 - var(--sb-out, 1)) * 100%) 0 0); }
+.sb-stage.sb-in-video [data-sb-peers] .iq2-line--bracket { height: 294px !important; clip-path: inset(0 0 calc((1 - var(--sb-trunk, 1)) * 100%) 0); }
+.sb-stage.sb-in-video [data-sb-peers] .iq2-line--tick { clip-path: inset(0 calc((1 - var(--sb-tick, 1)) * 100%) 0 0); }
+.sb-stage.sb-in-video [data-sb-peers] .iq2-peer-slot { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+.sb-stage.sb-in-video [data-sb-peers] .iq2-peer-slot > .iq2-rate-card { opacity: var(--sb-pop, 1); transform: translateY(calc((1 - var(--sb-pop, 1)) * 14px)) scale(calc(0.94 + 0.06 * var(--sb-pop, 1))); transform-origin: 0 50%; }
+.sb-stage.sb-in-video .chip-rating[data-sb-rater] { opacity: var(--sb-av, 0) !important; transform: scale(calc(0.6 + 0.4 * var(--sb-av, 0))) !important; }

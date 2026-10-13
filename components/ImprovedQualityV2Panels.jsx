@@ -5,7 +5,7 @@ import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {IconBack} from './PhoneShell';
 import MissionChip from './MissionChip';
 import {BUSINESS_PROOFS,proofSrc} from '@/lib/businessProofs.mjs';
-import {ease,MOTION,MICRO,QUIZ_ANSWERS,PROOF_FILES,RATE_LABELS,KNOWLEDGE} from '@/lib/improvedQualityV2Story.mjs';
+import {ease,MOTION,MICRO,QUIZ_ANSWERS,PROOF_FILES,RATE_LABELS,KNOWLEDGE,SELF} from '@/lib/improvedQualityV2Story.mjs';
 
 export const SHELVING='/demo-quality/shelving.png';
 export const DAMAGE='/demo-quality/damaged-hinge.png';
@@ -20,6 +20,8 @@ export function DemoVideo({time=0,src=CLIP,playing=false,speed=1,poster=DAMAGE})
 export function PanelHead({title='Mission Details'}){return <header className="iq-panel-head"><span className="om-hbtn"><IconBack/></span><b>{title}</b><div><span className="iq-close">×</span></div></header>;}
 function MediaBadge(){return <span className="iq-media-badge"><img src="/mission-logo.png" alt=""/>Media</span>;}
 const PlayIcon=()=><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5Z"/></svg>;
+// the big play button over a video that has not started: a rounded triangle, in blue on a white circle
+const BigPlay=()=><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 5.8v12.4l10.4-6.2Z" fill="currentColor" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round"/></svg>;
 const PauseIcon=()=><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>;
 const CheckIcon=()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>;
 export const PhotoIcon=()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true"><path d="M3.5 8.5h3.2l1.8-2.7h7l1.8 2.7h3.2v10.7h-17Z"/><circle cx="12" cy="13.5" r="3.4"/></svg>;
@@ -30,22 +32,25 @@ function PlayerBar({time,length,running}){return <div className="iq2-bar"><span>
 
 // ---- Chapter 2: Knowledge Base, then Onboarding's video ------------------------
 const KNOWLEDGE_ITEMS=[['Punctuality','08-28-26','09:13 PM'],['Company Culture','05-02-26','12:44 AM'],['Onboarding','08-20-26','11:54 PM'],['Procedures','04-14-26','02:03 AM'],['Timesheet Filing','03-27-26','12:15 AM'],['Workplace Safety','07-31-26','08:47 PM'],['Customer Service','07-08-26','07:41 PM']];
+const OPENED=2;// the card that opens: Onboarding
 export function KnowledgeBase({frame,playing,speed}){
  const {reveal,since,viewer,video}=frame.kb,running=video>0&&video<KNOWLEDGE.clip;
+ // Onboarding opens in place, the way the mission expands: its card grows taller, its title and the video come in under what the
+ // card already says, and the cards below it move down. (The top of the card is the card as it was: the hand's target.)
+ const card=([title,date,time],i)=>{
+  const pop=ease((since-.15-i*.07)/.35),style={opacity:pop,transform:`translateY(${10*(1-pop)}px)`};
+  if(i!==OPENED||viewer<=0)return <article className="iq-kb-card" key={title} data-iq-target={`kb-type-${i}`} style={style}><MediaBadge/><h3>{title}</h3><time>{date} {time}</time></article>;
+  return <article className="iq-kb-card iq2-kb-open" key={title} style={style}>
+   <div className="iq2-kb-top" data-iq-target={`kb-type-${i}`}><MediaBadge/><h3>{title}</h3><time>{date} {time}</time></div>
+   <Reveal open={viewer}>
+    <p className="iq2-kb-title">Badging In On Your First Day</p>
+    <div className="iq2-kb-film" data-iq-target="kb-video"><DemoVideo src={ONBOARDING} poster={null} time={video} playing={playing&&running} speed={speed}/>{video===0&&<span className="iq2-bigplay"><BigPlay/></span>}</div>
+   </Reveal>
+  </article>;
+ };
  return <div className="iq-knowledge-layer"><div className="mi-drawer-shade iq-knowledge-shade"/><aside className="iq-knowledge" aria-label="Knowledge Base" style={{transform:`translateX(${(1-reveal)*100}%)`}}>
   <PanelHead title="Knowledge Base"/>
-  <div className="iq-kb-list"><div className="iq-kb-track">{KNOWLEDGE_ITEMS.map(([title,date,time],i)=>{const pop=ease((since-.15-i*.07)/.35);return <article className="iq-kb-card" key={title} data-iq-target={`kb-type-${i}`} style={{opacity:pop,transform:`translateY(${10*(1-pop)}px)`}}>
-   <MediaBadge/><h3>{title}</h3><time>{date} {time}</time></article>;})}</div></div>
-  {viewer>0&&<div className="iq2-kb-viewer" style={{transform:`translateX(${(1-viewer)*100}%)`}}>
-   <PanelHead title="Onboarding"/>
-   <div className="iq2-kb-body">
-    <div className="iq2-kb-step"><small>1/2</small><b>Video</b></div>
-    <div className="iq2-kb-video" data-iq-target="kb-video"><DemoVideo src={ONBOARDING} poster={null} time={video} playing={playing&&running} speed={speed}/>{video===0&&<span className="iq2-bigplay"><PlayIcon/></span>}</div>
-    <PlayerBar time={video} length={KNOWLEDGE.clip} running={running}/>
-    <h3>Badging In On Your First Day</h3>
-    <p>Tap your badge at the front door reader. The light turns green and the door unlocks.</p>
-   </div>
-  </div>}
+  <div className="iq-kb-list"><div className="iq-kb-track">{KNOWLEDGE_ITEMS.map(card)}</div></div>
  </aside></div>;
 }
 
@@ -122,21 +127,34 @@ export function StoryMission({frame,playing,speed}){
 
 // ---- Chapters 12-15: one mission lifted out of the board -----------------------
 // Rendered in the tablet's own card styles (a 1080px board: 1 unit = 1px) and
-// scaled by the page. The rating opens under the card; peers are announced
-// under it too.
+// scaled by the page. 13-14, the ratings, as the user drew them, in our UI (and without
+// the words on the lines): under the card's left, a line down to the self rating; from the
+// card's right, level with the peers' badges, a bracket to the two peers' ratings.
+// Each rating is our Rate box with the avatar of who rates on its corner.
+function RateCard({who,avatar,rating,own=false}){
+ const {value,moved}=rating,at=value/4*100,mark=key=>(own?{'data-iq-target':key}:{});
+ return <div className="iq2-rate-card" {...mark('rate-box')}>
+  <img className="iq2-rate-avatar" src={avatar} alt={who}/>
+  <p>Rate this mission:</p><h4>{RATE_LABELS[Math.round(value)]}</h4>
+  <div className="iq-rate-slider" {...mark('rate-slider')}><span className="iq-rate-track"><i style={{width:`${at}%`}}/></span>{RATE_LABELS.map((l,i)=><span className="iq-rate-stop" key={l} style={{left:`${i*25}%`}}/>)}<span className="iq-rate-knob" style={{left:`${at}%`}}/></div>
+  <div className="iq2-rate-scale" aria-hidden="true">{RATE_LABELS.map((l,i)=><span key={l} style={{left:`${i*25}%`}}>{i+1}</span>)}</div>
+  <span className={`iq2-rate-submit${moved?' is-ready':''}`} {...mark('rate-submit')}>Submit Rate</span>
+ </div>;
+}
+const appear=(p,shown=1)=>({opacity:Math.min(1,p*1.6)*shown,transform:`translateY(${14*(1-p)}px) scale(${.94+.06*p})`,visibility:p>0&&shown>0?'visible':'hidden'});
+const TICKS=[96,292];// board px down the bracket to the middle of each peer's card (cards 164 high, 32 apart, from 14)
 export function IsoMission({mission,frame,width}){
- const {box,value,moved,bubbles}=frame.rating,at=value/4*100;
- const bubble=bubbles.find(b=>b.opacity>0);
+ const {self,peers,shown}=frame.rating;
  return <div className="mi-interactive mi-interactive--tablet mi-reference iq2-iso"><div className="mi-tablet-board iq2-iso-board"><div className="iq2-iso-stack" style={{width}}>
   <MissionChip kind={mission.type} points={mission.points} title={mission.title} who={mission.performer} date={mission.date} time={mission.time} showExec execTime={clock(mission.executionSeconds)} pillTime={clock(mission.ageSeconds)} pillClass="chip--gray" rate ratings={mission.ratings}/>
-  <Reveal open={box}><div className="iq2-rate" data-iq-target="rate-box">
-   <p>Rate this mission:</p><h4>{RATE_LABELS[Math.round(value)]}</h4>
-   <div className="iq-rate-slider" data-iq-target="rate-slider"><span className="iq-rate-track"><i style={{width:`${at}%`}}/></span>{RATE_LABELS.map((l,i)=><span className="iq-rate-stop" key={l} style={{left:`${i*25}%`}}/>)}<span className="iq-rate-knob" style={{left:`${at}%`}}/></div>
-   <span className={`iq2-rate-submit${moved?' is-ready':''}`} data-iq-target="rate-submit">Submit Rate</span>
-  </div></Reveal>
-  {bubble&&<div className="iq2-peer" style={{opacity:bubble.opacity,transform:`translateY(${8*(1-bubble.opacity)}px)`}}>
-   <span className="iq-peer-avatar">{bubble.initials}</span><span><b>{bubble.name}</b> rated it <strong>{RATE_LABELS[bubble.score-1]}</strong></span><span className="iq-peer-score">{bubble.score}</span>
-  </div>}
+  <div className="iq2-rating iq2-rating--self" style={appear(self.in,shown)}>
+   <i className="iq2-line iq2-line--down"/>
+   <RateCard who={SELF.name} avatar={SELF.avatar} rating={self} own/>
+  </div>
+  <div className="iq2-rating iq2-rating--peers" style={appear(peers[0]?.in??0,shown)}>
+   <i className="iq2-line iq2-line--out"/><i className="iq2-line iq2-line--bracket" style={{height:`${TICKS[0]+(TICKS[1]-TICKS[0])*(peers[1]?.in??0)+2}px`}}/>
+   <div className="iq2-peer-cards" data-iq-target="peer-cards">{peers.map(p=><div className="iq2-peer-slot" key={p.initials} style={appear(p.in)}><i className="iq2-line iq2-line--tick"/><RateCard who={p.name} avatar={p.avatar} rating={p}/></div>)}</div>
+  </div>
  </div></div></div>;
 }
 

@@ -20,10 +20,12 @@ import Starfield from './Starfield';
 import useDemoPlayback from './useDemoPlayback';
 import useClipSlice from './useClipSlice';
 import DemoHand from './DemoHand';
-import {drawHand} from './demoHandDom';
+import {drawHand,drawMarks} from './demoHandDom';
+import {marksOf} from '@/lib/demoHand.mjs';
+import {EFFICIENCY_TARGETS} from '@/lib/demoTargets.mjs';
 import {BubbleLayer} from './CaptionBubbles';
 import {drawBubble,clearBubble} from './captionBubbleDom';
-import {MESSAGE as B,bubbleMetrics,bubbleRoom} from '@/lib/captionBubbles.mjs';
+import {CLOSED as B,bubbleMetrics,bubbleRoom} from '@/lib/captionBubbles.mjs';// everything here is only shown: the bubble has no tail
 
 const BUBBLE_ROOM=bubbleRoom(B);// the tablet and the phones give way to the bubble's room
 import useAutomationMotion from './useAutomationMotion';
@@ -44,22 +46,16 @@ function Card({m,pointsPop=0}){
 const CalendarIcon=()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>;
 // Chapter 13: each personal board's missions.
 const PHONE_MISSIONS=[['Inventory Check','Order Supplies','Safety Check'],['Prepare Workspace','Clean Break Room'],['Restock Front Desk','Review Team Updates','Confirm Tomorrow’s Schedule']];
-// Ring targets.
-const TARGETS={
- 'tablet-top':'.ev2-tablet .tbl-header',
- 'points-inv':'.ev2-cards [data-card="inv"] .chip-points','points-ord':'.ev2-cards [data-card="ord"] .chip-points',
- 'pill-inv':'.ev2-cards [data-card="inv"] .chip-pill','card-sig':'.ev2-cards [data-card="sig"] .chip',
- 'exec-sig':'.ev2-iso [data-card="sig"] .chip-exec','exec-front':'.ev2-iso [data-card="front"] .chip-exec',
- 'who-sig':'.ev2-iso [data-card="sig"] .chip-who','who-front':'.ev2-iso [data-card="front"] .chip-who',
-};
+// Ring targets (lib/demoTargets.mjs: the storyboard's video aims with them too).
+const TARGETS=EFFICIENCY_TARGETS;
 
-// `embed` (the Assets Library, /increased-efficiency-v2/embed): only the player,
+// `embed` (the Video Library, /increased-efficiency-v2/embed): only the player,
 // on the chapters named by `clip` (see useClipSlice), in the given `mode`.
 export default function EfficiencyV2Demo({embed=false,clip=null,mode='player',still=.7,autoplay=false}){
  const [duration,setDuration]=useState(STORY_LENGTH);
  const playback=useDemoPlayback(duration);
  const {time:playerTime,playing,speed,toggle,replay,seek,cycleSpeed}=playback;
- const player=useRef(null),stage=useRef(null),boardRoot=useRef(null),tablet=useRef(null),codePanel=useRef(null),avatars=useRef({}),captionBox=useRef(null),bubbleLayer=useRef(null),handEl=useRef(null),rippleEl=useRef(null),isoCards=useRef([]);
+ const player=useRef(null),stage=useRef(null),boardRoot=useRef(null),tablet=useRef(null),codePanel=useRef(null),avatars=useRef({}),captionBox=useRef(null),bubbleLayer=useRef(null),handEl=useRef(null),rippleEl=useRef(null),marks=useRef([]),isoCards=useRef([]);
  const editor=useDemoTextEditor('increased-efficiency-v2',EFFICIENCY_STORY,savedText,playerTime,stage);
  const time=editor.clock.originalTime;
  useEffect(()=>setDuration(editor.clock.duration),[editor.clock.duration]);
@@ -139,10 +135,13 @@ export default function EfficiencyV2Demo({embed=false,clip=null,mode='player',st
    };
    // Targets the hand clicks: a named element, or what the words are beside.
    const rectOf=key=>TARGETS[key]?rect(q(TARGETS[key])):resolve(key);
-   const pointOf=(key,kind)=>{const r=rectOf(key);return r&&(kind==='scroll'?{x:r.x+r.w*.5,y:r.y+r.h*.7}:{x:r.x+r.w-3,y:r.y+r.h*.55});};
+   // the bubble's tail stops just past the right edge so it never touches the text
+   const pointOf=(key,kind)=>{const r=rectOf(key);return r&&(kind==='scroll'?{x:r.x+r.w*.5,y:r.y+r.h*.7}:{x:r.x+r.w+(kind==='tail'?14:-3),y:r.y+r.h*.55});};
    // The hand flies to its target, clicks it at its right edge (the bubble's tail
    // starts there, so it never covers the text), and the bubble comes out of the click.
    const fingertip=drawHand({hand:handEl.current,ripple:rippleEl.current,pose:frame.hand,pointOf});
+   // What is only shown (everything here) is marked, not pointed at: a thick yellow rectangle around it.
+   drawMarks({els:marks.current,list:marksOf(HAND_STOPS[scene.id]),e:elapsed,rectOf,remaining:embed?Infinity:scene.end-time});
    // Words: beside the art's right edge, level with the hand (and the bubble's
    // tail reaching its fingertip).
    const cap=captionBox.current;
@@ -168,9 +167,10 @@ export default function EfficiencyV2Demo({embed=false,clip=null,mode='player',st
     cap.style.top=`${topPx}px`;
     cap.style.setProperty('--ev2-origin',`${mix(50,0,side)}% 50%`);
     if(p)cap.style.setProperty('--ev2-fit',fit);
-    // the bubble comes out of the click: nothing before it
+    // What is only shown (everything here) has no tail: the box comes beside it, from its own
+    // middle, then the words (`tip` only sets their level). Nothing before it.
     const t=elapsed-(SAY[scene.id]??0);
-    if(bubbleLayer.current&&tip&&t>=0)drawBubble({g:bubbleLayer.current,cap,style:B,stage:s,unit,fit,originX:mix(.5,0,side),layout:{left,top:topPx},tip,tailP:side,t,remaining:embed?Infinity:scene.end-time});
+    if(bubbleLayer.current&&tip&&t>=0)drawBubble({g:bubbleLayer.current,cap,style:B,stage:s,unit,fit,originX:mix(.5,0,side),layout:{left,top:topPx},tip,tailP:side,middle:true,t,remaining:embed?Infinity:scene.end-time});
     else clearBubble(bubbleLayer.current,cap);
    }else clearBubble(bubbleLayer.current,null);
   };
@@ -214,7 +214,7 @@ export default function EfficiencyV2Demo({embed=false,clip=null,mode='player',st
     {!title&&<BubbleLayer gRef={bubbleLayer}/>}
     {title?<DemoTypedText lineBeats key={scene.id} className="es-title" text={scene.text} elapsed={(elapsed-(TEXT_AT[scene.id]??0))*TEXT_SPEED} remaining={embed||scene===EFFICIENCY_STORY.at(-1)?Infinity:scene.end-time} center/>
      :<div ref={captionBox} className="ev2-caption cb-caption"><DemoTypedText key={scene.id} lineBeats text={scene.text} elapsed={(elapsed-(TEXT_AT[scene.id]??0))*TEXT_SPEED} remaining={embed?Infinity:scene.end-time} center/></div>}
-    {!title&&<DemoHand handRef={handEl} rippleRef={rippleEl}/>}
+    {!title&&<DemoHand handRef={handEl} rippleRef={rippleEl} marksRef={marks}/>}
    </div></div>
    {!bare&&<div className="ad-controls es-controls"><button onClick={play}>{playing?'Pause':playerTime>=end-.05?'Replay':'Play'}</button><button onClick={restart}>Restart</button>
     <input className="ad-scrub" type="range" min={from} max={end} step="0.05" value={Math.min(end,Math.max(from,playerTime))} onChange={seek} aria-label="Seek demo" style={{'--fill':`${(playerTime-from)/(end-from)*100}%`}}/>

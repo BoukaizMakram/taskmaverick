@@ -1,18 +1,18 @@
 import {promises as fs} from 'node:fs';
 import path from 'node:path';
 import AssetsLibrary from '@/components/AssetsLibrary';
-import {ASSETS, DEMOS} from '@/lib/assetsLibrary.mjs';
+import {partList, slimParts} from '@/lib/storyboardParts.mjs';
 
 export const metadata={title:'Assets Library — Taskmaverick',robots:{index:false}};
 
-// The notes saved in content/assets-library.json travel with the code, so a
-// deployed copy shows them on the cards too.
-async function savedReviews(){
- try{return JSON.parse(await fs.readFile(path.join(process.cwd(),'content','assets-library.json'),'utf8')).reviews||{};}
+// The product's UI pieces: the same catalog as Shift+A in the storyboard, captured by
+// `npm run gen:storyboard -- --parts` (the pieces' pictures are public/storyboard/ui/).
+// The page only needs their names, not their HTML.
+async function catalog(){
+ try{return JSON.parse(await fs.readFile(path.join(process.cwd(),'public','storyboard','ui-parts.json'),'utf8'));}
  catch{return {};}
 }
 
-// The animations as plain data (the story code stays on the server).
 export default async function Page(){
- return <AssetsLibrary assets={ASSETS} demos={DEMOS.map(({story,...demo})=>demo)} saved={await savedReviews()}/>;
+ return <AssetsLibrary parts={partList(slimParts(await catalog()))}/>;
 }

@@ -15,16 +15,18 @@ import Starfield from './Starfield';
 import useDemoPlayback from './useDemoPlayback';
 import useClipSlice from './useClipSlice';
 import DemoHand from './DemoHand';
-import {drawHand} from './demoHandDom';
+import {drawHand,drawMarks,tailPoint} from './demoHandDom';
+import {marksOf,launchTail} from '@/lib/demoHand.mjs';
+import {QUALITY_RATED,QUALITY_TARGETS} from '@/lib/demoTargets.mjs';
 import {BubbleLayer} from './CaptionBubbles';
 import {drawBubble,clearBubble} from './captionBubbleDom';
-import {MESSAGE as B,bubbleMetrics,bubbleRoom} from '@/lib/captionBubbles.mjs';
+import {MESSAGE,BOX,CLOSED,bubbleMetrics,bubbleRoom} from '@/lib/captionBubbles.mjs';
 
-const BUBBLE_ROOM=bubbleRoom(B);// the art gives way to the bubble's room
+const BUBBLE_ROOM=bubbleRoom(MESSAGE);// the art gives way to the bubble's room
 import InteractiveMissionBoard from './InteractiveMissionBoard';
 import UsageReport from './UsageReport';
 import {KnowledgeBase,StoryMission,IsoMission,PopCell,BusinessProofs} from './ImprovedQualityV2Panels';
-import {QUALITY_STORY,QUALITY_TEXT_SPEED,TEXT_AT,CLIP_SKIP,LAYOUT,ISO,POP_CELL,qualityStoryFrame,SAY,HAND_STOPS,cameraAt,reportScale,devicesAt,captionPlan,missionScrollAt,toScreen,mix} from '@/lib/improvedQualityV2Story.mjs';
+import {QUALITY_STORY,QUALITY_TEXT_SPEED,TEXT_AT,CLIP_SKIP,LAYOUT,ISO,POP_CELL,BOXED,WORDS_FIRST,GOES_ON,ACTING,qualityStoryFrame,SAY,HAND_STOPS,cameraAt,reportScale,reportWindow,devicesAt,captionPlan,missionScrollAt,toScreen,mix} from '@/lib/improvedQualityV2Story.mjs';
 import './EfficiencyStoryDemo.css';
 import './ImprovedQualityDemo.css';
 import './ImprovedQualityV2Demo.css';
@@ -45,30 +47,21 @@ const TEAM_A=[
  ...[['Opening Quality Check','Checklist',25,'Anna F',522,4935,'04:12 PM'],['Ice Maker Filter Check','Task',20,'Anna F',190,5102,'04:03 PM'],['Fry Dispenser Cleaning','Checklist',25,'Gabriel F',77,4925,'11:51 AM'],['Brew Coffee','Task',10,'Gabriel F',23,5111,'11:49 AM']]
   .map(([title,type,points,performer,executionSeconds,ageSeconds,time],i)=>mission(title,type,points,{status:'closed',stopped:4-i,performer,executionSeconds,ageSeconds,time,rateable:true})),
 ];
-const RATED='emphasis-Opening Quality Check';
-// Named targets; any other key is looked up as [data-iq-target="key"].
-const TARGETS={
- menu:'.iq2-kb-tablet .tbl-header [aria-label="Menu"]',
- knowledge:'.iq2-kb-tablet .bn-menu-item:has(img[src="/board-icons/team-book.svg"])',
- 'tablet-menu':'.iq-emphasis-tablet .tbl-header [aria-label="Menu"]',
- 'business-media':'.iq-emphasis-tablet [data-iq-target="business-media"]',
- mission:'.iq2-mission',report:'.iq2-report',
- iso:'.iq2-iso-stack .chip','iso-card':'.iq2-iso-stack .chip','iso-ratings':'.iq2-iso-stack .chip-ratings','rate-0':'.iq2-iso-stack .chip-rate',
- 'rated-card':`.iq-emphasis-tablet [data-mission-id="${RATED}"] .chip`,
- 'rate-knob':'.iq2-iso-stack .iq-rate-knob',proofs:'.iq-emphasis-tablet .iq-bp-window','mission-window':'.iq2-mission .iq2-m-window',
-};
+const RATED=QUALITY_RATED;
+// Named targets (lib/demoTargets.mjs: the storyboard's video aims with them too); any other key is looked up as [data-iq-target="key"].
+const TARGETS=QUALITY_TARGETS;
 // Where a target goes once its click has changed the screen.
 const GONE_TO={'add-photo':'photo-proof','add-video':'video-proof','rate-0':'iso-card','rate-submit':'iso-card','rate-knob':'iso-card','business-media':'proofs','training-play':'training-tile'};
-const STEP_SPOT=150;// stage px between the pinned chip and the Yes the hand clicks, in every step
+const STEP_SPOT=105;// stage px between the pinned chip and the Yes the hand clicks, in every step (the user, 2026-10-06: the list sits higher, so "View opening standards guide" is not seen under the chip)
 const W0=334;// a tablet column's card width, in its 1080px board
 
-// `embed` (the Assets Library, /improved-quality-v2/embed): only the player, on
+// `embed` (the Video Library, /improved-quality-v2/embed): only the player, on
 // the chapters named by `clip` (see useClipSlice), in the given `mode`.
 export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='player',still=.7,autoplay=false}){
  const [duration,setDuration]=useState(QUALITY_STORY.at(-1).end);
  const playback=useDemoPlayback(duration);
  const {time:playerTime,playing,speed,toggle,replay,seek,cycleSpeed}=playback;
- const player=useRef(null),bubbleLayer=useRef(null),stage=useRef(null),handEl=useRef(null),rippleEl=useRef(null),captionBox=useRef(null),iso=useRef(null),panel=useRef(null),holes=useRef([]);
+ const player=useRef(null),marks=useRef([]),bubbleLayer=useRef(null),stage=useRef(null),handEl=useRef(null),rippleEl=useRef(null),captionBox=useRef(null),iso=useRef(null),panel=useRef(null),holes=useRef([]);
  const editor=useDemoTextEditor('improved-quality-v2',QUALITY_STORY,savedText,playerTime,stage);
  const time=editor.clock.originalTime;
  useEffect(()=>setDuration(editor.clock.duration),[editor.clock.duration]);
@@ -106,6 +99,8 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
      const w=rect(win),kk=w.h/win.offsetHeight;
      return {x:yes.x,y:w.y+(chip.offsetHeight+STEP_SPOT)*kk,w:yes.w,h:yes.h};
     }
+    const cell=/^(performers|dates)-(\d)$/.exec(key);// one of the two cells
+    if(cell)return cells(cell[1])[Number(cell[2])];
     return key==='performers'||key==='dates'?union(...cells(key)):rect(find(key));
    };
    // Spotlight: the dark has a hole over each item, open until it scales up.
@@ -115,18 +110,20 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
     Object.entries({x:r.x,y:r.y,width:r.w,height:r.h,'fill-opacity':dev.spot.open}).forEach(([k,v])=>hole.setAttribute(k,v));
    });
    // Scale-up: each item starts exactly on top of itself in the report (text
-   // on text, same size), then grows and comes together with the other one,
-   // stacked, centered on the middle between them, ending left of the words.
+   // on text, same size), then grows a little and comes together with the
+   // other one, stacked, centered on the middle between them, right-aligned
+   // with the cells (left of the words).
    [['performers','name',dev.names],['dates','date',dev.dates]].forEach(([key,kind,p])=>{
     const pops=[...st.querySelectorAll(`.iq2-pop--${kind}`)];if(!pops.length)return;
     const all=rectOf(key);if(!all)return;
-    const k1=POP_CELL.height/pops[0].offsetHeight,mid=all.y+all.h/2,right=all.x+all.w+LAYOUT.wordsGap-POP_CELL.gap*1.5;
-    const top=mid-(pops.length*POP_CELL.height+(pops.length-1)*POP_CELL.gap)/2;
+    const src0=rect(text(key,2)),v0=pops[0].querySelector('b,time');if(!src0||!v0)return;
+    const k1=src0.h/v0.offsetHeight*POP_CELL.grow,h1=pops[0].offsetHeight*k1,mid=all.y+all.h/2,right=all.x+all.w;// grow leftward: the bubble's tail meets their right edge, not their text
+    const top=mid-(pops.length*h1+(pops.length-1)*POP_CELL.gap)/2;
     const left=right-Math.max(...pops.map(el=>el.offsetWidth))*k1;// one left edge; the widest ends at `right`
     pops.forEach((el,i)=>{
      const src=rect(text(key,i+2)),value=el.querySelector('b,time');if(!src||!value)return;
      const k0=src.h/value.offsetHeight,x0=src.x-k0*value.offsetLeft,y0=src.y-k0*value.offsetTop;
-     const x1=left,y1=top+i*(POP_CELL.height+POP_CELL.gap);
+     const x1=left,y1=top+i*(h1+POP_CELL.gap);
      el.style.transform=`translate(${mix(x0,x1,p)}px,${mix(y0,y1,p)}px) scale(${mix(k0,k1,p)})`;
     });
    });
@@ -153,25 +150,40 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
    }
    // Lifted-out mission (12-15): from its place in the board to the ISO box.
    if(iso.current){
-    const from=rect(find('rated-card')),p=dev.iso;
-    const x0=from?.x??ISO.left,y0=from?.y??ISO.top,k0=(from?.w??ISO.width)/W0,k1=ISO.width/W0;
-    iso.current.style.transform=`translate(${mix(x0,ISO.left,p)}px,${mix(y0,ISO.top,p)}px) scale(${mix(k0,k1,p)})`;
+    // (13-14: it moves so that what is on the slide stays centered as the ratings come; it goes back into the tablet from there)
+    const from=rect(find('rated-card')),p=dev.iso,to=dev.isoBox;
+    const x0=from?.x??to.left,y0=from?.y??to.top,k0=(from?.w??to.width)/W0,k1=to.width/W0;
+    iso.current.style.transform=`translate(${mix(x0,to.left,p)}px,${mix(y0,to.top,p)}px) scale(${mix(k0,k1,p)})`;
     iso.current.style.opacity=p>0?1:0;
    }
    // Words: beside the art's right edge, level with what they talk about.
    // The hand flies to its target, clicks it at its right edge (the bubble's tail
    // starts there, so it never covers the text), and the bubble comes out of the click.
    // (the closed mission the hand clicked is the one that lifts out: it follows it)
-   // What a scroll presses is the middle of the area; everything else is pointed at
+   // What a scroll presses is near the area's right edge; everything else is pointed at
    // on its right edge. A button that has turned into what it opened (Add photo,
    // Submit…) is found where that is.
-   const pointOf=(key,kind)=>{const r=rectOf(key==='rated-card'&&dev.iso>0?'iso-card':key)??rectOf(GONE_TO[key]??(key.startsWith('quiz-')?'training-tile':null));return r&&(kind==='scroll'?{x:r.x+r.w*.5,y:r.y+r.h*.7}:{x:r.x+r.w-3,y:r.y+r.h*.55});};
-   const fingertip=drawHand({hand:handEl.current,ripple:rippleEl.current,pose:frame.hand,pointOf});
+   // The bubble's tail stops just past the right edge so it never touches the text.
+   const pointOf=(key,kind)=>{const r=rectOf(key==='rated-card'&&dev.iso>0?'iso-card':key)??rectOf(GONE_TO[key]??(key.startsWith('quiz-')?'training-tile':null));return r&&(kind==='scroll'?{x:r.x+r.w-22,y:r.y+r.h*.55}:{x:r.x+r.w+(kind==='tail'?14:-3),y:r.y+r.h*.55});};// (a swipe is near the list's right edge, level with where the tail meets it: the words come out of the hand)
+   // A boxed chapter shows no pointer: the hand is placed (the words line up
+   // with it) but kept hidden, and the words come in a plain box. What a chapter only
+   // shows has no tail at all (CLOSED); only where the hand acts is there a tail.
+   const boxed=BOXED.has(scene.id),acts=ACTING.has(scene.id),goesOn=GOES_ON.has(scene.id),B=boxed?BOX:acts?MESSAGE:CLOSED;
+   // Words first (where the hand acts): the box is there before the hand, level with
+   // what it will click; the hand then comes out of it (drawn below, once the bubble
+   // is placed: `home` is where its tail leaves it).
+   const stops=HAND_STOPS[scene.id],wordsFirst=WORDS_FIRST.has(scene.id);
+   let fingertip=tailPoint({hand:handEl.current,pose:frame.hand,pointOf})??(wordsFirst?pointOf(stops[0].target,'tail'):null),home=null;
+   // What the chapter only shows is marked, not pointed at: a thick yellow rounded
+   // rectangle around it, following it as it moves (the `point` stops of HAND_STOPS).
+   drawMarks({els:marks.current,list:marksOf(HAND_STOPS[scene.id]),e:elapsed,rectOf,remaining:embed?Infinity:scene.end-time});
    // Words: beside the art's right edge, level with the hand (and the bubble's
-   // tail reaching its fingertip).
+   // tail reaching its fingertip); once the action is done they may glide to
+   // what it made (the plan's `settle`).
+   const plan=captionPlan(time),settleTo=plan.settle&&pointOf(plan.settle.to,'tail');
+   if(fingertip&&settleTo)fingertip={x:mix(fingertip.x,settleTo.x,plan.settle.p),y:mix(fingertip.y,settleTo.y,plan.settle.p)};
    const cap=captionBox.current;
    if(cap){
-    const plan=captionPlan(time);
     const edgeOf=e=>typeof e==='object'?toScreen(cam,e.x,0).x:((r=>r&&r.x+r.w)(rectOf(e)));
     const both=(g,of,fallback)=>{const a=of(g.from)??of(g.to)??fallback,b=of(g.to)??a;return mix(a,b,g.p);};
     const side=1-plan.center;
@@ -181,7 +193,7 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
     const m=bubbleMetrics(B,w,h);
     let left=800,top=450,tip=null;
     if(side>0){
-     const edgeX=both(plan.edge,edgeOf,800),level=fingertip?.y??pointOf(HAND_STOPS[scene.id]?.[0]?.target)?.y??450;
+     const edgeX=both(plan.edge,edgeOf,800),level=fingertip?.y??pointOf(stops?.[0]?.target)?.y??450;
      // the tail's length gives way first when the art is far to the right
      const tail=Math.max(0,Math.min(B.gap,1600-LAYOUT.margin-edgeX-LAYOUT.wordsGap-m.left-m.right-w));
      left=mix(800,edgeX+LAYOUT.wordsGap+tail+m.left,side);top=mix(450,level-B.lift,side);
@@ -195,11 +207,18 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
     cap.style.top=`${topPx}px`;
     cap.style.setProperty('--iq2-origin',`${mix(50,0,side)}% 50%`);
     if(p)cap.style.setProperty('--iq-caption-fit',fit);
-    // the bubble comes out of the click: nothing before it
-    const t=elapsed-(SAY[scene.id]??0);
-    if(bubbleLayer.current&&tip&&t>=0)drawBubble({g:bubbleLayer.current,cap,style:B,stage:s,unit,fit,originX:mix(.5,0,side),layout:{left,top:topPx},tip,tailP:side,t,remaining:embed?Infinity:scene.end-time});
+    // Nothing before the bubble starts. Where something is only shown: the box beside
+    // it (no tail), then the words. Words first: it pops empty from its own middle, its
+    // words type, then the tail reaches out with the hand, the hand clicks and the tail
+    // fades. Going on with the hand of the chapter before: the bubble comes out of the
+    // hand (tail first, then the box, then the words) and its tail fades after the click.
+    const t=elapsed-(SAY[scene.id]??0),tail=acts?launchTail(stops,elapsed):null;
+    if(bubbleLayer.current&&tip&&t>=0)home=drawBubble({g:bubbleLayer.current,cap,style:B,stage:s,unit,fit,originX:mix(.5,0,side),layout:{left,top:topPx},tip,tailP:tail?tail.reach*side:side,tailOpacity:tail?tail.opacity:1,middle:!goesOn,t,remaining:embed?Infinity:scene.end-time}).base;
     else clearBubble(bubbleLayer.current,cap);
    }else clearBubble(bubbleLayer.current,null);
+   // The hand: flying to what it clicks (words first: out of the bubble, from where its tail leaves it).
+   drawHand({hand:handEl.current,ripple:rippleEl.current,pose:frame.hand,pointOf,home});
+   if(boxed){if(handEl.current)handEl.current.style.opacity=0;if(rippleEl.current)rippleEl.current.style.opacity=0;}
   };
   place();const raf=requestAnimationFrame(place);
   return()=>cancelAnimationFrame(raf);
@@ -223,8 +242,9 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
    {teamShown&&<div className={`adx-tablet adx-tablet--engaged iq-tablet iq-emphasis-tablet${dev.iso>0?' iq2-isolating':''}`} style={{'--iq-menu-pop':frame.visibility.pop,opacity:dev.boardOpacity,transform:`translate(-50%,-50%) scale(${LAYOUT.tablet.scale*(.86+.14*dev.board)})`,filter:dev.board<.98?`blur(${(1-dev.board)*6}px)`:'none'}}>
     <InteractiveMissionBoard device="tablet" referenceLayout initialScreen="board" initialMissions={TEAM_A} demoState={{missions:teamA,elapsed:0,selected:null,menuOpen:frame.visibility.menu,boardTitle:'Team A',businessMediaLabel:'Business Media'}} demoOverlay={frame.visibility.proofsIn>0?<div className="iq-bp-layer" style={{opacity:Math.min(1,frame.visibility.proofsIn*1.5),transform:`translateX(${4*(1-frame.visibility.proofsIn)}%)`}}><BusinessProofs tablet scroll={frame.visibility.scroll}/></div>:null}/>
    </div>}
-   {/* 18-21: the web report, cut at the Date & Time column. */}
-   {dev.web>0&&dev.webOpacity>0&&<div className="iq2-report" style={{left:LAYOUT.report.left,top:LAYOUT.report.top,width:mix(LAYOUT.report.width,1600,dev.uncrop),height:LAYOUT.report.height,opacity:dev.webOpacity,transform:`scale(${reportScale(BUBBLE_ROOM)*(.94+.06*dev.web)})`}}><div className="iq2-report-page"><UsageReport web={frame.web}/></div></div>}
+   {/* 18-21: the web report, big: a window on its left part (the words keep the
+       right of the frame); chapter 21 slides it over to its Date & Time column. */}
+   {dev.web>0&&dev.webOpacity>0&&<div className="iq2-report" style={{left:LAYOUT.report.left,top:LAYOUT.report.top,width:reportWindow(BUBBLE_ROOM),height:LAYOUT.report.height,opacity:dev.webOpacity,transform:`scale(${reportScale()*(.94+.06*dev.web)})`}}><div className="iq2-report-page" style={{transform:`translateX(${-(LAYOUT.report.page-reportWindow(BUBBLE_ROOM))*dev.uncrop}px)`}}><UsageReport web={frame.web}/></div></div>}
   </div>
   {/* 20-21: everything darkens except the cells being talked about (their
       holes are placed each frame above). */}
@@ -237,7 +257,7 @@ export default function ImprovedQualityV2Demo({embed=false,clip=null,mode='playe
   {dev.dates>0&&dev.datesOpacity>0&&[0,1].map(i=><PopCell key={`date-${i}`} kind="date" i={i} style={{opacity:Math.min(1,dev.dates*8)*dev.datesOpacity}}/>)}
   {!opening&&<BubbleLayer gRef={bubbleLayer}/>}
   {opening?<DemoTypedText className="es-title" lineBeats text={scene.text} elapsed={elapsed*QUALITY_TEXT_SPEED} remaining={embed||scene===QUALITY_STORY.at(-1)?Infinity:scene.end-time} center/>:<div ref={captionBox} className="iq-caption iq2-caption cb-caption"><DemoTypedText key={scene.id} lineBeats text={scene.text} elapsed={(elapsed-(TEXT_AT[scene.id]??0))*QUALITY_TEXT_SPEED} remaining={embed||scene===QUALITY_STORY.at(-1)?Infinity:scene.end-time} center/></div>}
-  {!opening&&<DemoHand handRef={handEl} rippleRef={rippleEl}/>}
+  {!opening&&<DemoHand handRef={handEl} rippleRef={rippleEl} marksRef={marks}/>}
  </div></div>{!bare&&<div className="ad-controls es-controls"><button onClick={play}>{playing?'Pause':playerTime>=end-.05?'Replay':'Play'}</button><button onClick={restart}>Restart</button><input type="range" className="ad-scrub" aria-label="Seek demo" min={from} max={end} step=".05" value={Math.min(end,Math.max(from,playerTime))} onChange={seek} style={{'--fill':`${(playerTime-from)/(end-from)*100}%`}}/><span>{label(Math.max(0,playerTime-from))} / {label(end-from)}</span><button onClick={cycleSpeed} aria-label={`Playback speed: ${speed}×`}>{speed}×</button><button onClick={()=>document.fullscreenElement?document.exitFullscreen():player.current.requestFullscreen()}>Fullscreen</button></div>}</div>
  </DemoTextContext.Provider>
  </>;

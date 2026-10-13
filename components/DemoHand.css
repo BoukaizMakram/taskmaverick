@@ -1,6 +1,9 @@
 /* The demos' big yellow hand (components/DemoHand.jsx). Its fingertip is the
-   point it moves: demoHandDom.js puts the tip (32px, 2px into its 84x104px box)
+   point it moves: demoHandDom.js puts the tip (16px, 1px into its 42x52px box)
    on the target. */
-.dh-hand { position:absolute; left:0; top:0; z-index:12; width:84px; height:104px; transform-origin:32px 2px; opacity:0; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 8px 9px rgb(0 0 0 / 26%)); }
+.dh-hand { position:absolute; left:0; top:0; z-index:12; width:42px; height:52px; transform-origin:16px 1px; opacity:0; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 4px 5px rgb(0 0 0 / 26%)); }
+/* The mark around what is only shown (no hand there): a thick yellow rounded rectangle,
+   a darker yellow than the bubble's so it shows on white. Also the storyboard's spotlight. */
+.iq2-mark { position:absolute; left:0; top:0; z-index:10; box-sizing:border-box; border:6px solid #ffc800; border-radius:18px; box-shadow:0 0 16px 3px rgb(255 200 0 / 55%); opacity:0; pointer-events:none; will-change:transform,opacity; }
 .dh-hand img { display:block; width:100%; height:100%; user-select:none; }
 .dh-ripple { position:absolute; left:0; top:0; z-index:12; box-sizing:border-box; width:10px; height:10px; border:5px solid #ffec00; border-radius:50%; background:rgb(255 236 0 / 28%); box-shadow:0 0 0 3px #111; opacity:0; pointer-events:none; will-change:transform,opacity; }

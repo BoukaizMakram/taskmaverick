@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useMemo} from 'react';
 
-// Plays one slice of a demo for the Assets Library (/assets-library). A clip is
+// Plays one slice of a demo for the Video Library (/video-library). A clip is
 // named by chapter ids, never by seconds, so it follows the chapters when the
 // words (and so the timing) are edited: "alerts", "instructions:video" (from
 // the start of the first to the end of the last) or "all". A clip starts when
