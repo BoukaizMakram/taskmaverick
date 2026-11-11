@@ -73,10 +73,33 @@ export function ExportButton({board, title, options}) {
 }
 
 // The board's menu on a video (right-click): the usual export, or a stop while it is made. The progress is in the sidebar (the video is picked by the right-click).
-export function ExportMenuItem({board, title, onStart, text = 'Export as MP4'}) {
+export function ExportMenuItem({board, title, onStart, text = 'Export as MP4', options}) {
   const job = useExport(board, title), running = job.state === 'running';
-  return <button type="button" role="menuitem" onClick={() => { (running ? cancelExport : startExport)(board, title); onStart?.(); }} title={running ? 'Stop making the MP4' : 'A silent MP4 of this video exactly as it plays (1920 x 1080, 30 pictures a second); it is downloaded when it is done. The size and rate are in the sidebar.'}>
+  return <button type="button" role="menuitem" onClick={() => { if (running) cancelExport(board, title); else startExport(board, title, options); onStart?.(); }} title={running ? 'Stop making the MP4' : 'A silent MP4 of this video exactly as it plays (1920 x 1080, 30 pictures a second); it is downloaded when it is done. The size and rate are in the sidebar.'}>
     {running ? 'Stop the export' : text}<kbd>{running ? label(job) : '1920 × 1080'}</kbd>
+  </button>;
+}
+
+// Several videos of a board, one after the other (the server makes one at a time): each is downloaded as it is done; it stops at the first that fails or is stopped
+export async function exportMany(board, titles, options) {
+  for (const title of titles) {
+    await startExport(board, title, options);
+    while (jobs.get(keyOf(board, title))?.state === 'running') await sleep(500);
+    if (jobs.get(keyOf(board, title))?.state !== 'done') return;
+  }
+}
+// The button on a video of the All videos page (the user, 2026-11-11: "add a way to export videos from the storyboard videos"): `titles`, what it exports: the board's Remotion cut
+// (`options` {cut: true}: one film, rendered by the Remotion project) or every part of its video, one file each. While it works it says how far it is; a click then stops it.
+export function ExportAllButton({board, titles, options, className = 'sb-av-export'}) {
+  const states = useSyncExternalStore(subscribe, () => titles.map(t => jobs.get(keyOf(board, t))?.state ?? 'idle').join(','), () => ''); // (drawn again as any of them changes)
+  const at = titles.findIndex(t => jobs.get(keyOf(board, t))?.state === 'running'), job = at >= 0 ? jobs.get(keyOf(board, titles[at])) : null;
+  const failed = titles.map(t => jobs.get(keyOf(board, t))).find(j => j?.state === 'error'), done = states && titles.every(t => jobs.get(keyOf(board, t))?.state === 'done');
+  const text = job ? `${titles.length > 1 ? `${at + 1}/${titles.length} · ` : ''}${job.total ? `${percent(job)} %` : 'Starting…'}` : done ? 'Exported' : 'Export MP4';
+  const tip = job ? 'Making the MP4… click to stop it' : failed ? `${failed.error} (click to try again)` : options?.cut ? 'Renders this film as an MP4 with Remotion (a few minutes) and downloads it'
+    : `Exports ${titles.length > 1 ? `its ${titles.length} parts, one MP4 each` : 'it as an MP4'}, exactly as it plays; each file is downloaded when it is done`;
+  return <button type="button" className={`${className}${job ? ' is-running' : ''}${failed && !job ? ' is-error' : ''}`} disabled={!titles.length} title={tip} aria-label="Export as MP4"
+    onPointerDown={e => e.stopPropagation()} onClick={e => { e.stopPropagation(); if (job) cancelExport(board, titles[at]); else exportMany(board, titles, options); }}>
+    {Icon.down}<span>{text}</span>
   </button>;
 }
 

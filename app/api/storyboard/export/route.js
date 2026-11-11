@@ -3,9 +3,13 @@ import { readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { videoOf } from '@/lib/storyboardStore.mjs';
 import { eventOf, optionsOf, slugOf } from '@/lib/storyboardExport.mjs';
+import { cutOf, renderCommandOf } from '@/lib/remotion/cuts.mjs';
 
 // Exporting a storyboard video as an MP4 file (the user, 2026-10-28: "add a way to export the videos in /storyboard"). The work is scripts/storyboard-export.mjs (a headless Chrome
 // puts the video on each moment of itself, ffmpeg makes the file); this runs it for the buttons (components/StoryboardExport.jsx) and keeps track of it. One export at a time.
+// A board's REMOTION CUT is exported too (the user, 2026-11-11: "add a way to export videos from the storyboard videos"; the films of the All videos page had only a command to copy):
+// POST { video, cut: true } renders the cut the board plays (its variation's: lib/remotion/cuts.mjs `renderCommandOf`) with the Remotion project's own `npx remotion render`, there, and
+// the file it writes (that project's out/) is the one downloaded. Its progress is the pictures Remotion says it has rendered.
 // POST { video, title, fps?, width? } -> { id }, or 409 { error, id } while another is on
 // GET ?id=<id> -> { state: 'running' | 'done' | 'error' | 'cancelled', done, total, name, file, error }; with &download=1 the file itself (MP4)
 // DELETE ?id=<id>: stops it
@@ -57,15 +61,49 @@ function start(board, title, options, origin) {
   return job;
 }
 
+// A board's Remotion cut: the command that renders it is `cd "<the Remotion project>" && npx remotion render <composition> <file>` (lib/remotion/cuts.mjs); it is run there, as it is written
+const RENDER = /^cd "(.+?)" && npx remotion render (\S+) (\S+)$/;
+function startCut(board, title, command) {
+  const [, dir, composition, out] = command.match(RENDER), file = path.join(dir, out);
+  const id = Math.random().toString(36).slice(2, 10);
+  const job = { id, state: 'running', board, title, done: 0, total: 0, name: path.basename(out), file: null, error: null, child: null };
+  const child = spawn('npx', ['remotion', 'render', composition, out], { cwd: dir, shell: true, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true }); // (npx is a .cmd on Windows: through the shell)
+  job.child = child;
+  let said = '';
+  const take = chunk => {
+    const text = String(chunk);
+    said = (said + text).slice(-2000);
+    for (const m of text.matchAll(/Rendered\s+(\d+)\s*\/\s*(\d+)/g)) { job.done = Number(m[1]); job.total = Number(m[2]); } // (Remotion: "Rendered 120/3127")
+  };
+  child.stdout.on('data', take);
+  child.stderr.on('data', take);
+  child.on('error', error => { job.error = `Could not start the render: ${error.message}`; });
+  child.on('close', async code => {
+    if (job.state === 'cancelled') await rm(file, { force: true }).catch(() => {}); // (the half of a file it left)
+    else if (code === 0 && !job.error) { job.state = 'done'; job.file = file; job.done = job.total; }
+    else { job.state = 'error'; job.error ??= said.trim().split('\n').filter(Boolean).pop() || 'The render stopped before it was done.'; }
+    job.child = null;
+  });
+  jobs.set(id, job);
+  return job;
+}
+
 export async function POST(request) {
   if (process.env.NODE_ENV === 'production') return none();
   if (!same(request)) return Response.json({ error: 'Must come from this site.' }, { status: 403 });
   let body, board;
   try { body = await request.json(); board = videoOf(body.video); } catch { /* answered below */ }
-  const title = typeof body?.title === 'string' ? body.title.trim() : '';
-  if (!board || !title || title.length > 300) return Response.json({ error: 'Which video? A board and the title of the video are needed.' }, { status: 400 });
+  const cut = body?.cut === true, title = typeof body?.title === 'string' ? body.title.trim() : '';
+  if (!board || (!cut && !title) || title.length > 300) return Response.json({ error: 'Which video? A board and the title of the video are needed.' }, { status: 400 });
   const running = [...jobs.values()].find(j => j.state === 'running');
   if (running) return Response.json({ error: `"${running.title}" is being exported. One at a time.`, id: running.id }, { status: 409 });
+  if (cut) { // the Remotion cut the board plays now (its saved edits say which variation)
+    let edits = null;
+    try { edits = JSON.parse(await readFile(path.join(ROOT, 'content', 'storyboard', `${board}.json`), 'utf8')); } catch { /* a board never edited: the cut as it is made */ }
+    const command = renderCommandOf(board, edits);
+    if (!command || !RENDER.test(command)) return Response.json({ error: 'This board has no Remotion cut to render.' }, { status: 400 });
+    return Response.json({ id: startCut(board, cutOf(board, edits).title, command).id });
+  }
   const job = start(board, title, optionsOf(body), new URL(request.url).origin);
   return Response.json({ id: job.id });
 }

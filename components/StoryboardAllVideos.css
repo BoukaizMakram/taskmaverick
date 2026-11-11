@@ -1,11 +1,18 @@
 /* All videos (/storyboard?video=all-videos; components/StoryboardAllVideos.jsx): a board like the others (the user, 2026-10-29: "the all video board should be like the other boards, with figma style
    paning etc"): the canvas, the green label of each group, and the videos side by side, each as a video of a board is (.sb-pl, .sb-pl-head, .sb-pl-bar...), in the board's own world px, under a pill that
    says In progress or Final. */
-.sb-av-cell .sb-pl-head { grid-template-columns:420px 1fr 150px; column-gap:20px; }
+.sb-av-cell .sb-pl-head { grid-template-columns:minmax(420px, auto) 1fr 150px; column-gap:20px; }/* (the first column: the status, and the Export button beside it: as wide as they are) */
 .sb-av-cell .sb-fvtitle { font-size:54px; }
 .sb-av-cell.is-selected .sb-pl-head { outline:12px solid var(--sb-blue); }/* (the video selected: a blue stroke round its purple title, as thick as a selected line's) */
 
 /* the status pill in the video's bar (amber while it is being fixed, green when it is final) */
+/* the head's left: the status, then the Export button (StoryboardExport.jsx ExportAllButton; the page is drawn far away, so it is as big as the status) */
+.sb-av-left { justify-self:start; display:inline-flex; align-items:center; gap:26px; }
+.sb-root .sb-av-export { display:inline-flex; align-items:center; gap:14px; padding:8px 30px 8px 24px; border:3px solid rgb(120 180 255 / 70%); border-radius:999px; background:rgb(12 24 48 / 55%); color:#9cc8ff; font:600 38px/1.35 var(--font-inter),sans-serif; letter-spacing:.02em; cursor:pointer; white-space:nowrap; }
+.sb-root .sb-av-export svg { width:40px; height:40px; }
+.sb-root .sb-av-export:hover { background:rgb(30 60 110 / 70%); color:#fff; }
+.sb-root .sb-av-export.is-running { border-color:#ffc15a; color:#ffc15a; }
+.sb-root .sb-av-export.is-error { border-color:#ff7a7a; color:#ff9a9a; }
 .sb-av-status { justify-self:start; display:inline-flex; align-items:center; gap:18px; padding:8px 30px 8px 26px; border:3px solid transparent; border-radius:999px; font:600 38px/1.35 var(--font-inter),sans-serif; letter-spacing:.02em; }
 .sb-av-status::before { content:''; width:22px; height:22px; border-radius:50%; background:currentColor; }
 .sb-av-status.is-progress { color:#ffc15a; background:rgb(20 12 40 / 55%); border-color:rgb(255 193 90 / 70%); }

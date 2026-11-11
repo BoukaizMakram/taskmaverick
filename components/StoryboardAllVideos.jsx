@@ -31,7 +31,7 @@ import StoryboardRefs, {makeRefs} from './StoryboardRefs';
 import {addRefs, changeRef, refBoxes, refsOf, removeRef} from '@/lib/storyboardRefs.mjs';
 import CommentPanel from './StoryboardCommentPanel';
 import {TextFields} from './StoryboardTextEditor';
-import {ExportMenuItem} from './StoryboardExport';
+import {ExportAllButton, ExportMenuItem} from './StoryboardExport';
 import {addVideoComment, commentsOf, newCommentId, removeVideoComment, updateVideoComment} from '@/lib/storyboardComments.mjs';
 import {LOOKS, activeVariation, addVariation, looksFor, removeVariation, setActiveVariation, variationsOf} from '@/lib/storyboardVariations.mjs';
 import StoryboardRemotionCut from './StoryboardRemotionCut';
@@ -301,7 +301,9 @@ const Cell = memo(function Cell({cell, live, load, stamp, data, selected, shared
   const cut = playingCutOf(board, edits); // (the variation that plays is the board's Remotion cut, either layout: lib/remotion/cuts.mjs)
   return <div className={`sb-pl sb-av-cell${selected ? ' is-selected' : ''}`} data-sb-ui="" data-board={entry.board} data-status={entry.status.id} style={{left: cell.x, top: cell.y, width: cell.w}} onPointerDown={event => { if (!event.target.closest?.('.sb-pl-pin')) onSelect(board); }}>
     <div className="sb-pl-head" style={{height: ALL_LAYOUT.head, marginBottom: ALL_LAYOUT.headGap}}>
-      <span className={`sb-av-status is-${entry.status.id}`}>{entry.status.label}</span>
+      {/* (the Export button: the user, 2026-11-11, "add a way to export videos from the storyboard videos": the board's Remotion cut when it plays one, else every part of its video; dev only) */}
+      <span className="sb-av-left"><span className={`sb-av-status is-${entry.status.id}`}>{entry.status.label}</span>
+        {process.env.NODE_ENV !== 'production' && live && data && (cut || parts.length > 0) && <ExportAllButton board={board} titles={cut ? [cut.title] : parts.map(p => p.title)} options={cut ? {cut: true} : undefined}/>}</span>
       <span className="sb-fvtitle">{entry.name}</span>
       <i className="sb-ftime">{length ? clock(length) : ''}</i>
     </div>
@@ -697,6 +699,7 @@ export default function StoryboardAllVideos({menu, load, change}) {
       </>)(ctx.ref) : ctx.video?.cut ? (m => <>
         <button type="button" role="menuitem" disabled={!m.point} onClick={() => { addCommentHere(m); setCtx(null); }} title={m.point ? 'A pin on the picture where you right-clicked, at the second the video is on' : 'Right-click on the picture to put a comment there'}>Add a comment here <kbd>at {clock(m.at)}</kbd></button>
         <hr/>
+        {process.env.NODE_ENV !== 'production' && <ExportMenuItem board={m.board} title={m.part.title} options={{cut: true}} text="Export as MP4" onStart={() => { setNote('Rendering the film with Remotion: it is downloaded when it is done (a few minutes)'); setCtx(null); }}/>}
         <button type="button" role="menuitem" onClick={() => { try { navigator.clipboard.writeText(renderCommandOf(m.board, store[m.board]?.edits)).catch(() => {}); } catch {} setNote('The render command of the Remotion cut is copied: run it in a terminal'); setCtx(null); }} title={renderCommandOf(m.board, store[m.board]?.edits) ?? ''}>Copy the render command <kbd>MP4</kbd></button>
         <button type="button" role="menuitem" onClick={() => { window.open(`/storyboard?video=${encodeURIComponent(m.board)}`, '_blank', 'noopener'); setCtx(null); }} title="Opens the board this video is made from (a new tab)">Open its board <kbd>new tab</kbd></button>
       </>)(ctx.video) : ctx.video ? (m => <>
