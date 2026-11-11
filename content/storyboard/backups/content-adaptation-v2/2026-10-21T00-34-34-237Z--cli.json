@@ -1,0 +1,842 @@
+{
+  "version": 1,
+  "frames": {
+    "states/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "states/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "states/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "states/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "states/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "states/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "texas/end-4": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "california/end-4": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "intro/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "conclusion/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:53:52.157Z"
+    },
+    "tree/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:34.719Z"
+    },
+    "tree/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:34.719Z"
+    },
+    "tree/mark-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:34.719Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "Videos",
+        "after": null,
+        "shelf": [
+          "adapts"
+        ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "adapts-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "adapts-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "adapts-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "adapts-detail-popup"
+        ]
+      }
+    },
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 5
+}

@@ -1,0 +1,106 @@
+/* Standardizing Enterprise (components/sections/StandardizingStage.jsx): its own classes, prefixed sec-. The Knowledge boards' shared pieces (the web window's library page, the mission
+   panel of every type, the cards on their own, the spread of one mission to many) are styled here too: Powering Franchising, Innovating Consulting and Content Adaptation use them. */
+.sec-se-ic { width:18px; height:18px; flex:none; }
+.sec-se-ic.is-small { width:14px; height:14px; }
+
+/* ---- the web window: the library page (Missions › In Library, tm/04-home.png) ---- */
+.sec-se-web.iq-ow { font-family:var(--font-poppins),sans-serif; }
+.sec-pl-ic.is-green { color:#1f9d55; }
+.sec-pl-ic.is-blue { color:#1271b7; }
+.sec-pl-ic.is-red { color:#c8401a; }
+.sec-se-web .sec-se-tools { gap:0 30px; }
+.sec-se-assign { display:grid; place-items:center; width:16px; height:16px; border-radius:4px; background:#1271b7; color:#fff; }
+.sec-se-assign .sec-se-ic { width:12px; height:12px; }
+.sec-se-total { display:flex; align-items:center; gap:6px; margin-left:auto; font-size:12px; color:#30363a; white-space:nowrap; }
+.sec-se-total b { font-weight:500; }
+.sec-se-table { flex:1; min-height:0; }
+.sec-se-web .ow-table th { height:44px; }
+.sec-se-web .ow-table th > div { gap:6px; }
+.sec-se-web .ow-table th .sec-pl-kebab { flex:none; margin-left:auto; }
+.sec-se-rows td { height:42px; }
+.sec-se-rows td.is-center { text-align:center; }
+.sec-se-name { display:flex; align-items:center; gap:8px; height:41px; padding:0 10px 0 12px; font-weight:500; }
+.sec-se-name em { flex:none; min-width:22px; font-style:normal; color:#30363a; text-align:right; }
+.sec-se-name b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:400; }
+.sec-se-name small { color:#6b7378; font-size:12px; }
+.sec-se-name .sec-pl-kebab { margin-left:4px; }
+.sec-se-toggle { display:grid; place-items:center; flex:none; width:18px; height:18px; border:1.5px solid #1271b7; border-radius:4px; color:#1271b7; }
+.sec-se-toggle.is-empty { border-color:transparent; }
+.sec-se-toggle .sec-se-ic { width:13px; height:13px; }
+.sec-se-type { width:15px; height:17px; flex:none; }
+.sec-se-folder-ic { width:18px; height:18px; flex:none; color:#1271b7; }
+.sec-se-rows tr.sec-se-folder, .sec-se-rows tr.sec-se-folder td { background:#fff; }
+.sec-se-guide { width:18px; height:18px; color:#1f9d55; vertical-align:middle; }
+.sec-se-alert { width:18px; height:18px; color:#d63c64; vertical-align:middle; }
+.sec-se-chips { display:inline-flex; align-items:center; gap:5px; overflow:hidden; }
+.sec-se-chips i, .sec-se-tag { padding:1px 5px; border:1px solid #9aa3a9; border-radius:2px; font-style:normal; font-size:11.5px; line-height:1.4; color:#161919; white-space:nowrap; }
+.sec-se-chips em { font-style:normal; color:#4a5358; font-size:12px; }
+.sec-se-process { display:inline-flex; align-items:center; gap:4px; padding:1px 6px; border:1px solid #8fc3e0; border-radius:3px; color:#135f8c; font-size:11.5px; }
+
+
+/* ---- knowledge turned into missions: the manual and its branches ---- */
+.sec-se-flow .sec-se-chip { will-change:transform,opacity; }
+/* the manual: the user's picture (the book, its light, its plaques) with its backdrop taken out (public/storyboard-art/operational-manual-plaques.webp, scripts/generate-images.mjs) */
+.sec-se-book { position:absolute; }
+.sec-se-book img { display:block; width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 18px 28px rgb(0 0 0 / 45%)); }
+
+/* ---- a library mission's side panel (tm/44-mission-panel.png, tm/45-mission-assigned.png) ---- */
+.sec-se-side { position:absolute; right:0; top:48px; bottom:0; z-index:6; box-sizing:border-box; width:500px; display:flex; flex-direction:column; border-radius:10px 0 0 0; background:#fff; box-shadow:-10px 0 28px rgb(21 39 54 / 14%); font-family:var(--font-poppins),sans-serif; color:#161919; }
+.sec-se-side > header { display:flex; align-items:center; justify-content:space-between; padding:18px 22px 10px 26px; }
+.sec-se-side > header b { font-size:19px; font-weight:500; }
+.sec-se-side-x { display:grid; place-items:center; width:26px; height:26px; border:1.5px solid #1271b7; border-radius:5px; color:#1271b7; }
+.sec-se-side-x .sec-se-ic { width:15px; height:15px; }
+.sec-se-side-actions { display:flex; align-items:center; justify-content:space-between; padding:0 22px 12px 26px; }
+.sec-se-side-btn { display:flex; align-items:center; gap:10px; height:34px; padding:0 12px; border-radius:6px; background:#1271b7; color:#fff; font-size:14px; font-weight:500; }
+.sec-se-side-btn i { width:1px; height:16px; background:#ffffff80; }
+.sec-se-side-btn .sec-se-ic { width:15px; height:15px; }
+.sec-se-side-open { display:flex; align-items:center; gap:8px; color:#1271b7; font-size:14px; }
+.sec-se-side-open i { width:1px; height:14px; background:#c9ced1; }
+.sec-se-side-tabs { display:flex; align-items:center; gap:16px; padding:0 18px; height:40px; border-bottom:1px solid #e5e7e8; color:#30363a; font-size:14px; white-space:nowrap; overflow:hidden; }
+.sec-se-side-tabs .sec-se-ic { color:#9aa3a9; }
+.sec-se-side-tabs span { display:flex; align-items:center; height:100%; border-bottom:2px solid transparent; }
+.sec-se-side-tabs span.is-active { border-bottom-color:#1271b7; color:#161919; font-weight:500; }
+.sec-se-side-body { position:relative; flex:1; min-height:0; overflow:hidden; }
+.sec-se-side-pane { position:absolute; inset:0; padding:12px 18px; }
+.sec-se-side-card { margin-bottom:12px; padding:14px 16px; border:1px solid #e3e6e8; border-radius:8px; background:#fff; }
+.sec-se-side-card h5, .sec-se-side-h { display:flex; align-items:center; gap:12px; margin:0 0 12px; font-size:15px; font-weight:500; }
+.sec-se-side-ico { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:#f1f3f4; color:#30363a; }
+.sec-se-side-card dl { display:grid; grid-template-columns:150px 1fr; gap:12px 10px; margin:0; font-size:13.5px; }
+.sec-se-side-card dt { color:#30363a; }
+.sec-se-side-card dd { margin:0; font-weight:500; }
+.sec-se-side-q > div { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding-bottom:10px; border-bottom:2px solid #1271b7; font-size:13.5px; }
+.sec-se-side-q em { flex:none; padding:4px 8px; border-radius:4px; background:#e6f3fb; color:#1271b7; font-style:normal; font-size:13px; }
+.sec-se-side-q small { display:block; margin:10px 0 6px; font-size:12px; color:#7b848a; }
+.sec-se-side-q p { display:flex; gap:40px; margin:0; font-size:13.5px; }
+.sec-se-side-sched { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.sec-se-side-sched section { padding:16px 12px; border:1px solid #e3e6e8; border-radius:8px; }
+.sec-se-side-sched header { display:flex; align-items:center; gap:10px; margin-bottom:14px; font-size:16px; font-weight:500; }
+.sec-se-side-sched header b { margin-left:auto; font-weight:500; }
+.sec-se-side-sched section > span { display:flex; align-items:center; gap:10px; height:34px; padding:0 10px; border:1.5px solid #1271b7; border-radius:6px; color:#1271b7; font-size:13.5px; }
+.sec-se-side-sched section > span i { width:1px; height:14px; background:#c9ced1; }
+.sec-se-side-sched section > span b { margin-left:auto; font-weight:500; }
+.sec-se-rows tr.is-pulled td { background:#fde3c8 !important; }
+
+/* ---- the mission builder (components/web/WebMissionBuilder.jsx) in the window ---- */
+.sec-se-builder { flex:1; min-height:0; display:flex; flex-direction:column; }
+
+/* ---- one mission sent to many: the product's cards on their own ---- */
+.sec-se-spread { font-family:var(--font-montserrat),sans-serif; }
+.sec-se-label.sec-label { transform:translate(-50%,-50%); }
+.sec-se-target { position:absolute; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; }
+.sec-se-head { display:flex; align-items:center; gap:10px; }
+.sec-se-faces { display:flex; }
+.sec-se-faces img { width:50px; height:50px; filter:drop-shadow(0 4px 10px rgb(0 0 0 / 30%)); }
+.sec-se-faces img + img { margin-left:-14px; }
+.sec-se-place { display:grid; place-items:center; width:46px; height:46px; border-radius:50%; background:#fff; color:#1271b7; box-shadow:0 4px 10px rgb(0 0 0 / 25%); }
+.sec-se-place .sec-se-ic { width:24px; height:24px; }
+.sec-se-who { display:flex; flex-direction:column; color:#fff; text-shadow:0 1px 3px rgb(0 0 0 / 35%); }
+.sec-se-who b { font-size:18px; font-weight:700; line-height:1.2; white-space:nowrap; }
+.sec-se-who small { font-size:13px; font-weight:500; opacity:.92; white-space:nowrap; }
+.sec-se-target > .ev2-schedule.sec-se-sched { position:absolute; left:50%; top:222px; padding:6px 12px; font-size:14px; box-shadow:0 6px 14px rgb(0 0 0 / 22%); transform-origin:50% 50%; }
+.sec-se-sched .sec-se-ic { width:17px; height:17px; }
+.sec-se-phones .sec-phone-card { transform-origin:50% 0; }
+
+/* ---- the Media mission: the product's own Media screen (OpenedMission) in the Mission Details' box ---- */
+.sec-se-om { overflow:hidden; border-radius:18px; background:#f8f8f5; }
+.sec-se-om .om { font-family:var(--font-montserrat),sans-serif; }

@@ -36,7 +36,11 @@ function wordBoxes(p, S, u) {
 //    progress(p) the pen has written p (0 to 1) of it: forward it draws on, back it starts again (so a bar can be dragged)
 //    hide()      the canvas goes and the page's own words are back
 //    alive()     false once the canvas was thrown away with the frame (the frame was drawn again)
-export function prepareWriting(stage, bubble) {
+// `maxK`: the most canvas px per stage px (3: the board's own play button, which can be looked at close; a video plays at its own size, 2 is plenty and half the pixels to draw each picture).
+// The page sets a letter with more ink than a canvas does (the same font and weight: about a quarter more, measured on Montserrat semibold, white on dark), so words written by the pen jumped to a
+// heavier look the moment it lifted (the user, 2026-10-14: "sometimes for some reason it gets bold"). The letters the pen shows are outlined by this share of their size to be as heavy.
+const FAT = 0.03;
+export function prepareWriting(stage, bubble, maxK = 3) {
   const p = bubble.querySelector('p');
   if (!p || !stage.isConnected) return null;
   const S = stage.getBoundingClientRect(), u = S.width / STAGE || 1, words = wordBoxes(p, S, u);
@@ -45,14 +49,14 @@ export function prepareWriting(stage, bubble) {
   // the canvas covers the words with a margin (the letters' loops and tails reach past their boxes)
   const PAD = 26, x0 = Math.floor(Math.min(...words.map(w => w.x)) - PAD), y0 = Math.floor(Math.min(...words.map(w => w.y)) - PAD);
   const W = Math.ceil(Math.max(...words.map(w => w.x + w.w)) + PAD - x0), H = Math.ceil(Math.max(...words.map(w => w.y + w.h)) + PAD - y0);
-  const K = Math.max(1, Math.min(3, 1500 / Math.max(W, H))); // canvas px per stage px
+  const K = Math.max(1, Math.min(maxK, 1500 / Math.max(W, H))); // canvas px per stage px
   const cw = Math.ceil(W * K), ch = Math.ceil(H * K), D = cw * ch > 200000 ? GRID : 1;
   const canvas = () => { const c = document.createElement('canvas'); c.width = cw; c.height = ch; return c; };
   const ink = canvas(), mask = canvas(), view = canvas();
   const g = ink.getContext('2d', {willReadFrequently: true}), m = mask.getContext('2d'), v = view.getContext('2d');
 
   // the words, set exactly as the page sets them (on the ink canvas; a big one is thinned from the same words on a canvas D times smaller)
-  const setWords = ctx => {
+  const setWords = (ctx, fat = 0) => {
     const ascent = new Map(); // (a font's ascent is the font's, not the word's: asked once for each font, not for every word)
     ctx.textBaseline = 'alphabetic';
     for (const w of words) {
@@ -61,6 +65,7 @@ export function prepareWriting(stage, bubble) {
       ctx.fillStyle = w.color;
       if (!ascent.has(ctx.font)) ascent.set(ctx.font, ctx.measureText(w.text).fontBoundingBoxAscent);
       ctx.fillText(w.text, (w.x - x0) * K, (w.y - y0) * K + ascent.get(ctx.font));
+      if (fat) { ctx.lineWidth = fat * w.size * K; ctx.strokeStyle = w.color; ctx.lineJoin = 'round'; ctx.strokeText(w.text, (w.x - x0) * K, (w.y - y0) * K + ascent.get(ctx.font)); }
     }
   };
   setWords(g);
@@ -96,6 +101,7 @@ export function prepareWriting(stage, bubble) {
   }
   if (!path) return null;
   const {line, pen} = path, color = words[0].color;
+  g.clearRect(0, 0, cw, ch); setWords(g, FAT); // (the letters that are shown: as heavy as the page's own, see FAT; the path above was walked on the plain ones)
 
   view.setAttribute('data-sb-writing', '');
   view.style.cssText = `position:absolute;left:${x0}px;top:${y0}px;width:${W}px;height:${H}px;pointer-events:none;z-index:9000`;

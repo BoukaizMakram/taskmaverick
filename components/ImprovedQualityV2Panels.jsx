@@ -33,7 +33,8 @@ function PlayerBar({time,length,running}){return <div className="iq2-bar"><span>
 // ---- Chapter 2: Knowledge Base, then Onboarding's video ------------------------
 const KNOWLEDGE_ITEMS=[['Punctuality','08-28-26','09:13 PM'],['Company Culture','05-02-26','12:44 AM'],['Onboarding','08-20-26','11:54 PM'],['Procedures','04-14-26','02:03 AM'],['Timesheet Filing','03-27-26','12:15 AM'],['Workplace Safety','07-31-26','08:47 PM'],['Customer Service','07-08-26','07:41 PM']];
 const OPENED=2;// the card that opens: Onboarding
-export function KnowledgeBase({frame,playing,speed}){
+// `Video`: what plays a clip (DemoVideo; a Remotion cut gives its own, played by its clock: components/remotion/CutParts.jsx CutVideo)
+export function KnowledgeBase({frame,playing,speed,Video=DemoVideo}){
  const {reveal,since,viewer,video}=frame.kb,running=video>0&&video<KNOWLEDGE.clip;
  // Onboarding opens in place, the way the mission expands: its card grows taller, its title and the video come in under what the
  // card already says, and the cards below it move down. (The top of the card is the card as it was: the hand's target.)
@@ -44,7 +45,7 @@ export function KnowledgeBase({frame,playing,speed}){
    <div className="iq2-kb-top" data-iq-target={`kb-type-${i}`}><MediaBadge/><h3>{title}</h3><time>{date} {time}</time></div>
    <Reveal open={viewer}>
     <p className="iq2-kb-title">Badging In On Your First Day</p>
-    <div className="iq2-kb-film" data-iq-target="kb-video"><DemoVideo src={ONBOARDING} poster={null} time={video} playing={playing&&running} speed={speed}/>{video===0&&<span className="iq2-bigplay"><BigPlay/></span>}</div>
+    <div className="iq2-kb-film" data-iq-target="kb-video"><Video src={ONBOARDING} poster={null} time={video} playing={playing&&running} speed={speed}/>{video===0&&<span className="iq2-bigplay"><BigPlay/></span>}</div>
    </Reveal>
   </article>;
  };
@@ -76,7 +77,7 @@ function Request({kind,target,t}){
  </div>;
 }
 // Frame parts used: mission {translated, clock}, steps, training, photo, video.
-export function StoryMission({frame,playing,speed}){
+export function StoryMission({frame,playing,speed,Video=DemoVideo}){
  const {mission,steps,training,photo,video}=frame,t=COPY[mission.translated?'es':'en'];
  const count=steps+(training.done?1:0)+(photo.taken?1:0)+(video.attached?1:0);
  const choice=(label,checked,target)=><span role="checkbox" aria-checked={checked} className={checked?'is-selected':undefined} data-iq-target={target} key={label}><Box checked={checked}/>{label}</span>;
@@ -102,7 +103,7 @@ export function StoryMission({frame,playing,speed}){
      <span className="iq2-m-tile-text"><b>{t.trainingTitle}</b><small>{training.done?`${t.video} · ${t.quiz}`:`${t.video} · 0:06`}</small></span>
      {training.done&&<em className="iq2-m-done"><CheckIcon/>{t.done}</em>}
     </div>
-    <Reveal open={training.video}><div className="iq2-m-player" data-iq-target="training-video"><div className="iq2-m-frame"><DemoVideo src={TRAINING} poster={SHELVING} time={training.seconds} playing={playing&&playingTraining} speed={speed}/></div><PlayerBar time={training.seconds} length={MICRO.clip} running={playingTraining}/></div></Reveal>
+    <Reveal open={training.video}><div className="iq2-m-player" data-iq-target="training-video"><div className="iq2-m-frame"><Video src={TRAINING} poster={SHELVING} time={training.seconds} playing={playing&&playingTraining} speed={speed}/></div><PlayerBar time={training.seconds} length={MICRO.clip} running={playingTraining}/></div></Reveal>
     <Reveal open={training.quiz}><div className="iq2-m-quiz" data-iq-target="training-quiz"><header><small>2/2</small><b>{t.quiz}</b></header>
      {QUIZ.map((q,i)=><section key={q}><p><span>{i+1}.</span>{q}</p><div>{['True','False'].map((label,o)=>{const checked=i<training.answers&&QUIZ_ANSWERS[i]===o;return <span role="checkbox" aria-checked={checked} data-iq-target={`quiz-${i}-${o}`} key={label}><Box checked={checked}/>{label}</span>;})}</div></section>)}
      <span className={`iq2-m-submit${training.answers===3?' is-ready':''}`} data-iq-target="quiz-submit">{t.submit}</span>
@@ -116,7 +117,7 @@ export function StoryMission({frame,playing,speed}){
     <section className="iq2-m-cp" data-iq-target="cp6"><b>6. {t.equipQ}</b><div className="iq2-m-options">{choice(t.yes,false)}{choice(t.no,video.answered,'no-5')}</div>
      {video.in===0?<Reveal open={video.box}><Request kind="video" target="add-video" t={t}/></Reveal>
       :<Reveal open={video.in}><div className="iq2-m-proof" data-iq-target="video-proof"><div className="iq2-m-frame">
-        <DemoVideo time={video.attached?video.playback:Math.max(0,video.live)} playing={playing&&(video.recording||(video.attached&&video.playback>0&&video.playback<MOTION.rec))} speed={speed}/>
+        <Video src={CLIP} poster={DAMAGE} time={video.attached?video.playback:Math.max(0,video.live)} playing={playing&&(video.recording||(video.attached&&video.playback>0&&video.playback<MOTION.rec))} speed={speed}/>
         {!video.attached&&<span className="iq2-rec"><i/>REC 00:0{video.rec}</span>}
        </div>{video.attached&&<div className="iq2-m-file"><VideoIcon/><span>{PROOF_FILES.video}</span></div>}</div></Reveal>}
     </section>

@@ -1,0 +1,45 @@
+/* Improved Quality, the Remotion cut (components/remotion/QualityCut.jsx, lib/remotion/qualityCut.mjs): .rc-iq-*. The stage, the words, the title, the art layer, the outlines and the tablet's frame
+   (.rc-device) are every cut's (components/remotion/CutParts.css); everything is placed by the clock, nothing here animates by itself. */
+
+/* the art over the band of the words, as one layer (no look of its own: its pieces stack as they did, unless it is moved, the layout 'ie') */
+.rc-iq-art { position:absolute; inset:0; }
+/* the layout 'ie' (told as Increased Efficiency is): the missions on a tablet have Increased Efficiency's deeper shadow at rest (the user, 2026-11-10, of that film: "add moooore shadows to
+   missions in tablet in all scenes"; EfficiencyRedo.css --rc-rest-a, --rc-rest-b: it ends 17 px under a card, never on the next one). The selector is the board's own, one class heavier */
+.rc-iq-ie .rc-iq-tablet .mi-reference.mi-interactive--tablet .mi-tablet-board .chip { box-shadow:0 5px 12px rgb(15 23 42 / 32%), 0 1px 3px rgb(15 23 42 / 26%); }
+/* a tablet of this cut: the board draws its own cards */
+.rc-iq-tablet { z-index:5; }
+/* the Knowledge Base over the board: the board dims as it comes in (the demo hides that shade; the storyboard's note: "darken the left side so we can clearly see the right side") */
+.rc-iq-kb { position:absolute; inset:0; z-index:5; }
+.rc-iq-kb .iq-knowledge-shade { opacity:var(--rc-shade, 1); }
+
+/* the mission by itself: the demo's 360 px panel, scaled from its top left; it opens from its summary card (the clip, written each frame); a Spanish panel can lie over it */
+.rc-iq-mission { position:absolute; z-index:9; transform-origin:0 0; filter:drop-shadow(0 30px 50px rgb(0 0 0 / 45%)); }
+/* over the band of the words (the layout 'under': the mission ends at y 697, the band's straight edge is at 744): a shadow that ends before it, 39 px under the mission, or the band would cut it
+   along a line (the user, 2026-11-10, of the tablet's in Increased Efficiency: "there is a seam here") */
+.rc-iq-mission.is-under { filter:drop-shadow(0 14px 24px rgb(0 0 0 / 45%)); }
+.rc-iq-clip { position:relative; width:100%; height:100%; }
+.rc-iq-layer { position:absolute; inset:0; }
+
+/* the closed mission out of its board (.iq2-iso-layer: the demo's), its shadow on the dark */
+.rc-iq-iso .iq2-iso-stack .chip { box-shadow:0 18px 40px rgb(0 0 0 / 40%); }
+.rc-iq-iso .iq2-rate-card { box-shadow:0 14px 34px rgb(0 0 0 / 35%); }
+
+/* the phone beside the tablet, Business Proofs over its board */
+.rc-iq-phone { position:absolute; z-index:13; transform-origin:50% 50%; filter:drop-shadow(0 24px 40px rgb(0 0 0 / 45%)); }
+.rc-iq-phone .ph-fit { width:100%; max-width:none; }
+
+/* the web report on the dark */
+.rc-iq-report { border-color:#2a2f36; box-shadow:0 30px 60px rgb(0 0 0 / 45%); }
+
+/* the closing words' two pieces */
+.rc-iq-end { position:absolute; inset:0; }
+
+/* a tablet's menu, opened by the cursor: it pops from its corner and the board dims behind it, by the clock (--rc-menu, Tablet) */
+.rc-iq-tablet .bn-menu { transform-origin:top right; transform:scale(calc(.86 + .14 * var(--rc-menu, 1))); opacity:var(--rc-menu, 1); }
+.rc-iq-tablet .bn-shade { opacity:calc(var(--rc-menu, 1) * .9); }
+.rc-iq-tablet .bn-menu-close { opacity:var(--rc-menu, 1); }
+
+/* the ratings' purple lines are the cut's (Ratings: one measured path from the card to each rating, drawn like a trim path); the panel's own pieces are not drawn */
+.rc-iq-iso .iq2-line { display:none; }
+.rc-iq-lines { position:absolute; left:0; top:0; width:1600px; height:900px; z-index:8; overflow:visible; pointer-events:none; }
+.rc-iq-lines path { fill:none; stroke:#7b3cf0; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1 1; }

@@ -1,0 +1,2304 @@
+{
+  "version": 1,
+  "frames": {
+    "ie-v4/shared": {
+      "note": "when seeing two titles, like in this slide it means show first then take the first title to the right and show second from left coming, speed is 0.3s",
+      "moves": {
+        "picture": [
+          1.18,
+          8.79
+        ],
+        "c1-sentence": [
+          429.95,
+          0
+        ],
+        "label": [
+          -381.89,
+          0.02
+        ],
+        "line": [
+          -362.63,
+          0
+        ],
+        "sentence": [
+          -362.63,
+          0
+        ],
+        "c1-label": [
+          387.04,
+          1.82
+        ],
+        "c1-line": [
+          423.56,
+          0
+        ],
+        "c1-tablet": [
+          154.24,
+          -205.49
+        ],
+        "c1-mission-inventory-check": [
+          142.26,
+          -32.81
+        ],
+        "c1-mission-order-supplies": [
+          -279.38,
+          -32.81
+        ],
+        "c1-mission-prepare-workspace": [
+          142.26,
+          -120.84
+        ],
+        "c2-mission-prepare-workspace": [
+          142.26,
+          -78.94
+        ],
+        "c3-mission-prepare-workspace": [
+          142.26,
+          -37.54
+        ],
+        "c2-mission-order-supplies": [
+          -279.38,
+          9.53
+        ],
+        "c3-mission-order-supplies": [
+          -279.38,
+          51.43
+        ],
+        "c4-mission-order-supplies": [
+          -380.47,
+          -32.81
+        ],
+        "c5-mission-order-supplies": [
+          -380.47,
+          9.53
+        ]
+      },
+      "texts": {
+        "label": "Reduce COST",
+        "c1-label": "Sharing devices"
+      },
+      "scales": {
+        "c1-tablet": [
+          0.3248,
+          0.3248
+        ],
+        "c1-mission-inventory-check": [
+          0.3248,
+          0.3248
+        ],
+        "c1-mission-order-supplies": [
+          0.3248,
+          0.3248
+        ],
+        "c1-mission-prepare-workspace": [
+          0.3248,
+          0.3248
+        ],
+        "c2-mission-prepare-workspace": [
+          0.3248,
+          0.3248
+        ],
+        "c3-mission-prepare-workspace": [
+          0.3248,
+          0.3248
+        ],
+        "c2-mission-order-supplies": [
+          0.3248,
+          0.3248
+        ],
+        "c3-mission-order-supplies": [
+          0.3248,
+          0.3248
+        ],
+        "c4-mission-order-supplies": [
+          0.3248,
+          0.3248
+        ],
+        "c5-mission-order-supplies": [
+          0.3248,
+          0.3248
+        ]
+      },
+      "sizes": {
+        "label": [
+          138.11,
+          52
+        ],
+        "c1-label": [
+          145.58,
+          52
+        ]
+      },
+      "inserts": [
+        {
+          "key": "c1-label",
+          "name": "Label",
+          "kind": "dom",
+          "asset": "h136xghk1lta26kcu",
+          "box": {
+            "x": 333.5,
+            "y": 795.81,
+            "w": 105.23,
+            "h": 52
+          },
+          "z": 20
+        },
+        {
+          "key": "c1-line",
+          "name": "Line",
+          "kind": "dom",
+          "asset": "h1ene9wqes6zn4hz",
+          "box": {
+            "x": 452.34,
+            "y": 784.63,
+            "w": 18,
+            "h": 74.38
+          },
+          "z": 22
+        },
+        {
+          "key": "c1-sentence",
+          "name": "Sentence",
+          "kind": "dom",
+          "asset": "hpf96nm1iurd7mev",
+          "box": {
+            "x": 486.34,
+            "y": 777.63,
+            "w": 627.31,
+            "h": 88.38
+          },
+          "z": 24
+        },
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1h54ah4p5nzaw4m9",
+          "box": {
+            "x": 240,
+            "y": -48.88,
+            "w": 1120,
+            "h": 1003.52
+          },
+          "z": 26,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-inventory-check",
+          "name": "Mission Inventory Check",
+          "kind": "dom",
+          "asset": "h1icz7hajtugvg133",
+          "box": {
+            "x": 338.81,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 28,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1u9wzffysj69r16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 30,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1j3eyyl61tt0t129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 32,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1i9zxa2tilmay129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 34,
+          "inner": true
+        },
+        {
+          "key": "c3-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1td1jhf1gzdfl3129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 36,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "he21r881b5di2w16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 38,
+          "inner": true
+        },
+        {
+          "key": "c3-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h6c5e881xietmc16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 40,
+          "inner": true
+        },
+        {
+          "key": "c4-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "hfc36rxshg55z16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 42,
+          "inner": true
+        },
+        {
+          "key": "c5-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "hg7hbdm1mhlioq16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 44,
+          "inner": true
+        },
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1pkgivpe7wi0h14g",
+          "box": {
+            "x": 1097,
+            "y": 736,
+            "w": 38,
+            "h": 50
+          },
+          "z": 46
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h4rg8q81ykfi7uo4",
+          "box": {
+            "x": 1115,
+            "y": 773,
+            "w": 40,
+            "h": 13
+          },
+          "z": 48
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h4o8fz2hmg2m41eb",
+          "box": {
+            "x": 332,
+            "y": 731,
+            "w": 51,
+            "h": 43
+          },
+          "z": 50
+        }
+      ],
+      "updatedAt": "2026-11-09T21:20:22.078Z"
+    },
+    "ie-v4/result": {
+      "moves": {
+        "label": [
+          74.33,
+          -349.74
+        ],
+        "line": [
+          74.33,
+          -349.74
+        ],
+        "sentence": [
+          74.33,
+          -349.74
+        ]
+      },
+      "texts": {
+        "label": "mINIMAL dOWNTIME"
+      },
+      "hidden": [
+        "shift-adam-f-avatar",
+        "shift-adam-f-row",
+        "shift-adam-f-timer-1",
+        "shift-adam-f-timer-2",
+        "shift-adam-f-timer-3",
+        "shift-adam-f-timer-4",
+        "shift-adam-f-timer-5",
+        "shift-maya-r-avatar",
+        "shift-maya-r-row",
+        "shift-maya-r-timer-1",
+        "shift-maya-r-timer-2",
+        "shift-maya-r-timer-3",
+        "shift-maya-r-timer-4",
+        "shift-maya-r-timer-5",
+        "shift-ben-r-avatar",
+        "shift-ben-r-row",
+        "shift-ben-r-timer-1",
+        "shift-ben-r-timer-2",
+        "shift-ben-r-timer-3",
+        "shift-ben-r-timer-4",
+        "shift-ben-r-timer-5",
+        "yellow-outline"
+      ],
+      "updatedAt": "2026-11-07T00:06:02.012Z"
+    },
+    "ie-v4/schedule": {
+      "hidden": [
+        "schedules-inventory-check",
+        "schedules-order-supplies",
+        "yellow-outline",
+        "yellow-outline-2"
+      ],
+      "inserts": [
+        {
+          "key": "c-schedule-line-1-1",
+          "name": "Schedule line 1",
+          "kind": "dom",
+          "asset": "a1df8fc0fb",
+          "box": {
+            "x": 894,
+            "y": 251.83,
+            "w": 58,
+            "h": 2.5
+          },
+          "z": 20
+        },
+        {
+          "key": "c-schedule-line-2-1",
+          "name": "Schedule line 2",
+          "kind": "dom",
+          "asset": "14348c68fb",
+          "box": {
+            "x": 894,
+            "y": 479.68,
+            "w": 58,
+            "h": 2.5
+          },
+          "z": 22
+        },
+        {
+          "key": "c-mission-1-schedule-1",
+          "name": "Mission-1 schedule",
+          "kind": "dom",
+          "asset": "377491834de",
+          "box": {
+            "x": 950.85,
+            "y": 164.08,
+            "w": 272,
+            "h": 178
+          },
+          "z": 24
+        },
+        {
+          "key": "c-mission-2-schedule-1",
+          "name": "Mission-2 schedule",
+          "kind": "dom",
+          "asset": "2a10c27e4de",
+          "box": {
+            "x": 950.85,
+            "y": 391.93,
+            "w": 272,
+            "h": 178
+          },
+          "z": 26
+        }
+      ],
+      "updatedAt": "2026-11-06T23:34:43.873Z"
+    },
+    "ie-v4/title": {
+      "hidden": [
+        "title-strike"
+      ],
+      "updatedAt": "2026-11-06T23:45:04.964Z"
+    },
+    "ie-v4/individuals": {
+      "note": "automated assignment: mission are automatically posted exactly when due\n\nmove the title from left to center then to right, for all slides, .3s to show then after scen is done .3 seconds to go right",
+      "moves": {
+        "label": [
+          146.03,
+          -3.29
+        ],
+        "c1-mission-inventory-check": [
+          256.91,
+          -31.57
+        ],
+        "c1-mission-order-supplies": [
+          256.91,
+          -31.57
+        ],
+        "c1-mission-safety-check": [
+          256.91,
+          -31.57
+        ],
+        "c1-mission-prepare-workspace": [
+          256.91,
+          -31.57
+        ],
+        "line": [
+          197.09,
+          -3.3
+        ],
+        "sentence": [
+          187.37,
+          -3.31
+        ]
+      },
+      "texts": {
+        "label": "Automated assignment",
+        "sentence": "Mission Are Automatically Posted Exactly When Due"
+      },
+      "sizes": {
+        "label": [
+          240.07,
+          52
+        ],
+        "sentence": [
+          488.91,
+          88
+        ]
+      },
+      "hidden": [
+        "phone-ben-r",
+        "phone-maya-r",
+        "phone-maya-r-avatar",
+        "phone-ben-r-avatar",
+        "phone-adam-f-avatar",
+        "phone-adam-f"
+      ],
+      "inserts": [
+        {
+          "key": "c1-mission-inventory-check",
+          "name": "Mission Inventory Check",
+          "kind": "dom",
+          "asset": "h1lo50aldxeup5136",
+          "box": {
+            "x": 388.23,
+            "y": 186.59,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1oak1jb1sbjhe512t",
+          "box": {
+            "x": 388.23,
+            "y": 303,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-safety-check",
+          "name": "Mission Safety Check",
+          "kind": "dom",
+          "asset": "h1u5c57htdg9on11y",
+          "box": {
+            "x": 388.23,
+            "y": 419.41,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 24,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1gnqkfv120qq3512a",
+          "box": {
+            "x": 388.23,
+            "y": 535.82,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 26,
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-11-09T21:06:09.764Z"
+    },
+    "ie-v4/individuals#2": {
+      "note": "all green, then top two to orange, then top one to red ",
+      "moves": {
+        "label": [
+          135.3,
+          -2.18
+        ],
+        "c1-mission-inventory-check": [
+          418.62,
+          -103.82
+        ],
+        "c1-mission-order-supplies": [
+          418.62,
+          -49
+        ],
+        "c1-mission-safety-check": [
+          418.62,
+          5.82
+        ],
+        "c1-mission-prepare-workspace": [
+          418.62,
+          60.64
+        ],
+        "sentence": [
+          152.86,
+          -2.2
+        ],
+        "line": [
+          147.22,
+          -2.2
+        ]
+      },
+      "texts": {
+        "label": "sensE of urgency",
+        "sentence": "Mission Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "c1-mission-inventory-check": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-order-supplies": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-safety-check": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-prepare-workspace": [
+          1.4709,
+          1.4709
+        ]
+      },
+      "sizes": {
+        "label": [
+          209.56,
+          52
+        ],
+        "sentence": [
+          579.38,
+          88
+        ]
+      },
+      "hidden": [
+        "phone-ben-r",
+        "phone-maya-r",
+        "phone-maya-r-avatar",
+        "phone-ben-r-avatar",
+        "phone-adam-f-avatar",
+        "phone-adam-f"
+      ],
+      "inserts": [
+        {
+          "key": "c1-mission-inventory-check",
+          "name": "Mission Inventory Check",
+          "kind": "dom",
+          "asset": "h1lo50aldxeup5136",
+          "box": {
+            "x": 388.23,
+            "y": 186.59,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1oak1jb1sbjhe512t",
+          "box": {
+            "x": 388.23,
+            "y": 303,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-safety-check",
+          "name": "Mission Safety Check",
+          "kind": "dom",
+          "asset": "h1u5c57htdg9on11y",
+          "box": {
+            "x": 388.23,
+            "y": 419.41,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 24,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1gnqkfv120qq3512a",
+          "box": {
+            "x": 388.23,
+            "y": 535.82,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 26,
+          "inner": true
+        }
+      ],
+      "styles": {
+        "c1-mission-order-supplies/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        },
+        "c1-mission-inventory-check/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#d63e7e"
+        }
+      },
+      "updatedAt": "2026-11-09T21:08:04.150Z"
+    },
+    "ie-v4/individuals#3": {
+      "note": "bottom one go to orange then move it 10% to the right then up then center.\nout, accelerate, up.",
+      "moves": {
+        "label": [
+          127.13,
+          -1.75
+        ],
+        "c1-mission-inventory-check": [
+          418.62,
+          -103.82
+        ],
+        "c1-mission-order-supplies": [
+          418.62,
+          -49
+        ],
+        "c1-mission-safety-check": [
+          418.62,
+          5.82
+        ],
+        "c1-mission-prepare-workspace": [
+          418.62,
+          60.64
+        ],
+        "c2-mission-inventory-check": [
+          346.61,
+          -31.57
+        ],
+        "c2-mission-order-supplies": [
+          346.61,
+          -31.57
+        ],
+        "c2-mission-safety-check": [
+          346.61,
+          -31.57
+        ],
+        "c2-mission-prepare-workspace": [
+          627.9,
+          -177.88
+        ],
+        "line": [
+          176.22,
+          -1.76
+        ],
+        "sentence": [
+          176.22,
+          -1.76
+        ]
+      },
+      "texts": {
+        "label": "Automated prioritization",
+        "sentence": "Important Missions Are Automatically Prioritized"
+      },
+      "scales": {
+        "c1-mission-inventory-check": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-order-supplies": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-safety-check": [
+          1.4709,
+          1.4709
+        ],
+        "c1-mission-prepare-workspace": [
+          1.4709,
+          1.4709
+        ]
+      },
+      "sizes": {
+        "label": [
+          246.73,
+          52
+        ],
+        "sentence": [
+          564.19,
+          88
+        ]
+      },
+      "hidden": [
+        "phone-ben-r",
+        "phone-maya-r",
+        "phone-maya-r-avatar",
+        "phone-ben-r-avatar",
+        "phone-adam-f-avatar",
+        "phone-adam-f"
+      ],
+      "inserts": [
+        {
+          "key": "c1-mission-inventory-check",
+          "name": "Mission Inventory Check",
+          "kind": "dom",
+          "asset": "h1lo50aldxeup5136",
+          "box": {
+            "x": 388.23,
+            "y": 186.59,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1oak1jb1sbjhe512t",
+          "box": {
+            "x": 388.23,
+            "y": 303,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-safety-check",
+          "name": "Mission Safety Check",
+          "kind": "dom",
+          "asset": "h1u5c57htdg9on11y",
+          "box": {
+            "x": 388.23,
+            "y": 419.41,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 24,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1gnqkfv120qq3512a",
+          "box": {
+            "x": 388.23,
+            "y": 535.82,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 26,
+          "inner": true
+        }
+      ],
+      "styles": {
+        "c1-mission-order-supplies/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        },
+        "c1-mission-inventory-check/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#d63e7e"
+        },
+        "c1-mission-prepare-workspace/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        },
+        "c2-mission-inventory-check/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#d63e7e"
+        },
+        "c2-mission-order-supplies/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        },
+        "c2-mission-prepare-workspace/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        }
+      },
+      "updatedAt": "2026-11-09T21:09:43.887Z"
+    },
+    "ie-v4/points": {
+      "note": "Pop the points out in all of them, ",
+      "moves": {
+        "c1-mission-inventory-check": [
+          -39.23,
+          319.1
+        ],
+        "c1-mission-order-supplies": [
+          -39.23,
+          319.1
+        ],
+        "c1-mission-safety-check": [
+          -33.96,
+          -31.57
+        ],
+        "c1-mission-prepare-workspace": [
+          -33.96,
+          -31.57
+        ],
+        "mission-order-supplies": [
+          -39.23,
+          -130.9
+        ],
+        "mission-inventory-check": [
+          -39.23,
+          -130.9
+        ],
+        "sentence": [
+          2.18,
+          -0.01
+        ],
+        "label": [
+          -86.68,
+          0.01
+        ]
+      },
+      "texts": {
+        "sentence": "Reward Points Can Be Added To Increase Team Motivation With Gamification",
+        "label": "BOOST MOTIVATION"
+      },
+      "sizes": {
+        "sentence": [
+          768.4,
+          88
+        ],
+        "label": [
+          214.68,
+          52
+        ]
+      },
+      "inserts": [
+        {
+          "key": "c1-mission-inventory-check",
+          "name": "Mission Inventory Check",
+          "kind": "dom",
+          "asset": "hwpy5h0dkua12130",
+          "box": {
+            "x": 541.15,
+            "y": 153.1,
+            "w": 1674,
+            "h": 199.95
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hpum4coopf27w2m7",
+          "box": {
+            "x": 642,
+            "y": 249,
+            "w": 86,
+            "h": 84
+          },
+          "z": 22
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1fitaod1n961eh1dp",
+          "box": {
+            "x": 753,
+            "y": 268,
+            "w": 25,
+            "h": 47
+          },
+          "z": 24
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1bncn65trvh8j1dr",
+          "box": {
+            "x": 771,
+            "y": 272,
+            "w": 41,
+            "h": 38
+          },
+          "z": 26
+        },
+        {
+          "key": "d4-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hp85lf46ghbtq1c3",
+          "box": {
+            "x": 812,
+            "y": 256,
+            "w": 24,
+            "h": 45
+          },
+          "z": 28
+        }
+      ],
+      "order": [
+        "background",
+        "c1-mission-inventory-check",
+        "c1-mission-order-supplies",
+        "c1-mission-safety-check",
+        "c1-mission-prepare-workspace",
+        "mission-inventory-check",
+        "mission-order-supplies",
+        "yellow-outline",
+        "yellow-outline-2",
+        "label",
+        "line",
+        "sentence"
+      ],
+      "styles": {
+        "c1-mission-inventory-check/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#d63e7e"
+        },
+        "c1-mission-order-supplies/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        },
+        "c1-mission-prepare-workspace/0.0.0.0.0.0.0.0.1.0": {
+          "fill": "#ed7f04"
+        }
+      },
+      "updatedAt": "2026-11-09T21:10:33.110Z"
+    },
+    "ie-v4/device": {
+      "texts": {
+        "label": "SAVE ON COST"
+      },
+      "updatedAt": "2026-11-06T23:56:08.392Z"
+    },
+    "ie-v4/code": {
+      "note": "start with 4 on the left, no close, no claimed, do not show the code.\n3 avatars on the left, go up then claim then pop back in at the bottom . no personal code needed",
+      "moves": {
+        "c1-face-adam-f": [
+          -62.78,
+          0
+        ],
+        "c1-face-maya-r": [
+          -62.78,
+          0
+        ],
+        "c1-face-ben-r": [
+          -62.78,
+          -194.76
+        ],
+        "label": [
+          521.32,
+          1.4
+        ],
+        "line": [
+          552.4,
+          1.38
+        ],
+        "sentence": [
+          552.4,
+          1.38
+        ],
+        "c1-label": [
+          -281.81,
+          1.4
+        ],
+        "c1-line": [
+          -228.79,
+          1.38
+        ],
+        "c1-sentence": [
+          -228.79,
+          1.38
+        ]
+      },
+      "texts": {
+        "label": "EFFECTIVE TEAMWORK",
+        "sentence": "Each Person Uses Their Code To Claim & Close Missions",
+        "c1-label": "SEAMLESS ENGAGEMENT",
+        "c1-sentence": "There Is No Need For Anyone To Login Or To Sign In"
+      },
+      "sizes": {
+        "label": [
+          185.9,
+          52
+        ],
+        "sentence": [
+          516.26,
+          88
+        ],
+        "c1-label": [
+          208.73,
+          52
+        ],
+        "c1-sentence": [
+          516.26,
+          88
+        ]
+      },
+      "hidden": [
+        "face-adam-f",
+        "face-ben-r"
+      ],
+      "inserts": [
+        {
+          "key": "c1-face-adam-f",
+          "name": "Face Adam F",
+          "kind": "dom",
+          "asset": "h5u6nem1sxm7sygq",
+          "box": {
+            "x": 234.58,
+            "y": 579.91,
+            "w": 84,
+            "h": 84
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c1-face-maya-r",
+          "name": "Face Maya R",
+          "kind": "dom",
+          "asset": "h1626zkn1py2cqbgq",
+          "box": {
+            "x": 234.58,
+            "y": 485.91,
+            "w": 84,
+            "h": 84
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-face-ben-r",
+          "name": "Face Ben R",
+          "kind": "dom",
+          "asset": "h1gcwu0yixzd5ggn",
+          "box": {
+            "x": 234.58,
+            "y": 391.91,
+            "w": 84,
+            "h": 84
+          },
+          "z": 24,
+          "inner": true
+        },
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h189gatg1pfk6ak1v9",
+          "box": {
+            "x": 208,
+            "y": 315,
+            "w": 23,
+            "h": 142
+          },
+          "z": 26
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1qt7wxj1hldrsv16l",
+          "box": {
+            "x": 187,
+            "y": 311,
+            "w": 59,
+            "h": 38
+          },
+          "z": 28
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hk73a3k1h6km2d1",
+          "box": {
+            "x": 282,
+            "y": 253,
+            "w": 387,
+            "h": 16
+          },
+          "z": 30
+        },
+        {
+          "key": "d4-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1ldu1n71njfo8l193",
+          "box": {
+            "x": 637,
+            "y": 246,
+            "w": 64,
+            "h": 31
+          },
+          "z": 32
+        },
+        {
+          "key": "c1-label",
+          "name": "Label",
+          "kind": "dom",
+          "asset": "h2q2lqar8d9mocx",
+          "box": {
+            "x": 313.08,
+            "y": 795.81,
+            "w": 150.97,
+            "h": 52
+          },
+          "z": 34
+        },
+        {
+          "key": "c1-line",
+          "name": "Line",
+          "kind": "dom",
+          "asset": "h1c1sy3p1qajdyjhz",
+          "box": {
+            "x": 477.66,
+            "y": 784.63,
+            "w": 18,
+            "h": 74.38
+          },
+          "z": 36
+        },
+        {
+          "key": "c1-sentence",
+          "name": "Sentence",
+          "kind": "dom",
+          "asset": "h1rfrmbtfkhepxet",
+          "box": {
+            "x": 511.66,
+            "y": 777.63,
+            "w": 576.69,
+            "h": 88.38
+          },
+          "z": 38
+        }
+      ],
+      "updatedAt": "2026-11-09T21:25:27.677Z"
+    },
+    "ie-v4/performers": {
+      "note": "zoom on the missions on the right and pop.",
+      "moves": {
+        "label": [
+          -22.44,
+          -12.99
+        ],
+        "sentence": [
+          1.19,
+          -0.01
+        ]
+      },
+      "texts": {
+        "label": "PEOPLE RECOGNITION",
+        "sentence": "Each Person's Contribution Can Be Easily Recognized"
+      },
+      "sizes": {
+        "label": [
+          226.81,
+          52
+        ],
+        "sentence": [
+          538.4,
+          88
+        ]
+      },
+      "inserts": [
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1r880yh3mcr4v24v",
+          "box": {
+            "x": 940,
+            "y": 253,
+            "w": 79,
+            "h": 47
+          },
+          "z": 20
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1uip4f86gcg9c1qk",
+          "box": {
+            "x": 1034,
+            "y": 545,
+            "w": 143,
+            "h": 66
+          },
+          "z": 22
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hbutgvi19s1afq1fw",
+          "box": {
+            "x": 1047,
+            "y": 560,
+            "w": 114,
+            "h": 55
+          },
+          "z": 24
+        },
+        {
+          "key": "d4-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hxuoahl1me5irx1xt",
+          "box": {
+            "x": 938,
+            "y": 361,
+            "w": 79,
+            "h": 41
+          },
+          "z": 26
+        },
+        {
+          "key": "d5-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hw8tk1g4y5z6y1mr",
+          "box": {
+            "x": 939,
+            "y": 485,
+            "w": 69,
+            "h": 34
+          },
+          "z": 28
+        }
+      ],
+      "updatedAt": "2026-11-09T20:35:28.385Z"
+    },
+    "ie-v4/duration": {
+      "note": "keep the zoom and pop the execution timer, remove the mission on the right.",
+      "moves": {
+        "label": [
+          148.64,
+          -12.98
+        ],
+        "sentence": [
+          176.05,
+          0
+        ],
+        "line": [
+          176.05,
+          0
+        ]
+      },
+      "texts": {
+        "sentence": "Each Person's Execution Duration Is Measured",
+        "label": "Measured Executions"
+      },
+      "sizes": {
+        "label": [
+          204.33,
+          52
+        ]
+      },
+      "inserts": [
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1mefktd1vhc0zr2jd",
+          "box": {
+            "x": 776,
+            "y": 405,
+            "w": 111,
+            "h": 57
+          },
+          "z": 20
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1c8qm2v1sm5rv52d5",
+          "box": {
+            "x": 773,
+            "y": 252,
+            "w": 134,
+            "h": 58
+          },
+          "z": 22
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hk731ojnbyic326u",
+          "box": {
+            "x": 772,
+            "y": 85,
+            "w": 106,
+            "h": 61
+          },
+          "z": 24
+        },
+        {
+          "key": "d4-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hzc667z1wt8zcp15p",
+          "box": {
+            "x": 838,
+            "y": 594,
+            "w": 110,
+            "h": 67
+          },
+          "z": 26
+        },
+        {
+          "key": "d5-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h5kl9up3nbvsj12x",
+          "box": {
+            "x": 858,
+            "y": 588,
+            "w": 110,
+            "h": 75
+          },
+          "z": 28
+        }
+      ],
+      "updatedAt": "2026-11-09T20:35:52.714Z"
+    },
+    "ie-v4/initiative": {
+      "moves": {
+        "c1-label": [
+          -438.88,
+          30.93
+        ],
+        "c1-line": [
+          -357.41,
+          46.63
+        ],
+        "c1-sentence": [
+          -362.88,
+          51.19
+        ],
+        "label": [
+          495.63,
+          -5.98
+        ],
+        "line": [
+          495.63,
+          7
+        ],
+        "sentence": [
+          495.63,
+          7
+        ],
+        "c1-face-ben-r": [
+          0,
+          -103.17
+        ],
+        "mission-inventory-check": [
+          -600.96,
+          21.63
+        ],
+        "mission-order-supplies": [
+          -600.96,
+          21.63
+        ],
+        "mission-safety-check": [
+          -600.96,
+          21.63
+        ],
+        "mission-restock-front-desk": [
+          -600.96,
+          21.63
+        ],
+        "c1-mission-restock-front-desk": [
+          -200.98,
+          21.63
+        ],
+        "c2-mission-restock-front-desk": [
+          197.28,
+          21.63
+        ],
+        "c1-mission-safety-check": [
+          -199.85,
+          18.66
+        ]
+      },
+      "texts": {
+        "label": "SELF Initiative",
+        "c1-label": "mINIMAL dOWNTIME",
+        "sentence": "Everyone Is Constantly Guided To Take Initiatives On Their Own"
+      },
+      "sizes": {
+        "c1-sentence": [
+          585.32,
+          88
+        ],
+        "c1-label": [
+          201.06,
+          52
+        ],
+        "c1-line": [
+          13.23,
+          87.17
+        ]
+      },
+      "hidden": [
+        "tablet",
+        "mission-prepare-workspace",
+        "mission-clean-break-room"
+      ],
+      "inserts": [
+        {
+          "key": "c1-label",
+          "name": "Label",
+          "kind": "dom",
+          "asset": "h70g3yw13tzwumcv",
+          "box": {
+            "x": 438.88,
+            "y": 773.72,
+            "w": 105.98,
+            "h": 52
+          },
+          "z": 20
+        },
+        {
+          "key": "c1-line",
+          "name": "Line",
+          "kind": "dom",
+          "asset": "hhy3qmw151ld6yi3",
+          "box": {
+            "x": 558.47,
+            "y": 740.44,
+            "w": 18,
+            "h": 118.56
+          },
+          "z": 22
+        },
+        {
+          "key": "c1-sentence",
+          "name": "Sentence",
+          "kind": "dom",
+          "asset": "h13dbvfftz4rq3ep",
+          "box": {
+            "x": 592.47,
+            "y": 733.44,
+            "w": 415.05,
+            "h": 132.56
+          },
+          "z": 24
+        },
+        {
+          "key": "c1-face-ben-r",
+          "name": "Face Ben R",
+          "kind": "dom",
+          "asset": "h17xfla411okxgkgr",
+          "box": {
+            "x": 234.58,
+            "y": 391.91,
+            "w": 84,
+            "h": 84
+          },
+          "z": 26,
+          "inner": true
+        },
+        {
+          "key": "d1-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1c4xntop521nu15d",
+          "box": {
+            "x": 279,
+            "y": 245,
+            "w": 63,
+            "h": 40
+          },
+          "z": 28
+        },
+        {
+          "key": "d2-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hq75lqn1rfkxbduv",
+          "box": {
+            "x": 312,
+            "y": 231,
+            "w": 28,
+            "h": 33
+          },
+          "z": 30
+        },
+        {
+          "key": "d3-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1ynt9yjanwt892i3",
+          "box": {
+            "x": 622,
+            "y": 263,
+            "w": 571,
+            "h": 24
+          },
+          "z": 32
+        },
+        {
+          "key": "d4-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1bdmc74h1xz0218q",
+          "box": {
+            "x": 1143,
+            "y": 264,
+            "w": 61,
+            "h": 33
+          },
+          "z": 34
+        },
+        {
+          "key": "c1-mission-restock-front-desk",
+          "name": "Mission Restock Front Desk",
+          "kind": "dom",
+          "asset": "h1xhbyhy1e0vwlu160",
+          "box": {
+            "x": 945.72,
+            "y": 186.59,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 36,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-restock-front-desk",
+          "name": "Mission Restock Front Desk",
+          "kind": "dom",
+          "asset": "h1atpnib1ey5051160",
+          "box": {
+            "x": 945.72,
+            "y": 186.59,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 38,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-safety-check",
+          "name": "Mission Safety Check",
+          "kind": "dom",
+          "asset": "hzj8ze76a2tvl156",
+          "box": {
+            "x": 945.72,
+            "y": 303,
+            "w": 855.25,
+            "h": 102.16
+          },
+          "z": 40,
+          "inner": true
+        },
+        {
+          "key": "d5-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1k7v99p1e148jf1c9",
+          "box": {
+            "x": 405,
+            "y": 162,
+            "w": 183,
+            "h": 15
+          },
+          "z": 42
+        },
+        {
+          "key": "d6-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "holkoi8x99cro18z",
+          "box": {
+            "x": 835,
+            "y": 147,
+            "w": 202,
+            "h": 24
+          },
+          "z": 44
+        },
+        {
+          "key": "d7-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h15mipb411fysoo1f8",
+          "box": {
+            "x": 1227,
+            "y": 140,
+            "w": 181,
+            "h": 23
+          },
+          "z": 46
+        },
+        {
+          "key": "d8-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "h1ct0bem1m6uy2shg",
+          "box": {
+            "x": 1150,
+            "y": -48,
+            "w": 11,
+            "h": 11
+          },
+          "z": 48
+        },
+        {
+          "key": "d9-drawing",
+          "name": "Drawing",
+          "kind": "dom",
+          "asset": "hn7zpn41lntr62hg",
+          "box": {
+            "x": 769,
+            "y": -188,
+            "w": 11,
+            "h": 11
+          },
+          "z": 50
+        }
+      ],
+      "updatedAt": "2026-11-09T21:32:12.643Z"
+    },
+    "ie-v4/shared#3": {
+      "note": "Or individually from seperate devices\n\n\nthree people triangle where each one holding his phone USE GPT CHROME.",
+      "moves": {
+        "picture": [
+          1.18,
+          8.79
+        ],
+        "c1-sentence": [
+          429.95,
+          0
+        ],
+        "label": [
+          -106.57,
+          1.4
+        ],
+        "line": [
+          -87.31,
+          1.38
+        ],
+        "sentence": [
+          -84.56,
+          1.37
+        ],
+        "c1-label": [
+          387.04,
+          1.82
+        ],
+        "c1-line": [
+          423.56,
+          0
+        ]
+      },
+      "texts": {
+        "label": "INSTANT UPDATE",
+        "c1-label": "SAVE ON COST",
+        "sentence": "People Working From Separate Devices Remain On The Same Page"
+      },
+      "sizes": {
+        "label": [
+          138.11,
+          52
+        ],
+        "c1-label": [
+          145.58,
+          52
+        ],
+        "sentence": [
+          634.99,
+          88
+        ]
+      },
+      "updatedAt": "2026-11-09T21:31:32.367Z"
+    },
+    "ie-v4/code#2": {
+      "note": "zoom in on claimed and closed, and pop the 5 names.",
+      "moves": {
+        "c1-face-adam-f": [
+          -62.78,
+          0
+        ],
+        "c1-face-maya-r": [
+          -62.78,
+          0
+        ],
+        "c1-face-ben-r": [
+          -62.78,
+          -194.76
+        ],
+        "c1-mission-prepare-workspace": [
+          0,
+          129.04
+        ],
+        "c2-mission-prepare-workspace": [
+          0,
+          256.54
+        ],
+        "c3-mission-prepare-workspace": [
+          312.2,
+          0
+        ],
+        "c4-mission-prepare-workspace": [
+          312.2,
+          129.04
+        ],
+        "c1-mission-safety-check": [
+          0,
+          130.38
+        ],
+        "c1-mission-order-supplies": [
+          0,
+          130.38
+        ],
+        "c2-mission-order-supplies": [
+          0,
+          259.42
+        ],
+        "c3-mission-order-supplies": [
+          -311.33,
+          0
+        ],
+        "c4-mission-order-supplies": [
+          -311.33,
+          130.38
+        ],
+        "label": [
+          -92.31,
+          0.01
+        ]
+      },
+      "texts": {
+        "label": "INDIVIDUAL RECOGNITION",
+        "sentence": "Each Person's Contribution Can Be Easily Recognized"
+      },
+      "sizes": {
+        "label": [
+          236.08,
+          52
+        ]
+      },
+      "hidden": [
+        "face-adam-f",
+        "face-ben-r",
+        "mission-safety-check"
+      ],
+      "inserts": [
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "hmqbluk1ruw6q8129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1uxuaurgajy19129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1ix2q4q6ufw2q16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 26,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1xbf7c310ul9lh16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 28,
+          "inner": true
+        },
+        {
+          "key": "c3-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h8ipluy1d24z1216c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 28,
+          "inner": true
+        },
+        {
+          "key": "c4-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h19b1vyie28le16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 30,
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-11-09T21:15:18.363Z"
+    },
+    "ie-v4/code#3": {
+      "moves": {
+        "c1-face-adam-f": [
+          -62.78,
+          0
+        ],
+        "c1-face-maya-r": [
+          -62.78,
+          0
+        ],
+        "c1-face-ben-r": [
+          -62.78,
+          -194.76
+        ],
+        "c1-mission-prepare-workspace": [
+          0,
+          129.04
+        ],
+        "c2-mission-prepare-workspace": [
+          0,
+          256.54
+        ],
+        "c3-mission-prepare-workspace": [
+          312.2,
+          0
+        ],
+        "c4-mission-prepare-workspace": [
+          312.2,
+          129.04
+        ],
+        "c1-mission-safety-check": [
+          0,
+          130.38
+        ],
+        "c1-mission-order-supplies": [
+          0,
+          130.38
+        ],
+        "c2-mission-order-supplies": [
+          0,
+          259.42
+        ],
+        "c3-mission-order-supplies": [
+          -311.33,
+          0
+        ],
+        "c4-mission-order-supplies": [
+          -311.33,
+          130.38
+        ],
+        "label": [
+          124.7,
+          -1.96
+        ],
+        "sentence": [
+          217.01,
+          -1.97
+        ],
+        "line": [
+          217.01,
+          -1.97
+        ]
+      },
+      "texts": {
+        "label": "Measured EXECUTION",
+        "sentence": "Execution Duration Is Measured Per Mission"
+      },
+      "sizes": {
+        "label": [
+          236.08,
+          52
+        ],
+        "sentence": [
+          433.55,
+          88
+        ]
+      },
+      "hidden": [
+        "face-adam-f",
+        "face-ben-r",
+        "mission-safety-check"
+      ],
+      "inserts": [
+        {
+          "key": "c1-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "hmqbluk1ruw6q8129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 20,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-prepare-workspace",
+          "name": "Mission Prepare Workspace",
+          "kind": "dom",
+          "asset": "h1uxuaurgajy19129",
+          "box": {
+            "x": 338.81,
+            "y": 270.32,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 22,
+          "inner": true
+        },
+        {
+          "key": "c1-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1ix2q4q6ufw2q16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 26,
+          "inner": true
+        },
+        {
+          "key": "c2-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h1xbf7c310ul9lh16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 28,
+          "inner": true
+        },
+        {
+          "key": "c3-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h8ipluy1d24z1216c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 28,
+          "inner": true
+        },
+        {
+          "key": "c4-mission-order-supplies",
+          "name": "Mission Order Supplies",
+          "kind": "dom",
+          "asset": "h19b1vyie28le16c",
+          "box": {
+            "x": 963.21,
+            "y": 139.95,
+            "w": 957.88,
+            "h": 114.41
+          },
+          "z": 30,
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-11-09T21:16:59.820Z"
+    },
+    "ie-v4/shared#2": {
+      "note": "keep picture of the three people, showing devices in their hands. Create Some visual effect of a star poping, showing that an action is reflected on other devices.",
+      "moves": {
+        "picture": [
+          1.18,
+          8.79
+        ],
+        "c1-sentence": [
+          429.95,
+          0
+        ],
+        "label": [
+          -44.43,
+          -2.04
+        ],
+        "line": [
+          -2.12,
+          -2.06
+        ],
+        "sentence": [
+          0.63,
+          -2.07
+        ],
+        "c1-label": [
+          387.04,
+          1.82
+        ],
+        "c1-line": [
+          423.56,
+          0
+        ]
+      },
+      "texts": {
+        "label": "SEAMLESS FLOW",
+        "c1-label": "SAVE ON COST",
+        "sentence": "An Action On One Device Is Reflected On All Devices"
+      },
+      "sizes": {
+        "label": [
+          161.17,
+          52
+        ],
+        "c1-label": [
+          145.58,
+          52
+        ],
+        "sentence": [
+          634.99,
+          88
+        ]
+      },
+      "updatedAt": "2026-11-09T21:32:03.055Z"
+    }
+  },
+  "copies": {
+    "ie-v4/individuals#2": {
+      "from": "ie-v4/individuals",
+      "after": "ie-v4/individuals"
+    },
+    "ie-v4/individuals#3": {
+      "from": "ie-v4/individuals",
+      "after": "ie-v4/individuals#2"
+    },
+    "ie-v4/shared#3": {
+      "from": "ie-v4/shared",
+      "after": "ie-v4/shared"
+    },
+    "ie-v4/code#2": {
+      "from": "ie-v4/code",
+      "after": "ie-v4/code"
+    },
+    "ie-v4/code#3": {
+      "from": "ie-v4/code",
+      "after": "ie-v4/code#2"
+    },
+    "ie-v4/shared#2": {
+      "from": "ie-v4/shared",
+      "after": "ie-v4/shared#3"
+    }
+  },
+  "rows": {
+    "ie-v4": [
+      "ie-v4/title",
+      "ie-v4/individuals",
+      "ie-v4/individuals#2",
+      "ie-v4/individuals#3",
+      "ie-v4/points",
+      "ie-v4/code#2",
+      "ie-v4/code#3",
+      "ie-v4/shared",
+      "ie-v4/code",
+      "ie-v4/performers",
+      "ie-v4/duration",
+      "ie-v4/shared#3",
+      "ie-v4/shared#2",
+      "ie-v4/initiative"
+    ]
+  },
+  "library": {
+    "a1df8fc0fb": "<div data-sb-root=\"c-schedule-line-1-1\" style=\"position:absolute;left:894px;top:251.83px;width:58px;height:2.5px;z-index:20\"><div style=\"width:100%;height:100%;border-radius:2px;background:#8b5cf6;box-shadow:0 0 8px rgb(139 92 246 / 45%)\"></div></div>",
+    "14348c68fb": "<div data-sb-root=\"c-schedule-line-2-1\" style=\"position:absolute;left:894px;top:479.68px;width:58px;height:2.5px;z-index:22\"><div style=\"width:100%;height:100%;border-radius:2px;background:#8b5cf6;box-shadow:0 0 8px rgb(139 92 246 / 45%)\"></div></div>",
+    "377491834de": "<div data-sb-root=\"c-mission-1-schedule-1\" style=\"position:absolute;left:950.85px;top:164.08px;width:272px;height:178px;z-index:24\"><div style=\"box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;padding:14px 16px 14px 20px;border:2.5px solid #8b5cf6;border-radius:16px;background:#fff;box-shadow:0 0 0 4px rgb(139 92 246 / 20%),0 0 20px rgb(139 92 246 / 40%),0 14px 30px rgb(0 0 0 / 35%);font-family:var(--font-inter),Inter,system-ui,sans-serif;color:#111;text-align:left\">\n<div style=\"display:grid;grid-template-columns:118px auto;row-gap:7px;align-items:baseline;font-size:17px;line-height:1.25\"><span style=\"color:#4b5563;font-weight:500;\">Start Date</span><b style=\"font-weight:700;color:#111;\">07/14/26</b><span style=\"color:#4b5563;font-weight:500;margin-top:8px;\">Repeat</span><b style=\"font-weight:700;color:#111;margin-top:8px;\">Daily</b><span style=\"color:#4b5563;font-weight:500;\">At</span><b style=\"font-weight:700;color:#111;\">10:00 AM</b><span style=\"color:#4b5563;font-weight:500;\">At</span><b style=\"font-weight:700;color:#111;\">4:00 PM</b><span style=\"color:#4b5563;font-weight:500;margin-top:8px;\">End Date</span><b style=\"font-weight:700;color:#111;margin-top:8px;\">Indefinitely</b></div>\n</div></div>",
+    "2a10c27e4de": "<div data-sb-root=\"c-mission-2-schedule-1\" style=\"position:absolute;left:950.85px;top:391.93px;width:272px;height:178px;z-index:26\"><div style=\"box-sizing:border-box;width:100%;height:100%;display:flex;align-items:center;padding:14px 16px 14px 20px;border:2.5px solid #8b5cf6;border-radius:16px;background:#fff;box-shadow:0 0 0 4px rgb(139 92 246 / 20%),0 0 20px rgb(139 92 246 / 40%),0 14px 30px rgb(0 0 0 / 35%);font-family:var(--font-inter),Inter,system-ui,sans-serif;color:#111;text-align:left\">\n<div style=\"display:grid;grid-template-columns:118px auto;row-gap:7px;align-items:baseline;font-size:17px;line-height:1.25\"><span style=\"color:#4b5563;font-weight:500;\">Start Date</span><b style=\"font-weight:700;color:#111;\">01/20/24</b><span style=\"color:#4b5563;font-weight:500;margin-top:8px;\">Repeat</span><b style=\"font-weight:700;color:#111;margin-top:8px;\">Weekly</b><span style=\"color:#4b5563;font-weight:500;\">Every</span><b style=\"font-weight:700;color:#111;\">Thursday</b><span style=\"color:#4b5563;font-weight:500;\">At</span><b style=\"font-weight:700;color:#111;\">2:00 PM</b><span style=\"color:#4b5563;font-weight:500;margin-top:8px;\">End Date</span><b style=\"font-weight:700;color:#111;margin-top:8px;\">12/31/30</b></div>\n</div></div>",
+    "h1lo50aldxeup5136": "<div data-sb-root=\"c1-mission-inventory-check\" style=\"position:absolute;left:388.23px;top:186.59px;width:855.25px;height:102.16px;z-index:20\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"teams\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-388.23px;top:-186.59px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"inv\" data-cut-part=\"Mission Inventory Check\" style=\"transform: translate(388.225px, 186.591px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">10</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:08:01</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:inv\">Inventory Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1oak1jb1sbjhe512t": "<div data-sb-root=\"c1-mission-order-supplies\" style=\"position:absolute;left:388.23px;top:303px;width:855.25px;height:102.16px;z-index:22\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"teams\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-388.23px;top:-303px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(388.225px, 303px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:06:01</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1u5c57htdg9on11y": "<div data-sb-root=\"c1-mission-safety-check\" style=\"position:absolute;left:388.23px;top:419.41px;width:855.25px;height:102.16px;z-index:24\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"teams\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-388.23px;top:-419.41px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"sig\" data-cut-part=\"Mission Safety Check\" style=\"transform: translate(388.225px, 419.409px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:03:00</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:sig\">Safety Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1gnqkfv120qq3512a": "<div data-sb-root=\"c1-mission-prepare-workspace\" style=\"position:absolute;left:388.23px;top:535.82px;width:855.25px;height:102.16px;z-index:26\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"teams\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-388.23px;top:-535.82px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(388.225px, 535.819px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:00</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "hwpy5h0dkua12130": "<div data-sb-root=\"c1-mission-inventory-check\" style=\"position:absolute;left:541.15px;top:153.1px;width:1674px;height:199.95px;z-index:20\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"points\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-541.15px;top:-153.1px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card is-up\" data-rc-card=\"inv\" data-cut-part=\"Mission Inventory Check\" style=\"transform: translate(541.15px, 153.1px) scale(1.55); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">10</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:08:10</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:inv\">Inventory Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "hpum4coopf27w2m7": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:642px;top:249px;width:86px;height:84px;z-index:22;pointer-events:none\"><svg viewBox=\"0 0 86 84\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M43.9 5.9Q40.4 5.9 37.7 5.9Q34.9 5.9 33.1 6.3Q31.4 6.6 30.3 6.6Q29.3 6.6 27.9 7.3Q26.5 8 24.8 8.7Q23 9.4 21.3 10.5Q19.6 11.5 17.8 12.6Q16.1 13.6 14.3 15Q12.6 16.4 11.9 17.4Q11.2 18.5 10.2 19.5Q9.1 20.6 8.8 21.6Q8.4 22.7 7.7 24Q7 25.4 6.3 27.2Q5.6 28.9 5.6 30.7Q5.6 32.4 5.6 33.5Q5.6 34.5 6 36.2Q6.3 38 6.7 39.4Q7 40.8 7.4 41.8Q7.7 42.9 8.8 44.6Q9.8 46.3 9.8 47.4Q9.8 48.4 10.5 49.8Q11.2 51.2 11.9 52.3Q12.6 53.3 12.9 55.4Q13.3 57.5 13.6 58.9Q14 60.3 15 61.3Q16.1 62.3 16.8 63.7Q17.5 65.1 17.8 66.2Q18.2 67.2 19.6 68.3Q20.9 69.3 20.9 70.4Q20.9 71.4 22.3 71.8Q23.7 72.1 24.4 73.1Q25.1 74.2 26.9 74.9Q28.6 75.6 30 75.9Q31.4 76.3 32.4 76.3Q33.5 76.3 34.5 77Q35.6 77.7 36.6 77.7Q37.7 77.7 39.1 78Q40.4 78.4 41.5 78.4Q42.5 78.4 43.6 78.4Q44.6 78.4 46.7 78.4Q48.8 78.4 50.5 78.4Q52.3 78.4 54 78Q55.8 77.7 56.8 77.3Q57.9 77 59.6 76.6Q61.3 76.3 63.1 75.9Q64.8 75.6 66.9 74.2Q69 72.8 70.4 72.4Q71.8 72.1 72.1 71.1Q72.5 70 73.9 69.3Q75.3 68.6 76 66.9Q76.7 65.1 77.7 63.7Q78.7 62.3 79.1 61.3Q79.4 60.3 80.1 58.5Q80.8 56.8 80.8 55Q80.8 53.3 80.8 52.3Q80.8 51.2 80.8 49.8Q80.8 48.4 80.8 47.4Q80.8 46.3 80.8 44.6Q80.8 42.9 80.5 40.4Q80.1 38 79.4 36.2Q78.7 34.5 78.4 33.1Q78.1 31.7 77.7 30.3Q77.4 28.9 76.3 27.9Q75.3 26.8 74.9 25.4Q74.6 24 73.9 23Q73.2 22 72.1 21.3Q71.1 20.6 69.7 20.6Q68.3 20.6 66.6 19.5Q64.8 18.5 62.7 17.8Q60.6 17.1 59.2 16.7Q57.9 16.4 56.1 15.7Q54.4 15 52.6 14.6Q50.9 14.3 50.2 14.3L49.5 14.3\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M43.9 5.9Q40.4 5.9 37.7 5.9Q34.9 5.9 33.1 6.3Q31.4 6.6 30.3 6.6Q29.3 6.6 27.9 7.3Q26.5 8 24.8 8.7Q23 9.4 21.3 10.5Q19.6 11.5 17.8 12.6Q16.1 13.6 14.3 15Q12.6 16.4 11.9 17.4Q11.2 18.5 10.2 19.5Q9.1 20.6 8.8 21.6Q8.4 22.7 7.7 24Q7 25.4 6.3 27.2Q5.6 28.9 5.6 30.7Q5.6 32.4 5.6 33.5Q5.6 34.5 6 36.2Q6.3 38 6.7 39.4Q7 40.8 7.4 41.8Q7.7 42.9 8.8 44.6Q9.8 46.3 9.8 47.4Q9.8 48.4 10.5 49.8Q11.2 51.2 11.9 52.3Q12.6 53.3 12.9 55.4Q13.3 57.5 13.6 58.9Q14 60.3 15 61.3Q16.1 62.3 16.8 63.7Q17.5 65.1 17.8 66.2Q18.2 67.2 19.6 68.3Q20.9 69.3 20.9 70.4Q20.9 71.4 22.3 71.8Q23.7 72.1 24.4 73.1Q25.1 74.2 26.9 74.9Q28.6 75.6 30 75.9Q31.4 76.3 32.4 76.3Q33.5 76.3 34.5 77Q35.6 77.7 36.6 77.7Q37.7 77.7 39.1 78Q40.4 78.4 41.5 78.4Q42.5 78.4 43.6 78.4Q44.6 78.4 46.7 78.4Q48.8 78.4 50.5 78.4Q52.3 78.4 54 78Q55.8 77.7 56.8 77.3Q57.9 77 59.6 76.6Q61.3 76.3 63.1 75.9Q64.8 75.6 66.9 74.2Q69 72.8 70.4 72.4Q71.8 72.1 72.1 71.1Q72.5 70 73.9 69.3Q75.3 68.6 76 66.9Q76.7 65.1 77.7 63.7Q78.7 62.3 79.1 61.3Q79.4 60.3 80.1 58.5Q80.8 56.8 80.8 55Q80.8 53.3 80.8 52.3Q80.8 51.2 80.8 49.8Q80.8 48.4 80.8 47.4Q80.8 46.3 80.8 44.6Q80.8 42.9 80.5 40.4Q80.1 38 79.4 36.2Q78.7 34.5 78.4 33.1Q78.1 31.7 77.7 30.3Q77.4 28.9 76.3 27.9Q75.3 26.8 74.9 25.4Q74.6 24 73.9 23Q73.2 22 72.1 21.3Q71.1 20.6 69.7 20.6Q68.3 20.6 66.6 19.5Q64.8 18.5 62.7 17.8Q60.6 17.1 59.2 16.7Q57.9 16.4 56.1 15.7Q54.4 15 52.6 14.6Q50.9 14.3 50.2 14.3L49.5 14.3\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1fitaod1n961eh1dp": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:753px;top:268px;width:25px;height:47px;z-index:24;pointer-events:none\"><svg viewBox=\"0 0 25 47\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M7.4 12.7Q7.4 15.5 7.4 16.5Q7.4 17.6 7.4 19.3Q7.4 21.1 7.4 22.5Q7.4 23.9 7.4 25.6Q7.4 27.3 7.4 28.4Q7.4 29.4 7.4 30.8Q7.4 32.2 7.4 33.6Q7.4 35 7.4 36.7Q7.4 38.5 7.4 39.9Q7.4 41.3 7.4 39.5Q7.4 37.8 7.4 36.7Q7.4 35.7 7.4 33.9Q7.4 32.2 7.4 30.5Q7.4 28.7 7.4 27.3Q7.4 25.9 6.7 24.5Q6 23.2 6 21.1Q6 19 5.7 17.9Q5.4 16.9 5.4 15.8Q5.4 14.8 5.4 13.8Q5.4 12.7 5.4 11.3Q5.4 9.9 5.4 8.9Q5.4 7.8 5.7 6.4Q6 5 7.8 5Q9.5 5 11.6 5Q13.7 5 15.1 5.7Q16.5 6.4 18.2 7.5Q20 8.5 20 9.9Q20 11.3 20 12.4Q20 13.4 18.2 15.1Q16.5 16.9 15.4 17.6Q14.4 18.3 13.7 19.3Q13 20.4 12 21.4Q10.9 22.5 9.5 23.2Q8.1 23.9 7.1 23.9L6 23.9\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M7.4 12.7Q7.4 15.5 7.4 16.5Q7.4 17.6 7.4 19.3Q7.4 21.1 7.4 22.5Q7.4 23.9 7.4 25.6Q7.4 27.3 7.4 28.4Q7.4 29.4 7.4 30.8Q7.4 32.2 7.4 33.6Q7.4 35 7.4 36.7Q7.4 38.5 7.4 39.9Q7.4 41.3 7.4 39.5Q7.4 37.8 7.4 36.7Q7.4 35.7 7.4 33.9Q7.4 32.2 7.4 30.5Q7.4 28.7 7.4 27.3Q7.4 25.9 6.7 24.5Q6 23.2 6 21.1Q6 19 5.7 17.9Q5.4 16.9 5.4 15.8Q5.4 14.8 5.4 13.8Q5.4 12.7 5.4 11.3Q5.4 9.9 5.4 8.9Q5.4 7.8 5.7 6.4Q6 5 7.8 5Q9.5 5 11.6 5Q13.7 5 15.1 5.7Q16.5 6.4 18.2 7.5Q20 8.5 20 9.9Q20 11.3 20 12.4Q20 13.4 18.2 15.1Q16.5 16.9 15.4 17.6Q14.4 18.3 13.7 19.3Q13 20.4 12 21.4Q10.9 22.5 9.5 23.2Q8.1 23.9 7.1 23.9L6 23.9\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1bncn65trvh8j1dr": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:771px;top:272px;width:41px;height:38px;z-index:26;pointer-events:none\"><svg viewBox=\"0 0 41 38\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M22.2 8.7Q19.4 10.1 17.6 10.8Q15.9 11.5 14.2 12.9Q12.4 14.3 11.4 15.7Q10.3 17.1 9.3 18.5Q8.2 19.9 7.9 20.9Q7.5 21.9 7.2 23Q6.9 24 6.2 25.4Q5.5 26.8 5.5 28.6Q5.5 30.3 7.2 31.3Q8.9 32.4 11 32.4Q13.1 32.4 15.2 32.4Q17.3 32.4 18.7 32Q20.1 31.7 22.2 30.3Q24.3 28.9 25.3 27.9Q26.3 26.8 28.8 25.1Q31.2 23.3 32.6 21.6Q34 19.9 34.7 18.1Q35.4 16.4 35.4 14.6Q35.4 12.9 35.4 11.1Q35.4 9.4 35.4 8.4Q35.4 7.3 34.4 6.6Q33.3 5.9 31.6 5.6Q29.8 5.2 28.1 5.2Q26.3 5.2 24.6 5.9Q22.9 6.6 21.8 8Q20.8 9.4 19.7 9.8Q18.7 10.1 16.9 11.8Q15.2 13.6 14.5 15Q13.8 16.4 12.8 17.4Q11.7 18.5 11 20.2Q10.3 21.9 10.3 22.6L10.3 23.3\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M22.2 8.7Q19.4 10.1 17.6 10.8Q15.9 11.5 14.2 12.9Q12.4 14.3 11.4 15.7Q10.3 17.1 9.3 18.5Q8.2 19.9 7.9 20.9Q7.5 21.9 7.2 23Q6.9 24 6.2 25.4Q5.5 26.8 5.5 28.6Q5.5 30.3 7.2 31.3Q8.9 32.4 11 32.4Q13.1 32.4 15.2 32.4Q17.3 32.4 18.7 32Q20.1 31.7 22.2 30.3Q24.3 28.9 25.3 27.9Q26.3 26.8 28.8 25.1Q31.2 23.3 32.6 21.6Q34 19.9 34.7 18.1Q35.4 16.4 35.4 14.6Q35.4 12.9 35.4 11.1Q35.4 9.4 35.4 8.4Q35.4 7.3 34.4 6.6Q33.3 5.9 31.6 5.6Q29.8 5.2 28.1 5.2Q26.3 5.2 24.6 5.9Q22.9 6.6 21.8 8Q20.8 9.4 19.7 9.8Q18.7 10.1 16.9 11.8Q15.2 13.6 14.5 15Q13.8 16.4 12.8 17.4Q11.7 18.5 11 20.2Q10.3 21.9 10.3 22.6L10.3 23.3\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hp85lf46ghbtq1c3": "<div data-sb-root=\"d4-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:812px;top:256px;width:24px;height:45px;z-index:28;pointer-events:none\"><svg viewBox=\"0 0 24 45\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M7.6 15.7Q8.3 18.4 9 20.2Q9.7 21.9 10.1 24Q10.4 26.1 10.8 27.8Q11.1 29.6 11.5 31.3Q11.8 33.1 11.8 34.8Q11.8 36.5 12.5 37.9Q13.2 39.3 13.2 38.3Q13.2 37.2 12.9 36.2Q12.5 35.2 12.5 33.8Q12.5 32.4 12.2 31.3Q11.8 30.3 11.5 29.2Q11.1 28.2 10.4 26.8Q9.7 25.4 9.4 24.4Q9 23.3 9 22.3Q9 21.2 8.3 18.8Q7.6 16.4 6.9 15.3Q6.2 14.3 5.9 12.9Q5.5 11.5 5.5 9.7Q5.5 8 6.9 7Q8.3 5.9 9.4 5.9Q10.4 5.9 11.8 5.9Q13.2 5.9 14.2 5.9Q15.3 5.9 16.7 6.3Q18.1 6.6 18.4 8Q18.8 9.4 18.8 10.4Q18.8 11.5 18.8 13.6Q18.8 15.7 17.7 16.4Q16.7 17 15.6 18.1Q14.6 19.1 13.6 20.5Q12.5 21.9 11.1 22.3L9.7 22.6\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M7.6 15.7Q8.3 18.4 9 20.2Q9.7 21.9 10.1 24Q10.4 26.1 10.8 27.8Q11.1 29.6 11.5 31.3Q11.8 33.1 11.8 34.8Q11.8 36.5 12.5 37.9Q13.2 39.3 13.2 38.3Q13.2 37.2 12.9 36.2Q12.5 35.2 12.5 33.8Q12.5 32.4 12.2 31.3Q11.8 30.3 11.5 29.2Q11.1 28.2 10.4 26.8Q9.7 25.4 9.4 24.4Q9 23.3 9 22.3Q9 21.2 8.3 18.8Q7.6 16.4 6.9 15.3Q6.2 14.3 5.9 12.9Q5.5 11.5 5.5 9.7Q5.5 8 6.9 7Q8.3 5.9 9.4 5.9Q10.4 5.9 11.8 5.9Q13.2 5.9 14.2 5.9Q15.3 5.9 16.7 6.3Q18.1 6.6 18.4 8Q18.8 9.4 18.8 10.4Q18.8 11.5 18.8 13.6Q18.8 15.7 17.7 16.4Q16.7 17 15.6 18.1Q14.6 19.1 13.6 20.5Q12.5 21.9 11.1 22.3L9.7 22.6\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h136xghk1lta26kcu": "<span class=\"rc-kicker\" data-rc-text=\"device:kicker\" data-cut-part=\"Label\" style=\"position: absolute; inset: 795.81px auto auto 333.5px; width: 110px; height: auto; margin: 0px; transform: none; color: rgb(143, 199, 242); font: 700 20px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: 0.22em; text-shadow: none; text-transform: uppercase; white-space: normal;z-index:20\" data-sb-box=\"text\" data-sb-root=\"c1-label\">One device</span>",
+    "h1ene9wqes6zn4hz": "<div data-sb-root=\"c1-line\" data-sb-box=\"drawing\" style=\"position:absolute;left:452.34px;top:784.63px;width:18px;height:74.38px;pointer-events:none;z-index:22\"><svg viewBox=\"0 0 18 74.38\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M9 0V74.38\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M9 0V74.38\" fill=\"none\" stroke=\"#8fc7f2\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\" stroke-opacity=\"0.7\"/></svg></div>",
+    "hpf96nm1iurd7mev": "<div class=\"rc-lines\" data-rc-text=\"device\" data-cut-part=\"Sentence\" style=\"position: absolute; inset: 777.63px auto auto 486.34px; width: 632px; height: auto; margin: 0px; transform: none; color: rgb(255, 255, 255); font: 600 34px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: -0.005em; text-shadow: rgba(0, 0, 0, 0.45) 0px 2px 14px; text-transform: none; white-space: normal;z-index:24\" data-sb-box=\"text\" data-sb-root=\"c1-sentence\">There Is No Need To Provide Each Person With Their Own Device</div>",
+    "h5u6nem1sxm7sygq": "<div data-sb-root=\"c1-face-adam-f\" style=\"position:absolute;left:234.58px;top:579.91px;width:84px;height:84px;z-index:20\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"device\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-234.58px;top:-579.91px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-face\" data-cut-part=\"Face Adam F\" style=\"transform: translate(234.576px, 579.914px) scale(1); width: 84px; height: 84px; z-index: auto;\" data-sb-was=\"\"><img alt=\"\" src=\"/avatars/team-adam.png\"></div></div></div>",
+    "h1626zkn1py2cqbgq": "<div data-sb-root=\"c1-face-maya-r\" style=\"position:absolute;left:234.58px;top:485.91px;width:84px;height:84px;z-index:22\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"device\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-234.58px;top:-485.91px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-face\" data-cut-part=\"Face Maya R\" style=\"transform: translate(234.576px, 485.914px) scale(1); width: 84px; height: 84px; z-index: auto;\" data-sb-was=\"\"><img alt=\"\" src=\"/avatars/team-maya.png\"></div></div></div>",
+    "h1gcwu0yixzd5ggn": "<div data-sb-root=\"c1-face-ben-r\" style=\"position:absolute;left:234.58px;top:391.91px;width:84px;height:84px;z-index:24\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"device\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-234.58px;top:-391.91px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-face\" data-cut-part=\"Face Ben R\" style=\"transform: translate(234.576px, 391.914px) scale(1); width: 84px; height: 84px; z-index: auto;\" data-sb-was=\"\"><img alt=\"\" src=\"/avatars/team-ben.png\"></div></div></div>",
+    "h189gatg1pfk6ak1v9": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:208px;top:315px;width:23px;height:142px;z-index:26;pointer-events:none\"><svg viewBox=\"0 0 23 142\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.3 136.3Q5.3 134.1 5.3 132Q5.3 129.9 5.3 128.8Q5.3 127.7 5.8 125.6Q6.4 123.5 6.4 122.4Q6.4 121.4 6.4 119.8Q6.4 118.2 6.4 117.1Q6.4 116 6.4 114.4Q6.4 112.8 6.4 110.7Q6.4 108.6 6.4 107Q6.4 105.4 6.9 104.3Q7.4 103.3 7.4 102.2Q7.4 101.1 7.4 99.5Q7.4 97.9 7.4 96.9Q7.4 95.8 7.4 94.2Q7.4 92.6 7.4 91.6Q7.4 90.5 8 88.9Q8.5 87.3 8.5 85.7Q8.5 84.1 8.5 83Q8.5 82 8.5 80.9Q8.5 79.9 8.5 78.3Q8.5 76.7 8.5 75.6Q8.5 74.5 8.5 72.9Q8.5 71.3 8.5 70.3Q8.5 69.2 8.5 67.6Q8.5 66 9.6 65Q10.6 63.9 10.6 61.2Q10.6 58.6 11.2 57Q11.7 55.4 11.7 54.3Q11.7 53.2 11.7 51.1Q11.7 49 11.7 47.9Q11.7 46.9 11.7 45.8Q11.7 44.7 11.7 43.7Q11.7 42.6 11.7 41Q11.7 39.4 11.7 38.3Q11.7 37.3 12.2 35.7Q12.7 34.1 12.7 33Q12.7 32 12.7 30.4Q12.7 28.8 12.7 27.7Q12.7 26.6 13.3 25Q13.8 23.5 13.8 22.4Q13.8 21.3 13.8 19.7Q13.8 18.1 13.8 17.1Q13.8 16 14.9 16Q15.9 16 15.9 14.4Q15.9 12.8 15.9 11.7Q15.9 10.7 15.9 9.1Q15.9 7.5 16.5 6.4Q17 5.4 15.9 5.4L14.9 5.4\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.3 136.3Q5.3 134.1 5.3 132Q5.3 129.9 5.3 128.8Q5.3 127.7 5.8 125.6Q6.4 123.5 6.4 122.4Q6.4 121.4 6.4 119.8Q6.4 118.2 6.4 117.1Q6.4 116 6.4 114.4Q6.4 112.8 6.4 110.7Q6.4 108.6 6.4 107Q6.4 105.4 6.9 104.3Q7.4 103.3 7.4 102.2Q7.4 101.1 7.4 99.5Q7.4 97.9 7.4 96.9Q7.4 95.8 7.4 94.2Q7.4 92.6 7.4 91.6Q7.4 90.5 8 88.9Q8.5 87.3 8.5 85.7Q8.5 84.1 8.5 83Q8.5 82 8.5 80.9Q8.5 79.9 8.5 78.3Q8.5 76.7 8.5 75.6Q8.5 74.5 8.5 72.9Q8.5 71.3 8.5 70.3Q8.5 69.2 8.5 67.6Q8.5 66 9.6 65Q10.6 63.9 10.6 61.2Q10.6 58.6 11.2 57Q11.7 55.4 11.7 54.3Q11.7 53.2 11.7 51.1Q11.7 49 11.7 47.9Q11.7 46.9 11.7 45.8Q11.7 44.7 11.7 43.7Q11.7 42.6 11.7 41Q11.7 39.4 11.7 38.3Q11.7 37.3 12.2 35.7Q12.7 34.1 12.7 33Q12.7 32 12.7 30.4Q12.7 28.8 12.7 27.7Q12.7 26.6 13.3 25Q13.8 23.5 13.8 22.4Q13.8 21.3 13.8 19.7Q13.8 18.1 13.8 17.1Q13.8 16 14.9 16Q15.9 16 15.9 14.4Q15.9 12.8 15.9 11.7Q15.9 10.7 15.9 9.1Q15.9 7.5 16.5 6.4Q17 5.4 15.9 5.4L14.9 5.4\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1qt7wxj1hldrsv16l": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:187px;top:311px;width:59px;height:38px;z-index:28;pointer-events:none\"><svg viewBox=\"0 0 59 38\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5 27.5Q7.1 27.5 8.7 27.5Q10.3 27.5 11.4 26.4Q12.5 25.3 15.1 23.7Q17.8 22.1 19.4 21.1Q21 20 22 18.4Q23.1 16.8 24.7 16.3Q26.3 15.7 27.4 14.7Q28.4 13.6 29 12.6Q29.5 11.5 30.6 11Q31.6 10.4 32.7 9.9Q33.7 9.4 34.3 7.8Q34.8 6.2 35.9 6.2Q36.9 6.2 38 5.6Q39.1 5.1 40.7 5.6Q42.3 6.2 42.8 7.2Q43.3 8.3 44.4 9.9Q45.5 11.5 46.5 13.1Q47.6 14.7 48.1 16.8Q48.6 18.9 49.2 20.5Q49.7 22.1 50.2 23.2Q50.8 24.3 51.8 25.9Q52.9 27.5 52.9 28.5Q52.9 29.6 52.9 31.2Q52.9 32.8 53.4 31.7L54 30.6\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5 27.5Q7.1 27.5 8.7 27.5Q10.3 27.5 11.4 26.4Q12.5 25.3 15.1 23.7Q17.8 22.1 19.4 21.1Q21 20 22 18.4Q23.1 16.8 24.7 16.3Q26.3 15.7 27.4 14.7Q28.4 13.6 29 12.6Q29.5 11.5 30.6 11Q31.6 10.4 32.7 9.9Q33.7 9.4 34.3 7.8Q34.8 6.2 35.9 6.2Q36.9 6.2 38 5.6Q39.1 5.1 40.7 5.6Q42.3 6.2 42.8 7.2Q43.3 8.3 44.4 9.9Q45.5 11.5 46.5 13.1Q47.6 14.7 48.1 16.8Q48.6 18.9 49.2 20.5Q49.7 22.1 50.2 23.2Q50.8 24.3 51.8 25.9Q52.9 27.5 52.9 28.5Q52.9 29.6 52.9 31.2Q52.9 32.8 53.4 31.7L54 30.6\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hk73a3k1h6km2d1": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:282px;top:253px;width:387px;height:16px;z-index:30;pointer-events:none\"><svg viewBox=\"0 0 387 16\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.8 7.8Q7.9 7.8 9.5 7.8Q11.1 7.8 12.2 7.8Q13.2 7.8 14.8 7.8Q16.4 7.8 19.1 7.8Q21.8 7.8 22.8 7.8Q23.9 7.8 25.5 7.8Q27.1 7.8 28.1 7.8Q29.2 7.8 31.3 7.8Q33.5 7.8 35.6 7.8Q37.7 7.8 38.8 7.8Q39.8 7.8 42 7.8Q44.1 7.8 46.8 7.8Q49.4 7.8 50.5 7.8Q51.5 7.8 53.7 7.8Q55.8 7.8 57.4 7.8Q59 7.8 60.6 7.8Q62.2 7.8 63.8 7.8Q65.4 7.8 68 7.8Q70.7 7.8 72.8 7.8Q75 7.8 76.6 7.8Q78.2 7.8 79.7 7.8Q81.3 7.8 84.5 7.8Q87.7 7.8 90.9 7.8Q94.1 7.8 96.8 7.8Q99.4 7.8 102.1 7.8Q104.8 7.8 107.4 8.3Q110.1 8.8 113.8 8.8Q117.5 8.8 119.1 8.8Q120.7 8.8 125.5 8.8Q130.3 8.8 135.6 8.8Q140.9 8.8 145.7 9.9Q150.5 11 154.2 11Q158 11 162.2 11Q166.5 11 171.8 11Q177.1 11 180.3 11Q183.5 11 187.8 11Q192 11 195.7 11Q199.5 11 203.7 11Q208 11 211.2 11Q214.4 11 218.1 11Q221.8 11 226.1 11Q230.3 11 235.6 11Q241 11 244.2 11Q247.4 11 252.1 11Q256.9 11 260.7 11Q264.4 11 268.6 11Q272.9 11 276.6 10.4Q280.3 9.9 287.8 9.9Q295.2 9.9 299.5 9.4Q303.8 8.8 306.4 8.8Q309.1 8.8 312.3 8.8Q315.5 8.8 318.7 8.3Q321.8 7.8 326.1 7.8Q330.4 7.8 334.1 7.8Q337.8 7.8 339.9 7.8Q342.1 7.8 344.2 6.7Q346.3 5.6 349 5.6Q351.6 5.6 354.3 5.6Q357 5.6 358 5.6Q359.1 5.6 361.8 5.6Q364.4 5.6 366 5.6Q367.6 5.6 369.2 5.6Q370.8 5.6 372.4 5.6Q374 5.6 376.1 5.6Q378.2 5.6 379.3 5.6Q380.4 5.6 380.9 5.6L381.4 5.6\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.8 7.8Q7.9 7.8 9.5 7.8Q11.1 7.8 12.2 7.8Q13.2 7.8 14.8 7.8Q16.4 7.8 19.1 7.8Q21.8 7.8 22.8 7.8Q23.9 7.8 25.5 7.8Q27.1 7.8 28.1 7.8Q29.2 7.8 31.3 7.8Q33.5 7.8 35.6 7.8Q37.7 7.8 38.8 7.8Q39.8 7.8 42 7.8Q44.1 7.8 46.8 7.8Q49.4 7.8 50.5 7.8Q51.5 7.8 53.7 7.8Q55.8 7.8 57.4 7.8Q59 7.8 60.6 7.8Q62.2 7.8 63.8 7.8Q65.4 7.8 68 7.8Q70.7 7.8 72.8 7.8Q75 7.8 76.6 7.8Q78.2 7.8 79.7 7.8Q81.3 7.8 84.5 7.8Q87.7 7.8 90.9 7.8Q94.1 7.8 96.8 7.8Q99.4 7.8 102.1 7.8Q104.8 7.8 107.4 8.3Q110.1 8.8 113.8 8.8Q117.5 8.8 119.1 8.8Q120.7 8.8 125.5 8.8Q130.3 8.8 135.6 8.8Q140.9 8.8 145.7 9.9Q150.5 11 154.2 11Q158 11 162.2 11Q166.5 11 171.8 11Q177.1 11 180.3 11Q183.5 11 187.8 11Q192 11 195.7 11Q199.5 11 203.7 11Q208 11 211.2 11Q214.4 11 218.1 11Q221.8 11 226.1 11Q230.3 11 235.6 11Q241 11 244.2 11Q247.4 11 252.1 11Q256.9 11 260.7 11Q264.4 11 268.6 11Q272.9 11 276.6 10.4Q280.3 9.9 287.8 9.9Q295.2 9.9 299.5 9.4Q303.8 8.8 306.4 8.8Q309.1 8.8 312.3 8.8Q315.5 8.8 318.7 8.3Q321.8 7.8 326.1 7.8Q330.4 7.8 334.1 7.8Q337.8 7.8 339.9 7.8Q342.1 7.8 344.2 6.7Q346.3 5.6 349 5.6Q351.6 5.6 354.3 5.6Q357 5.6 358 5.6Q359.1 5.6 361.8 5.6Q364.4 5.6 366 5.6Q367.6 5.6 369.2 5.6Q370.8 5.6 372.4 5.6Q374 5.6 376.1 5.6Q378.2 5.6 379.3 5.6Q380.4 5.6 380.9 5.6L381.4 5.6\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1ldu1n71njfo8l193": "<div data-sb-root=\"d4-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:637px;top:246px;width:64px;height:31px;z-index:32;pointer-events:none\"><svg viewBox=\"0 0 64 31\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.2 5.2Q7.3 5.2 8.9 5.2Q10.5 5.2 11.5 5.2Q12.6 5.2 13.7 5.2Q14.7 5.2 16.3 5.2Q17.9 5.2 19 6.3Q20.1 7.3 22.2 7.3Q24.3 7.3 26.4 7.8Q28.6 8.4 29.6 8.4Q30.7 8.4 32.8 8.9Q35 9.4 36 9.4Q37.1 9.4 38.7 10Q40.3 10.5 41.3 11.6Q42.4 12.6 44.5 12.6Q46.7 12.6 48.8 13.2Q50.9 13.7 52 13.7Q53 13.7 54.1 14.2Q55.2 14.8 56.8 14.8Q58.4 14.8 57.8 16.4Q57.3 18 56.2 18Q55.2 18 54.1 18.5Q53 19 51.4 19.6Q49.8 20.1 48.8 20.6Q47.7 21.2 47.2 22.2Q46.7 23.3 45.1 23.3Q43.5 23.3 42.4 23.8Q41.3 24.3 40.3 24.3Q39.2 24.3 38.1 24.9L37.1 25.4\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.2 5.2Q7.3 5.2 8.9 5.2Q10.5 5.2 11.5 5.2Q12.6 5.2 13.7 5.2Q14.7 5.2 16.3 5.2Q17.9 5.2 19 6.3Q20.1 7.3 22.2 7.3Q24.3 7.3 26.4 7.8Q28.6 8.4 29.6 8.4Q30.7 8.4 32.8 8.9Q35 9.4 36 9.4Q37.1 9.4 38.7 10Q40.3 10.5 41.3 11.6Q42.4 12.6 44.5 12.6Q46.7 12.6 48.8 13.2Q50.9 13.7 52 13.7Q53 13.7 54.1 14.2Q55.2 14.8 56.8 14.8Q58.4 14.8 57.8 16.4Q57.3 18 56.2 18Q55.2 18 54.1 18.5Q53 19 51.4 19.6Q49.8 20.1 48.8 20.6Q47.7 21.2 47.2 22.2Q46.7 23.3 45.1 23.3Q43.5 23.3 42.4 23.8Q41.3 24.3 40.3 24.3Q39.2 24.3 38.1 24.9L37.1 25.4\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1r880yh3mcr4v24v": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:940px;top:253px;width:79px;height:47px;z-index:20;pointer-events:none\"><svg viewBox=\"0 0 79 47\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M45.5 6.4Q40.9 6.4 39 6.4Q37.1 6.4 34.8 6.4Q32.6 6.4 31.4 6.4Q30.3 6.4 28.4 6.8Q26.5 7.2 24.2 7.2Q21.9 7.2 20.4 7.2Q18.9 7.2 17 7.6Q15.1 8 13.9 8.3Q12.8 8.7 11.6 9.1Q10.5 9.5 9.7 10.6Q9 11.8 7.8 12.2Q6.7 12.5 6.3 13.7Q5.9 14.8 5.5 16Q5.2 17.1 5.2 18.6Q5.2 20.1 5.2 21.3Q5.2 22.4 5.5 24.3Q5.9 26.2 6.7 27Q7.4 27.8 8.2 28.9Q9 30 10.1 31.2Q11.3 32.3 12 33.1Q12.8 33.8 13.9 34.6Q15.1 35.4 17 35.7Q18.9 36.1 19.6 36.9Q20.4 37.6 21.5 38Q22.7 38.4 24.6 38.8Q26.5 39.2 28.4 39.5Q30.3 39.9 32.2 40.7Q34.1 41.4 35.2 41.4Q36.4 41.4 37.5 41.4Q38.6 41.4 40.5 41.4Q42.5 41.4 44.4 41.4Q46.3 41.4 47.8 41.4Q49.3 41.4 50.4 41.4Q51.6 41.4 52.7 41.1Q53.9 40.7 55.4 40.3Q56.9 39.9 57.7 38.8Q58.4 37.6 60 37.3Q61.5 36.9 62.2 35.4Q63 33.8 64.1 33.5Q65.3 33.1 66 32.3Q66.8 31.6 67.6 30.8Q68.3 30 69.1 29.3Q69.8 28.5 71 28.1Q72.1 27.8 72.5 26.6Q72.9 25.5 73.3 23.9Q73.6 22.4 72.9 20.5Q72.1 18.6 70.2 17.9Q68.3 17.1 67.2 16Q66 14.8 64.9 14.4Q63.8 14.1 61.5 13.3Q59.2 12.5 57.7 11.8Q56.1 11 54.6 10.2Q53.1 9.5 50.8 9.1Q48.5 8.7 47 8Q45.5 7.2 44.4 6.8Q43.2 6.4 42.1 6.1Q40.9 5.7 39.4 5.7Q37.9 5.7 36 5.7L34.1 5.7\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M45.5 6.4Q40.9 6.4 39 6.4Q37.1 6.4 34.8 6.4Q32.6 6.4 31.4 6.4Q30.3 6.4 28.4 6.8Q26.5 7.2 24.2 7.2Q21.9 7.2 20.4 7.2Q18.9 7.2 17 7.6Q15.1 8 13.9 8.3Q12.8 8.7 11.6 9.1Q10.5 9.5 9.7 10.6Q9 11.8 7.8 12.2Q6.7 12.5 6.3 13.7Q5.9 14.8 5.5 16Q5.2 17.1 5.2 18.6Q5.2 20.1 5.2 21.3Q5.2 22.4 5.5 24.3Q5.9 26.2 6.7 27Q7.4 27.8 8.2 28.9Q9 30 10.1 31.2Q11.3 32.3 12 33.1Q12.8 33.8 13.9 34.6Q15.1 35.4 17 35.7Q18.9 36.1 19.6 36.9Q20.4 37.6 21.5 38Q22.7 38.4 24.6 38.8Q26.5 39.2 28.4 39.5Q30.3 39.9 32.2 40.7Q34.1 41.4 35.2 41.4Q36.4 41.4 37.5 41.4Q38.6 41.4 40.5 41.4Q42.5 41.4 44.4 41.4Q46.3 41.4 47.8 41.4Q49.3 41.4 50.4 41.4Q51.6 41.4 52.7 41.1Q53.9 40.7 55.4 40.3Q56.9 39.9 57.7 38.8Q58.4 37.6 60 37.3Q61.5 36.9 62.2 35.4Q63 33.8 64.1 33.5Q65.3 33.1 66 32.3Q66.8 31.6 67.6 30.8Q68.3 30 69.1 29.3Q69.8 28.5 71 28.1Q72.1 27.8 72.5 26.6Q72.9 25.5 73.3 23.9Q73.6 22.4 72.9 20.5Q72.1 18.6 70.2 17.9Q68.3 17.1 67.2 16Q66 14.8 64.9 14.4Q63.8 14.1 61.5 13.3Q59.2 12.5 57.7 11.8Q56.1 11 54.6 10.2Q53.1 9.5 50.8 9.1Q48.5 8.7 47 8Q45.5 7.2 44.4 6.8Q43.2 6.4 42.1 6.1Q40.9 5.7 39.4 5.7Q37.9 5.7 36 5.7L34.1 5.7\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1uip4f86gcg9c1qk": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1034px;top:545px;width:143px;height:66px;z-index:22;pointer-events:none\"><svg viewBox=\"0 0 143 66\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M137.4 5.4Q134.2 6.5 133.2 7Q132.1 7.5 130.5 8.1Q128.9 8.6 127.9 8.6Q126.8 8.6 124.7 10.2Q122.5 11.8 120.4 12.8Q118.3 13.9 116.7 13.9Q115.1 13.9 113.5 14.4Q111.9 15 111.4 16Q110.8 17.1 109.2 17.6Q107.6 18.2 106.6 18.7Q105.5 19.2 103.9 19.2Q102.3 19.2 101.3 19.8Q100.2 20.3 98.6 21.4Q97 22.4 95.4 23Q93.8 23.5 91.1 25.6Q88.5 27.7 86.4 28.3Q84.2 28.8 82.1 29.3Q80 29.9 78.9 30.4Q77.8 30.9 75.2 32.5Q72.5 34.1 71.5 34.7Q70.4 35.2 67.7 36.8Q65.1 38.4 64 39.4Q62.9 40.5 60.8 41Q58.7 41.6 56.6 42.6Q54.4 43.7 52.8 44.8Q51.2 45.8 49.6 46.4Q48.1 46.9 45.9 48Q43.8 49 42.7 49.6Q41.7 50.1 39.5 50.1Q37.4 50.1 36.3 50.6Q35.3 51.2 33.2 51.7Q31 52.2 29.4 53.3Q27.8 54.3 25.2 54.9Q22.5 55.4 21.4 55.9Q20.4 56.5 18.8 56.5Q17.2 56.5 16.1 57Q15.1 57.5 13.5 57.5Q11.9 57.5 11.3 58.6Q10.8 59.7 9.7 59.7Q8.7 59.7 7.6 60.2Q6.5 60.7 6 60.7L5.5 60.7\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M137.4 5.4Q134.2 6.5 133.2 7Q132.1 7.5 130.5 8.1Q128.9 8.6 127.9 8.6Q126.8 8.6 124.7 10.2Q122.5 11.8 120.4 12.8Q118.3 13.9 116.7 13.9Q115.1 13.9 113.5 14.4Q111.9 15 111.4 16Q110.8 17.1 109.2 17.6Q107.6 18.2 106.6 18.7Q105.5 19.2 103.9 19.2Q102.3 19.2 101.3 19.8Q100.2 20.3 98.6 21.4Q97 22.4 95.4 23Q93.8 23.5 91.1 25.6Q88.5 27.7 86.4 28.3Q84.2 28.8 82.1 29.3Q80 29.9 78.9 30.4Q77.8 30.9 75.2 32.5Q72.5 34.1 71.5 34.7Q70.4 35.2 67.7 36.8Q65.1 38.4 64 39.4Q62.9 40.5 60.8 41Q58.7 41.6 56.6 42.6Q54.4 43.7 52.8 44.8Q51.2 45.8 49.6 46.4Q48.1 46.9 45.9 48Q43.8 49 42.7 49.6Q41.7 50.1 39.5 50.1Q37.4 50.1 36.3 50.6Q35.3 51.2 33.2 51.7Q31 52.2 29.4 53.3Q27.8 54.3 25.2 54.9Q22.5 55.4 21.4 55.9Q20.4 56.5 18.8 56.5Q17.2 56.5 16.1 57Q15.1 57.5 13.5 57.5Q11.9 57.5 11.3 58.6Q10.8 59.7 9.7 59.7Q8.7 59.7 7.6 60.2Q6.5 60.7 6 60.7L5.5 60.7\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hbutgvi19s1afq1fw": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1047px;top:560px;width:114px;height:55px;z-index:24;pointer-events:none\"><svg viewBox=\"0 0 114 55\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.3 5.3Q7.4 5.3 8.4 5.3Q9.5 5.3 10.6 5.3Q11.6 5.3 13.8 6.4Q15.9 7.4 17 8Q18 8.5 20.2 9.5Q22.3 10.6 24.4 11.7Q26.5 12.7 27.6 13.3Q28.7 13.8 30.8 14.3Q32.9 14.9 35.6 16.5Q38.2 18.1 40.9 19.1Q43.6 20.2 45.7 21.8Q47.8 23.4 49.9 23.9Q52.1 24.4 53.7 25.5Q55.3 26.6 57.4 27.6Q59.5 28.7 61.7 29.2Q63.8 29.8 64.8 30.8Q65.9 31.9 68.6 33.5Q71.2 35.1 72.8 35.1Q74.4 35.1 75.5 36.2Q76.6 37.2 78.1 38.3Q79.7 39.3 80.8 39.9Q81.9 40.4 83.5 40.4Q85.1 40.4 87.2 41.5Q89.3 42.5 90.4 43.6Q91.5 44.7 93 44.7Q94.6 44.7 95.7 45.2Q96.8 45.7 98.4 46.3Q100 46.8 101 47.3Q102.1 47.9 103.7 47.9Q105.3 47.9 105.3 48.9Q105.3 50 106.3 50Q107.4 50 107.9 50L108.5 50\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.3 5.3Q7.4 5.3 8.4 5.3Q9.5 5.3 10.6 5.3Q11.6 5.3 13.8 6.4Q15.9 7.4 17 8Q18 8.5 20.2 9.5Q22.3 10.6 24.4 11.7Q26.5 12.7 27.6 13.3Q28.7 13.8 30.8 14.3Q32.9 14.9 35.6 16.5Q38.2 18.1 40.9 19.1Q43.6 20.2 45.7 21.8Q47.8 23.4 49.9 23.9Q52.1 24.4 53.7 25.5Q55.3 26.6 57.4 27.6Q59.5 28.7 61.7 29.2Q63.8 29.8 64.8 30.8Q65.9 31.9 68.6 33.5Q71.2 35.1 72.8 35.1Q74.4 35.1 75.5 36.2Q76.6 37.2 78.1 38.3Q79.7 39.3 80.8 39.9Q81.9 40.4 83.5 40.4Q85.1 40.4 87.2 41.5Q89.3 42.5 90.4 43.6Q91.5 44.7 93 44.7Q94.6 44.7 95.7 45.2Q96.8 45.7 98.4 46.3Q100 46.8 101 47.3Q102.1 47.9 103.7 47.9Q105.3 47.9 105.3 48.9Q105.3 50 106.3 50Q107.4 50 107.9 50L108.5 50\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hxuoahl1me5irx1xt": "<div data-sb-root=\"d4-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:938px;top:361px;width:79px;height:41px;z-index:26;pointer-events:none\"><svg viewBox=\"0 0 79 41\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M53.1 7.5Q50.5 7.5 48.4 7.5Q46.3 7.5 44.1 7.5Q42 7.5 39.9 7.5Q37.8 7.5 35.6 7.5Q33.5 7.5 31.4 7.5Q29.3 7.5 26.7 7.5Q24.2 7.5 22 7.9Q19.9 8.3 18.2 9.2Q16.5 10 15.6 10.9Q14.8 11.7 13.5 11.7Q12.2 11.7 11.4 13Q10.5 14.3 9.3 14.7Q8 15.1 7.1 16Q6.3 16.8 5.9 18.1Q5.4 19.4 6.7 21.1Q8 22.8 9.3 23.6Q10.5 24.5 12.2 24.9Q13.9 25.3 15.2 26.2Q16.5 27 17.8 27.9Q19 28.7 20.3 28.7Q21.6 28.7 23.3 30Q25 31.3 26.3 31.7Q27.6 32.1 29.3 32.6Q31 33 32.2 33Q33.5 33 34.8 33.4Q36.1 33.9 37.8 33.9Q39.5 33.9 40.7 34.7Q42 35.6 44.1 35.6Q46.3 35.6 48.4 35.6Q50.5 35.6 52.7 35.1Q54.8 34.7 56.1 34.7Q57.3 34.7 58.6 34.3Q59.9 33.9 61.6 33.4Q63.3 33 64.6 32.2Q65.8 31.3 67.1 30.9Q68.4 30.4 70.1 30Q71.8 29.6 72.2 28.3Q72.7 27 73.1 25.8Q73.5 24.5 73.5 22.8Q73.5 21.1 73.5 19.8Q73.5 18.5 72.7 17.7Q71.8 16.8 71 15.6Q70.1 14.3 68.8 13.4Q67.5 12.6 66.3 12.2Q65 11.7 63.7 10.9Q62.4 10 60.3 9.6Q58.2 9.2 56.5 8.7Q54.8 8.3 53.5 8.3Q52.2 8.3 50.5 7.9Q48.8 7.5 47.6 6.6Q46.3 5.8 45.4 5.8L44.6 5.8\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M53.1 7.5Q50.5 7.5 48.4 7.5Q46.3 7.5 44.1 7.5Q42 7.5 39.9 7.5Q37.8 7.5 35.6 7.5Q33.5 7.5 31.4 7.5Q29.3 7.5 26.7 7.5Q24.2 7.5 22 7.9Q19.9 8.3 18.2 9.2Q16.5 10 15.6 10.9Q14.8 11.7 13.5 11.7Q12.2 11.7 11.4 13Q10.5 14.3 9.3 14.7Q8 15.1 7.1 16Q6.3 16.8 5.9 18.1Q5.4 19.4 6.7 21.1Q8 22.8 9.3 23.6Q10.5 24.5 12.2 24.9Q13.9 25.3 15.2 26.2Q16.5 27 17.8 27.9Q19 28.7 20.3 28.7Q21.6 28.7 23.3 30Q25 31.3 26.3 31.7Q27.6 32.1 29.3 32.6Q31 33 32.2 33Q33.5 33 34.8 33.4Q36.1 33.9 37.8 33.9Q39.5 33.9 40.7 34.7Q42 35.6 44.1 35.6Q46.3 35.6 48.4 35.6Q50.5 35.6 52.7 35.1Q54.8 34.7 56.1 34.7Q57.3 34.7 58.6 34.3Q59.9 33.9 61.6 33.4Q63.3 33 64.6 32.2Q65.8 31.3 67.1 30.9Q68.4 30.4 70.1 30Q71.8 29.6 72.2 28.3Q72.7 27 73.1 25.8Q73.5 24.5 73.5 22.8Q73.5 21.1 73.5 19.8Q73.5 18.5 72.7 17.7Q71.8 16.8 71 15.6Q70.1 14.3 68.8 13.4Q67.5 12.6 66.3 12.2Q65 11.7 63.7 10.9Q62.4 10 60.3 9.6Q58.2 9.2 56.5 8.7Q54.8 8.3 53.5 8.3Q52.2 8.3 50.5 7.9Q48.8 7.5 47.6 6.6Q46.3 5.8 45.4 5.8L44.6 5.8\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hw8tk1g4y5z6y1mr": "<div data-sb-root=\"d5-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:939px;top:485px;width:69px;height:34px;z-index:28;pointer-events:none\"><svg viewBox=\"0 0 69 34\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M25.7 6Q23.2 7.7 22.3 8.6Q21.5 9.4 19.7 9.4Q18 9.4 16.8 9.8Q15.5 10.3 13.4 10.7Q11.2 11.1 10 11.5Q8.7 12 7.8 12.8Q7 13.7 6.6 14.9Q6.1 16.2 5.7 17.5Q5.3 18.8 5.3 20.5Q5.3 22.2 6.1 23.4Q7 24.7 7.8 26Q8.7 27.3 10 27.3Q11.2 27.3 12.5 27.7Q13.8 28.1 15.5 28.1Q17.2 28.1 18.5 28.1Q19.7 28.1 21 28.6Q22.3 29 24 29Q25.7 29 27 29Q28.3 29 30.4 29Q32.5 29 34.6 29Q36.8 29 38.9 29Q41 29 43.1 29Q45.3 29 47.4 28.6Q49.5 28.1 51.7 27.3Q53.8 26.4 55.1 26Q56.3 25.6 57.6 25.2Q58.9 24.7 59.7 23.4Q60.6 22.2 61.9 21.7Q63.1 21.3 63.6 19.6Q64 17.9 64 15.8Q64 13.7 63.1 11.5Q62.3 9.4 60.2 8.6Q58 7.7 55.9 7.3Q53.8 6.9 52.5 6Q51.2 5.2 49.1 5.2Q47 5.2 45.3 5.2Q43.6 5.2 42.3 5.2Q41 5.2 38.5 5.2Q35.9 5.2 34.2 5.2Q32.5 5.2 31.2 5.2Q30 5.2 28.7 5.6Q27.4 6 25.7 6Q24 6 23.2 6.9L22.3 7.7\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M25.7 6Q23.2 7.7 22.3 8.6Q21.5 9.4 19.7 9.4Q18 9.4 16.8 9.8Q15.5 10.3 13.4 10.7Q11.2 11.1 10 11.5Q8.7 12 7.8 12.8Q7 13.7 6.6 14.9Q6.1 16.2 5.7 17.5Q5.3 18.8 5.3 20.5Q5.3 22.2 6.1 23.4Q7 24.7 7.8 26Q8.7 27.3 10 27.3Q11.2 27.3 12.5 27.7Q13.8 28.1 15.5 28.1Q17.2 28.1 18.5 28.1Q19.7 28.1 21 28.6Q22.3 29 24 29Q25.7 29 27 29Q28.3 29 30.4 29Q32.5 29 34.6 29Q36.8 29 38.9 29Q41 29 43.1 29Q45.3 29 47.4 28.6Q49.5 28.1 51.7 27.3Q53.8 26.4 55.1 26Q56.3 25.6 57.6 25.2Q58.9 24.7 59.7 23.4Q60.6 22.2 61.9 21.7Q63.1 21.3 63.6 19.6Q64 17.9 64 15.8Q64 13.7 63.1 11.5Q62.3 9.4 60.2 8.6Q58 7.7 55.9 7.3Q53.8 6.9 52.5 6Q51.2 5.2 49.1 5.2Q47 5.2 45.3 5.2Q43.6 5.2 42.3 5.2Q41 5.2 38.5 5.2Q35.9 5.2 34.2 5.2Q32.5 5.2 31.2 5.2Q30 5.2 28.7 5.6Q27.4 6 25.7 6Q24 6 23.2 6.9L22.3 7.7\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1mefktd1vhc0zr2jd": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:776px;top:405px;width:111px;height:57px;z-index:20;pointer-events:none\"><svg viewBox=\"0 0 111 57\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M14.9 11.7Q12.4 12.6 11.1 13.4Q9.8 14.3 9.4 15.6Q9 16.9 7.7 16.9Q6.4 16.9 6.4 18.6Q6.4 20.3 6 21.5Q5.5 22.8 5.5 24.5Q5.5 26.2 5.5 27.5Q5.5 28.8 5.5 30.9Q5.5 33 6 34.3Q6.4 35.6 7.2 36.4Q8.1 37.3 9.4 38.5Q10.7 39.8 11.9 41.1Q13.2 42.4 14.5 42.8Q15.8 43.2 17.5 44.5Q19.2 45.8 21.3 46.2Q23.4 46.6 25.5 47.5Q27.7 48.3 28.9 49.2Q30.2 50 31.9 50.5Q33.6 50.9 34.9 50.9Q36.2 50.9 38.7 51.3Q41.3 51.7 43.4 51.7Q45.5 51.7 47.2 51.7Q48.9 51.7 51.5 51.7Q54 51.7 56.6 51.7Q59.2 51.7 60.4 51.7Q61.7 51.7 64.3 51.7Q66.8 51.7 68.5 51.7Q70.2 51.7 71.5 51.7Q72.8 51.7 73.6 50.9Q74.5 50 77 49.6Q79.6 49.2 81.7 49.2Q83.8 49.2 86 48.8Q88.1 48.3 89.8 47.9Q91.5 47.5 93.6 46.6Q95.7 45.8 97.9 44.9Q100 44.1 100.9 42.8Q101.7 41.5 103 41.1Q104.3 40.7 104.7 39Q105.1 37.3 105.1 35.1Q105.1 33 104.3 32.2Q103.4 31.3 102.6 29.6Q101.7 27.9 100.9 27.1Q100 26.2 99.1 24.5Q98.3 22.8 97 21.5Q95.7 20.3 94.9 19.4Q94 18.6 92.3 17.3Q90.6 16 88.9 15.1Q87.2 14.3 85.1 13Q83 11.7 81.7 11.3Q80.4 10.9 78.3 10Q76.2 9.2 74.9 8.3Q73.6 7.5 71.9 7.5Q70.2 7.5 68.9 7.1Q67.7 6.6 66.4 6.6Q65.1 6.6 63 6.2Q60.9 5.8 58.7 5.8Q56.6 5.8 54.9 5.8Q53.2 5.8 51.1 5.8Q48.9 5.8 47.7 5.8Q46.4 5.8 44.7 5.8Q43 5.8 41.7 5.8Q40.4 5.8 37.9 5.8Q35.3 5.8 33.6 5.8Q31.9 5.8 30.6 6.6Q29.4 7.5 28.1 7.9Q26.8 8.3 24.3 9.2Q21.7 10 20 10Q18.3 10 17.5 10.9Q16.6 11.7 15.3 12.2Q14.1 12.6 12.4 13.4Q10.7 14.3 9.8 15.1L9 16\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M14.9 11.7Q12.4 12.6 11.1 13.4Q9.8 14.3 9.4 15.6Q9 16.9 7.7 16.9Q6.4 16.9 6.4 18.6Q6.4 20.3 6 21.5Q5.5 22.8 5.5 24.5Q5.5 26.2 5.5 27.5Q5.5 28.8 5.5 30.9Q5.5 33 6 34.3Q6.4 35.6 7.2 36.4Q8.1 37.3 9.4 38.5Q10.7 39.8 11.9 41.1Q13.2 42.4 14.5 42.8Q15.8 43.2 17.5 44.5Q19.2 45.8 21.3 46.2Q23.4 46.6 25.5 47.5Q27.7 48.3 28.9 49.2Q30.2 50 31.9 50.5Q33.6 50.9 34.9 50.9Q36.2 50.9 38.7 51.3Q41.3 51.7 43.4 51.7Q45.5 51.7 47.2 51.7Q48.9 51.7 51.5 51.7Q54 51.7 56.6 51.7Q59.2 51.7 60.4 51.7Q61.7 51.7 64.3 51.7Q66.8 51.7 68.5 51.7Q70.2 51.7 71.5 51.7Q72.8 51.7 73.6 50.9Q74.5 50 77 49.6Q79.6 49.2 81.7 49.2Q83.8 49.2 86 48.8Q88.1 48.3 89.8 47.9Q91.5 47.5 93.6 46.6Q95.7 45.8 97.9 44.9Q100 44.1 100.9 42.8Q101.7 41.5 103 41.1Q104.3 40.7 104.7 39Q105.1 37.3 105.1 35.1Q105.1 33 104.3 32.2Q103.4 31.3 102.6 29.6Q101.7 27.9 100.9 27.1Q100 26.2 99.1 24.5Q98.3 22.8 97 21.5Q95.7 20.3 94.9 19.4Q94 18.6 92.3 17.3Q90.6 16 88.9 15.1Q87.2 14.3 85.1 13Q83 11.7 81.7 11.3Q80.4 10.9 78.3 10Q76.2 9.2 74.9 8.3Q73.6 7.5 71.9 7.5Q70.2 7.5 68.9 7.1Q67.7 6.6 66.4 6.6Q65.1 6.6 63 6.2Q60.9 5.8 58.7 5.8Q56.6 5.8 54.9 5.8Q53.2 5.8 51.1 5.8Q48.9 5.8 47.7 5.8Q46.4 5.8 44.7 5.8Q43 5.8 41.7 5.8Q40.4 5.8 37.9 5.8Q35.3 5.8 33.6 5.8Q31.9 5.8 30.6 6.6Q29.4 7.5 28.1 7.9Q26.8 8.3 24.3 9.2Q21.7 10 20 10Q18.3 10 17.5 10.9Q16.6 11.7 15.3 12.2Q14.1 12.6 12.4 13.4Q10.7 14.3 9.8 15.1L9 16\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1c8qm2v1sm5rv52d5": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:773px;top:252px;width:134px;height:58px;z-index:22;pointer-events:none\"><svg viewBox=\"0 0 134 58\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M39.2 10.7Q34.9 10.7 32.8 10.7Q30.7 10.7 29.8 12Q29 13.3 29 15Q29 16.7 28.5 18.8Q28.1 20.9 28.1 23.5Q28.1 26 27.3 27.3Q26.4 28.6 26.4 31.2Q26.4 33.7 27.3 35.4Q28.1 37.1 29.4 38.4Q30.7 39.7 31.1 40.9Q31.5 42.2 32.4 43.1Q33.2 43.9 34.5 45.2Q35.8 46.5 37.9 47.3Q40 48.2 40.9 49Q41.7 49.9 43.4 50.3Q45.1 50.7 46.8 51.1Q48.5 51.6 51.1 51.6Q53.6 51.6 55.8 52Q57.9 52.4 62.2 52.4Q66.4 52.4 68.5 52.4Q70.7 52.4 72.8 52.4Q74.9 52.4 77.5 52.4Q80 52.4 81.7 52.4Q83.4 52.4 86 52.4Q88.5 52.4 90.2 52Q91.9 51.6 94.1 50.7Q96.2 49.9 98.3 49Q100.4 48.2 102.6 47.7Q104.7 47.3 106.4 46.5Q108.1 45.6 109 44.8Q109.8 43.9 111.1 43.5Q112.4 43.1 114.1 41.8Q115.8 40.5 117.9 38.8Q120 37.1 121.3 35.8Q122.6 34.6 123.4 33.7Q124.3 32.9 125.1 30.7Q126 28.6 127.3 26.5Q128.5 24.3 128.5 22.2Q128.5 20.1 127.7 19.2Q126.8 18.4 125.1 17.1Q123.4 15.8 121.3 15Q119.2 14.1 116.2 12.9Q113.2 11.6 111.9 11.2Q110.7 10.7 109 10.3Q107.3 9.9 105.1 9.5Q103 9 101.7 9Q100.4 9 98.3 8.2Q96.2 7.3 93.2 6.9Q90.2 6.5 88.1 6.5Q86 6.5 83 6.5Q80 6.5 77.9 6Q75.8 5.6 71.9 5.6Q68.1 5.6 65.1 5.6Q62.2 5.6 58.8 5.6Q55.3 5.6 50.7 5.6Q46 5.6 41.7 5.6Q37.5 5.6 35.4 5.6Q33.2 5.6 31.1 5.6Q29 5.6 25.6 6.5Q22.2 7.3 20 7.8Q17.9 8.2 14.9 8.6Q12 9 10.2 9.5Q8.5 9.9 6.8 9.9Q5.1 9.9 5.1 10.7L5.1 11.6\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M39.2 10.7Q34.9 10.7 32.8 10.7Q30.7 10.7 29.8 12Q29 13.3 29 15Q29 16.7 28.5 18.8Q28.1 20.9 28.1 23.5Q28.1 26 27.3 27.3Q26.4 28.6 26.4 31.2Q26.4 33.7 27.3 35.4Q28.1 37.1 29.4 38.4Q30.7 39.7 31.1 40.9Q31.5 42.2 32.4 43.1Q33.2 43.9 34.5 45.2Q35.8 46.5 37.9 47.3Q40 48.2 40.9 49Q41.7 49.9 43.4 50.3Q45.1 50.7 46.8 51.1Q48.5 51.6 51.1 51.6Q53.6 51.6 55.8 52Q57.9 52.4 62.2 52.4Q66.4 52.4 68.5 52.4Q70.7 52.4 72.8 52.4Q74.9 52.4 77.5 52.4Q80 52.4 81.7 52.4Q83.4 52.4 86 52.4Q88.5 52.4 90.2 52Q91.9 51.6 94.1 50.7Q96.2 49.9 98.3 49Q100.4 48.2 102.6 47.7Q104.7 47.3 106.4 46.5Q108.1 45.6 109 44.8Q109.8 43.9 111.1 43.5Q112.4 43.1 114.1 41.8Q115.8 40.5 117.9 38.8Q120 37.1 121.3 35.8Q122.6 34.6 123.4 33.7Q124.3 32.9 125.1 30.7Q126 28.6 127.3 26.5Q128.5 24.3 128.5 22.2Q128.5 20.1 127.7 19.2Q126.8 18.4 125.1 17.1Q123.4 15.8 121.3 15Q119.2 14.1 116.2 12.9Q113.2 11.6 111.9 11.2Q110.7 10.7 109 10.3Q107.3 9.9 105.1 9.5Q103 9 101.7 9Q100.4 9 98.3 8.2Q96.2 7.3 93.2 6.9Q90.2 6.5 88.1 6.5Q86 6.5 83 6.5Q80 6.5 77.9 6Q75.8 5.6 71.9 5.6Q68.1 5.6 65.1 5.6Q62.2 5.6 58.8 5.6Q55.3 5.6 50.7 5.6Q46 5.6 41.7 5.6Q37.5 5.6 35.4 5.6Q33.2 5.6 31.1 5.6Q29 5.6 25.6 6.5Q22.2 7.3 20 7.8Q17.9 8.2 14.9 8.6Q12 9 10.2 9.5Q8.5 9.9 6.8 9.9Q5.1 9.9 5.1 10.7L5.1 11.6\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hk731ojnbyic326u": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:772px;top:85px;width:106px;height:61px;z-index:24;pointer-events:none\"><svg viewBox=\"0 0 106 61\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M10.4 17.8Q8.7 19.5 8.3 20.7Q7.8 22 7 23.7Q6.1 25.4 5.7 27.5Q5.3 29.7 5.3 30.9Q5.3 32.2 5.3 33.5Q5.3 34.8 5.3 36.5Q5.3 38.2 6.1 39.5Q7 40.7 8.7 42.9Q10.4 45 11.2 45.8Q12.1 46.7 13.8 47.5Q15.5 48.4 17.2 49.7Q18.9 50.9 20.2 50.9Q21.5 50.9 23.2 51.4Q24.9 51.8 26.1 52.2Q27.4 52.6 30 52.6Q32.5 52.6 34.2 53.1Q35.9 53.5 38.1 53.5Q40.2 53.5 41.5 54.3Q42.7 55.2 46.1 55.2Q49.5 55.2 53.4 55.2Q57.2 55.2 61.5 55.2Q65.7 55.2 67.8 55.2Q70 55.2 72.1 55.2Q74.2 55.2 76.8 54.8Q79.3 54.3 81.5 53.9Q83.6 53.5 85.7 53.1Q87.8 52.6 90 51.8Q92.1 50.9 92.9 50.1Q93.8 49.2 95.1 48.8Q96.3 48.4 96.8 47.1Q97.2 45.8 98.5 45Q99.7 44.1 100.2 42.9Q100.6 41.6 100.6 39.9Q100.6 38.2 100.6 36.9Q100.6 35.6 100.6 33.9Q100.6 32.2 100.2 30.5Q99.7 28.8 98.5 26.7Q97.2 24.6 95.5 23.7Q93.8 22.9 92.5 21.6Q91.2 20.3 89.1 19.5Q87 18.6 85.7 17.8Q84.4 16.9 82.7 16.1Q81 15.2 78.5 14.8Q75.9 14.4 74.2 13.5Q72.5 12.7 70.8 12.2Q69.1 11.8 64.9 10.9Q60.6 10.1 58 9.2Q55.5 8.4 53.8 8.4Q52.1 8.4 48.3 8Q44.4 7.5 42.3 7.1Q40.2 6.7 37.6 6.7Q35.1 6.7 32.9 6.3Q30.8 5.8 28.7 5.8Q26.6 5.8 24.4 5.8Q22.3 5.8 20.6 5.8Q18.9 5.8 16.4 5.8Q13.8 5.8 11.7 6.3Q9.5 6.7 7.8 8L6.1 9.2\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M10.4 17.8Q8.7 19.5 8.3 20.7Q7.8 22 7 23.7Q6.1 25.4 5.7 27.5Q5.3 29.7 5.3 30.9Q5.3 32.2 5.3 33.5Q5.3 34.8 5.3 36.5Q5.3 38.2 6.1 39.5Q7 40.7 8.7 42.9Q10.4 45 11.2 45.8Q12.1 46.7 13.8 47.5Q15.5 48.4 17.2 49.7Q18.9 50.9 20.2 50.9Q21.5 50.9 23.2 51.4Q24.9 51.8 26.1 52.2Q27.4 52.6 30 52.6Q32.5 52.6 34.2 53.1Q35.9 53.5 38.1 53.5Q40.2 53.5 41.5 54.3Q42.7 55.2 46.1 55.2Q49.5 55.2 53.4 55.2Q57.2 55.2 61.5 55.2Q65.7 55.2 67.8 55.2Q70 55.2 72.1 55.2Q74.2 55.2 76.8 54.8Q79.3 54.3 81.5 53.9Q83.6 53.5 85.7 53.1Q87.8 52.6 90 51.8Q92.1 50.9 92.9 50.1Q93.8 49.2 95.1 48.8Q96.3 48.4 96.8 47.1Q97.2 45.8 98.5 45Q99.7 44.1 100.2 42.9Q100.6 41.6 100.6 39.9Q100.6 38.2 100.6 36.9Q100.6 35.6 100.6 33.9Q100.6 32.2 100.2 30.5Q99.7 28.8 98.5 26.7Q97.2 24.6 95.5 23.7Q93.8 22.9 92.5 21.6Q91.2 20.3 89.1 19.5Q87 18.6 85.7 17.8Q84.4 16.9 82.7 16.1Q81 15.2 78.5 14.8Q75.9 14.4 74.2 13.5Q72.5 12.7 70.8 12.2Q69.1 11.8 64.9 10.9Q60.6 10.1 58 9.2Q55.5 8.4 53.8 8.4Q52.1 8.4 48.3 8Q44.4 7.5 42.3 7.1Q40.2 6.7 37.6 6.7Q35.1 6.7 32.9 6.3Q30.8 5.8 28.7 5.8Q26.6 5.8 24.4 5.8Q22.3 5.8 20.6 5.8Q18.9 5.8 16.4 5.8Q13.8 5.8 11.7 6.3Q9.5 6.7 7.8 8L6.1 9.2\" fill=\"none\" stroke=\"#ffd60a\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hzc667z1wt8zcp15p": "<div data-sb-root=\"d4-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:838px;top:594px;width:110px;height:67px;z-index:26;pointer-events:none\"><svg viewBox=\"0 0 110 67\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M104.4 5.7Q100.1 6.5 97.6 7.4Q95 8.2 93.3 9.1Q91.6 9.9 90.3 10.4Q89.1 10.8 87.8 11.2Q86.5 11.6 85.2 12.1Q83.9 12.5 82.2 13.8Q80.5 15.1 79.3 15.9Q78 16.8 76.3 18.5Q74.6 20.2 72.9 21.4Q71.2 22.7 70.3 23.6Q69.5 24.4 67.4 25.7Q65.2 27 62.3 29.1Q59.3 31.2 57.1 32.5Q55 33.8 52.5 35.5Q49.9 37.2 47.8 38.9Q45.7 40.6 44 41.4Q42.3 42.3 39.3 44Q36.3 45.7 34.2 47.4Q32 49.1 29.5 50.8Q26.9 52.5 24 53.3Q21 54.2 18.4 55.5Q15.9 56.7 11.6 58Q7.4 59.3 6.5 60.2L5.7 61\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M104.4 5.7Q100.1 6.5 97.6 7.4Q95 8.2 93.3 9.1Q91.6 9.9 90.3 10.4Q89.1 10.8 87.8 11.2Q86.5 11.6 85.2 12.1Q83.9 12.5 82.2 13.8Q80.5 15.1 79.3 15.9Q78 16.8 76.3 18.5Q74.6 20.2 72.9 21.4Q71.2 22.7 70.3 23.6Q69.5 24.4 67.4 25.7Q65.2 27 62.3 29.1Q59.3 31.2 57.1 32.5Q55 33.8 52.5 35.5Q49.9 37.2 47.8 38.9Q45.7 40.6 44 41.4Q42.3 42.3 39.3 44Q36.3 45.7 34.2 47.4Q32 49.1 29.5 50.8Q26.9 52.5 24 53.3Q21 54.2 18.4 55.5Q15.9 56.7 11.6 58Q7.4 59.3 6.5 60.2L5.7 61\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h5kl9up3nbvsj12x": "<div data-sb-root=\"d5-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:858px;top:588px;width:110px;height:75px;z-index:28;pointer-events:none\"><svg viewBox=\"0 0 110 75\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.2 5.7Q6.9 7.4 8.6 8.7Q10.3 10 12 11.7Q13.7 13.4 14.6 14.7Q15.4 15.9 17.6 17.2Q19.7 18.5 21.4 19.8Q23.1 21.1 25.2 22.8Q27.4 24.5 29.5 25.3Q31.6 26.2 34.2 28.3Q36.7 30.4 38.4 31.7Q40.1 33 42.7 33.8Q45.2 34.7 49.1 36.8Q52.9 38.9 55.9 40.2Q58.8 41.5 61.8 42.8Q64.8 44 67.4 45.7Q69.9 47.4 73.7 49.6Q77.6 51.7 81 53.8Q84.4 55.9 87.3 57.6Q90.3 59.3 92.9 61Q95.4 62.7 98 64.9Q100.5 67 102.7 68.3L104.8 69.6\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.2 5.7Q6.9 7.4 8.6 8.7Q10.3 10 12 11.7Q13.7 13.4 14.6 14.7Q15.4 15.9 17.6 17.2Q19.7 18.5 21.4 19.8Q23.1 21.1 25.2 22.8Q27.4 24.5 29.5 25.3Q31.6 26.2 34.2 28.3Q36.7 30.4 38.4 31.7Q40.1 33 42.7 33.8Q45.2 34.7 49.1 36.8Q52.9 38.9 55.9 40.2Q58.8 41.5 61.8 42.8Q64.8 44 67.4 45.7Q69.9 47.4 73.7 49.6Q77.6 51.7 81 53.8Q84.4 55.9 87.3 57.6Q90.3 59.3 92.9 61Q95.4 62.7 98 64.9Q100.5 67 102.7 68.3L104.8 69.6\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h70g3yw13tzwumcv": "<span class=\"rc-kicker\" data-rc-text=\"result:kicker\" data-cut-part=\"Label\" style=\"position: absolute; inset: 773.72px auto auto 438.88px; width: 110px; height: auto; margin: 0px; transform: none; color: rgb(143, 199, 242); font: 700 20px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: 0.22em; text-shadow: none; text-transform: uppercase; white-space: normal;z-index:20\" data-sb-box=\"text\" data-sb-root=\"c1-label\">The result</span>",
+    "hhy3qmw151ld6yi3": "<div data-sb-root=\"c1-line\" data-sb-box=\"drawing\" style=\"position:absolute;left:558.47px;top:740.44px;width:18px;height:118.56px;pointer-events:none;z-index:22\"><svg viewBox=\"0 0 18 118.56\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M9 0V118.56\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M9 0V118.56\" fill=\"none\" stroke=\"#8fc7f2\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\" stroke-opacity=\"0.7\"/></svg></div>",
+    "h13dbvfftz4rq3ep": "<div class=\"rc-lines\" data-rc-text=\"result\" data-cut-part=\"Sentence\" style=\"position: absolute; inset: 733.44px auto auto 592.47px; width: 420px; height: auto; margin: 0px; transform: none; color: rgb(255, 255, 255); font: 600 34px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: -0.005em; text-shadow: rgba(0, 0, 0, 0.45) 0px 2px 14px; text-transform: none; white-space: normal;z-index:24\" data-sb-box=\"text\" data-sb-root=\"c1-sentence\">Efficiency Increases By Reducing Downtime Between Tasks</div>",
+    "h17xfla411okxgkgr": "<div data-sb-root=\"c1-face-ben-r\" style=\"position:absolute;left:234.58px;top:391.91px;width:84px;height:84px;z-index:26\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"initiative\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-234.58px;top:-391.91px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-face\" data-cut-part=\"Face Ben R\" style=\"transform: translate(234.576px, 391.914px) scale(1); width: 84px; height: 84px; z-index: auto;\" data-sb-was=\"\"><img alt=\"\" src=\"/avatars/team-ben.png\"></div></div></div>",
+    "h1c4xntop521nu15d": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:279px;top:245px;width:63px;height:40px;z-index:28;pointer-events:none\"><svg viewBox=\"0 0 63 40\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.4 34.3Q5.4 31.2 5.4 30.2Q5.4 29.2 5.9 27.7Q6.5 26.2 7 25.2Q7.5 24.2 8.5 23.6Q9.5 23.1 10.5 22.1Q11.5 21.1 12.5 20.1Q13.5 19.1 15.1 17.6Q16.6 16.1 17.6 15.6Q18.6 15 20.1 14Q21.6 13 22.1 12Q22.6 11 23.7 10.5Q24.7 10 25.7 9.5Q26.7 9 27.7 8.5Q28.7 8 29.2 7Q29.7 5.9 30.7 5.9Q31.7 5.9 32.8 5.9Q33.8 5.9 35.3 5.9Q36.8 5.9 37.8 5.9Q38.8 5.9 40.3 5.9Q41.9 5.9 42.9 5.9Q43.9 5.9 45.4 5.9Q46.9 5.9 47.9 5.9Q48.9 5.9 50.5 6.4Q52 7 53 7Q54 7 55.5 7.5L57 8\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.4 34.3Q5.4 31.2 5.4 30.2Q5.4 29.2 5.9 27.7Q6.5 26.2 7 25.2Q7.5 24.2 8.5 23.6Q9.5 23.1 10.5 22.1Q11.5 21.1 12.5 20.1Q13.5 19.1 15.1 17.6Q16.6 16.1 17.6 15.6Q18.6 15 20.1 14Q21.6 13 22.1 12Q22.6 11 23.7 10.5Q24.7 10 25.7 9.5Q26.7 9 27.7 8.5Q28.7 8 29.2 7Q29.7 5.9 30.7 5.9Q31.7 5.9 32.8 5.9Q33.8 5.9 35.3 5.9Q36.8 5.9 37.8 5.9Q38.8 5.9 40.3 5.9Q41.9 5.9 42.9 5.9Q43.9 5.9 45.4 5.9Q46.9 5.9 47.9 5.9Q48.9 5.9 50.5 6.4Q52 7 53 7Q54 7 55.5 7.5L57 8\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hq75lqn1rfkxbduv": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:312px;top:231px;width:28px;height:33px;z-index:30;pointer-events:none\"><svg viewBox=\"0 0 28 33\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M8.9 5.8Q10.9 6.8 12.4 7.3Q13.9 7.8 14.9 8.8Q15.9 9.8 17.5 10.3Q19 10.8 20 11.3Q21 11.9 21.5 13.4Q22 14.9 22 15.9Q22 16.9 22 18.4Q22 19.9 22 21Q22 22 20.5 22Q19 22 18 22.5Q17 23 16.5 24Q15.9 25 14.9 25Q13.9 25 12.9 25Q11.9 25 9.9 25.5Q7.9 26 6.8 26.5L5.8 27\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M8.9 5.8Q10.9 6.8 12.4 7.3Q13.9 7.8 14.9 8.8Q15.9 9.8 17.5 10.3Q19 10.8 20 11.3Q21 11.9 21.5 13.4Q22 14.9 22 15.9Q22 16.9 22 18.4Q22 19.9 22 21Q22 22 20.5 22Q19 22 18 22.5Q17 23 16.5 24Q15.9 25 14.9 25Q13.9 25 12.9 25Q11.9 25 9.9 25.5Q7.9 26 6.8 26.5L5.8 27\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1ynt9yjanwt892i3": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:622px;top:263px;width:571px;height:24px;z-index:32;pointer-events:none\"><svg viewBox=\"0 0 571 24\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.4 5.1Q8.4 6.2 11 6.2Q13.5 6.2 15.5 7.2Q17.6 8.2 20.1 8.2Q22.6 8.2 24.1 8.7Q25.6 9.2 28.2 9.2Q30.7 9.2 33.2 9.2Q35.8 9.2 38.3 9.2Q40.8 9.2 44.4 9.7Q47.9 10.2 50.9 10.2Q54 10.2 56.5 10.2Q59 10.2 62.6 10.2Q66.1 10.2 70.2 10.2Q74.2 10.2 78.8 10.2Q83.3 10.2 84.3 10.2Q85.3 10.2 93.4 10.2Q101.5 10.2 108.1 10.2Q114.7 10.2 118.2 10.2Q121.8 10.2 128.3 10.2Q134.9 10.2 141 10.2Q147.1 10.2 153.1 10.2Q159.2 10.2 164.8 10.2Q170.3 10.2 178.4 10.2Q186.5 10.2 189.5 10.2Q192.6 10.2 199.2 10.2Q205.7 10.2 211.8 10.2Q217.9 10.2 224.4 10.2Q231 10.2 237.1 10.2Q243.2 10.2 250.2 10.7Q257.3 11.2 263.9 11.2Q270.5 11.2 278.6 11.2Q286.7 11.2 292.2 12.2Q297.8 13.2 304.4 13.2Q310.9 13.2 318.5 13.2Q326.1 13.2 331.7 13.7Q337.3 14.2 340.8 14.2Q344.3 14.2 350.4 14.2Q356.5 14.2 364.6 14.8Q372.7 15.3 376.2 15.3Q379.7 15.3 386.3 15.8Q392.9 16.3 396.4 16.3Q400 16.3 406.6 16.3Q413.1 16.3 419.2 17.3Q425.3 18.3 428.8 18.3Q432.4 18.3 438.4 18.3Q444.5 18.3 450.1 18.3Q455.6 18.3 461.7 18.3Q467.8 18.3 471.8 18.3Q475.9 18.3 480.4 18.3Q485 18.3 489.5 18.3Q494.1 18.3 497.6 18.3Q501.1 18.3 504.7 18.3Q508.2 18.3 513.8 18.3Q519.4 18.3 522.4 18.3Q525.4 18.3 529.5 18.3Q533.5 18.3 536.6 18.3Q539.6 18.3 542.1 18.3Q544.7 18.3 547.2 18.3Q549.7 18.3 551.7 18.3Q553.8 18.3 556.8 18.3Q559.8 18.3 560.8 18.3Q561.9 18.3 562.9 18.3Q563.9 18.3 564.9 18.3L565.9 18.3\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.4 5.1Q8.4 6.2 11 6.2Q13.5 6.2 15.5 7.2Q17.6 8.2 20.1 8.2Q22.6 8.2 24.1 8.7Q25.6 9.2 28.2 9.2Q30.7 9.2 33.2 9.2Q35.8 9.2 38.3 9.2Q40.8 9.2 44.4 9.7Q47.9 10.2 50.9 10.2Q54 10.2 56.5 10.2Q59 10.2 62.6 10.2Q66.1 10.2 70.2 10.2Q74.2 10.2 78.8 10.2Q83.3 10.2 84.3 10.2Q85.3 10.2 93.4 10.2Q101.5 10.2 108.1 10.2Q114.7 10.2 118.2 10.2Q121.8 10.2 128.3 10.2Q134.9 10.2 141 10.2Q147.1 10.2 153.1 10.2Q159.2 10.2 164.8 10.2Q170.3 10.2 178.4 10.2Q186.5 10.2 189.5 10.2Q192.6 10.2 199.2 10.2Q205.7 10.2 211.8 10.2Q217.9 10.2 224.4 10.2Q231 10.2 237.1 10.2Q243.2 10.2 250.2 10.7Q257.3 11.2 263.9 11.2Q270.5 11.2 278.6 11.2Q286.7 11.2 292.2 12.2Q297.8 13.2 304.4 13.2Q310.9 13.2 318.5 13.2Q326.1 13.2 331.7 13.7Q337.3 14.2 340.8 14.2Q344.3 14.2 350.4 14.2Q356.5 14.2 364.6 14.8Q372.7 15.3 376.2 15.3Q379.7 15.3 386.3 15.8Q392.9 16.3 396.4 16.3Q400 16.3 406.6 16.3Q413.1 16.3 419.2 17.3Q425.3 18.3 428.8 18.3Q432.4 18.3 438.4 18.3Q444.5 18.3 450.1 18.3Q455.6 18.3 461.7 18.3Q467.8 18.3 471.8 18.3Q475.9 18.3 480.4 18.3Q485 18.3 489.5 18.3Q494.1 18.3 497.6 18.3Q501.1 18.3 504.7 18.3Q508.2 18.3 513.8 18.3Q519.4 18.3 522.4 18.3Q525.4 18.3 529.5 18.3Q533.5 18.3 536.6 18.3Q539.6 18.3 542.1 18.3Q544.7 18.3 547.2 18.3Q549.7 18.3 551.7 18.3Q553.8 18.3 556.8 18.3Q559.8 18.3 560.8 18.3Q561.9 18.3 562.9 18.3Q563.9 18.3 564.9 18.3L565.9 18.3\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1bdmc74h1xz0218q": "<div data-sb-root=\"d4-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1143px;top:264px;width:61px;height:33px;z-index:34;pointer-events:none\"><svg viewBox=\"0 0 61 33\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.4 5.2Q8.5 5.2 9.5 5.2Q10.5 5.2 12 5.2Q13.5 5.2 14.5 6.2Q15.6 7.2 17.1 7.7Q18.6 8.2 20.6 8.7Q22.6 9.2 23.7 9.2Q24.7 9.2 26.7 9.7Q28.7 10.2 29.7 11.2Q30.7 12.2 32.8 12.7Q34.8 13.2 36.8 13.8Q38.8 14.3 39.8 14.8Q40.9 15.3 42.4 16.3Q43.9 17.3 46.4 17.8Q48.9 18.3 51 18.3Q53 18.3 54 18.8Q55 19.3 54 19.3Q53 19.3 51.5 19.8Q50 20.3 47.9 20.3Q45.9 20.3 44.4 21.3Q42.9 22.4 40.3 22.4Q37.8 22.4 36.8 22.9Q35.8 23.4 34.3 23.9Q32.8 24.4 31.2 24.4Q29.7 24.4 28.7 24.9Q27.7 25.4 26.7 26.4Q25.7 27.4 24.2 27.4L22.6 27.4\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.4 5.2Q8.5 5.2 9.5 5.2Q10.5 5.2 12 5.2Q13.5 5.2 14.5 6.2Q15.6 7.2 17.1 7.7Q18.6 8.2 20.6 8.7Q22.6 9.2 23.7 9.2Q24.7 9.2 26.7 9.7Q28.7 10.2 29.7 11.2Q30.7 12.2 32.8 12.7Q34.8 13.2 36.8 13.8Q38.8 14.3 39.8 14.8Q40.9 15.3 42.4 16.3Q43.9 17.3 46.4 17.8Q48.9 18.3 51 18.3Q53 18.3 54 18.8Q55 19.3 54 19.3Q53 19.3 51.5 19.8Q50 20.3 47.9 20.3Q45.9 20.3 44.4 21.3Q42.9 22.4 40.3 22.4Q37.8 22.4 36.8 22.9Q35.8 23.4 34.3 23.9Q32.8 24.4 31.2 24.4Q29.7 24.4 28.7 24.9Q27.7 25.4 26.7 26.4Q25.7 27.4 24.2 27.4L22.6 27.4\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1xhbyhy1e0vwlu160": "<div data-sb-root=\"c1-mission-restock-front-desk\" style=\"position:absolute;left:945.72px;top:186.59px;width:855.25px;height:102.16px;z-index:36\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"initiative\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-945.72px;top:-186.59px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"desk\" data-rc-who=\"adam\" data-cut-part=\"Mission Restock Front Desk\" style=\"transform: translate(945.723px, 186.591px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:05:50</span><span class=\"chip-pill\">00:20:34</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:desk\">Restock Front Desk</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1atpnib1ey5051160": "<div data-sb-root=\"c2-mission-restock-front-desk\" style=\"position:absolute;left:945.72px;top:186.59px;width:855.25px;height:102.16px;z-index:38\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"initiative\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-945.72px;top:-186.59px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"desk\" data-rc-who=\"adam\" data-cut-part=\"Mission Restock Front Desk\" style=\"transform: translate(945.723px, 186.591px) scale(0.791901); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:05:50</span><span class=\"chip-pill\">00:20:34</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:desk\">Restock Front Desk</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "hzj8ze76a2tvl156": "<div data-sb-root=\"c1-mission-safety-check\" style=\"position:absolute;left:945.72px;top:303px;width:855.25px;height:102.16px;z-index:40\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"initiative\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-945.72px;top:-303px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"sig\" data-cut-part=\"Mission Safety Check\" style=\"transform: translate(945.723px, 303px) scale(0.791901); z-index: auto;\" data-rc-who=\"maya\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:11:33</span><span class=\"chip-pill\">00:15:13</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:sig\">Safety Check</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:maya\">Maya R</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1k7v99p1e148jf1c9": "<div data-sb-root=\"d5-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:405px;top:162px;width:183px;height:15px;z-index:42;pointer-events:none\"><svg viewBox=\"0 0 183 15\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.4 8.4Q8.1 8.4 9.9 8.4Q11.7 8.4 14 8.4Q16.2 8.4 18.5 8.4Q20.8 8.4 22.1 8.8Q23.5 9.3 26.2 9.3Q28.9 9.3 32.1 9.3Q35.2 9.3 37.5 9.3Q39.8 9.3 42.9 9.3Q46.1 9.3 49.3 9.3Q52.4 9.3 56 9.3Q59.7 9.3 62.8 9.3Q66 9.3 70.5 9.3Q75 9.3 79.1 9.3Q83.2 9.3 86.4 8.8Q89.5 8.4 93.6 8.4Q97.7 8.4 101.3 7.5Q104.9 6.6 108.1 6.6Q111.2 6.6 115.3 6.6Q119.4 6.6 122.5 6.6Q125.7 6.6 128.9 6.6Q132 6.6 134.8 6.1Q137.5 5.7 140.2 5.7Q142.9 5.7 145.2 5.7Q147.4 5.7 149.7 5.7Q151.9 5.7 154.7 5.7Q157.4 5.7 159.2 5.7Q161 5.7 163.2 6.1Q165.5 6.6 167.8 6.6Q170 6.6 171.8 7Q173.7 7.5 175.5 7.5L177.3 7.5\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.4 8.4Q8.1 8.4 9.9 8.4Q11.7 8.4 14 8.4Q16.2 8.4 18.5 8.4Q20.8 8.4 22.1 8.8Q23.5 9.3 26.2 9.3Q28.9 9.3 32.1 9.3Q35.2 9.3 37.5 9.3Q39.8 9.3 42.9 9.3Q46.1 9.3 49.3 9.3Q52.4 9.3 56 9.3Q59.7 9.3 62.8 9.3Q66 9.3 70.5 9.3Q75 9.3 79.1 9.3Q83.2 9.3 86.4 8.8Q89.5 8.4 93.6 8.4Q97.7 8.4 101.3 7.5Q104.9 6.6 108.1 6.6Q111.2 6.6 115.3 6.6Q119.4 6.6 122.5 6.6Q125.7 6.6 128.9 6.6Q132 6.6 134.8 6.1Q137.5 5.7 140.2 5.7Q142.9 5.7 145.2 5.7Q147.4 5.7 149.7 5.7Q151.9 5.7 154.7 5.7Q157.4 5.7 159.2 5.7Q161 5.7 163.2 6.1Q165.5 6.6 167.8 6.6Q170 6.6 171.8 7Q173.7 7.5 175.5 7.5L177.3 7.5\" fill=\"none\" stroke=\"#1271b7\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "holkoi8x99cro18z": "<div data-sb-root=\"d6-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:835px;top:147px;width:202px;height:24px;z-index:44;pointer-events:none\"><svg viewBox=\"0 0 202 24\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.1 18Q9.6 18 11 18Q12.3 18 14.2 18Q16 18 18.2 18Q20.5 18 22.7 18Q25 18 26.4 18Q27.7 18 30.9 18.4Q34.1 18.9 36.3 18.9Q38.6 18.9 42.6 18.9Q46.7 18.9 49.9 18.9Q53.1 18.9 56.7 18.9Q60.3 18.9 63.5 18.9Q66.6 18.9 70.7 18.9Q74.8 18.9 78.4 18.9Q82 18.9 87 18.9Q92 18.9 96 18.9Q100.1 18.9 104.6 18Q109.1 17.1 112.8 17.1Q116.4 17.1 120.9 16.6Q125.4 16.2 130 15.7Q134.5 15.2 140.4 13.9Q146.2 12.5 149.4 12.1Q152.6 11.6 158.4 11.2Q164.3 10.7 166.6 10.3Q168.9 9.8 174.3 8.9Q179.7 8 185.6 7.1Q191.5 6.2 194.2 5.8L196.9 5.3\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.1 18Q9.6 18 11 18Q12.3 18 14.2 18Q16 18 18.2 18Q20.5 18 22.7 18Q25 18 26.4 18Q27.7 18 30.9 18.4Q34.1 18.9 36.3 18.9Q38.6 18.9 42.6 18.9Q46.7 18.9 49.9 18.9Q53.1 18.9 56.7 18.9Q60.3 18.9 63.5 18.9Q66.6 18.9 70.7 18.9Q74.8 18.9 78.4 18.9Q82 18.9 87 18.9Q92 18.9 96 18.9Q100.1 18.9 104.6 18Q109.1 17.1 112.8 17.1Q116.4 17.1 120.9 16.6Q125.4 16.2 130 15.7Q134.5 15.2 140.4 13.9Q146.2 12.5 149.4 12.1Q152.6 11.6 158.4 11.2Q164.3 10.7 166.6 10.3Q168.9 9.8 174.3 8.9Q179.7 8 185.6 7.1Q191.5 6.2 194.2 5.8L196.9 5.3\" fill=\"none\" stroke=\"#1271b7\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h15mipb411fysoo1f8": "<div data-sb-root=\"d7-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1227px;top:140px;width:181px;height:23px;z-index:46;pointer-events:none\"><svg viewBox=\"0 0 181 23\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.7 17.7Q11.2 17.7 13.4 17.7Q15.7 17.7 17 17.7Q18.4 17.7 20.2 17.7Q22 17.7 24.3 17.7Q26.5 17.7 28.8 17.7Q31.1 17.7 33.8 17.7Q36.5 17.7 38.3 17.7Q40.1 17.7 42.4 17.7Q44.6 17.7 47.4 17.7Q50.1 17.7 54.1 17.3Q58.2 16.8 61.8 16.8Q65.4 16.8 70 15.9Q74.5 15 77.7 15Q80.8 15 84.4 14.6Q88.1 14.1 89.4 14.1Q90.8 14.1 94.8 14.1Q98.9 14.1 103.4 13.7Q108 13.2 110.2 13.2Q112.5 13.2 116.1 12.8Q119.7 12.3 124.3 11.4Q128.8 10.5 131.5 10.5Q134.2 10.5 136 10Q137.8 9.6 141 9.1Q144.2 8.7 146.4 8.7Q148.7 8.7 150.9 8.2Q153.2 7.8 155.5 6.9Q157.7 6 159.5 6Q161.3 6 163.6 5.5Q165.9 5.1 168.1 5.1Q170.4 5.1 172.2 5.1Q174 5.1 174.9 5.1L175.8 5.1\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.7 17.7Q11.2 17.7 13.4 17.7Q15.7 17.7 17 17.7Q18.4 17.7 20.2 17.7Q22 17.7 24.3 17.7Q26.5 17.7 28.8 17.7Q31.1 17.7 33.8 17.7Q36.5 17.7 38.3 17.7Q40.1 17.7 42.4 17.7Q44.6 17.7 47.4 17.7Q50.1 17.7 54.1 17.3Q58.2 16.8 61.8 16.8Q65.4 16.8 70 15.9Q74.5 15 77.7 15Q80.8 15 84.4 14.6Q88.1 14.1 89.4 14.1Q90.8 14.1 94.8 14.1Q98.9 14.1 103.4 13.7Q108 13.2 110.2 13.2Q112.5 13.2 116.1 12.8Q119.7 12.3 124.3 11.4Q128.8 10.5 131.5 10.5Q134.2 10.5 136 10Q137.8 9.6 141 9.1Q144.2 8.7 146.4 8.7Q148.7 8.7 150.9 8.2Q153.2 7.8 155.5 6.9Q157.7 6 159.5 6Q161.3 6 163.6 5.5Q165.9 5.1 168.1 5.1Q170.4 5.1 172.2 5.1Q174 5.1 174.9 5.1L175.8 5.1\" fill=\"none\" stroke=\"#1271b7\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h1ct0bem1m6uy2shg": "<div data-sb-root=\"d8-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1150px;top:-48px;width:11px;height:11px;z-index:48;pointer-events:none\"><svg viewBox=\"0 0 11 11\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.8 5.8l0.01 0\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.8 5.8l0.01 0\" fill=\"none\" stroke=\"#1271b7\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hn7zpn41lntr62hg": "<div data-sb-root=\"d9-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:769px;top:-188px;width:11px;height:11px;z-index:50;pointer-events:none\"><svg viewBox=\"0 0 11 11\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.9 5.5l0.01 0\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.9 5.5l0.01 0\" fill=\"none\" stroke=\"#ff3b30\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "hmqbluk1ruw6q8129": "<div data-sb-root=\"c1-mission-prepare-workspace\" style=\"position:absolute;left:338.81px;top:270.32px;width:957.88px;height:114.41px;z-index:20\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-270.32px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(338.812px, 270.325px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:43</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1uxuaurgajy19129": "<div data-sb-root=\"c2-mission-prepare-workspace\" style=\"position:absolute;left:338.81px;top:270.32px;width:957.88px;height:114.41px;z-index:22\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-270.32px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(338.812px, 270.325px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:43</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1ix2q4q6ufw2q16c": "<div data-sb-root=\"c1-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:26\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1xbf7c310ul9lh16c": "<div data-sb-root=\"c2-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:28\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h8ipluy1d24z1216c": "<div data-sb-root=\"c3-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:28\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h19b1vyie28le16c": "<div data-sb-root=\"c4-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:30\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1h54ah4p5nzaw4m9": "<div data-sb-root=\"c1-tablet\" style=\"position:absolute;left:240px;top:-48.88px;width:1120px;height:1003.52px;z-index:26\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-240px;top:48.88px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-tablet rc-device\" data-cut-part=\"Tablet\" style=\"transform: translate(240px, -48.8753px) scale(1.12); z-index: auto;\" data-sb-was=\"\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"tbl-fit\"><div class=\"tbl-tablet\"><div class=\"tbl-screen mi-tablet-screen\"><div class=\"mi-tablet-board\"><div class=\"mi-status-bar\"><span>4:10 PM&nbsp;&nbsp; Thu Sep 17</span><span class=\"mi-status-icons\" aria-label=\"Wi-Fi connected, battery 49 percent\"><svg viewBox=\"0 0 20 16\" aria-hidden=\"true\"><path d=\"M2 5q8-7 16 0M5 8q5-4 10 0M8 11q2-2 4 0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"></path><circle cx=\"10\" cy=\"14\" r=\"1.3\" fill=\"currentColor\"></circle></svg>49%<svg viewBox=\"0 0 28 14\" aria-hidden=\"true\"><rect x=\"1\" y=\"1\" width=\"23\" height=\"12\" rx=\"3\" fill=\"none\" stroke=\"currentColor\"></rect><rect x=\"3\" y=\"3\" width=\"10\" height=\"8\" rx=\"1\" fill=\"currentColor\"></rect><path d=\"M26 5v4\" stroke=\"currentColor\" stroke-width=\"2\"></path></svg></span></div><header class=\"tbl-header\"><div class=\"mi-brand\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Back\"><svg viewBox=\"0 0 20 20\"><path d=\"M15 10H5.5M9.5 5.5 5 10l4.5 4.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><img class=\"mi-full-logo\" alt=\"Taskmaverick\" width=\"220\" height=\"30\" src=\"/logo.svg\"></div><span class=\"mi-department\" data-rc-text=\"board:team\">Team Board</span><div class=\"tbl-header-actions\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Add\"><svg viewBox=\"0 0 18 18\"><path d=\"M9 3.5v11M3.5 9h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Menu\"><svg viewBox=\"0 0 18 18\"><path d=\"M3.5 5.5h11M3.5 9h11M3.5 12.5h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button></div></header><div class=\"mi-columns\"><section aria-label=\"open missions\"><h2 class=\"tbl-tab\">Open - 2<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"rc-open-0\" type=\"button\" aria-label=\"Open mission \"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:00:00</span></div></div><h3 class=\"chip-title\"></h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\"></span><span class=\"chip-time\"></span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"rc-open-1\" type=\"button\" aria-label=\"Open mission \"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:00:00</span></div></div><h3 class=\"chip-title\"></h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\"></span><span class=\"chip-time\"></span></span></div></article></button></div></section><section aria-label=\"claimed missions\"><h2 class=\"tbl-tab\">Claimed - 1<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"rc-claimed-0\" type=\"button\" aria-label=\"Open mission \"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:00</span><span class=\"chip-pill\">00:00:00</span></div></div><h3 class=\"chip-title\"></h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\"></span><span class=\"chip-time\"></span></span></div></article></button></div></section><section aria-label=\"closed missions\"><h2 class=\"tbl-tab\">Closed - 1<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"rc-closed-0\" type=\"button\" aria-label=\"Open mission \"><article class=\"chip chip--gray \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:00</span><span class=\"chip-pill\">00:00:00</span></div></div><h3 class=\"chip-title\"></h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\"></span><span class=\"chip-time\"></span></span></div></article></button></div></section></div></div><div class=\"mi-demo-shade\" aria-hidden=\"true\"></div></div></div></div><div class=\"mi-recording-controls\"><button type=\"button\" class=\"ov-btn\">Reset interaction</button><span>Recording code: <b>123456</b> · Anna F.</span></div><span class=\"mi-announcement\" role=\"status\" aria-live=\"polite\"></span></div></div></div></div>",
+    "h1icz7hajtugvg133": "<div data-sb-root=\"c1-mission-inventory-check\" style=\"position:absolute;left:338.81px;top:139.95px;width:957.88px;height:114.41px;z-index:28\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"inv\" data-cut-part=\"Mission Inventory Check\" style=\"transform: translate(338.812px, 139.946px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">10</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:08:44</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:inv\">Inventory Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1u9wzffysj69r16c": "<div data-sb-root=\"c1-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:30\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1j3eyyl61tt0t129": "<div data-sb-root=\"c1-mission-prepare-workspace\" style=\"position:absolute;left:338.81px;top:270.32px;width:957.88px;height:114.41px;z-index:32\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-270.32px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(338.812px, 270.325px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:43</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1i9zxa2tilmay129": "<div data-sb-root=\"c2-mission-prepare-workspace\" style=\"position:absolute;left:338.81px;top:270.32px;width:957.88px;height:114.41px;z-index:34\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-270.32px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(338.812px, 270.325px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:43</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1td1jhf1gzdfl3129": "<div data-sb-root=\"c3-mission-prepare-workspace\" style=\"position:absolute;left:338.81px;top:270.32px;width:957.88px;height:114.41px;z-index:36\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-338.81px;top:-270.32px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"prep\" data-cut-part=\"Mission Prepare Workspace\" style=\"transform: translate(338.812px, 270.325px) scale(0.886929); z-index: auto;\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #007a33; --rc-pop: 1; --rc-pts-o: 0; --rc-pts-s: 0.4; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\">00:02:43</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:prep\">Prepare Workspace</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "he21r881b5di2w16c": "<div data-sb-root=\"c2-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:38\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h6c5e881xietmc16c": "<div data-sb-root=\"c3-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:40\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "hfc36rxshg55z16c": "<div data-sb-root=\"c4-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:42\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "hg7hbdm1mhlioq16c": "<div data-sb-root=\"c5-mission-order-supplies\" style=\"position:absolute;left:963.21px;top:139.95px;width:957.88px;height:114.41px;z-index:44\"><div class=\"ad-stage rc-sb-stage\" data-scene=\"code\" data-view=\"cut\" data-sb-wrap style=\"position:absolute;left:-963.21px;top:-139.95px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"rc-card\" data-rc-card=\"ord\" data-cut-part=\"Mission Order Supplies\" style=\"transform: translate(963.21px, 139.946px) scale(0.886929); z-index: auto;\" data-rc-who=\"adam\" data-sb-was=\"\"><div class=\"rc-card-pop\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"mi-tablet-board iq2-iso-board\"><div class=\"iq2-iso-stack\" style=\"width: 334px;\"><article class=\"chip chip--green \" style=\"--rc-pill: #686f76; --rc-pop: 1; --rc-pts-o: 1; --rc-pts-s: 1; --rc-who: 1;\"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\">Checklist</span><span class=\"chip-points\">15</span></div><div class=\"chip-timers\"><span class=\"chip-exec\">00:00:03</span><span class=\"chip-pill\">00:08:40</span></div></div><h3 class=\"chip-title\" data-rc-text=\"mission:ord\">Order Supplies</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-rc-text=\"person:adam\">Adam F</span><span class=\"chip-when\"><span class=\"chip-date\">07-14-26</span><span class=\"chip-time\">08:00 AM</span></span></div></article></div></div></div></div></div></div></div>",
+    "h1pkgivpe7wi0h14g": "<div data-sb-root=\"d1-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1097px;top:736px;width:38px;height:50px;z-index:46;pointer-events:none\"><svg viewBox=\"0 0 38 50\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5.3 32.9Q8.2 31.9 8.7 30.5Q9.2 29 10.2 28.5Q11.2 28 12.2 26.5Q13.2 25.1 15.1 24.1Q17.1 23.1 18.1 21.1Q19.1 19.2 20.1 18.7Q21 18.2 22 17.7Q23 17.2 23.5 15.7Q24 14.2 25 13.7Q26 13.3 26.9 11.8Q27.9 10.3 29.4 9.3Q30.9 8.3 31.4 6.9Q31.9 5.4 32.4 6.9Q32.8 8.3 32.8 9.8Q32.8 11.3 32.8 13.7Q32.8 16.2 32.8 18.2Q32.8 20.1 32.8 23.1Q32.8 26 32.8 29Q32.8 31.9 32.8 33.4Q32.8 34.9 32.8 36.4Q32.8 37.8 32.8 39.8Q32.8 41.8 32.8 43.3L32.8 44.7\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5.3 32.9Q8.2 31.9 8.7 30.5Q9.2 29 10.2 28.5Q11.2 28 12.2 26.5Q13.2 25.1 15.1 24.1Q17.1 23.1 18.1 21.1Q19.1 19.2 20.1 18.7Q21 18.2 22 17.7Q23 17.2 23.5 15.7Q24 14.2 25 13.7Q26 13.3 26.9 11.8Q27.9 10.3 29.4 9.3Q30.9 8.3 31.4 6.9Q31.9 5.4 32.4 6.9Q32.8 8.3 32.8 9.8Q32.8 11.3 32.8 13.7Q32.8 16.2 32.8 18.2Q32.8 20.1 32.8 23.1Q32.8 26 32.8 29Q32.8 31.9 32.8 33.4Q32.8 34.9 32.8 36.4Q32.8 37.8 32.8 39.8Q32.8 41.8 32.8 43.3L32.8 44.7\" fill=\"none\" stroke=\"#fff030\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h4rg8q81ykfi7uo4": "<div data-sb-root=\"d2-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:1115px;top:773px;width:40px;height:13px;z-index:48;pointer-events:none\"><svg viewBox=\"0 0 40 13\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M5 6.7Q8 6.7 9.4 7.2Q10.9 7.7 12.4 7.7Q13.9 7.7 15.8 7.7Q17.8 7.7 20.7 7.2Q23.7 6.7 25.7 6.7Q27.6 6.7 30.6 6.7Q33.5 6.7 34 6.3L34.5 5.8\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M5 6.7Q8 6.7 9.4 7.2Q10.9 7.7 12.4 7.7Q13.9 7.7 15.8 7.7Q17.8 7.7 20.7 7.2Q23.7 6.7 25.7 6.7Q27.6 6.7 30.6 6.7Q33.5 6.7 34 6.3L34.5 5.8\" fill=\"none\" stroke=\"#fff030\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h4o8fz2hmg2m41eb": "<div data-sb-root=\"d3-drawing\" data-sb-box=\"drawing\" style=\"position:absolute;left:332px;top:731px;width:51px;height:43px;z-index:50;pointer-events:none\"><svg viewBox=\"0 0 51 43\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M35.4 15.3Q31.4 15.3 30 14.8Q28.5 14.3 27.5 13.3Q26.5 12.3 27.5 10.4Q28.5 8.4 30 7.9Q31.4 7.4 32.9 6.4Q34.4 5.5 36.4 5.5Q38.3 5.5 38.3 8.4Q38.3 11.4 37.4 12.3Q36.4 13.3 35.9 14.3Q35.4 15.3 33.9 16.3Q32.4 17.3 31.4 19.2Q30.5 21.2 29 21.7Q27.5 22.2 26.5 22.7Q25.5 23.2 24.6 24.2Q23.6 25.1 22.6 25.6Q21.6 26.1 19.6 27.1Q17.7 28.1 15.7 29.1Q13.7 30.1 11.3 30.1Q8.8 30.1 7.3 29.6Q5.9 29.1 7.3 30.1Q8.8 31 10.3 31.5Q11.8 32 12.8 32.5Q13.7 33 14.7 34.5Q15.7 36 17.2 36.5Q18.7 36.9 21.1 37.4Q23.6 37.9 26.5 37.9Q29.5 37.9 31.4 37.9Q33.4 37.9 36.4 37.9Q39.3 37.9 40.3 37.4Q41.3 36.9 42.8 36Q44.2 35 44.7 34.5L45.2 34\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M35.4 15.3Q31.4 15.3 30 14.8Q28.5 14.3 27.5 13.3Q26.5 12.3 27.5 10.4Q28.5 8.4 30 7.9Q31.4 7.4 32.9 6.4Q34.4 5.5 36.4 5.5Q38.3 5.5 38.3 8.4Q38.3 11.4 37.4 12.3Q36.4 13.3 35.9 14.3Q35.4 15.3 33.9 16.3Q32.4 17.3 31.4 19.2Q30.5 21.2 29 21.7Q27.5 22.2 26.5 22.7Q25.5 23.2 24.6 24.2Q23.6 25.1 22.6 25.6Q21.6 26.1 19.6 27.1Q17.7 28.1 15.7 29.1Q13.7 30.1 11.3 30.1Q8.8 30.1 7.3 29.6Q5.9 29.1 7.3 30.1Q8.8 31 10.3 31.5Q11.8 32 12.8 32.5Q13.7 33 14.7 34.5Q15.7 36 17.2 36.5Q18.7 36.9 21.1 37.4Q23.6 37.9 26.5 37.9Q29.5 37.9 31.4 37.9Q33.4 37.9 36.4 37.9Q39.3 37.9 40.3 37.4Q41.3 36.9 42.8 36Q44.2 35 44.7 34.5L45.2 34\" fill=\"none\" stroke=\"#fff030\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/></svg></div>",
+    "h2q2lqar8d9mocx": "<span class=\"rc-kicker\" data-rc-text=\"code:kicker\" data-cut-part=\"Label\" style=\"position: absolute; inset: 795.81px auto auto 313.08px; width: 155px; height: auto; margin: 0px; transform: none; color: rgb(143, 199, 242); font: 700 20px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: 0.22em; text-shadow: none; text-transform: uppercase; white-space: normal;z-index:34\" data-sb-box=\"text\" data-sb-root=\"c1-label\">Personal codes</span>",
+    "h1c1sy3p1qajdyjhz": "<div data-sb-root=\"c1-line\" data-sb-box=\"drawing\" style=\"position:absolute;left:477.66px;top:784.63px;width:18px;height:74.38px;pointer-events:none;z-index:36\"><svg viewBox=\"0 0 18 74.38\" preserveAspectRatio=\"none\" style=\"display:block;width:100%;height:100%;overflow:visible;pointer-events:none\"><path d=\"M9 0V74.38\" fill=\"none\" stroke=\"transparent\" stroke-width=\"18\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\"/><path data-ink=\"\" d=\"M9 0V74.38\" fill=\"none\" stroke=\"#8fc7f2\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\" stroke-opacity=\"0.7\"/></svg></div>",
+    "h1rfrmbtfkhepxet": "<div class=\"rc-lines\" data-rc-text=\"code\" data-cut-part=\"Sentence\" style=\"position: absolute; inset: 777.63px auto auto 511.66px; width: 581px; height: auto; margin: 0px; transform: none; color: rgb(255, 255, 255); font: 600 34px / 1.3 Montserrat, &quot;Montserrat Fallback&quot;, sans-serif; letter-spacing: -0.005em; text-shadow: rgba(0, 0, 0, 0.45) 0px 2px 14px; text-transform: none; white-space: normal;z-index:38\" data-sb-box=\"text\" data-sb-root=\"c1-sentence\">Each Person Uses A Unique Code To Claim And To Close Missions</div>"
+  },
+  "deleted": [
+    "ie-v4/teams",
+    "ie-v4/schedule",
+    "ie-v4/urgency",
+    "ie-v4/priority",
+    "ie-v4/device",
+    "ie-v4/result",
+    "ie-v4/performers",
+    "ie-v4/duration"
+  ],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 501
+}

@@ -9,7 +9,8 @@
 //
 //   cuts   (default) every video rendered at --fps by seeking, the change between neighbouring pictures: one that differs from its neighbours far more than
 //          they do from each other is a cut or a jump; printed with its second (--keep saves the pictures of every video in <dir>/<video>/NNNNN.jpg to look at)
-//   marks  is a yellow outline ever drawn BEHIND the software (or anything else that paints)? sampled every --step seconds
+//   marks  is a yellow outline ever drawn BEHIND the software (or anything else that paints)? does its popped card (the copy of what it is round) ever hide it
+//          (text or a picture under it that the card does not show)? sampled every --step seconds
 //   play   a real-time play in a Chrome trace + the CPU profile: how long the main thread worked per picture (what has to stay under ~16 ms for 60 fps), the slow
 //          pictures in order and what the biggest ones did (a call chain: `getBoundingClientRect` high up is a page asked where things are, right after it changed)
 //
@@ -119,13 +120,29 @@ async function marks(page, title, board) {
       }
       out.push({key, op: Math.round(op * 100) / 100, covered, by});
     }
+    // the other way round: a popped card (.sb-pop, the outline's copy of what it is round) that HIDES it: the art shows text or a picture where the card shows none
+    const content = e => !e.matches('svg.sb-shape') && (/^(IMG|SVG|VIDEO|CANVAS|PICTURE)$/i.test(e.tagName) || [...e.childNodes].some(n => n.nodeType === 3 && n.data.trim()));
+    for (const card of root.querySelectorAll('.sb-pop')) {
+      const M = card.parentElement, key = M.closest('[data-sb-root]')?.getAttribute('data-sb-root') ?? '?', op = eff(card);
+      if (op < 0.4) continue;
+      const b = card.getBoundingClientRect(), inset = (parseFloat(getComputedStyle(card).borderLeftWidth) || 6) + 2;
+      if (b.width < 8 + 2 * inset || b.height < 8 + 2 * inset) continue;
+      let hides = 0;
+      for (const fx of [0.15, 0.38, 0.62, 0.85]) for (const fy of [0.25, 0.5, 0.75]) {
+        const at = document.elementsFromPoint(b.left + inset + (b.width - 2 * inset) * fx, b.top + inset + (b.height - 2 * inset) * fy);
+        const shown = at.some(e => card.contains(e) && e !== card && content(e) && eff(e) >= 0.3);
+        const under = at.some(e => !M.contains(e) && !e.closest('.sb-pop') && content(e) && eff(e) >= 0.3 && !/hand|ripple|outline|circle|highlight/i.test(e.closest('[data-sb-root]')?.getAttribute('data-sb-root') ?? ''));
+        if (under && !shown) hides++;
+      }
+      if (hides >= 2) out.push({key, op: Math.round(op * 100) / 100, covered: 0, hides, by: {}});
+    }
     return JSON.stringify(out);
   })()`;
   const found = [];
-  for (let at = 0; at <= total + 1e-6; at += STEP) { await seekTo(page, title, at); for (const o of JSON.parse(await page.evaluate(audit))) if (o.covered >= 2) found.push({t: at, ...o}); }
-  console.log(`${title} (${board}) ${total}s: a yellow outline is covered by the software in ${found.length} of ${Math.round(total / STEP)} samples${found.length ? ':' : ''}`);
-  let run = null; const flush = () => { if (run) console.log(`   ${run.from.toFixed(2)}-${run.to.toFixed(2)}s  ${run.key}: ${run.max}/12 points covered by ${Object.keys(run.by).join(', ')}`); run = null; };
-  for (const f of found) { if (run && run.key === f.key && f.t - run.to < STEP * 1.6) { run.to = f.t; run.max = Math.max(run.max, f.covered); Object.assign(run.by, f.by); } else { flush(); run = {from: f.t, to: f.t, key: f.key, max: f.covered, by: {...f.by}}; } }
+  for (let at = 0; at <= total + 1e-6; at += STEP) { await seekTo(page, title, at); for (const o of JSON.parse(await page.evaluate(audit))) if (o.covered >= 2 || o.hides >= 2) found.push({t: at, ...o, kind: o.hides ? 'hides' : 'behind', n: o.hides || o.covered}); }
+  console.log(`${title} (${board}) ${total}s: a yellow outline is covered by the software, or its card hides what it is round, in ${found.length} of ${Math.round(total / STEP)} samples${found.length ? ':' : ''}`);
+  let run = null; const flush = () => { if (run) console.log(`   ${run.from.toFixed(2)}-${run.to.toFixed(2)}s  ${run.key}: ${run.kind === 'hides' ? `its card hides what it is round at ${run.max}/12 points` : `${run.max}/12 points covered by ${Object.keys(run.by).join(', ')}`}`); run = null; };
+  for (const f of found) { if (run && run.key === f.key && run.kind === f.kind && f.t - run.to < STEP * 1.6) { run.to = f.t; run.max = Math.max(run.max, f.n); Object.assign(run.by, f.by); } else { flush(); run = {from: f.t, to: f.t, key: f.key, kind: f.kind, max: f.n, by: {...f.by}}; } }
   flush();
   return found.length;
 }

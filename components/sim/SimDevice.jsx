@@ -28,6 +28,7 @@ import LoadingLogo from '@/components/LoadingLogo';
 import { PERFORMERS, ON_DEMAND } from '@/lib/sim/data.mjs';
 import { clock, stamp, timers, pillTone, column, counts, canClose, unitLabel, outOfRange } from '@/lib/sim/store.mjs';
 import SimMissionBody from './SimMissionBody';
+import TicketCard from '../TicketCard';
 import { CameraLayer, LessonLayer, PhotoViewer, ProofsFeed, RatePanel, KnowledgePanel, TestResult, useEventToast } from './SimLayers';
 import { useSim, useNow } from './useSim';
 import '../ReferenceBoard.css';
@@ -48,14 +49,7 @@ function StatusBar() {
 
 export function TicketChip({ m, now }) {
   const t = timers(m, now), tr = m.trigger || {}, s = stamp(m.postedAt);
-  return <article className={`chip sim-ticket chip--${pillTone(m, t.pill)}`}>
-    <div className="chip-top"><div className="chip-id"><img className="chip-logo" src="/mission-logo.png" alt="" aria-hidden="true"/><span className="chip-kind">{m.title}</span></div>
-      <div className="chip-timers">{m.status !== 'open' && <span className="chip-exec">{clock(t.exec).text}</span>}<span className="chip-pill">{clock(t.pill).text}</span></div></div>
-    <p className="sim-ticket-line"><span className="sim-x">✕</span>{tr.responses > 1 ? `${tr.responses} Responses Triggered This Ticket` : tr.question}</p>
-    <p className="sim-ticket-line is-answer"><span className="sim-x">✕</span>{tr.answer}</p>
-    <div className="sim-ticket-src"><span>{tr.source}</span><em>{short(tr.performer)}</em></div>
-    <div className="chip-bottom"><span className="sim-ticket-loc">{m.status === 'open' ? tr.location : short(m.performer)}</span><span className="chip-when"><span className="chip-date">{s.date}</span><span className="chip-time">{s.time}</span></span></div>
-  </article>;
+  return <TicketCard title={m.title} responses={tr.responses || 1} response={tr.answer ?? tr.question} location={tr.location} date={s.date} time={s.time} showExec={m.status !== 'open'} execTime={clock(t.exec).text} pillTime={clock(t.pill).text} pillClass={`chip--${pillTone(m, t.pill)}`} who={m.status !== 'open' ? short(m.performer) : undefined}/>;
 }
 
 export default function SimDevice({ store, device = 'phone', initialScreen = 'home', initialBoard, initialUnit = 'L001', remote = null, onView, muted = false, codeFor = '123456' }) {

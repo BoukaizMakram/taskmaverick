@@ -1,0 +1,1554 @@
+{
+  "version": 1,
+  "frames": {
+    "given/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "given/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "renew/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "renew/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "renew/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "renew/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "upload/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courses/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "reassign/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "reassign/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "reassign/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "reassign/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "reassign/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseKept/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseKept/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseKept/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseKept/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseKept/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseMissed/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseMissed/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseMissed/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseMissed/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "courseMissed/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessons/mark-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonReassign/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonReassign/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonReassign/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonReassign/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonReassign/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonKept/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonKept/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonKept/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonKept/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonKept/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "lessonMissed/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "dashboards/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "dashboards/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "dashboards/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "dashboards/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "intro/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    },
+    "conclusion/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:22:44.166Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "Videos",
+        "after": null,
+        "shelf": [
+          "certificates",
+          "courses",
+          "lessons"
+        ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "certificates-detail",
+          "courses-detail",
+          "lessons-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "certificates-detail-cursor",
+          "courses-detail-cursor",
+          "lessons-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "certificates-detail-both",
+          "courses-detail-both",
+          "lessons-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "certificates-detail-popup",
+          "courses-detail-popup",
+          "lessons-detail-popup"
+        ]
+      }
+    },
+    "titles": {},
+    "deleted": []
+  },
+  "videoText": {
+    "words": {
+      "fontSize": 26,
+      "at": "2026-10-17T00:03:28.284Z"
+    }
+  },
+  "rev": 13
+}

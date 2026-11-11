@@ -1,0 +1,2026 @@
+{
+  "version": 1,
+  "frames": {
+    "convert/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/end-4": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "convert/end-5": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "tasks/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "checklists/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "surveys/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "audits/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/hand-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/click-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/result-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/hand-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/click-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/result-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "library/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "library/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "assign/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "edit/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/hand": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/click": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/result": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "edit/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "schedule/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "intro/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "noUpdate/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "conclusion/words": {
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-20T21:15:40.690Z"
+    },
+    "media/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "media/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "assign/hand-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "assign/click-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "assign/result-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "assign/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "edit/hand-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "edit/click-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    },
+    "edit/result-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-20T23:34:06.356Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "Videos",
+        "after": null,
+        "shelf": [
+          "missions",
+          "library"
+        ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "missions-detail",
+          "library-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "missions-detail-cursor",
+          "library-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "missions-detail-both",
+          "library-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "missions-detail-popup",
+          "library-detail-popup"
+        ]
+      }
+    },
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 8
+}

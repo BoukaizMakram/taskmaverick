@@ -1,0 +1,7 @@
+/* Live Oversight, the Remotion cut (components/remotion/OversightCut.jsx, lib/remotion/oversightCut.mjs): .rc-lo-*. The stage, the words, the title, the outlines and the cursor are every cut's
+   (components/remotion/CutParts.css); everything is set by the clock, nothing here animates by itself. */
+
+/* the board: the web window (.iq2-report) edge to edge, from the picture's top to the band of the words (the CEO, 2026-10-20: big boards go edge to edge), so no border, corners or shadow */
+.rc-lo-board { border:0; border-radius:0; box-shadow:none; }
+/* its pages, one over the other: the one a click went to comes in over the one before (its opacity, by the clock) */
+.rc-lo-page { position:absolute; left:0; top:0; background:#fff; }

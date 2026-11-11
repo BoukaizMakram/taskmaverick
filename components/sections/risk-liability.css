@@ -1,0 +1,17 @@
+/* Risk & Liability (components/sections/RiskStage.jsx): its own classes, prefixed sec-rk-. */
+
+/* the people, their surveys and the alert: one layer the size of the stage, its page slid sideways (`page`), what is not shown faded */
+.sec-rk-layer { position:absolute; left:0; top:0; pointer-events:none; }
+.sec-rk-pan, .sec-rk-left, .sec-rk-right, .sec-rk-pop { position:absolute; left:0; top:0; width:1600px; height:900px; }
+.sec-rk-face { position:absolute; width:140px; display:flex; flex-direction:column; align-items:center; gap:8px; font-family:var(--font-montserrat),sans-serif; }
+.sec-rk-face img { width:78px; height:78px; filter:drop-shadow(0 6px 14px rgb(0 0 0 / 28%)); }
+.sec-rk-face b { padding:4px 12px; border-radius:20px; background:#fff; color:#1d2a33; font-size:15px; font-weight:600; white-space:nowrap; box-shadow:0 3px 10px rgb(0 0 0 / 18%); }
+.sec-rk-arrows { position:absolute; left:0; top:0; overflow:visible; }
+.sec-rk-ticket { width:auto; }
+.sec-rk-ticket .iq2-iso-stack { width:334px; }
+
+/* the report: a person's surveys and trainings under them (one level less than the Data Board's missions), a survey's answers */
+.sec-rk-scroll .iq-dr-row.is-mission > span:first-child { padding-left:58px; }
+.sec-rk-scroll .iq-dr-row.is-mission.is-expanded > span:first-child { padding-left:50px; }
+.sec-rk-st { margin-left:44px; }
+.sec-rk-st .iq-dr-st-head, .sec-rk-st .iq-dr-st-row { grid-template-columns:380px 140px 150px 210px; }

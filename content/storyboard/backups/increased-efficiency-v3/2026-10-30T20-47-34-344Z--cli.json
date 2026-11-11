@@ -1,0 +1,5394 @@
+{
+  "version": 1,
+  "frames": {
+    "individuals/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-15T21:30:19.834Z"
+    },
+    "individuals/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-15T21:30:19.834Z"
+    },
+    "individuals/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-28T23:27:07.494Z"
+    },
+    "individuals/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-15T21:30:19.834Z"
+    },
+    "teams/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/mark-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/mark-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "intro/words": {
+      "note": "Make this card pop more",
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-29T21:47:32.198Z"
+    },
+    "teams/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/mark": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "urgency/end-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "urgency/end-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "shared/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "shared/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "shared/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/hand-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/click-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/result-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-5": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-6": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/hand-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/click-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/result-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/end-5": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/end-6": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "device/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "device/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "initiative/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "initiative/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "device/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:43:23.588Z"
+    },
+    "performers/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:44:14.870Z"
+    },
+    "performers/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:44:14.870Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "Videos",
+        "after": null,
+        "shelf": [
+          "assign",
+          "board",
+          "tablet",
+          "results"
+        ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "assign-detail",
+          "board-detail",
+          "tablet-detail",
+          "results-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "assign-detail-cursor",
+          "board-detail-cursor",
+          "tablet-detail-cursor",
+          "results-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "assign-detail-both",
+          "board-detail-both",
+          "tablet-detail-both",
+          "results-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "assign-detail-popup",
+          "board-detail-popup",
+          "tablet-detail-popup",
+          "results-detail-popup"
+        ]
+      }
+    },
+    "titles": {},
+    "deleted": []
+  },
+  "videoText": {
+    "words": {
+      "fontSize": 26,
+      "at": "2026-10-17T00:03:28.284Z"
+    }
+  },
+  "captions": {
+    "assign-detail": {
+      "teams:o0": "Or Work Missions Can Be Asigned To Team Boards"
+    }
+  },
+  "comments": {
+    "Schedules, points and urgency": {
+      "items": [],
+      "updated": "2026-10-30T20:33:52.363Z"
+    },
+    "Missions assigned to individuals and teams": {
+      "items": [],
+      "updated": "2026-10-30T20:32:26.978Z"
+    },
+    "One shared tablet": {
+      "items": [],
+      "updated": "2026-10-30T20:33:38.252Z"
+    }
+  },
+  "speed": {
+    "Missions assigned to individuals and teams · in detail": {
+      "cps": 30,
+      "at": "2026-10-28T23:26:13.548Z"
+    }
+  },
+  "rev": 65
+}

@@ -1,0 +1,132 @@
+/* Figma's color picker for the storyboard's sidebar (components/StoryboardPanel.jsx: PaintField, ColorField, ColorWheel; the user, 2026-10-22:
+   "the color should be like this exactly same for gradients"). The row is in the sidebar; the picker is a portal on <body>, so it sets its own
+   font and colors. */
+.sb-pk, .sb-pk-row, .sb-pk-inline { --pk-bg:#2c2c2c; --pk-field:#383838; --pk-hover:#444; --pk-line:#444; --pk-text:#e6e6e6; --pk-dim:#9a9a9a; --pk-blue:#0d99ff; }
+.sb-pk-chip, .sb-pk-swatches button, .sb-pk-slider.is-check, .sb-pk-gtrack, .sb-pk-gstop, .sb-pk-libgrid button {
+  background-color:#fff; background-image:repeating-conic-gradient(#d9d9d9 0 25%, #fff 0 50%); background-size:8px 8px; }
+
+/* ---- the row in the sidebar ---- */
+.sb-pk-field { margin-top:6px; }
+.sb-pk-row { display:flex; align-items:center; gap:6px; margin:0 -4px; padding:2px 4px; border-radius:6px; }
+.sb-pk-row:hover, .sb-pk-row.is-open { background:rgb(255 255 255 / 4%); }
+.sb-pk-rowbox { flex:1; display:flex; align-items:center; min-width:0; height:28px; box-sizing:border-box; padding-left:6px; border:1px solid transparent; border-radius:5px; background:var(--pk-field); color:var(--pk-text); }
+.sb-pk-row:hover .sb-pk-rowbox { border-color:#4d4d4d; }
+.sb-pk-rowbox:focus-within, .sb-pk-row.is-open .sb-pk-rowbox { border-color:var(--pk-blue); }
+.sb-pk-chip { position:relative; flex:none; width:16px; height:16px; margin-right:8px; padding:0; overflow:hidden; border:0; border-radius:3px; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 14%); cursor:pointer; }
+.sb-pk-chip i { position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgb(0 0 0 / 12%); }
+.sb-pk-rowname { flex:1; display:flex; align-items:baseline; gap:6px; min-width:0; height:100%; padding:0; border:0; background:transparent; color:var(--pk-text); font:inherit; font-size:11px; text-align:left; cursor:pointer; }
+.sb-pk-rowname small { overflow:hidden; color:var(--pk-dim); font-size:10px; white-space:nowrap; text-overflow:ellipsis; }
+
+/* the small text boxes (here and in the picker) */
+.sb-pk-in { flex:1; width:100%; min-width:0; height:100%; padding:0 4px 0 0; border:0; background:transparent; color:var(--pk-text); font:inherit; font-size:11px; outline:none; user-select:text; -webkit-user-select:text; }
+.sb-pk-in.is-hex { flex:1 1 auto; letter-spacing:.02em; }
+.sb-pk-in.is-pct { flex:none; width:30px; padding:0 2px 0 8px; text-align:right; }
+.sb-pk-in.is-num { flex:1 1 0; text-align:left; padding-left:6px; }
+.sb-pk-unit { flex:none; padding-right:7px; color:var(--pk-dim); font-style:normal; font-size:11px; }
+.sb-pk-sep { flex:none; align-self:stretch; width:1px; margin:5px 0; background:#2a2a2a; }
+
+/* icon buttons */
+.sb-pk-icon { display:grid; place-items:center; flex:none; width:24px; height:24px; padding:0; border:0; border-radius:5px; background:transparent; color:#cfcfcf; cursor:pointer; }
+.sb-pk-icon svg { width:16px; height:16px; }
+.sb-pk-icon:hover:not(:disabled) { background:var(--pk-hover); color:#fff; }
+.sb-pk-icon:disabled { opacity:.3; cursor:default; }
+
+/* ---- the picker (beside the sidebar) ---- */
+.sb-pk { position:fixed; z-index:400; width:240px; max-height:calc(100vh - 16px); box-sizing:border-box; overflow-y:auto; overscroll-behavior:contain; padding-bottom:12px; border-radius:13px; background:var(--pk-bg); color:var(--pk-text); box-shadow:0 0 0 .5px rgb(0 0 0 / 50%), 0 10px 24px rgb(0 0 0 / 45%), 0 2px 6px rgb(0 0 0 / 30%); font:11px/1.4 var(--font-inter), Inter, system-ui, sans-serif; user-select:none; -webkit-user-select:none; scrollbar-width:thin; scrollbar-color:#555 transparent; }
+.sb-pk button { font:inherit; color:inherit; }
+.sb-pk-fill { flex:1; }
+.sb-pk-head { display:flex; align-items:center; gap:2px; padding:8px 8px 8px 8px; border-bottom:1px solid var(--pk-line); }
+.sb-pk-tab { height:24px; padding:0 8px; border:0; border-radius:5px; background:transparent; color:var(--pk-dim); font-weight:600 !important; cursor:pointer; }
+.sb-pk-tab.is-on { background:var(--pk-field); color:#fff; }
+.sb-pk-tab:hover:not(:disabled):not(.is-on) { color:#fff; }
+.sb-pk-tab:disabled { opacity:.35; cursor:default; }
+.sb-pk-kinds { display:flex; align-items:center; gap:2px; padding:8px 8px 4px; }
+.sb-pk-kind { display:grid; place-items:center; width:24px; height:24px; padding:0; border:0; border-radius:5px; background:transparent; color:#cfcfcf; cursor:pointer; }
+.sb-pk-kind svg { width:16px; height:16px; }
+.sb-pk-kind:hover:not(:disabled) { background:var(--pk-hover); color:#fff; }
+.sb-pk-kind.is-on { background:var(--pk-field); color:#fff; box-shadow:inset 0 0 0 1px #4d4d4d; }
+.sb-pk-kind:disabled { opacity:.32; cursor:default; }
+
+/* one color: the square, the eyedropper and the sliders, the numbers, the swatches */
+.sb-pk-picker { padding:8px 16px 0; }
+.sb-pk-square { position:relative; height:200px; border-radius:2px; background:linear-gradient(to top, #000, rgb(0 0 0 / 0)), linear-gradient(to right, #fff, var(--hue)); cursor:crosshair; touch-action:none; }
+.sb-pk-square i { position:absolute; width:16px; height:16px; margin:-8px 0 0 -8px; box-sizing:border-box; border:3px solid #fff; border-radius:50%; box-shadow:0 0 0 1px rgb(0 0 0 / 22%), inset 0 0 0 1px rgb(0 0 0 / 22%); pointer-events:none; }
+.sb-pk-sliders { display:flex; align-items:center; gap:10px; margin-top:12px; }
+.sb-pk-tracks { flex:1; display:grid; gap:10px; min-width:0; }
+.sb-pk-slider { position:relative; height:14px; border-radius:7px; cursor:pointer; touch-action:none; }
+.sb-pk-slider b { position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgb(0 0 0 / 12%); }
+.sb-pk-slider i { position:absolute; top:50%; width:16px; height:16px; margin:-8px 0 0 -8px; box-sizing:border-box; border:3px solid #fff; border-radius:50%; box-shadow:0 0 0 1px rgb(0 0 0 / 22%), 0 1px 3px rgb(0 0 0 / 30%); pointer-events:none; }
+.sb-pk-values { display:flex; align-items:center; gap:6px; margin-top:12px; }
+.sb-pk-select { position:relative; display:flex; align-items:center; flex:none; height:28px; box-sizing:border-box; border:1px solid var(--pk-line); border-radius:5px; color:var(--pk-text); }
+.sb-pk-select:hover { border-color:#5a5a5a; }
+.sb-pk-select::after { content:''; position:absolute; right:8px; top:50%; width:5px; height:5px; margin-top:-4px; border-right:1.3px solid #bbb; border-bottom:1.3px solid #bbb; transform:rotate(45deg); pointer-events:none; }
+.sb-pk-select select { height:100%; padding:0 24px 0 8px; border:0; background:transparent; color:inherit; font:inherit; font-size:11px; outline:none; cursor:pointer; appearance:none; -webkit-appearance:none; }
+.sb-pk-select select option { background:#2c2c2c; color:#e6e6e6; }
+.sb-pk-mode { width:64px; }
+.sb-pk-mode select { width:100%; }
+.sb-pk-wide { width:100%; }
+.sb-pk-wide select { width:100%; }
+.sb-pk-box { flex:1; display:flex; align-items:center; min-width:0; height:28px; box-sizing:border-box; border:1px solid transparent; border-radius:5px; background:var(--pk-field); }
+.sb-pk-box:hover { border-color:#4d4d4d; }
+.sb-pk-box:focus-within { border-color:var(--pk-blue); }
+.sb-pk-box .is-hex { padding-left:8px; }
+.sb-pk-box .is-num + .is-num { border-left:1px solid #2a2a2a; }
+.sb-pk-library { margin-top:12px; padding-top:10px; border-top:1px solid var(--pk-line); }
+.sb-pk-swatches { display:grid; grid-template-columns:repeat(9, 1fr); gap:6px; margin-top:10px; }
+.sb-pk-swatches button { position:relative; aspect-ratio:1; padding:0; overflow:hidden; border:0; border-radius:3px; cursor:pointer; }
+.sb-pk-swatches button i { position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgb(0 0 0 / 14%); }
+.sb-pk-swatches button:hover { box-shadow:0 0 0 1.5px #8d8d8d; }
+.sb-pk-swatches button.is-on { box-shadow:0 0 0 2px var(--pk-blue); }
+
+/* a gradient: its kind, angle, swap and rotate; the bar and its square stops; the stops */
+.sb-pk-grow { display:flex; align-items:center; gap:6px; padding:8px 16px 0; }
+.sb-pk-grow .sb-pk-select select { width:96px; }
+.sb-pk-angle { flex:none; width:58px; }
+.sb-pk-angle .is-num { padding-left:7px; }
+.sb-pk-gbar { position:relative; margin:10px 16px 0; padding-top:24px; }
+.sb-pk-gstops { position:absolute; left:0; right:0; top:0; height:24px; }
+.sb-pk-gstop { position:absolute; top:0; width:20px; height:20px; margin-left:-10px; padding:0; border:0; border-radius:4px; box-shadow:0 0 0 2px #fff, 0 1px 4px rgb(0 0 0 / 45%); cursor:grab; touch-action:none; z-index:1; }
+.sb-pk-gstop i { position:absolute; inset:0; border-radius:inherit; }
+.sb-pk-gstop:active { cursor:grabbing; }
+.sb-pk-gstop.is-on { z-index:2; box-shadow:0 0 0 2px var(--pk-blue), 0 1px 4px rgb(0 0 0 / 45%); }
+.sb-pk-gstop.is-on::after { content:''; position:absolute; left:50%; top:100%; margin:2px 0 0 -4px; border:4px solid transparent; border-top-color:var(--pk-blue); }
+.sb-pk-gstop.is-leaving { opacity:.3; }
+.sb-pk-gtrack { position:relative; height:32px; overflow:hidden; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(255 255 255 / 10%); }
+.sb-pk-gtrack b { position:absolute; inset:0; cursor:copy; }
+.sb-pk-stopshead { display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding:0 12px 0 16px; }
+.sb-pk-stopshead b { font-weight:600; color:#fff; }
+.sb-pk-stops { margin-top:2px; }
+.sb-pk-stop { display:flex; align-items:center; gap:6px; padding:4px 12px 4px 16px; }
+.sb-pk-stop.is-on { background:#3a4250; }
+.sb-pk-pos { flex:none; width:58px; }
+.sb-pk-stopcolor { padding-left:6px; }
+.sb-pk-stopcolor .is-hex { padding-left:0; }
+.sb-pk-stopcolor .sb-pk-chip { margin-right:7px; cursor:default; }
+.sb-pk-check { display:flex; align-items:center; gap:7px; margin:12px 16px 0; color:#cfcfcf; cursor:pointer; }
+.sb-pk-check input { accent-color:var(--pk-blue); }
+
+/* Texture: a list, the one on checked */
+.sb-pk-textures { display:grid; gap:2px; padding:6px 8px 0; }
+.sb-pk-textures button { display:flex; align-items:center; gap:10px; height:32px; padding:0 8px; border:0; border-radius:5px; background:transparent; text-align:left; cursor:pointer; }
+.sb-pk-textures button:hover { background:var(--pk-hover); }
+.sb-pk-textures button.is-on { background:var(--pk-field); }
+.sb-pk-textures i { flex:none; width:22px; height:22px; border-radius:4px; box-shadow:inset 0 0 0 1px rgb(0 0 0 / 20%); }
+.sb-pk-textures span { flex:1; }
+.sb-pk-textures b { display:grid; color:var(--pk-blue); }
+.sb-pk-textures b svg { width:14px; height:14px; }
+.sb-pk-note { margin:8px 8px 0; color:var(--pk-dim); }
+
+/* Libraries: the ready ones */
+.sb-pk-libs { padding:4px 16px 0; }
+.sb-pk-libgroup h5 { margin:12px 0 8px; color:var(--pk-dim); font:600 11px var(--font-inter), Inter, system-ui, sans-serif; }
+.sb-pk-libgrid { display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; }
+.sb-pk-libgrid button { position:relative; aspect-ratio:1; padding:0; overflow:hidden; border:0; border-radius:4px; cursor:pointer; }
+.sb-pk-libgrid button i { position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgb(0 0 0 / 18%); }
+.sb-pk-libgrid button:hover { box-shadow:0 0 0 1.5px #8d8d8d; }
+.sb-pk-libgrid button.is-on { box-shadow:0 0 0 2px var(--pk-blue); }
+
+/* the same picker open in the sidebar itself (the pencil, a drawing's ink) */
+.sb-pk-inline { margin-top:8px; }
+.sb-pk-inline .sb-pk-picker { padding:0; }
+.sb-pk-inline .sb-pk-square { height:150px; }
+.sb-pk-inline .sb-pk-swatches { grid-template-columns:repeat(9, 1fr); gap:5px; }

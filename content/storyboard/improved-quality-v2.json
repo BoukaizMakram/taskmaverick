@@ -49,7 +49,6 @@
             "h": 850.88
           },
           "z": 22,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -959,7 +958,6 @@
             "h": 43.89
           },
           "z": 20,
-          "link": "circle",
           "inner": true
         },
         {
@@ -1077,7 +1075,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.528Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "timestamp/start": {
       "moves": {
@@ -1197,7 +1203,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.528Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "timestamp/mark": {
       "moves": {
@@ -1337,7 +1351,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.528Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "timestamp/words": {
       "moves": {
@@ -1499,7 +1521,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.529Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "performer/start": {
       "moves": {
@@ -1619,7 +1649,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.527Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "performer/mark": {
       "moves": {
@@ -1759,7 +1797,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.527Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "performer/bubble": {
       "moves": {
@@ -1925,7 +1971,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.527Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "performer/words": {
       "moves": {
@@ -2087,7 +2141,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.528Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "peer/start": {
       "moves": {
@@ -2465,7 +2527,6 @@
             "h": 45.26
           },
           "z": 20,
-          "link": "hand",
           "inner": true
         },
         {
@@ -2623,7 +2684,17 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T22:53:44.453Z"
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1188.7,
+            377.9,
+            392.2,
+            157
+          ]
+        }
+      },
+      "updatedAt": "2026-10-14T23:06:24.804Z"
     },
     "knowledge/fading#2": {
       "moves": {
@@ -2829,7 +2900,17 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T22:53:44.453Z"
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1188.7,
+            377.9,
+            392.2,
+            157
+          ]
+        }
+      },
+      "updatedAt": "2026-10-14T23:06:24.804Z"
     },
     "knowledge/result": {
       "note": "darken the left side so we can clearly see the right side\n",
@@ -3200,7 +3281,17 @@
           }
         }
       },
-      "updatedAt": "2026-10-13T23:44:12.430Z"
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1188.7,
+            377.9,
+            392.2,
+            157
+          ]
+        }
+      },
+      "updatedAt": "2026-10-14T23:06:24.804Z"
     },
     "knowledge/result#2": {
       "note": "make the knowledge base bigger\nstay dark\nadd a highlight arround knowledge base\nbold the words on the right menu knowledge base",
@@ -3264,8 +3355,7 @@
             "w": 277,
             "h": 60
           },
-          "z": 20,
-          "link": "dup:knowledge/result#2:c-highlight-1"
+          "z": 20
         },
         {
           "key": "plate",
@@ -3696,7 +3786,6 @@
             "h": 52
           },
           "z": 20,
-          "link": "hand",
           "inner": true
         },
         {
@@ -4147,7 +4236,6 @@
             "h": 52
           },
           "z": 20,
-          "link": "hand",
           "inner": true
         },
         {
@@ -4366,7 +4454,6 @@
             "h": 900
           },
           "z": 20,
-          "link": "dup:blank-1:c1-title",
           "inner": true
         },
         {
@@ -4527,7 +4614,6 @@
             "h": 900
           },
           "z": 20,
-          "link": "dup:blank-1:c1-title",
           "inner": true
         },
         {
@@ -12221,8 +12307,7 @@
             "w": 563.98,
             "h": 359.08
           },
-          "z": 20,
-          "link": "circle"
+          "z": 20
         },
         {
           "key": "plate",
@@ -13744,6 +13829,10 @@
         "team-board": [
           15.4,
           0
+        ],
+        "hand": [
+          347.88,
+          324.85
         ]
       },
       "scales": {
@@ -13930,7 +14019,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.519Z"
+      "updatedAt": "2026-10-22T21:53:35.228Z"
     },
     "visibility/out": {
       "sizes": {
@@ -16612,7 +16701,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.525Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "web/words": {
       "moves": {
@@ -16756,7 +16853,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.525Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "web/out": {
       "sizes": {
@@ -16943,7 +17048,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.525Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "remote/tail": {
       "sizes": {
@@ -17117,7 +17230,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.526Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "remote/words": {
       "moves": {
@@ -17270,7 +17391,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.526Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "remote/fading": {
       "sizes": {
@@ -17440,7 +17569,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.526Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "remote/end": {
       "moves": {
@@ -17584,7 +17721,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.526Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "knowledge/result-3#5": {
       "moves": {
@@ -18965,7 +19110,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -19265,7 +19409,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -19483,7 +19626,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -19680,7 +19822,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -21595,7 +21736,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.524Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "remote/start": {
       "moves": {
@@ -21724,7 +21873,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.525Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "conclusion/start": {
       "inserts": [
@@ -21795,7 +21952,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -21838,7 +21995,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.529Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "conclusion/words": {
       "inserts": [
@@ -21909,7 +22074,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -21952,7 +22117,15 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:52.529Z"
+      "ownLooks": {
+        "kind:words": {
+          "color": "#ffffff"
+        },
+        "kind:plate": {
+          "fill": "#000000"
+        }
+      },
+      "updatedAt": "2026-10-27T19:24:48.099Z"
     },
     "knowledge/bubble#30": {
       "note": "Caveat: loose, quick handwriting",
@@ -22028,7 +22201,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -22289,7 +22461,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -22580,7 +22751,6 @@
             "h": 850.88
           },
           "z": 20,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -22607,8 +22777,7 @@
             "w": 6,
             "h": 16
           },
-          "z": 24,
-          "link": "dup:knowledge/bubble#9:r2-rectangle"
+          "z": 24
         },
         {
           "key": "c1-chat-bubble",
@@ -22636,8 +22805,7 @@
             "w": 6,
             "h": 16
           },
-          "z": 28,
-          "link": "dup:knowledge/bubble#9:r2-rectangle"
+          "z": 28
         }
       ],
       "background": {
@@ -22874,7 +23042,6 @@
             "h": 900
           },
           "z": 20,
-          "link": "dup:blank-1:c1-title",
           "inner": true
         },
         {
@@ -23115,7 +23282,12 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T22:48:02.939Z"
+      "vtext": {
+        "c1-title/0.0.0": {
+          "fontSize": 36
+        }
+      },
+      "updatedAt": "2026-10-19T21:01:54.625Z"
     },
     "blank-3": {
       "moves": {
@@ -23338,7 +23510,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62,
+          "size": 36,
           "opacity": 0.18
         },
         "plate": {
@@ -23382,7 +23554,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-12T22:38:36.755Z"
+      "updatedAt": "2026-10-19T21:08:01.581Z"
     },
     "conclusion/words#3": {
       "name": "Fade in with scale · full size",
@@ -23457,7 +23629,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -23500,7 +23672,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-12T22:38:36.755Z"
+      "updatedAt": "2026-10-19T21:08:01.687Z"
     },
     "conclusion/words#4": {
       "note": "FADE OUT\nA title that goes grows a little (10%) while it fades out, over the move to the next scene (0.6 s): the old words are gone before the new ones come. The two frames after are the board's steps. The last title of a video stays on.",
@@ -23576,7 +23748,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -23619,7 +23791,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-12T22:38:36.755Z"
+      "updatedAt": "2026-10-19T21:08:01.792Z"
     },
     "conclusion/words#5": {
       "name": "Fade out · growing, half gone",
@@ -23700,7 +23872,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62,
+          "size": 36,
           "opacity": 0.45
         },
         "plate": {
@@ -23744,7 +23916,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-12T22:38:36.755Z"
+      "updatedAt": "2026-10-19T21:08:01.896Z"
     },
     "conclusion/words#6": {
       "name": "Fade out · almost gone",
@@ -23825,7 +23997,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62,
+          "size": 36,
           "opacity": 0.1
         },
         "plate": {
@@ -23869,7 +24041,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-12T22:38:36.755Z"
+      "updatedAt": "2026-10-19T21:08:02.011Z"
     },
     "conclusion/words#7": {
       "name": "Fade out · gone",
@@ -24207,7 +24379,6 @@
             "h": 850.88
           },
           "z": 22,
-          "link": "tablet",
           "inner": true
         },
         {
@@ -30521,7 +30692,6 @@
             "h": 52
           },
           "z": 20,
-          "link": "hand",
           "inner": true
         },
         {
@@ -31144,6 +31314,23 @@
         }
       },
       "updatedAt": "2026-10-12T22:38:36.765Z"
+    },
+    "remote/words~words": {
+      "vtext": {
+        "bubble": {
+          "fontSize": 33
+        }
+      },
+      "updatedAt": "2026-10-14T19:32:41.924Z"
+    },
+    "performer/words~left": {
+      "vmove": {
+        "hand": [
+          5.55,
+          0.55
+        ]
+      },
+      "updatedAt": "2026-10-27T18:56:09.434Z"
     }
   },
   "copies": {
@@ -31894,6 +32081,50 @@
           "managers",
           "report"
         ]
+      },
+      "line-4": {
+        "title": "Videos in detail",
+        "after": "line-3",
+        "shelf": [
+          "knowledge-detail",
+          "mission-detail",
+          "ratings-detail",
+          "managers-detail",
+          "report-detail"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-4",
+        "shelf": [
+          "knowledge-detail-cursor",
+          "mission-detail-cursor",
+          "ratings-detail-cursor",
+          "managers-detail-cursor",
+          "report-detail-cursor"
+        ]
+      },
+      "line-6": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-5",
+        "shelf": [
+          "knowledge-detail-both",
+          "mission-detail-both",
+          "ratings-detail-both",
+          "managers-detail-both",
+          "report-detail-both"
+        ]
+      },
+      "line-7": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-6",
+        "shelf": [
+          "knowledge-detail-popup",
+          "mission-detail-popup",
+          "ratings-detail-popup",
+          "managers-detail-popup",
+          "report-detail-popup"
+        ]
       }
     },
     "titles": {
@@ -31927,5 +32158,50 @@
       "conclusion"
     ]
   },
-  "rev": 1137
+  "videoText": {
+    "words": {
+      "fontSize": 26,
+      "at": "2026-10-17T00:03:28.284Z"
+    }
+  },
+  "layers": {
+    "Highlight": {
+      "items": [],
+      "at": "2026-10-22T20:59:20.859Z"
+    }
+  },
+  "comments": {
+    "The tablet and its Knowledge Base": {
+      "items": [],
+      "updated": "2026-10-29T23:43:57.512Z"
+    }
+  },
+  "variations": {
+    "list": [
+      {
+        "id": "v2",
+        "name": "Variation 2 · Remotion cut",
+        "look": "remotion"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3 · Remotion cut, words under the phone",
+        "look": "remotion-under"
+      },
+      {
+        "id": "v4",
+        "name": "Variation 4 · Told as Increased Efficiency is",
+        "look": "remotion-like-ie"
+      }
+    ],
+    "active": "v4",
+    "at": "2026-11-11T20:21:04.060Z"
+  },
+  "speed": {
+    "The tablet and its Knowledge Base": {
+      "cps": 30,
+      "at": "2026-10-28T23:25:26.448Z"
+    }
+  },
+  "rev": 1246
 }

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "frames": {},
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "refs": {
+    "at": "2026-10-30T23:25:36.988Z",
+    "items": [
+      {
+        "id": "ref-mvvlonucpwmwj",
+        "kind": "video",
+        "url": "/storyboard/references/ca2ff7a1b750a58ba181.mp4",
+        "name": "taskmaverick-demo.mp4",
+        "x": -84,
+        "y": 700,
+        "w": 1069.9,
+        "h": 601.8
+      }
+    ]
+  },
+  "rev": 1
+}

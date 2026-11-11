@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "frames": {
+    "ie-v4/shared": {
+      "moves": {
+        "picture": [
+          1.18,
+          8.79
+        ]
+      },
+      "updatedAt": "2026-11-06T22:35:01.434Z"
+    },
+    "ie-v4/result": {
+      "moves": {
+        "label": [
+          74.33,
+          -349.74
+        ],
+        "line": [
+          74.33,
+          -349.74
+        ],
+        "sentence": [
+          74.33,
+          -349.74
+        ]
+      },
+      "hidden": [
+        "shift-adam-f-avatar",
+        "shift-adam-f-row",
+        "shift-adam-f-timer-1",
+        "shift-adam-f-timer-2",
+        "shift-adam-f-timer-3",
+        "shift-adam-f-timer-4",
+        "shift-adam-f-timer-5",
+        "shift-maya-r-avatar",
+        "shift-maya-r-row",
+        "shift-maya-r-timer-1",
+        "shift-maya-r-timer-2",
+        "shift-maya-r-timer-3",
+        "shift-maya-r-timer-4",
+        "shift-maya-r-timer-5",
+        "shift-ben-r-avatar",
+        "shift-ben-r-row",
+        "shift-ben-r-timer-1",
+        "shift-ben-r-timer-2",
+        "shift-ben-r-timer-3",
+        "shift-ben-r-timer-4",
+        "shift-ben-r-timer-5",
+        "yellow-outline"
+      ],
+      "updatedAt": "2026-11-06T23:23:08.108Z"
+    },
+    "ie-v4/schedule": {
+      "hidden": [
+        "schedules-inventory-check",
+        "schedules-order-supplies",
+        "yellow-outline",
+        "yellow-outline-2"
+      ],
+      "inserts": [
+        {
+          "key": "c-schedule-line-1-1",
+          "name": "Schedule line 1",
+          "kind": "dom",
+          "asset": "a1df8fc0fb",
+          "box": {
+            "x": 894,
+            "y": 251.83,
+            "w": 58,
+            "h": 2.5
+          },
+          "z": 20
+        },
+        {
+          "key": "c-schedule-line-2-1",
+          "name": "Schedule line 2",
+          "kind": "dom",
+          "asset": "14348c68fb",
+          "box": {
+            "x": 894,
+            "y": 479.68,
+            "w": 58,
+            "h": 2.5
+          },
+          "z": 22
+        },
+        {
+          "key": "c-mission-1-automation-1",
+          "name": "Mission-1 Automation",
+          "kind": "dom",
+          "asset": "0e108173552",
+          "box": {
+            "x": 950.85,
+            "y": 150.08,
+            "w": 272,
+            "h": 206
+          },
+          "z": 24
+        },
+        {
+          "key": "c-mission-2-automation-1",
+          "name": "Mission-2 Automation",
+          "kind": "dom",
+          "asset": "26796604552",
+          "box": {
+            "x": 950.85,
+            "y": 377.93,
+            "w": 272,
+            "h": 206
+          },
+          "z": 26
+        }
+      ],
+      "updatedAt": "2026-11-06T23:25:02.523Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {
+    "a1df8fc0fb": "<div data-sb-root=\"c-schedule-line-1-1\" style=\"position:absolute;left:894px;top:251.83px;width:58px;height:2.5px;z-index:20\"><div style=\"width:100%;height:100%;border-radius:2px;background:#8b5cf6;box-shadow:0 0 8px rgb(139 92 246 / 45%)\"></div></div>",
+    "14348c68fb": "<div data-sb-root=\"c-schedule-line-2-1\" style=\"position:absolute;left:894px;top:479.68px;width:58px;height:2.5px;z-index:22\"><div style=\"width:100%;height:100%;border-radius:2px;background:#8b5cf6;box-shadow:0 0 8px rgb(139 92 246 / 45%)\"></div></div>",
+    "0e108173552": "<div data-sb-root=\"c-mission-1-automation-1\" style=\"position:absolute;left:950.85px;top:150.08px;width:272px;height:206px;z-index:24\"><div style=\"box-sizing:border-box;width:100%;height:100%;padding:14px 16px 12px 18px;border:2.5px solid #8b5cf6;border-radius:16px;background:#fff;box-shadow:0 0 0 4px rgb(139 92 246 / 20%),0 0 20px rgb(139 92 246 / 40%),0 14px 30px rgb(0 0 0 / 35%);font-family:var(--font-inter),Inter,system-ui,sans-serif;color:#111;text-align:left\">\n<div style=\"font-weight:600;font-size:21px;line-height:1.2;color:#7c3aed;margin:0 0 10px\">Mission-1 Automation</div>\n<div style=\"display:grid;grid-template-columns:132px auto;row-gap:7px;align-items:baseline;font-size:15px;line-height:1.25;padding-left:8px\"><span style=\"color:#4b5563;font-weight:600;font-size:16px;\">Start Date</span><b style=\"font-weight:700;color:#111;font-size:16px;\">07/14/26</b><span style=\"color:#4b5563;margin-top:8px;\">Repeat</span><b style=\"font-weight:600;color:#111;margin-top:8px;\">Daily</b><span style=\"color:#4b5563;\">At</span><b style=\"font-weight:600;color:#111;\">10:00 AM</b><span style=\"color:#4b5563;\">At</span><b style=\"font-weight:600;color:#111;\">4:00 PM</b><span style=\"color:#4b5563;font-weight:600;font-size:16px;margin-top:8px;\">End Date</span><b style=\"font-weight:700;color:#111;font-size:16px;margin-top:8px;\">Indefinitely</b></div>\n</div></div>",
+    "26796604552": "<div data-sb-root=\"c-mission-2-automation-1\" style=\"position:absolute;left:950.85px;top:377.93px;width:272px;height:206px;z-index:26\"><div style=\"box-sizing:border-box;width:100%;height:100%;padding:14px 16px 12px 18px;border:2.5px solid #8b5cf6;border-radius:16px;background:#fff;box-shadow:0 0 0 4px rgb(139 92 246 / 20%),0 0 20px rgb(139 92 246 / 40%),0 14px 30px rgb(0 0 0 / 35%);font-family:var(--font-inter),Inter,system-ui,sans-serif;color:#111;text-align:left\">\n<div style=\"font-weight:600;font-size:21px;line-height:1.2;color:#7c3aed;margin:0 0 10px\">Mission-2 Automation</div>\n<div style=\"display:grid;grid-template-columns:132px auto;row-gap:7px;align-items:baseline;font-size:15px;line-height:1.25;padding-left:8px\"><span style=\"color:#4b5563;font-weight:600;font-size:16px;\">Start Date</span><b style=\"font-weight:700;color:#111;font-size:16px;\">01/20/24</b><span style=\"color:#4b5563;margin-top:8px;\">Repeat</span><b style=\"font-weight:600;color:#111;margin-top:8px;\">Weekly</b><span style=\"color:#4b5563;\">Every</span><b style=\"font-weight:600;color:#111;\">Thursday</b><span style=\"color:#4b5563;\">At</span><b style=\"font-weight:600;color:#111;\">2:00 PM</b><span style=\"color:#4b5563;font-weight:600;font-size:16px;margin-top:8px;\">End Date</span><b style=\"font-weight:700;color:#111;font-size:16px;margin-top:8px;\">12/31/30</b></div>\n</div></div>"
+  },
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 55
+}

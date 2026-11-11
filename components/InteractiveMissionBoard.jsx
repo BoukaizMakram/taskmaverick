@@ -7,6 +7,7 @@ import { trainingMission, entriesComplete } from './MissionEntries';
 import { mediaTrainingMission, mediaComplete } from './MediaTraining';
 import LoadingLogo from './LoadingLogo';
 import MissionChip from '@/components/MissionChip';
+import TicketCard from '@/components/TicketCard';
 import { OpenedMission } from '@/components/OpenedMission';
 import { BoardMenu, OnDemand } from '@/components/BoardNavigation';
 import PersonalCodeDialog from '@/components/PersonalCodeDialog';
@@ -33,7 +34,7 @@ const initial = device => [
   ...(device === 'tablet' ? [{ ...checklist, id: 'cleaning', title: 'Closing Checklist', status: 'claimed', age: 200, started: 0, performer: 'J. Maverick' }] : []),
 ];
 
-export default function InteractiveMissionBoard({ device = 'phone', initialScreen = 'home', initialMissions = null, demoState = null, referenceLayout = false, demoDetail = null, demoOverlay = null }) {
+export default function InteractiveMissionBoard({ device = 'phone', initialScreen = 'home', initialMissions = null, demoState = null, referenceLayout = false, demoDetail = null, demoOverlay = null, demoBoard = null }) {
   const [transitioning, setTransitioning] = useState(false);
   const transitionTimer = useRef(null);
   useEffect(() => () => clearTimeout(transitionTimer.current), []);
@@ -108,7 +109,7 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
   const back = () => { setCodeOpen(false); setSelected(null); };
   const missionClock = m => (m.stopped ?? elapsed) + (demoState ? m.demoTimeOffset ?? 0 : 0);
   const live = m => ({ ...m, pillTime: format(m.ageSeconds ?? (m.age + missionClock(m))), claimedWho: m.performer, claimer: m.performer });
-  const counts = status => missions.filter(m => m.status === status).length;
+  const counts = status => missions.filter(m => m.status === status && !m.gone).length; // (`gone`, a section's video: still laid out, not seen, not counted)
   const changeEntry = (key, value) => setMissions(previous => previous.map(m => m.id === selected && m.status === 'claimed' ? { ...m, entries: { ...m.entries, [key]: value } } : m));
   const detail = mission && <div className="mi-detail-inner" ref={detailRef}><OpenedMission key={mission.id} onLessonComplete={id => setMissions(previous => previous.map(m => m.id === selected && m.status === 'claimed' && !m.completedLessons?.includes(id) ? { ...m, completedLessons: [...(m.completedLessons || []), id] } : m))} onEntryChange={changeEntry} mission={live(mission)} state={mission.status} showExec={mission.status !== 'open'} execTime={format(mission.executionSeconds ?? ((mission.stopped ?? elapsed) - (mission.started ?? elapsed)))} onBack={back} onClaim={() => { claimLock.current = false; setCodeAction('Claim'); setCodeOpen(true); }} onClose={() => { claimLock.current = false; setCodeAction('Close'); setCodeOpen(true); }} showStatusBar={isPhone}/></div>;
   const switchBoard = id => { showTransition();
@@ -129,8 +130,8 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
   const demand = onDemand && <OnDemand department={department} onBack={closeNavigation}/>;
   const loader = transitioning && <div className="mi-screen-loader" role="status" aria-label="Loading screen"><LoadingLogo/></div>;
   const dialog = codeOpen && <PersonalCodeDialog demo={demoState} action={codeAction} onClaim={codeAction === 'Close' ? close : claim} onDismiss={() => setCodeOpen(false)} />;
-  const cards = status => (demoState ? demoColumnMissions(missions, status) : missions.filter(m => m.status === status)).map(m => <button className="mi-card-button" data-mission-id={m.id} type="button" key={m.id} aria-label={`Open mission ${m.title}`} onClick={() => select(m)}>
-    <MissionChip reference={m.reference} className={referenceLayout && m.highlighted && m.status !== 'closed' ? 'chip--reference-highlight' : ''} style={demoState ? { '--demo-timer-color': m.timerColor } : undefined} avatar={m.status !== 'open' && !m.showPerformerName ? m.performerAvatar : undefined} kind={m.type} title={m.title} who={m.status === 'open' ? undefined : m.performer} points={m.points} date={m.date} time={m.time} showExec={m.status !== 'open'} execTime={format(m.executionSeconds ?? (missionClock(m) - (m.started ?? elapsed)))} pillTime={live(m).pillTime} rate={m.status === 'closed' && m.rateable} ratings={m.ratings} pillClass={m.status === 'closed' ? 'chip--gray' : referenceLayout && m.highlighted && m.status === 'claimed' ? 'chip--red' : 'chip--green'} />
+  const cards = status => (demoState ? demoColumnMissions(missions, status) : missions.filter(m => m.status === status)).map(m => <button className="mi-card-button" data-mission-id={m.id} type="button" key={m.id} style={m.gone ? {opacity: 0} : undefined} aria-label={`Open mission ${m.title}`} onClick={() => select(m)}>
+    {m.type === 'Ticket' ? <TicketCard style={demoState ? { '--demo-timer-color': m.timerColor } : undefined} title={m.title} responses={m.responses ?? 1} response={m.response} location={m.location} date={m.date} time={m.time} showExec={m.status !== 'open'} execTime={format(m.executionSeconds ?? (missionClock(m) - (m.started ?? elapsed)))} pillTime={live(m).pillTime} pillClass={m.status === 'closed' ? 'chip--gray' : 'chip--green'} who={m.status !== 'open' && m.showPerformerName ? m.performer : undefined} avatar={m.status !== 'open' && !m.showPerformerName ? m.performerAvatar : undefined} /> : <MissionChip reference={m.reference} className={referenceLayout && m.highlighted && m.status !== 'closed' ? 'chip--reference-highlight' : ''} style={demoState ? { '--demo-timer-color': m.timerColor } : undefined} avatar={m.status !== 'open' && !m.showPerformerName ? m.performerAvatar : undefined} kind={m.type} title={m.title} who={m.status === 'open' ? undefined : m.performer} points={m.points} date={m.date} time={m.time} showExec={m.status !== 'open'} execTime={format(m.executionSeconds ?? (missionClock(m) - (m.started ?? elapsed)))} pillTime={live(m).pillTime} rate={m.status === 'closed' && m.rateable} ratings={m.ratings} pillClass={m.status === 'closed' ? 'chip--gray' : referenceLayout && m.highlighted && m.status === 'claimed' ? 'chip--red' : 'chip--green'} />}
   </button>);
 
   return <div className={`mi-interactive mi-interactive--${device}${referenceLayout ? ' mi-reference' : ''}`}>
@@ -141,10 +142,11 @@ export default function InteractiveMissionBoard({ device = 'phone', initialScree
         {referenceLayout && <div className="mi-status-bar"><span>4:10 PM&nbsp;&nbsp; Thu Sep 17</span><span className="mi-status-icons" aria-label="Wi-Fi connected, battery 49 percent"><svg viewBox="0 0 20 16" aria-hidden="true"><path d="M2 5q8-7 16 0M5 8q5-4 10 0M8 11q2-2 4 0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><circle cx="10" cy="14" r="1.3" fill="currentColor"/></svg>49%<svg viewBox="0 0 28 14" aria-hidden="true"><rect x="1" y="1" width="23" height="12" rx="3" fill="none" stroke="currentColor"/><rect x="3" y="3" width="10" height="8" rx="1" fill="currentColor"/><path d="M26 5v4" stroke="currentColor" strokeWidth="2"/></svg></span></div>}
         <header className="tbl-header">
           <div className="mi-brand"><button type="button" className="ph-iconbtn" aria-label="Back" onClick={() => navigate(boardId === 'personal' ? 'home' : 'unit')}><IconBack/></button><img className="mi-full-logo" src="/logo.svg" alt="Taskmaverick" width="220" height="30"/></div>
-          <span className="mi-department">{department}</span>
+          <span className={`mi-department${demoState?.ticketBoard ? ' mi-department--ticket' : ''}`}>{department}</span>
           <div className="tbl-header-actions"><button type="button" className="ph-iconbtn" aria-label="Add" onClick={event => openNavigation(event, 'demand')}><IconPlus/></button><button type="button" className="ph-iconbtn" aria-label="Menu" onClick={event => openNavigation(event, 'menu')}><IconMenu/></button></div>
         </header>
         <div className="mi-columns">{['open','claimed','closed'].map(status => <section key={status} aria-label={`${status} missions`}><h2 className="tbl-tab">{status[0].toUpperCase()+status.slice(1)} - {counts(status)}<BoardIcon kind="expand"/></h2><div className="mi-column-cards">{cards(status)}</div></section>)}</div>
+        {demoBoard}
       </div>
       {demoState && <div className="mi-demo-shade" aria-hidden="true"/>}
       {mission && <><button type="button" className="mi-drawer-shade" aria-label="Back to board" onClick={back}/><aside className="mi-drawer" aria-label="Mission Details">{demoDetail ?? detail}</aside></>}

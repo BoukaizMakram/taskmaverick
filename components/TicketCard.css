@@ -1,0 +1,19 @@
+/* The alert ticket card (components/TicketCard.jsx). Specific and !important where it must win over the mission chip's rules in every board it is drawn on. */
+.chip.chip--ticket { display:flex !important; flex-direction:column !important; height:auto !important; min-height:0 !important; gap:0 !important; padding:calc(14 * var(--ref-u, 1px)) calc(16 * var(--ref-u, 1px)) calc(10 * var(--ref-u, 1px)) !important; box-sizing:border-box; background:#fff; color:#111; font-family:var(--font-montserrat), sans-serif; text-align:left; }
+/* alone, popping out of what raised it: the alert's red-pink border and glow (on a ticket board the card is plain, like the team board's) */
+.chip.chip--ticket.chip--alert { border:calc(3 * var(--ref-u, 1px)) solid #d03a6f !important; border-radius:calc(15 * var(--ref-u, 1px)) !important; box-shadow:0 0 calc(14 * var(--ref-u, 1px)) calc(1 * var(--ref-u, 1px)) rgb(208 58 111 / 34%), 0 calc(6 * var(--ref-u, 1px)) calc(16 * var(--ref-u, 1px)) rgb(30 41 59 / 12%) !important; }
+.chip--ticket .tk-top { display:flex; align-items:flex-start; justify-content:space-between; gap:calc(10 * var(--ref-u, 1px)); }
+.chip--ticket .tk-title { margin:calc(4 * var(--ref-u, 1px)) 0 0; font-size:calc(19 * var(--ref-u, 1px)) !important; min-width:0; line-height:1.25 !important; font-weight:600; letter-spacing:-.01em !important; }
+.chip--ticket .chip-timers { flex:none; }
+.chip--ticket .tk-count { display:flex; align-items:center; gap:calc(9 * var(--ref-u, 1px)); margin:calc(12 * var(--ref-u, 1px)) 0 0; font-size:calc(16 * var(--ref-u, 1px)); line-height:1.3; font-weight:500; }
+.chip--ticket .tk-badge { flex:none; display:grid; place-items:center; width:calc(21 * var(--ref-u, 1px)); height:calc(21 * var(--ref-u, 1px)); border-radius:calc(5 * var(--ref-u, 1px)); background:linear-gradient(135deg, #f0762a, #e2492f); color:#fff; font-style:normal; font-size:calc(14 * var(--ref-u, 1px)); font-weight:700; line-height:1; }
+.chip--ticket .tk-rule { border-top:calc(1.5 * var(--ref-u, 1px)) dashed #e3e3e3; margin:calc(11 * var(--ref-u, 1px)) 0 0; }
+.chip--ticket .tk-response { margin:calc(11 * var(--ref-u, 1px)) 0 0; min-height:calc(46 * var(--ref-u, 1px)); font-size:calc(18 * var(--ref-u, 1px)); line-height:1.3; font-weight:500; }
+.chip--ticket .tk-location { display:flex; align-items:center; gap:calc(8 * var(--ref-u, 1px)); margin:calc(8 * var(--ref-u, 1px)) 0 0; font-size:calc(14.5 * var(--ref-u, 1px)); line-height:1.3; color:#2b2b2b; }
+.chip--ticket .tk-building { flex:none; width:calc(19 * var(--ref-u, 1px)); height:calc(19 * var(--ref-u, 1px)); color:#6a6a6a; }
+.chip--ticket .tk-bottom { display:flex; align-items:center; justify-content:space-between; gap:calc(8 * var(--ref-u, 1px)); margin:calc(9 * var(--ref-u, 1px)) 0 0; min-height:calc(24 * var(--ref-u, 1px)); }
+.chip--ticket .chip-who, .chip--ticket .chip-when { font-size:calc(15 * var(--ref-u, 1px)) !important; line-height:1.3; }
+.chip--ticket .chip-when { margin-left:auto; display:flex; gap:calc(5 * var(--ref-u, 1px)); }
+.chip--ticket .chip-performer-avatar { width:calc(28 * var(--ref-u, 1px)); height:calc(28 * var(--ref-u, 1px)); border-radius:50%; object-fit:cover; }
+/* the ticket board's title: the department, in red (the team board's is black) */
+.mi-department.mi-department--ticket { color:#bd1f59; }

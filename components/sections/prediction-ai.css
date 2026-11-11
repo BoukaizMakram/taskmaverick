@@ -1,0 +1,4 @@
+/* Prediction & AI (components/sections/PredictionStage.jsx): its own classes, prefixed sec-pr-. */
+
+/* a mission's answers: the statement, the response (a flagged one in red, with the ticket it raised) */
+.sec-pr-st .iq-dr-st-head, .sec-pr-st .iq-dr-st-row { grid-template-columns:320px 120px 140px 200px 150px; }

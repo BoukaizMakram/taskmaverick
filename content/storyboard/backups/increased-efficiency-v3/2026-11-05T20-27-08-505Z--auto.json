@@ -1,0 +1,7700 @@
+{
+  "version": 1,
+  "frames": {
+    "individuals/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-30T21:10:15.581Z"
+    },
+    "individuals/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-30T21:10:15.581Z"
+    },
+    "individuals/end": {
+      "moves": {
+        "pointer-hint": [
+          64.66,
+          0
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-30T21:10:15.681Z"
+    },
+    "individuals/end-2": {
+      "moves": {
+        "pointer-hint": [
+          64.66,
+          0
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-30T21:10:15.785Z"
+    },
+    "teams/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "teams/words": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:05:36.328Z"
+    },
+    "teams/end": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:05:36.328Z"
+    },
+    "teams/end-2": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:05:36.328Z"
+    },
+    "teams/end-3": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:05:36.328Z"
+    },
+    "teams/end-4": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:05:36.328Z"
+    },
+    "schedule/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/words": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:10:27.540Z"
+    },
+    "urgency/end": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T23:10:27.540Z"
+    },
+    "urgency/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/words": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/end": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "close/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/words": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:37.250Z"
+    },
+    "close/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/end": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.105Z"
+    },
+    "close/end-2": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.228Z"
+    },
+    "close/end-3": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.353Z"
+    },
+    "execution/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/mark-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/mark-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "intro/words": {
+      "note": "Make this card pop more",
+      "styles": {
+        "title": {
+          "font": "poppins",
+          "color": "#ffffff",
+          "weight": 700,
+          "size": 36
+        }
+      },
+      "updatedAt": "2026-10-29T21:47:32.198Z"
+    },
+    "teams/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "schedule/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "urgency/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "priority/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "shared/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "code/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "claim/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "close/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "execution/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "performers/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "initiative/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-15T21:58:35.485Z"
+    },
+    "points/mark": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "urgency/end-2": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "urgency/end-3": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "shared/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "shared/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "shared/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/hand": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/click": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/result": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-2": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/end-3": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/hand-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/click-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/result-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "claim/end-4": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/end-5": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/end-6": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "close/hand-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/click-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/result-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "close/end-4": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.478Z"
+    },
+    "close/end-5": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.600Z"
+    },
+    "close/end-6": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-11-02T23:33:45.726Z"
+    },
+    "device/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "device/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "initiative/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "initiative/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/bubble": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "device/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/start": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:38:43.127Z"
+    },
+    "conclusion/words": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-29T21:43:23.588Z"
+    },
+    "performers/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:44:14.870Z"
+    },
+    "performers/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:44:14.870Z"
+    },
+    "initiative/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:47:34.343Z"
+    },
+    "initiative/end-5": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:47:34.343Z"
+    },
+    "initiative/end-6": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T20:47:34.343Z"
+    },
+    "performers/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "performers/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "performers/end-5": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-7": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-8": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-9": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-10": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-11": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "initiative/end-12": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-10-30T21:03:03.338Z"
+    },
+    "individuals/start": {
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-30T21:10:15.580Z"
+    },
+    "claim/end-7": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "claim/end-8": {
+      "texts": {
+        "bubble/0.0": "Each Person Uses A Unique Code To Claim And To Close Missions"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "vtext": {
+        "bubble": {
+          "rect": [
+            1168.8,
+            396.2,
+            439.5,
+            0
+          ]
+        }
+      },
+      "updatedAt": "2026-10-30T23:18:48.949Z"
+    },
+    "individuals/end-3": {
+      "moves": {
+        "pointer-hint": [
+          64.66,
+          0
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-11-02T18:42:53.779Z"
+    },
+    "individuals/end-4": {
+      "moves": {
+        "pointer-hint": [
+          64.66,
+          0
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        }
+      },
+      "vmove": {
+        "board": [
+          64.66,
+          0
+        ]
+      },
+      "updatedAt": "2026-11-02T18:42:54.006Z"
+    },
+    "teams/end-5": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T18:42:52.989Z"
+    },
+    "teams/end-6": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T18:42:53.093Z"
+    },
+    "teams/end-7": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T18:42:53.203Z"
+    },
+    "teams/end-8": {
+      "texts": {
+        "bubble/0.0": "Work Missions Can Be Asigned To Teams on Team Boards"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T18:42:53.322Z"
+    },
+    "urgency/end-4": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "urgency/end-5": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "schedule/before": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T22:42:31.174Z"
+    },
+    "device/end": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T23:27:43.988Z"
+    },
+    "device/end-2": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T23:09:12.297Z"
+    },
+    "execution/before": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-02T23:25:13.974Z"
+    },
+    "device/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:03:25.812Z"
+    },
+    "urgency/end-6": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:04:52.286Z"
+    },
+    "urgency/end-7": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:04:52.399Z"
+    },
+    "urgency/end-8": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:04:52.513Z"
+    },
+    "urgency/end-9": {
+      "texts": {
+        "bubble/0.0": "Timers Change In Color To Create A Sense Of Urgency"
+      },
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:04:52.634Z"
+    },
+    "priority/end-3": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:11:42.934Z"
+    },
+    "priority/end-4": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:11:42.934Z"
+    },
+    "priority/before": {
+      "scales": {
+        "tablet/0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "styles": {
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "tablet/0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "tablet/0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        }
+      },
+      "updatedAt": "2026-11-03T00:11:42.934Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "Videos",
+        "after": null,
+        "shelf": [
+          "assign",
+          "board",
+          "tablet",
+          "results"
+        ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "assign-detail",
+          "board-detail",
+          "tablet-detail",
+          "results-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "assign-detail-cursor",
+          "board-detail-cursor",
+          "tablet-detail-cursor",
+          "results-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "assign-detail-both",
+          "board-detail-both",
+          "tablet-detail-both",
+          "results-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "assign-detail-popup",
+          "board-detail-popup",
+          "tablet-detail-popup",
+          "results-detail-popup"
+        ]
+      }
+    },
+    "titles": {},
+    "deleted": []
+  },
+  "videoText": {
+    "words": {
+      "fontSize": 26,
+      "at": "2026-10-17T00:03:28.284Z"
+    }
+  },
+  "captions": {
+    "assign-detail": {
+      "teams:o0": "Or Work Missions Can Be Asigned To Team Boards"
+    }
+  },
+  "comments": {
+    "Schedules, points and urgency": {
+      "items": [
+        {
+          "id": "comment-1",
+          "x": 904.5,
+          "y": 567.4,
+          "at": 7.39,
+          "text": "Show only One mission before going to three.\npop the green and do it fast green,orange red in one second",
+          "done": true,
+          "created": "2026-10-30T23:08:59.311Z"
+        },
+        {
+          "id": "comment-2",
+          "x": 906.3,
+          "y": 651.5,
+          "at": 14.41,
+          "text": "Pull to the right before going up\n\norange, green, green\norage, orange, green\nred, orange, orange",
+          "done": true,
+          "created": "2026-10-30T23:12:43.434Z"
+        }
+      ],
+      "updated": "2026-11-03T00:01:49.680Z"
+    },
+    "Missions assigned to individuals and teams": {
+      "items": [
+        {
+          "id": "comment-1",
+          "x": 1334.6,
+          "y": 539.4,
+          "at": 4.33,
+          "text": "finish sentence and then start the action\nthe action \"4 missions\"",
+          "done": true,
+          "created": "2026-10-30T23:04:04.734Z"
+        },
+        {
+          "id": "comment-2",
+          "x": 1314.3,
+          "y": 524.5,
+          "at": 8.06,
+          "text": "Show Text, then avatars and then missions in sequence",
+          "done": true,
+          "created": "2026-10-30T23:06:43.044Z"
+        }
+      ],
+      "updated": "2026-11-02T18:43:21.312Z"
+    },
+    "One shared tablet": {
+      "items": [
+        {
+          "id": "comment-1",
+          "x": 1572.4,
+          "y": 138.8,
+          "at": 2.58,
+          "text": "show photo of three people AI generated, and then show the text after this one that says there is no need to provide each person ...",
+          "done": true,
+          "created": "2026-10-30T23:20:22.610Z"
+        }
+      ],
+      "updated": "2026-11-02T18:43:21.640Z"
+    },
+    "What it shows": {
+      "items": [],
+      "updated": "2026-10-30T21:05:40.776Z"
+    },
+    "Increased Efficiency · Remotion cut [v4]": {
+      "items": [
+        {
+          "id": "comment-1",
+          "x": 1309.9,
+          "y": 517.9,
+          "at": 6,
+          "text": "when I introduce a new scene: show words in middle then pull down to show art",
+          "created": "2026-11-05T00:15:41.600Z"
+        },
+        {
+          "id": "comment-2",
+          "x": 990.3,
+          "y": 497.8,
+          "at": 27.83,
+          "text": "centter",
+          "created": "2026-11-05T00:19:22.496Z"
+        }
+      ],
+      "updated": "2026-11-05T00:19:26.182Z"
+    }
+  },
+  "variations": {
+    "list": [
+      {
+        "id": "v2",
+        "name": "Variation 2",
+        "look": "middle"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3",
+        "look": "focus"
+      },
+      {
+        "id": "v4",
+        "name": "Variation 4 · Remotion cut",
+        "look": "remotion"
+      },
+      {
+        "id": "v5",
+        "name": "Variation 5",
+        "look": "aside"
+      }
+    ],
+    "active": "v4",
+    "at": "2026-11-05T00:12:00.584Z"
+  },
+  "speed": {
+    "Missions assigned to individuals and teams · in detail": {
+      "cps": 30,
+      "at": "2026-10-28T23:26:13.548Z"
+    }
+  },
+  "rev": 239
+}

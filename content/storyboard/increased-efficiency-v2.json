@@ -8686,7 +8686,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -8729,7 +8729,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:54.581Z"
+      "updatedAt": "2026-10-19T21:08:02.555Z"
     },
     "opening/words": {
       "inserts": [
@@ -8801,7 +8801,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -8844,7 +8844,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:54.582Z"
+      "updatedAt": "2026-10-19T21:08:02.638Z"
     },
     "schedule/start": {
       "moves": {
@@ -11329,7 +11329,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -11372,7 +11372,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:54.608Z"
+      "updatedAt": "2026-10-19T21:08:02.716Z"
     },
     "conclusion/words": {
       "inserts": [
@@ -11444,7 +11444,7 @@
           "font": "poppins",
           "color": "#ffffff",
           "weight": 700,
-          "size": 62
+          "size": 36
         },
         "plate": {
           "fill": {
@@ -11487,7 +11487,7 @@
           }
         }
       },
-      "updatedAt": "2026-10-08T19:17:54.608Z"
+      "updatedAt": "2026-10-19T21:08:02.793Z"
     }
   },
   "copies": {},
@@ -11510,10 +11510,52 @@
           "results",
           "assign"
         ]
+      },
+      "line-2": {
+        "title": "Videos in detail",
+        "after": "line-1",
+        "shelf": [
+          "board-detail",
+          "tablet-detail",
+          "assign-detail"
+        ]
+      },
+      "line-3": {
+        "title": "Videos in detail · cursor only",
+        "after": "line-2",
+        "shelf": [
+          "board-detail-cursor",
+          "tablet-detail-cursor",
+          "assign-detail-cursor"
+        ]
+      },
+      "line-4": {
+        "title": "Videos in detail · highlight and cursor",
+        "after": "line-3",
+        "shelf": [
+          "board-detail-both",
+          "tablet-detail-both",
+          "assign-detail-both"
+        ]
+      },
+      "line-5": {
+        "title": "Videos in detail · cursor and pop-up",
+        "after": "line-4",
+        "shelf": [
+          "board-detail-popup",
+          "tablet-detail-popup",
+          "assign-detail-popup"
+        ]
       }
     },
     "titles": {},
     "deleted": []
   },
-  "rev": 20
+  "videoText": {
+    "words": {
+      "fontSize": 26,
+      "at": "2026-10-17T00:03:28.284Z"
+    }
+  },
+  "rev": 42
 }

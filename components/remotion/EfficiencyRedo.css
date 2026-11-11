@@ -1,0 +1,72 @@
+/* Increased Efficiency, the Remotion cut redone from the storyboard (components/remotion/EfficiencyRedo.jsx, lib/remotion/efficiencyRedo.mjs): what it adds to the cuts' pieces (CutParts.css) and to
+   Variation 4's (EfficiencyCut.css). Everything is placed by the clock (transforms written each frame), so nothing here animates by itself. */
+.rc-redo { position:absolute; inset:0; }/* (no z-index: its pieces stack in the art's layer as Variation 4's do) */
+
+/* what pops on a mission (the user's slides: "pop the execution timer", the names circled with "pop"): the name and the execution timer, scaled by the clock (the timer pill and the points
+   badge have theirs in EfficiencyCut.css) */
+.rc-redo .rc-card .chip-who { transform:scale(var(--rc-who-s, 1)); transform-origin:0 60%;
+  /* slide 6, the CEO, 2026-11-09: "make them more pronounced, like black, like bold, these names": bold by a text stroke and black by the clock (--rc-who-b 0 to 1), never a switch of weight */
+  -webkit-text-stroke:calc(.75px * var(--rc-who-b, 0)) #000; -webkit-text-fill-color:color-mix(in srgb, #000 calc(var(--rc-who-b, 0) * 100%), currentColor);/* (black by the letters' fill, not a filter: a filter would blacken the yellow strip too) */
+  position:relative; }
+/* a yellow strip behind the name and behind the execution timer (the user, 2026-11-10: "put a yellow strip behind it for both execution timer and names too", then "make the strip comes from
+   left to right"): the videos' yellow, drawn from its left edge to its right by the clock (--rc-*-w 0 to 1), gone with the words (--rc-*-o); it is a box of its own behind the letters, 3 board
+   units round them, so the text's own box and place do not change (the text's transform keeps it over the card and under the letters) */
+.rc-redo .rc-card :is(.chip-who, .chip-exec)::before { content:''; position:absolute; inset:calc(-3 * var(--ref-u, 1px)); z-index:-1; border-radius:calc(1.5 * var(--ref-u, 1px)); background:#ffec00;
+  transform-origin:0 50%; pointer-events:none; }
+.rc-redo .rc-card .chip-who::before { transform:scaleX(var(--rc-who-w, 0)); opacity:var(--rc-who-o, 0); }
+/* (the execution timers' strip can be another color than the names': --rc-exec-strip, Variation 7's orange; the user, 2026-11-11, on one of them: "use a different color like an orange here") */
+.rc-redo .rc-card .chip-exec::before { transform:scaleX(var(--rc-exec-w, 0)); opacity:var(--rc-exec-o, 0); background:var(--rc-exec-strip, #ffec00); }
+/* the missions of Claimed and Closed standing out of the light board while the camera is on them (--rc-lift 0 to 1; the CEO, 2026-11-09: "make these missions visible ... I'm not seeing"): a
+   deeper shadow and a thin edge over the board's own */
+/* a mission on the dark, off the tablet (--rc-alone 1: the four alone, the board without its tablet; 1 to 0 as the four land on the tablet): a deeper shadow under it (the user, 2026-11-10:
+   "add more shadows under missions"), over the lifted card's own (0 12px 34px #1e293b30, made for a light board and hardly seen on the dark). In the card's own px (the card is scaled up to
+   1.55 times): the deep one ends 34 px under the card, so over the band of the words (the four alone end 39 of these px over its straight edge, y 744), which would cut it along a line */
+/* MORE SHADOW UNDER THE MISSIONS ON THE TABLET, in every scene it is in (the user, 2026-11-10: "add moooore shadows to missions in tablet in all scenes"; written, NOT played). They had the
+   board's own (0 1px 9px, 11%: hardly seen) at rest and the lifted card's (0 12px 34px, 19%) while moving. Now, in the card's own px (334 wide, 18 between two in a column):
+     at rest      --rc-rest-*: 0 5px 12px at 32% + 0 1px 3px at 26% (it ends 17 px under the card and 7 over it: never on the next mission)
+     moving       --rc-air 0 to 1 (how much it is off the board, by the clock): the resting one + 0 16px 30px at 44% + 0 4px 9px at 28%, coming as it leaves its place and gone as it lands
+     stood out    --rc-lift (Claimed and Closed while the camera is on them): + 0 12px 28px at 42% and its thin edge
+   On the dark (--rc-alone 1: the four alone, the board without its tablet) nothing changes: that shadow is the first two layers of .is-up and the lifted card's own, all three times
+   --rc-alone, so a mission landing on the tablet goes from the one to the other with no jump. These are the numbers to raise or lower. */
+.rc-redo .rc-card { --rc-on:calc(1 - var(--rc-alone, 0)); --rc-rest-a:0 5px 12px rgb(15 23 42 / calc(.32 * var(--rc-on))); --rc-rest-b:0 1px 3px rgb(15 23 42 / calc(.26 * var(--rc-on))); }
+.rc-redo .rc-card.is-up .iq2-iso-stack .chip { box-shadow:0 10px 24px rgb(0 0 0 / calc(.6 * var(--rc-alone, 0))), 0 2px 6px rgb(0 0 0 / calc(.4 * var(--rc-alone, 0))), 0 12px 34px rgb(30 41 59 / calc(.19 * var(--rc-alone, 0))),
+  0 16px 30px rgb(15 23 42 / calc(.44 * var(--rc-air, 1) * var(--rc-on))), 0 4px 9px rgb(15 23 42 / calc(.28 * var(--rc-air, 1) * var(--rc-on))), var(--rc-rest-a), var(--rc-rest-b); }
+.rc-redo .rc-card:not(.is-up) .iq2-iso-stack .chip { box-shadow:var(--rc-rest-a), var(--rc-rest-b), 0 calc(12px * var(--rc-lift, 0)) calc(28px * var(--rc-lift, 0)) rgb(15 23 42 / calc(.42 * var(--rc-lift, 0))), 0 0 0 calc(1.5px * var(--rc-lift, 0)) rgb(15 23 42 / 16%); }
+/* the execution timer of "Execution Duration Is Measured Per Mission" (the user, 2026-11-10: "execution timer move it to the left ... make it bold and put a yellow strip behind it"): it grows
+   from its right edge and goes 8 board units to the left, so it never comes over the timer pill; bold by a text stroke by the clock (--rc-exec-b 0 to 1), never a switch of weight; with
+   --rc-exec-b 0 it is the board's own timer, where it always was (its yellow strip: the ::before above) */
+.rc-redo .rc-card .chip-exec { position:relative; transform:translateX(calc(-8 * var(--ref-u, 1px) * var(--rc-exec-b, 0))) scale(var(--rc-exec-s, 1)); transform-origin:100% 50%;
+  -webkit-text-stroke:calc(.7px * var(--rc-exec-b, 0)) currentColor; }
+
+/* the board without its tablet: its blue column tabs (the board's own .tbl-tab, drawn 334 board units wide as a card is, scaled by the clock), with no white ring round them on the dark */
+.rc-lanes { position:absolute; inset:0; z-index:9; }
+.rc-lane-tab { position:absolute; left:0; top:0; transform-origin:0 0; }
+.rc-lane-tab .mi-interactive { width:1080px; }
+.rc-lane-tab .mi-reference.mi-interactive--tablet .mi-tablet-board.iq2-iso-board { width:1080px; height:auto; overflow:visible; background:none; }
+.rc-lane-tab .mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-tab { margin:0; box-shadow:none; }
+
+/* "Or individually": three phones in a triangle, each with its person's face at its corner (until the picture of the three with their phones is made) */
+.rc-trio { position:absolute; inset:0; z-index:13; }
+.rc-trio .rc-phone { transform-origin:50% 50%; }
+.rc-trio-face { border-radius:50%; }
+.rc-photo--phones img { object-fit:cover; }
+
+/* slides 10 and 11: a star popping out of a phone, "showing that an action is reflected on other devices" (the user's note): the videos' yellow, a white heart, a glow; a ring going out and six
+   sparks with it (placed and scaled by the clock: EfficiencyRedo.jsx Star) */
+.rc-stars { position:absolute; inset:0; z-index:16; pointer-events:none; }
+.rc-star { position:absolute; }
+.rc-star svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 0 10px rgb(255 236 0 / 85%)) drop-shadow(0 0 22px rgb(255 236 0 / 45%)); }
+.rc-star svg path { fill:#ffec00; stroke:#fffbe0; stroke-width:3; stroke-linejoin:round; }
+.rc-star-ring { position:absolute; inset:0; border:4px solid #ffec00; border-radius:50%; box-shadow:0 0 14px rgb(255 236 0 / 60%); }
+.rc-star-spark { position:absolute; left:50%; top:50%; width:10px; height:10px; margin:-5px 0 0 -5px; border-radius:50%; background:#fff6a8; box-shadow:0 0 8px #ffec00; }
+
+/* a press on a phone's screen before the stars pop on the others (the CEO, 2026-11-09: "the guy presses ... and it does this for the others"): a white fingertip and two rings (placed and
+   scaled by the clock: EfficiencyRedo.jsx Press) */
+.rc-press { position:absolute; }
+.rc-press-ring { position:absolute; inset:0; border:4px solid #fff; border-radius:50%; box-shadow:0 0 12px rgb(255 255 255 / 55%); }
+.rc-press-dot { position:absolute; left:33%; top:33%; width:34%; height:34%; border-radius:50%; background:rgb(255 255 255 / 88%); box-shadow:0 0 0 3px rgb(18 113 183 / 85%), 0 0 14px rgb(255 255 255 / 70%); }
+
+/* the tablet and its missions as one, so they bend together to the angle of the tablet on the wall of the picture (slide 8: `skewAt`); over the picture (.rc-photo, 4), under the faces */
+.rc-onboard { position:absolute; inset:0; z-index:6; transform-origin:0 0; }
+/* what stands in front of the wall tablet in the picture (Ben's head), over our tablet as it lands and while it is on the wall */
+.rc-photo--front { z-index:7; background:none; pointer-events:none; }

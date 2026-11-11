@@ -30,7 +30,7 @@ import { GREETING, AI_NAME } from '@/lib/demoAi/prompt.mjs';
 import { TOUR, tourContext, isContinue, continueLine } from '@/lib/demoAi/tour.mjs';
 import './demo-ai.css';
 
-const LAYOUT_CHOICES = [['devices', 'Phone + Tablet'], ['all', 'Everything'], ['web', 'Web'], ['tablet', 'Tablet'], ['phone', 'Phone']];
+const LAYOUT_CHOICES = [['devices', 'Phone + Tablet'], ['all', 'Everything'], ['web', 'Web'], ['tablet', 'Tablet'], ['phone', 'Phone'], ['video', 'Video']];
 const pad = n => String(n).padStart(2, '0');
 
 const Glyph = ({ name }) => {
@@ -143,6 +143,11 @@ export default function DemoAI() {
     fetch('/api/demo-ai/chat').then(r => r.json()).then(d => setStatus({ ai: !!d.ai, voice: !!d.voice })).catch(() => setStatus({ ai: false, voice: false }));
   }, []);
   useEffect(() => { chatEnd.current?.scrollIntoView({ block: 'end' }); }, [messages, draft, transcript]);
+  useEffect(() => { // (the shared screen, for trying its commands by hand in development: __demoStage.current.run({target: 'video', cmd: 'play', arg: 'precision-planning'}))
+    if (process.env.NODE_ENV === 'production' || phase !== 'call') return undefined;
+    window.__demoStage = stage; window.__demoHistory = history; // (and what was said, commands and all)
+    return () => { delete window.__demoStage; delete window.__demoHistory; };
+  }, [phase]);
   useEffect(() => { if (!notice) return; const t = setTimeout(() => setNotice(''), 7000); return () => clearTimeout(t); }, [notice]);
 
   const commit = (role, text, hidden = false) => { history.current = [...history.current, { role, text, ...(hidden ? { hidden } : {}) }]; setMessages(history.current); };
@@ -203,7 +208,7 @@ export default function DemoAI() {
     const lang = last ? ` Answer in the SAME language as the visitor's last message ("${last.slice(0, 160)}").` : '';
     return info.failed
       ? `(Screen update, not said by the visitor: setting up the ${info.industry} workspace failed — ${info.error}. In one or two sentences, say so simply and offer to show the closest example already in the app, or to continue the tour. No screen commands.${lang})`
-      : `(Screen update, not said by the visitor: the ${info.industry} workspace is now on screen — unit ${info.unit}; team boards ${info.teams.join(', ')}${info.tickets.length ? `; ticket board ${info.tickets.join(', ')}` : ''}. The tablet shows the ${info.teams[0]} board, the phone shows the home dashboard with this unit on top. Present it now like a demo in 3 to 5 short sentences: name a few of its real missions from CURRENT SCREEN so your cursor points at them, and you may open one to show its steps. Do not use [[stage industry]] again. End with a question.${lang})`;
+      : `(Screen update, not said by the visitor: the ${info.industry} workspace is now on screen — unit ${info.unit}; team boards ${info.teams.join(', ')}${info.tickets.length ? `; ticket board ${info.tickets.join(', ')}` : ''}. The tablet shows the ${info.teams[0]} board, the phone shows the home dashboard with this unit on top. Present it now like a demo in 3 to 5 short sentences: name a few of its real missions from CURRENT SCREEN so your cursor points at them, and you may open one to show its steps. Do not use [[stage industry]] again. The storyboard videos (VIDEO DATA) now use this business's names too; you can offer one. End with a question.${lang})`;
   };
   const runFollowUp = () => {
     const info = followUp.current;
@@ -373,8 +378,9 @@ export default function DemoAI() {
           <button type="button" className={`dai-remote${remoteControl ? ' is-on' : ''}`} aria-pressed={remoteControl} onClick={() => setRemoteControl(r => !r)} title="Let me click the app myself"><Glyph name="hand"/>{remoteControl ? 'You have control' : 'Take control'}</button>
         </div>
         <div className="dai-stage-wrap">
-          <DemoStage ref={stage} store={store} interactive={remoteControl} onView={v => { view.current = v; if (v.stage && v.stage !== layout) setLayout(v.stage); }} onAction={text => { history.current = [...history.current, { role: 'action', text }]; setMessages(history.current); }} onIndustry={onIndustry}/>
-          {captions && (heard || caption) && <div className="dai-captions" aria-live="polite">{heard ? <p dir="auto"><b>{name || 'You'}</b>{heard}</p> : <p dir="auto"><b>{AI_NAME}</b>{caption}</p>}</div>}
+          <DemoStage ref={stage} store={store} interactive={remoteControl} words={captions && !heard ? caption : ''} onView={v => { view.current = v; if (v.stage && v.stage !== layout) setLayout(v.stage); }} onAction={text => { history.current = [...history.current, { role: 'action', text }]; setMessages(history.current); }} onIndustry={onIndustry}/>
+          {/* (Mav's words are written on the stage as a video writes its words, DemoStage `words`; over a storyboard video its own words are the captions. The visitor's are shown here while they talk) */}
+          {captions && heard && <div className="dai-captions" aria-live="polite"><p dir="auto"><b>{name || 'You'}</b>{heard}</p></div>}
           {notice && <div className="dai-notice" role="status">{notice}<button type="button" onClick={() => setNotice('')} aria-label="Dismiss">×</button></div>}
         </div>
       </section>

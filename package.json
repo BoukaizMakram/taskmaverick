@@ -9,14 +9,18 @@
     "gen:tts": "node scripts/generate-tts.mjs",
     "fetch:proofs": "node scripts/fetch-proof-images.mjs",
     "gen:posters": "node scripts/generate-asset-posters.mjs",
-    "gen:storyboard": "node scripts/capture-storyboard.mjs"
+    "gen:images": "node scripts/generate-images.mjs",
+    "gen:storyboard": "node scripts/capture-storyboard.mjs",
+    "export:storyboard": "node scripts/storyboard-export.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@remotion/player": "4.0.539",
     "gsap": "^3.13.0",
     "next": "^16.3.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "remotion": "4.0.539"
   },
   "overrides": {
     "postcss": "^8.5.26"

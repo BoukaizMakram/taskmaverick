@@ -1,0 +1,9 @@
+/* Meal & Rest Breaks (components/sections/BreaksStage.jsx): its own classes, prefixed sec-br-. */
+
+/* the break area the display hangs in: a photograph the plate's size (0 to 1042), under the tablet. The photo (scripts/generate-images.mjs, `break-room`) is the whole room; the live
+   tablet is put over the photo's (BreaksStage's WALL). Boards captured before the photo still carry the drawing it replaced (the wall, the clock, the door...): only their tablet is shown. */
+.sec-br-room { position:absolute; left:0; top:0; width:1042px; height:900px; overflow:hidden; pointer-events:none; }
+.sec-br-scene { position:absolute; left:0; top:0; width:1042px; height:900px; transform-origin:0 0; }
+.sec-br-scene::before { content:''; position:absolute; inset:0; background:#d8d0c4 url('/storyboard-art/break-room.jpg') 0 0 / 100% 100% no-repeat; }
+.sec-br-scene > * { position:absolute; }
+.sec-br-scene > :not(.adx-tablet) { display:none; }

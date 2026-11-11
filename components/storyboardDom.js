@@ -7,6 +7,8 @@
 import {bubbleShape, bubbleStyle} from '@/lib/storyboardBubble.mjs';
 import {isBackdrop, meets} from '@/lib/storyboardPick.mjs';
 import {isGradient, paintCss} from '@/lib/storyboardPaint.mjs';
+import {BACKGROUND} from '@/lib/storyboardEdits.mjs';
+import {isArt} from '@/lib/storyboardPlayer.mjs';
 
 export const STAGE = 1600;
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -36,9 +38,11 @@ export function scopeIds(html, prefix) {
 // The stage's HTML for a frame: its layers in order. A chat bubble's shape goes
 // just under its words, and the words say where the tail points and how much of
 // the bubble to show (the shape is drawn by drawShape).
+const attr = text => String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 export function frameHtml(layers, htmlOf, prefix, bubbleMode) {
   const parts = layers.map(layer => {
     let html = htmlOf(layer.asset) ?? '';
+    if (layer.name) html = html.replace(`data-sb-root="${layer.key}"`, `data-sb-root="${layer.key}" data-sb-name="${attr(layer.name)}"`); // (its name: an element's look shared by name, `looks.layers`)
     if (layer.kind !== 'bubble') return html;
     const part = (name, v) => (layer.tip && Number.isFinite(v) && v < 1 ? ` data-sb-${name}="${v}"` : ''); // a tail on its way out, or fading
     const attrs = ` data-sb-bubble="" data-sb-mode="${layer.mode ?? bubbleMode ?? 'words'}" data-sb-style="${layer.style || 'yellow'}"${layer.tip ? ` data-sb-tip="${layer.tip.join(',')}"` : ''}${part('reach', layer.reach)}${part('tail-opacity', layer.tailOpacity)}`;
@@ -88,6 +92,7 @@ function loadStills(stage) {
 
 // ---- Addressing ---------------------------------------------------------------
 export function elementOf(stage, key) {
+  if (!key) return null; // (a part that is not in a layer has no key: an outline copy the video draws over its picture)
   const [layer, path = ''] = key.split('/');
   const root = stage.querySelector(`[data-sb-root="${CSS.escape(layer)}"]`);
   if (!root) return null;
@@ -100,6 +105,10 @@ export function keyOf(el) {
   for (let cur = el; cur !== root; cur = cur.parentElement) path.unshift([...cur.parentElement.children].indexOf(cur));
   return root.dataset.sbRoot + (path.length ? `/${path.join('.')}` : '');
 }
+
+// An asset fixed in place (`data-sb-fixed`: the background of every slide of All storyboards; the user, 2026-11-06: "lock the background in all slides, to be editable in color but not
+// position/scale"): it is picked and its look changes, but nothing moves, nudges, aligns, resizes or scales it; a drag from it draws a rectangle.
+export const isFixed = el => !!el?.closest?.('[data-sb-fixed]');
 
 // ---- Words --------------------------------------------------------------------
 export const isWords = el => !!el?.matches?.('p[aria-label]');
@@ -258,13 +267,14 @@ export const scaleTo = (el, [sx, sy]) => { el.style.scale = Math.abs(sx - 1) < 0
 // tall as they are, or as tall as it was given if that is more (a height of 0: as tall as its words).
 export const sizeOf = el => (el.hasAttribute('data-sb-bubble') ? (b => [b.w, b.h])(bubbleBoxOf(stageOf(el), el)) : [parseFloat(el.style.width) || el.offsetWidth, parseFloat(el.style.height) || el.offsetHeight]);
 export function sizeTo(el, [w, h]) {
-  if (!el.hasAttribute('data-sb-bubble')) { if (w) el.style.width = `${w}px`; if (h) el.style.height = `${h}px`; return; }
+  // (a text box, data-sb-box="text": its width is where its lines break, its height is its words': the user, 2026-11-06, "resizing the rectangle should change line limit")
+  if (!el.hasAttribute('data-sb-bubble')) { if (w) el.style.width = `${w}px`; if (h && el.dataset.sbBox !== 'text') el.style.height = `${h}px`; return; }
   el.dataset.sbSize = `${w},${h}`;
   const inner = w ? Math.max(1, w - 2 * bubbleStyle(el.dataset.sbStyle).pad[0]) : 0;
   if (inner) { el.dataset.sbFit = ''; el.style.setProperty('--sb-fit', `${inner}px`); } else { delete el.dataset.sbFit; el.style.removeProperty('--sb-fit'); }
 }
 // How an asset is resized by its handles. A box (a picture, a drawing, the spotlight,
-// the chat bubble) gets a new width and height ('size'); anything else is scaled
+// the chat bubble, a text box: its width, its lines wrapping to it) gets a new width and height ('size'); anything else is scaled
 // ('scale'). A UI element always keeps its proportions (free: false). The chat bubble
 // and the spotlight stretch any way (Shift keeps the proportions); a picture or a
 // drawing keeps them unless Shift is held (keep: true).
@@ -275,9 +285,38 @@ export function resizeKind(el) {
   if (el.hasAttribute?.('data-sb-bubble')) return {mode: 'size', free: true, keep: false, bubble: true};
   return {mode: 'scale', free: false, keep: true};
 }
-// Where an asset is on screen, as its handles see it: the chat bubble by its yellow box.
+// What is SEEN of a piece laid out bigger than it shows (the user, 2026-11-09, a mission of All storyboards: "fix selection of missions to show selection only
+// on mission"): a mission card of the cuts sits in a 1080 px wide board, since its sizes are in that board's units (--ref-u), so its box was the board's, far
+// wider than the card. `data-sb-seen` on the piece names the element inside it that is what is seen (`.chip`; written by scripts/capture-cuts.mjs from
+// `data-cut-seen`, and carried by a pasted copy): its selection, handles, snapping, rectangle picking and clicks are that element's. null: the piece itself.
+// A cut's mission card captured or pasted before `data-sb-seen` was written is known by its class (`SEEN_BY_CLASS`: the piece, or the piece a pasted copy wraps).
+const SEEN_BY_CLASS = [['rc-card', '.chip']];
+const seenSelector = el => {
+  if (el?.dataset?.sbSeen) return el.dataset.sbSeen;
+  if (!el?.hasAttribute?.('data-sb-root')) return null;
+  const piece = el.firstElementChild?.hasAttribute('data-sb-wrap') ? el.firstElementChild.firstElementChild : el;
+  if (piece?.dataset?.sbSeen) return piece.dataset.sbSeen;
+  return SEEN_BY_CLASS.find(([cls]) => piece?.classList?.contains(cls))?.[1] ?? null;
+};
+export function seenOf(el) {
+  const sel = seenSelector(el);
+  if (!sel) return null;
+  let seen = null;
+  try { seen = el.querySelector(sel); } catch { return null; }
+  if (!seen) return null;
+  const r = seen.getBoundingClientRect();
+  return r.width >= 1 && r.height >= 1 ? seen : null;
+}
+// Whether a screen point is off what is seen of the piece `el` is in (a click on the empty part of a mission's board goes to what is under it).
+function offSeen(el, x, y) {
+  const root = el?.closest?.('[data-sb-root]'), seen = root && seenOf(root);
+  if (!seen) return false;
+  const r = seen.getBoundingClientRect();
+  return x < r.left || x > r.right || y < r.top || y > r.bottom;
+}
+// Where an asset is on screen, as its handles see it: the chat bubble by its yellow box, a piece with `data-sb-seen` by what is seen of it.
 export function screenRectOf(el) {
-  if (!el.hasAttribute('data-sb-bubble')) return el.getBoundingClientRect();
+  if (!el.hasAttribute('data-sb-bubble')) return (seenOf(el) ?? el).getBoundingClientRect();
   const stage = stageOf(el), S = stage.getBoundingClientRect(), u = S.width / STAGE, b = bubbleBoxOf(stage, el);
   const left = S.left + b.x * u, top = S.top + b.y * u, width = b.w * u, height = b.h * u;
   return {left, top, width, height, right: left + width, bottom: top + height};
@@ -321,10 +360,16 @@ export function bubbleBoxOf(stage, words) {
 // Draws every bubble's shape around its words and onto its tail's point; called
 // whenever the words, a bubble or a tail move.
 export function drawShape(stage, edit, override = null) {
-  for (const words of stage.querySelectorAll('[data-sb-bubble]')) {
+  drawShapes([[stage, edit, override]]);
+}
+// The bubbles of several stages: every box measured first, then every shape drawn. A measure after a shape was drawn made the page lay
+// itself out again, once for each bubble (the user, 2026-10-22: faster).
+export function drawShapes(list) {
+  const todo = list.flatMap(([stage, edit, override = null]) => [...stage.querySelectorAll('[data-sb-bubble]')].map(words => {
     const key = words.dataset.sbRoot, g = stage.querySelector(`[data-sb-shape="${CSS.escape(key)}"]`), p = words.querySelector('p');
-    if (!g || !p) continue;
-    const box = bubbleBoxOf(stage, words);
+    return g && p ? {words, g, box: bubbleBoxOf(stage, words), edit, override} : null;
+  }).filter(Boolean));
+  for (const {words, g, box, edit, override} of todo) {
     const rect = {x: box.x + box.pad[0], y: box.y + box.pad[1], w: box.w - 2 * box.pad[0], h: box.h - 2 * box.pad[1]};
     const mode = words.dataset.sbMode, style = words.dataset.sbStyle;
     const reach = Number(words.dataset.sbReach ?? 1), tailOpacity = Number(words.dataset.sbTailOpacity ?? 1);
@@ -366,7 +411,14 @@ export function applyStyle(el, s = {}) {
     set('border-radius', s.radius != null ? `${s.radius}px` : null);
     set('background-color', s.fill == null || isGradient(s.fill) ? null : s.fill);
     set('background', isGradient(s.fill) ? paintCss(s.fill) : null); // a gradient fill (the Metal plate, ...)
-    const stroked = s.stroke != null || s.strokeWidth != null;
+    // (a drawing, data-sb-box="drawing": its stroke color and width are its line's, kept as it was captured until a style says otherwise)
+    const drawing = el.dataset?.sbBox === 'drawing';
+    if (drawing) for (const path of el.querySelectorAll('path[data-ink]')) {
+      if (path.dataset.sbInk0 == null) path.dataset.sbInk0 = `${path.getAttribute('stroke')}|${path.getAttribute('stroke-width')}`;
+      const [color0, width0] = path.dataset.sbInk0.split('|');
+      path.setAttribute('stroke', s.stroke ?? color0); path.setAttribute('stroke-width', String(s.strokeWidth ?? width0));
+    }
+    const stroked = !drawing && (s.stroke != null || s.strokeWidth != null);
     set('border-style', stroked ? 'solid' : null);
     set('border-color', stroked ? s.stroke ?? 'currentColor' : null);
     set('border-width', stroked ? `${s.strokeWidth ?? 1}px` : null);
@@ -440,14 +492,89 @@ const FONT_NAMES = {patrickhand: 'Patrick Hand', indieflower: 'Indie Flower', sh
 // plain block) but has a transform, a move or a scale on it is stacked like a positioned one (and nothing
 // else changes: `relative` with no offset leaves it where it is, and a transform already made it the
 // containing block of what is placed inside it), so a layer sent behind another really goes behind it.
-function stack(el, z) {
-  el.style.zIndex = String(z);
-  const cs = getComputedStyle(el);
-  if (cs.position === 'static' && (cs.transform !== 'none' || cs.translate !== 'none' || cs.scale !== 'none')) el.style.position = 'relative';
+// `list`: [element, z]. All of them read first, then all written: reading one after another was written made the page work its styles out again each time, for every layer of
+// every frame drawn (a second of an edit's half a second: the user, 2026-10-22, "make the storyboard tool mooore ... faster").
+function stackAll(list) {
+  const lift = list.map(([el]) => { const cs = getComputedStyle(el); return cs.position === 'static' && (cs.transform !== 'none' || cs.translate !== 'none' || cs.scale !== 'none'); });
+  list.forEach(([el, z], i) => { el.style.zIndex = String(z); if (lift[i]) el.style.position = 'relative'; });
 }
 
-// Puts a frame's saved changes on its freshly drawn stage.
-export function applyEdits(stage, edit) {
+// ---- The shared looks (lib/storyboardEdits.mjs `looks`, the user, 2026-10-21: "edit everything like the colors of background ... apply to all of the videos in all the storyboard and all slides") ----
+// The kind of a part: a layer's root keyed plate / panel (the captures and the split design name them so), a yellow outline (`.iq2-mark`, wherever it is), or none.
+export const lookKindOfRoot = root => { const key = root?.dataset?.sbRoot ?? ''; return /^plate(-\d+)?$/.test(key) ? 'plate' : /^panel(-\d+)?$/.test(key) ? 'panel' : null; };
+const CONNECTORS = 'svg.sec-flow-lines, svg.sec-rk-arrows'; // (the purple lines between cards: an svg of paths with an arrow head, a <marker>, in every section stage)
+export function partsOfKind(stage, kind) {
+  if (kind === 'outline') return [...stage.querySelectorAll('.iq2-mark')];
+  if (kind === 'connector') return [...stage.querySelectorAll(CONNECTORS)];
+  if (kind === 'plate' || kind === 'panel') return [...stage.querySelectorAll('[data-sb-root]')].filter(el => !el.parentElement?.closest('[data-sb-root]') && lookKindOfRoot(el) === kind);
+  return [];
+}
+// A connector line's name: its own (data-iq-target), else its place among the lines of its drawing ('#2'): the same line in every slide of a scene.
+export const lineName = (path, i = [...path.parentNode.children].filter(n => n.tagName?.toLowerCase() === 'path').indexOf(path)) => path.getAttribute('data-iq-target') || `#${i}`;
+// The arrow heads a connector can have (lib/storyboardEdits.mjs ARROW_HEADS), drawn in the marker's 12 x 12 box: [refX, markup with its color].
+const HEADS = {
+  arrow: [9, c => `<path d="M1.5 1.5 10 6l-8.5 4.5" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`],
+  triangle: [9.5, c => `<path d="M1 1.2 11 6 1 10.8Z" fill="${c}"/>`],
+  dot: [6, c => `<circle cx="6" cy="6" r="3.6" fill="${c}"/>`],
+};
+// A look put on a part (over its slide's own styles): a fill (a color or a gradient), an outline's color (its glow with it) and thickness, or a connector's color, thickness and arrow head.
+export function putLook(el, kind, look) {
+  if (kind === 'connector') {
+    const lines = [...el.querySelectorAll(':scope > path')], marker = el.querySelector('marker'), color = look.stroke ?? lines[0]?.getAttribute('stroke') ?? '#7b3cf0';
+    for (const [i, p] of lines.entries()) if (look.hide?.includes(lineName(p, i))) p.style.display = 'none'; // (a line deleted on this video: the user, 2026-10-22, "a way to cancel any line I want by selecting and deleting")
+    for (const p of lines) {
+      if (look.stroke) p.setAttribute('stroke', look.stroke);
+      if (look.strokeWidth != null) p.setAttribute('stroke-width', String(look.strokeWidth));
+      if (look.arrow === 'none') p.removeAttribute('marker-end'); else if (look.arrow && marker?.id) p.setAttribute('marker-end', `url(#${marker.id})`);
+    }
+    const head = HEADS[look.arrow ?? el.dataset.sbArrow ?? 'arrow'];
+    if (marker && head && (look.stroke || look.arrow)) { marker.setAttribute('refX', String(head[0])); marker.innerHTML = head[1](color); }
+    if (look.arrow) el.dataset.sbArrow = look.arrow;
+    return;
+  }
+  if (kind === 'outline') {
+    if (look.stroke) { el.style.borderColor = look.stroke; el.style.boxShadow = `0 0 16px 3px color-mix(in srgb, ${look.stroke} 55%, transparent)`; }
+    if (look.strokeWidth != null) el.style.borderWidth = `${look.strokeWidth}px`;
+  } else if (look.fill) el.style.background = paintCss(look.fill);
+}
+// Every part of a kind takes the shared look of its kind, unless its slide made it unique: its own look then, that part's (`ownLooks[key]`, the sidebar) or that kind's on this slide
+// (`ownLooks['kind:<kind>']`, the look editor's Make unique: all the slides of a video).
+export function applyLooks(stage, looks, edit) {
+  const own = edit?.ownLooks ?? {}, bg = own[BACKGROUND] ?? looks?.background;
+  if (bg?.fill) stage.style.background = paintCss(bg.fill);
+  for (const kind of ['plate', 'panel', 'outline', 'connector']) for (const el of partsOfKind(stage, kind)) {
+    const look = own[keyOf(el)] ?? own[`kind:${kind}`] ?? looks?.[kind];
+    if (look) putLook(el, kind, look);
+  }
+}
+// What a double-click on the picture of a video that is not on a text is on (the video's inspector brings that color's section into view, components/Storyboard.jsx): a yellow outline,
+// the gray side, the plate, or the background where nothing else is. The software itself has none (null). -> {kind, key}
+export function lookTargetAt(x, y, stage) {
+  for (const el of document.elementsFromPoint(x, y)) {
+    if (el === stage) break;
+    if (!stage.contains(el)) continue;
+    const mark = el.closest('.iq2-mark');
+    if (mark && Number(getComputedStyle(mark).opacity) > 0.05) return {kind: 'outline', key: keyOf(mark)};
+    const lines = el.closest(CONNECTORS), line = lines && el.closest('path');
+    if (lines) return {kind: 'connector', key: keyOf(lines), line: line && line.parentNode === lines ? lineName(line) : null}; // (`line`: the one double-clicked, to delete it)
+    const root = el.closest('[data-sb-root]'), kind = lookKindOfRoot(root);
+    if (kind) return {kind, key: keyOf(root)};
+    if (covers(el) || el.closest('.sb-shape')) return null; // (the software, a chat box)
+  }
+  return {kind: 'background', key: BACKGROUND};
+}
+// The look a part shows now (the editor starts from it).
+export function lookNow(stage, target, el = target.kind === 'background' ? null : elementOf(stage, target.key)) { // (`el`: the part itself, when it is at hand)
+  if (target.kind === 'background') return {fill: stage.style.background || getComputedStyle(stage).backgroundColor};
+  if (!el) return {};
+  if (target.kind === 'connector') { const p = el.querySelector(':scope > path'); return {stroke: p?.getAttribute('stroke') ?? '#7b3cf0', strokeWidth: Number(p?.getAttribute('stroke-width')) || 3, arrow: el.dataset.sbArrow ?? (p && !p.getAttribute('marker-end') ? 'none' : 'arrow')}; }
+  const cs = getComputedStyle(el);
+  return target.kind === 'outline' ? {stroke: cs.borderTopColor, strokeWidth: parseFloat(cs.borderTopWidth) || 0} : {fill: el.style.background || cs.backgroundColor};
+}
+
+// Puts a frame's saved changes on its freshly drawn stage (`looks`: the shared looks of the board, put last: over the slide's own styles).
+export function applyEdits(stage, edit, looks = null) {
+  if (looks?.layers) for (const root of stage.querySelectorAll('[data-sb-name]')) { const look = looks.layers[root.dataset.sbName]; if (look) applyStyle(root, look.style); } // (the look every element of that name has: before the slide's own)
   for (const [key, delta] of Object.entries(edit?.moves ?? {})) { const el = elementOf(stage, key); if (el) moveTo(el, delta); }
   for (const [key, size] of Object.entries(edit?.sizes ?? {})) { const el = elementOf(stage, key); if (el) sizeTo(el, size); }
   for (const [key, scale] of Object.entries(edit?.scales ?? {})) {
@@ -472,17 +599,21 @@ export function applyEdits(stage, edit) {
   stage.style.background = edit?.background ? paintCss(edit.background) : ''; // the frame's own background
   if (edit?.order?.length) { // the stacking you gave the assets: each one's place by its order in the frame (a chat box's words just above its shape)
     let i = 0;
+    const list = [], shapes = [];
     for (const root of stage.querySelectorAll('[data-sb-root]')) {
       if (root.parentElement?.closest('[data-sb-root]')) continue;
       const z = 20 + 2 * i++;
-      stack(root, root.hasAttribute('data-sb-bubble') ? z + 1 : z);
+      list.push([root, root.hasAttribute('data-sb-bubble') ? z + 1 : z]);
       let outer = root; // a captured layer sits inside the demo's camera (a wrapper that is itself a layer of the stage): that wrapper is what is stacked among the others
       while (outer.parentElement && outer.parentElement !== stage) outer = outer.parentElement;
-      if (outer !== root && outer.parentElement === stage) stack(outer, z);
+      if (outer !== root && outer.parentElement === stage) list.push([outer, z]);
       const shape = stage.querySelector(`svg.sb-shape[data-sb-for="${CSS.escape(root.dataset.sbRoot)}"]`);
-      if (shape) shape.style.zIndex = String(z);
+      if (shape) shapes.push([shape, z]);
     }
+    stackAll(list);
+    for (const [shape, z] of shapes) shape.style.zIndex = String(z);
   }
+  applyLooks(stage, looks, edit);
   loadStills(stage);
   drawShape(stage, edit);
 }
@@ -534,6 +665,7 @@ export function hitAt(x, y) {
     if (el === stage) return {stage, el: null};
     const shape = el.closest('.sb-shape');
     const target = shape ? stage.querySelector(`[data-sb-root="${CSS.escape(shape.dataset.sbFor)}"]`) : el;
+    if (!shape && offSeen(target, x, y)) continue; // (the empty part of a piece laid out bigger than it shows: what is under it)
     if (target?.closest('[data-sb-root]')) return {stage, el: target};
   }
   return null;
@@ -549,7 +681,7 @@ export function layersAt(x, y) {
   for (const node of document.elementsFromPoint(x, y)) {
     if (node === stage || !stage.contains(node)) continue;
     const shape = node.closest?.('.sb-shape'), el = shape ? stage.querySelector(`[data-sb-root="${CSS.escape(shape.dataset.sbFor)}"]`) : node;
-    if (!el?.closest('[data-sb-root]')) continue;
+    if (!el?.closest('[data-sb-root]') || (!shape && offSeen(el, x, y))) continue;
     const chain = chainOf(el), level = chain.at(-1);
     if (!level) continue;
     const key = keyOf(level);
@@ -598,12 +730,13 @@ export function chainOf(el) {
   if (isBubble(root)) return [root];
   const down = [];
   for (let cur = el; cur; cur = cur.parentElement) { down.unshift(cur); if (cur === root) break; }
-  const u = unitOf(stageOf(root)), chain = [root];
+  const u = unitOf(stageOf(root)), chain = [root], seen = seenOf(root);
   let last = root;
   for (const cur of down.slice(1)) {
     if (cur.namespaceURI === SVG_NS && cur.tagName !== 'svg') break;
     if (cur.hasAttribute('data-sb-wrap')) continue; // the stage around a piece brought in: not a level
-    const a = cur.getBoundingClientRect(), b = last.getBoundingClientRect();
+    if (seen && cur !== seen && cur.contains(seen)) continue; // what holds what is seen of the piece (`data-sb-seen`): not a level
+    const a = cur.getBoundingClientRect(), b = screenRectOf(last);
     const apart = Math.abs(a.left - b.left) + Math.abs(a.top - b.top) + Math.abs(a.width - b.width) + Math.abs(a.height - b.height);
     if (apart > 3 * u || hasText(cur) || cur.tagName === 'IMG') { chain.push(cur); last = cur; }
   }
@@ -629,4 +762,80 @@ export function nameOf(el, layerName) {
   if (quoted && (!known || !el.children.length)) return quoted;
   if (known) return known;
   return classes[0] ? classes[0].replace(/^[a-z0-9]+-/, '').replace(/[-_]+/g, ' ') : el.tagName.toLowerCase();
+}
+
+// ---- The gray side of a slide that does not show the tablet (the user, 2026-10-22: "for tablet view the right side gray area is good, but for other views, the right
+// side area should be as smaller as from tablet right side of the frame till the end of the slide ... gray right side get smaller to the point where the text is
+// centered horizontally"): its left edge goes to where the tablet's frame is SEEN to end in the tablet's slides, PANEL_EDGE (stage px), and the words on it go to
+// its middle (the video centers its words itself: `words: false`). The art stays where it is. On the board and in every video (components/storyboardPlayerDom.js).
+export const PANEL_EDGE = 1172;
+export const DEVICE_RIGHT = 1235 / 1285; // (where the iPad's frame ends in its photo: the photo has an empty margin round the frame)
+const shownEl = el => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+// The tablet (or the web report) a slide shows whole, or null: a zoom on a part of one is not the tablet's view
+export function deviceOf(stage) {
+  const S = stage.getBoundingClientRect(), u = S.width / STAGE;
+  if (!u) return null;
+  for (const el of stage.querySelectorAll('.tbl-tablet, .iq2-report')) {
+    if (!shownEl(el)) continue;
+    const q = el.getBoundingClientRect(), r = {x: (q.left - S.left) / u, y: (q.top - S.top) / u, w: q.width / u, h: q.height / u};
+    if (r.w >= 300 && r.x > -60 && r.y > -60 && r.x + r.w < STAGE + 60 && r.y + r.h < 960) return {el, rect: r, right: r.x + r.w * (el.matches('.iq2-report') ? 1 : DEVICE_RIGHT)};
+  }
+  return null;
+}
+export function narrowPanel(stage, {tablet = null, words = true} = {}) {
+  const panel = [...stage.querySelectorAll('[data-sb-root]')].find(el => lookKindOfRoot(el) === 'panel');
+  if (!panel || (tablet ?? !!deviceOf(stage))) return false;
+  const S = stage.getBoundingClientRect(), u = S.width / STAGE;
+  if (!u) return false;
+  const left = (panel.getBoundingClientRect().left - S.left) / u;
+  if (left >= PANEL_EDGE - 1 || left < STAGE * 0.3 || left > STAGE * 0.97) return false; // (already there, or no words' side on this slide)
+  const dx = PANEL_EDGE - left, [x, y] = translateOf(panel);
+  moveTo(panel, [x + dx * u / (parentScale(panel) || 1), y]); // (its right part goes past the slide's edge, where nothing is seen)
+  if (words) {
+    const middle = S.left + (PANEL_EDGE + STAGE) / 2 * u;
+    for (const el of stage.querySelectorAll('[data-sb-bubble]')) {
+      const p = el.querySelector('p') ?? el, q = p.getBoundingClientRect();
+      if (!q.width || (q.left - S.left) / u < left - 4) continue; // (words that are not on the gray side)
+      const [bx, by] = translateOf(el);
+      moveTo(el, [bx + (middle - (q.left + q.right) / 2) / (parentScale(el) || 1), by]);
+    }
+  }
+  return true;
+}
+// The guide lines of a slide (the user, 2026-10-22, with a picture of Figma's): through where the tablet's frame ends, the edges of the words, and the gray side's
+// edge when the slide has no tablet. -> {x: [stage px], y: [stage px]}
+export function guidesOf(stage) {
+  const S = stage.getBoundingClientRect(), u = S.width / STAGE, xs = [], ys = [];
+  if (!u) return {x: xs, y: ys};
+  const device = deviceOf(stage);
+  if (device) xs.push(device.right);
+  else { const panel = [...stage.querySelectorAll('[data-sb-root]')].find(el => lookKindOfRoot(el) === 'panel'); if (shownEl(panel)) { const left = (panel.getBoundingClientRect().left - S.left) / u; if (left > STAGE * 0.3 && left < STAGE * 0.97) xs.push(left); } }
+  for (const el of stage.querySelectorAll('[data-sb-bubble]')) {
+    const p = el.querySelector('p');
+    if (!shownEl(el) || !p || !p.textContent.trim()) continue;
+    const q = p.getBoundingClientRect();
+    if (!q.width) continue;
+    xs.push((q.left - S.left) / u, (q.right - S.left) / u); ys.push((q.top - S.top) / u, (q.bottom - S.top) / u);
+  }
+  const keep = (list, max) => [...new Set(list.map(v => Math.round(v)))].filter(v => v > 0 && v < max);
+  return {x: keep(xs, STAGE), y: keep(ys, 900)};
+}
+
+// ---- Black behind bare software (the user, 2026-10-22: "make all video that has no tablet, no frames like mobile just UI or mobile UI without a frame, make their background
+// black behind the UI, not behind text", then "on all videos/slides in all boards"): a slide whose software has no device's frame round it (no tablet, no phone, no simulator:
+// a mission's details, a card, a web page) has its plate black; the gray side of the words stays, and a slide with no software (a title) is left alone. Every video
+// (components/storyboardPlayerDom.js: `set` keeps what it changes, undone at its next layout) and every slide on the board (FrameArt; not the lines Scratch and Fonts).
+// The software is told by its layer's name (`data-sb-name`, isArt). What is on a slide counts even while it is faded out (neither its visibility, since a video lays a slide out
+// ahead in a hidden shell, nor its opacity: a card that comes in during a scene starts at 0, and its first slide went gray, the user, 2026-10-22: "sometimes it shows up gray at the
+// beginning"); only what is not laid out at all (display: none) does not. Not its boxes either: a slide on the board is drawn while it is still off the screen, where the page does
+// not lay it out (content-visibility), and its boxes are none.
+export const DEVICE_FRAMES = '.tbl-tablet, .ph-phone, .sim-device';
+export function blackPlate(stage, set = (el, prop, value) => el.style.setProperty(prop, value)) {
+  const shown = el => (el.checkVisibility ? el.checkVisibility() : getComputedStyle(el).display !== 'none');
+  const roots = [...stage.querySelectorAll('[data-sb-root]')].filter(el => !el.parentElement?.closest('[data-sb-root]'));
+  if (!roots.some(el => isArt({name: el.dataset.sbName}) && shown(el))) return false; // (no software on it)
+  if ([...stage.querySelectorAll(DEVICE_FRAMES)].some(shown)) return false; // (a tablet, a phone: its plate as it is)
+  const plates = partsOfKind(stage, 'plate');
+  for (const el of plates) set(el, 'background', '#000');
+  return plates.length > 0;
 }

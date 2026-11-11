@@ -85,14 +85,32 @@
 .dai-stage-wrap { position: relative; flex: 1; min-height: 0; display: flex; }
 
 /* ---- stage (shared screen) ---- */
-.dai-stage { color: #111; position: relative; flex: 1; min-height: 0; overflow: hidden; background: radial-gradient(#ffffff14 1px, transparent 1.4px) 0 0 / 26px 26px, var(--dai-hero); }
+.dai-stage { color: #111; position: relative; flex: 1; min-height: 0; overflow: hidden; background: #2b2c2e; }/* (round the picture: the dark of the videos' panel) */
 .dai-stage-inner { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; }
 .dai-frame { position: absolute; left: 0; top: 0; transform-origin: 0 0; visibility: hidden; }
 .dai-stage:not(.is-interactive) .dai-frame { pointer-events: none; user-select: none; }
-.dai-frame--phone { width: 380px; filter: drop-shadow(0 30px 40px #00061499); }
+.dai-frame--phone { width: 380px; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.4)); }
 .dai-frame--tablet { width: 1000px; }
-.dai-frame--tablet .tbl-tablet { filter: drop-shadow(0 30px 40px #00061499); }
+.dai-frame--tablet .tbl-tablet { filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.4)); }
 .dai-frame--web { width: 1600px; }
+/* ---- The storyboard videos' look on the live stage (the user, 2026-10-20: "the style like the background the cursor etc."; components/demo-ai/DemoStage.jsx LAYOUTS) ---- */
+/* the metal plate and its dark panel (lib/sections/captureCore.mjs PLATE_FILL / PANEL_FILL): the panel is the right side, or a band under the screens */
+.dai-plate { position: absolute; left: -1.69px; top: -2.25px; width: 1601.69px; height: 904.35px; z-index: 0; background: linear-gradient(135deg, #656a73 0%, #656a73 50%, #9ea4b0 100%); pointer-events: none; }
+.dai-panel { position: absolute; left: 0; top: 0; width: 1601.69px; height: 904.35px; z-index: 0; background: linear-gradient(135deg, #404245 0%, #333537 50%, #444547 100%); pointer-events: none; }
+/* Mav's words, where a video writes its words: white Montserrat 26 (components/storyboardPlayerDom.js WORDS), in the middle of their room */
+.dai-words { position: absolute; left: 0; top: 0; z-index: 5; transform: translateY(-50%); text-align: center; pointer-events: none; }
+.dai-words p { margin: 0; font: 700 26px/1.35 var(--font-montserrat), sans-serif; color: #fff; overflow-wrap: break-word; animation: dai-words-in .35s ease-out; }
+@keyframes dai-words-in { from { opacity: 0; } to { opacity: 1; } }
+/* the videos' tablet: a flat black frame over the device photo, its screen 1.03 times as big, the columns' titles 15.67 px (scripts/capture-sections.mjs, defaultLooks) */
+.dai-frame--tablet .tbl-tablet::after { content: ''; position: absolute; inset: 0; background: #000; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1285 896'%3E%3Cpath fill-rule='evenodd' d='M83 22H1199A36 36 0 0 1 1235 58V838A36 36 0 0 1 1199 874H83A36 36 0 0 1 47 838V58A36 36 0 0 1 83 22ZM112 64H1171A20 20 0 0 1 1191 84V810A20 20 0 0 1 1171 830H112A20 20 0 0 1 92 810V84A20 20 0 0 1 112 64Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1285 896'%3E%3Cpath fill-rule='evenodd' d='M83 22H1199A36 36 0 0 1 1235 58V838A36 36 0 0 1 1199 874H83A36 36 0 0 1 47 838V58A36 36 0 0 1 83 22ZM112 64H1171A20 20 0 0 1 1191 84V810A20 20 0 0 1 1171 830H112A20 20 0 0 1 92 810V84A20 20 0 0 1 112 64Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;; pointer-events: none; }
+.dai-frame--tablet .tbl-tablet > .tbl-screen { z-index: 1; scale: 1.03; }
+.dai-frame--tablet .tbl-tab, .dai-frame--tablet .tbl-tab * { font-size: 15.67px !important; }
+/* a storyboard section video (SectionVideo): the whole stage, the board's own 1600 x 900 picture */
+.dai-frame--video { width: 1600px; height: 900px; }
+/* (what the storyboard's page gives the frames it plays, .sb-root in components/Storyboard.css: the captured art inherits its text and its buttons take their parent's color, so the video looks as it does on the board) */
+.dai-video { position: relative; width: 1600px; height: 900px; overflow: hidden; background: #333537; font: 13px/1.4 var(--font-inter), system-ui, sans-serif; color: #e6e6e6; user-select: none; -webkit-user-select: none; }
+.dai-video button { font: inherit; color: inherit; }
+.dai-video .sb-pl-screen { cursor: default; }
 .dai-browser { width: 1600px; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 30px 70px #0006148c; }
 .dai-browser-bar { display: flex; align-items: flex-end; gap: 14px; height: 40px; padding: 0 16px; background: #dee1e6; }
 .dai-lights { display: flex; gap: 8px; align-self: center; }
@@ -105,10 +123,9 @@
 .dai-browser-url b { flex: 1; padding: 6px 14px; border-radius: 16px; background: #f1f3f4; color: #202124; font-weight: 400; }
 .dai-browser-content { position: relative; width: 1600px; height: 824px; overflow: hidden; }
 .dai-cursor { position: absolute; left: 0; top: 0; z-index: 20; pointer-events: none; }
-.dai-cursor svg { width: 30px; height: 30px; filter: drop-shadow(0 2px 3px #0006); }
-.dai-cursor em { position: absolute; left: 22px; top: 24px; padding: 2px 9px; border-radius: 10px; background: var(--dai-blue); color: #fff; font: 600 13px var(--font-poppins), sans-serif; font-style: normal; white-space: nowrap; }
-.dai-ripple { position: absolute; left: -28px; top: -28px; z-index: 19; width: 56px; height: 56px; border: 3px solid var(--dai-link); border-radius: 50%; opacity: 0; pointer-events: none; }
-.dai-spot { position: absolute; left: 0; top: 0; z-index: 18; border: 3px solid var(--dai-link); border-radius: 12px; box-shadow: 0 0 0 6px #4aa3e62e, 0 0 24px #4aa3e666; pointer-events: none; }
+.dai-cursor img { position: absolute; left: -16px; top: -1px; display: block; width: 42px; height: 52px; filter: drop-shadow(0 4px 5px rgb(0 0 0 / 26%)); user-select: none; }/* (the videos' yellow hand, components/DemoHand.css: its fingertip, 16 x 1 px into its 42 x 52 box, is the cursor's point) */
+.dai-ripple { position: absolute; left: -17px; top: -17px; z-index: 19; box-sizing: border-box; width: 34px; height: 34px; border: 5px solid #ffec00; border-radius: 50%; background: rgb(255 236 0 / 28%); box-shadow: 0 0 0 3px #111; opacity: 0; pointer-events: none; }/* (the videos' click ripple: .dh-ripple) */
+.dai-spot { position: absolute; left: 0; top: 0; z-index: 18; box-sizing: border-box; border: 6px solid #ffc800; border-radius: 18px; box-shadow: 0 0 16px 3px rgb(255 200 0 / 55%); pointer-events: none; }/* (the videos' yellow outline: .iq2-mark) */
 .dai-captions { position: absolute; left: 50%; bottom: 18px; z-index: 5; transform: translateX(-50%); max-width: min(880px, 88%); padding: 10px 18px; border: 1px solid #ffffff1f; border-radius: 12px; background: #061428e0; backdrop-filter: blur(6px); text-align: center; }
 .dai-captions { transition: opacity .25s; }
 .dai-captions.is-dodging { opacity: .1; }

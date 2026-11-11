@@ -1,0 +1,81 @@
+/* Learning Efficiency (components/sections/LearningStage.jsx): its own classes, prefixed sec-le-. */
+
+/* ---- the lesson on the phone. The quiz page is the Improved Quality lesson screen (components/Storyboard.css .sb-lq-*: lib/storyboardLesson.mjs), drawn the same, px for px, so the
+   video can put that screen in its place without a seam; the video page above it has the same parts (the picture, the bar, the body, the blue button) ---- */
+.sec-le-lq { background:#fff; font:13px/1.4 var(--font-poppins),Poppins,sans-serif; color:#111; }
+.sec-le-pager { flex:none; height:1146px; display:flex; flex-direction:column; }
+.sec-le-page { flex:none; height:573px; display:flex; flex-direction:column; overflow:hidden; background:#fff; }
+.sec-le-lq-video { position:relative; flex:none; height:168px; overflow:hidden; background:#59636c; }
+.sec-le-lq-video.is-notice { background:#f4f9fd; border-bottom:1px solid #dbe7f1; }
+.sec-le-lq-notice { position:absolute; inset:0; padding:14px 15px; overflow:hidden; }
+.sec-le-lq-notice b { display:block; margin-bottom:8px; font-size:13.5px; font-weight:600; color:#0d4f7c; }
+.sec-le-lq-notice p { margin:0 0 7px; font-size:12px; line-height:1.5; font-weight:500; color:#26323d; }
+.sec-le-lq-bar { flex:none; height:42px; display:flex; align-items:center; justify-content:space-between; padding-left:15px; border-bottom:1px solid #e3e7ea; box-sizing:border-box; }
+.sec-le-lq-bar b { font-size:14px; font-weight:600; }
+.sec-le-lq-arrows { display:flex; height:100%; }
+.sec-le-lq-arrows i { width:42px; height:100%; display:grid; place-items:center; border-left:1px solid #e3e7ea; color:#1271b7; }
+.sec-le-lq-arrows svg { width:17px; height:17px; }
+.sec-le-lq-body { flex:1; min-height:0; padding:15px 15px 0; }
+.sec-le-lq-q { margin:0 0 20px; }
+.sec-le-lq-q b { display:block; font-size:12.5px; font-weight:600; line-height:1.35; }
+.sec-le-lq-q small { display:block; margin:5px 0 0 11px; font-size:7px; }
+.sec-le-lq-opt { display:flex; align-items:flex-start; gap:9px; margin-top:14px; }
+.sec-le-lq-box { flex:none; width:18px; height:18px; margin-top:1px; box-sizing:border-box; display:grid; place-items:center; border:2px solid #6b7480; border-radius:4px; background:#fff; }
+.sec-le-lq-box svg { width:14px; height:14px; }
+.sec-le-lq-opt.is-on .sec-le-lq-box { border-color:#1271b7; background:#1271b7; }
+.sec-le-lq-text { font-size:12.5px; line-height:1.55; }
+.sec-le-lq-submit { flex:none; height:40px; display:grid; place-items:center; background:#1271b7; color:#fff; font-size:13.5px; font-weight:600; }
+.sec-le-lq-submit.is-sent { background:#9aa5ae; } /* (sent: gray, as a Submit is once pressed) */
+/* the product's words when the quiz is failed (components/sim/sim.css .sim-quiz-failed), under the quiz */
+.sec-le-picture { position:absolute; inset:0; display:block; background:#59636c center / cover no-repeat; }
+.sec-le-lq-body { position:relative; }
+.sec-le-sfailed { position:absolute; left:15px; right:15px; bottom:12px; margin:0; padding:9px 11px; border-radius:7px; background:#fdeef3; color:#bd1f59; font:600 13px/1.4 var(--font-montserrat),sans-serif; }
+
+/* the lesson's video on top (the Improved Quality lesson screen, the training beside the work mission) */
+.sec-le-lq-track { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:9px; padding:20px 12px 9px; color:#fff; background:linear-gradient(rgb(0 0 0 / 0%), rgb(0 0 0 / 38%)); }
+.sec-le-lq-rail { flex:1; height:4px; border-radius:2px; overflow:hidden; background:rgb(255 255 255 / 45%); }
+.sec-le-lq-rail i { display:block; height:100%; border-radius:2px; background:#3db3e2; }
+.sec-le-lq-track time { font:600 11px/1 var(--font-poppins),Poppins,sans-serif; font-variant-numeric:tabular-nums; text-shadow:0 1px 3px rgb(0 0 0 / 50%); }
+
+/* ---- Overview › Course › History ---- */
+.sec-le-web { display:flex; flex-direction:column; background:#fff; }
+.sec-le-web.sec-pl.iq-ow .ow-toolbar { gap:0 24px; }
+.sec-le-web .ow-tool { color:#171b1c; }
+.sec-le-range { margin-left:auto; padding:5px 10px; border:1px solid #e2e5e7; border-radius:6px; font-size:13px; white-space:nowrap; }
+.sec-le-table { position:relative; flex:1; min-height:0; display:flex; flex-direction:column; }
+.sec-le-row { position:relative; display:grid; grid-template-columns:300px 140px 125px 125px 180px 100px 140px; height:42px; border-bottom:1px solid #e3e7ec; background:#fff; font-size:13px; color:#181d1f; }
+.sec-le-row > span { display:flex; align-items:center; min-width:0; padding:0 12px; border-right:1px solid #ececec; white-space:nowrap; }
+.sec-le-row > span:last-child { border-right:0; }
+.sec-le-row.is-head { flex:none; height:46px; border-bottom:2px solid #1271b7; }
+.sec-le-row.is-head > span { justify-content:space-between; }
+.sec-le-row.is-head b { font-size:14px; font-weight:500; }
+.sec-le-row.is-head i { font-style:normal; font-size:18px; color:#272c2f; }
+.sec-le-row.is-person, .sec-le-row.is-course { background:#f0f9ff; }
+.sec-le-row .is-dash { justify-content:center; color:#555; }
+.sec-le-row .is-pill { justify-content:center; }
+.sec-le-row .is-pill i { padding:3px 8px; border-radius:20px; background:#686f76; color:#fff; font-style:normal; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
+.sec-le-name { position:relative; }
+.sec-le-name em { flex:none; min-width:24px; font-style:normal; color:#30363a; }
+.sec-le-name b { font-weight:500; }
+.sec-le-name small { margin-left:auto; color:#6b7378; font-size:13px; }
+.sec-le-row.is-person .sec-le-name { padding-left:44px; }
+.sec-le-row.is-course .sec-le-name { padding-left:62px; }
+.sec-le-row.is-lesson .sec-le-name { padding-left:76px; }
+.sec-le-name > span { overflow:hidden; text-overflow:ellipsis; }
+.sec-le-toggle { position:absolute; left:14px; top:50%; display:grid; place-items:center; width:18px; height:18px; margin-top:-9px; border-radius:4px; background:#1271b7; color:#fff; }
+.sec-le-name.is-course .sec-le-toggle { left:34px; }
+.sec-le-toggle svg { width:14px; height:14px; }
+.sec-le-branch { position:absolute; left:23px; top:-1px; width:10px; height:calc(50% + 1px); border-left:1px solid #a9b3bb; border-bottom:1px solid #a9b3bb; border-bottom-left-radius:5px; }
+.sec-le-branch.is-deep { left:43px; width:16px; }
+.sec-le-branch.is-deep::after { content:''; position:absolute; left:-1px; top:100%; height:22px; border-left:1px solid #a9b3bb; }
+.sec-le-branch.is-deep[data-last]::after { display:none; }
+.sec-le-col { position:absolute; top:0; bottom:0; pointer-events:none; }
+.sec-le-drawer .iq-od-close svg { width:15px; height:15px; }
+.sec-le-drawer .iq-od-performer svg { width:14px; height:14px; color:#fff; }
+.sec-le-drawer .iq-od-card { padding:9px 12px; margin-bottom:9px; }
+.sec-le-drawer .iq-od-value b { font-size:15px; font-weight:600; }
+.sec-le-under { padding:2px 8px; border-radius:20px; background:#e3f5ea; color:#13723a; font-size:12px; font-weight:600; }
+
+/* ---- the work mission and the training popped out beside it ---- */
+.sec-le-work { position:absolute; left:0; top:0; width:1600px; height:900px; pointer-events:none; }
+.sec-le-side { transform-origin:50% 50%; }

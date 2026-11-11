@@ -5,24 +5,67 @@
 /* ---- Overview at a fixed page inside the web window ---------------------- */
 /* Usage Report (chapters 16-20): bigger gallery photos for the evolution tour. */
 .iq-lo-usage .iq-ur-images>div>span:not(.iq-ur-video) { width:170px; height:170px; }
-.iq-ow.ow-workspace { position:absolute; inset:0; z-index:auto; }
+/* The product's Team Board (the user's screenshot, 2026-10-19): its blue, lines and grays. */
+.iq-ow.ow-workspace { position:absolute; inset:0; z-index:auto; --ow-blue:#1271b7; --ow-line:#e4e4e4; color:#181d1f; }
+.iq-ow .ow-topbar, .iq-ow .ow-subnav, .iq-ow .ow-toolbar { border-bottom-color:#d3d3d3; }
 .iq-ow .ow-topbar nav { justify-content:center; gap:22px; }
 .iq-ow .ow-topbar nav span { flex:none; padding:5px 0; }
 .iq-ow .ow-topbar nav .is-active { border:2px solid var(--ow-blue); border-radius:7px; padding:3px 8px; margin:0 -10px; }
-.iq-ow .ow-subnav nav span { height:100%; display:flex; align-items:center; white-space:nowrap; border-bottom:2px solid transparent; color:#707374; }
-.iq-ow .ow-subnav nav span.is-active { color:#171b1c; border-bottom-color:var(--ow-blue); }
-.iq-ow .ow-view-nav span { height:30px!important; padding:2px 5px; border:2px solid transparent!important; border-radius:6px; color:#171b1c!important; }
-.iq-ow .ow-view-nav span.is-active { border-color:var(--ow-blue)!important; }
-.iq-ow .ow-toolbar { flex-wrap:nowrap; }
-.iq-ow .iq-ow-search { margin-left:auto; flex:none; width:155px; padding:5px 9px; font-size:12px; color:#8d949a; border:1px solid #e4e7e9; border-radius:4px; }
-.iq-ow .ow-date-range + .iq-ow-search { margin-left:0; }
+.iq-ow .ow-account .ow-icon { width:19px; height:19px; }
+.iq-ow.ow-workspace .ow-avatar { background:#e8e8e8; }
+.iq-ow .ow-subnav nav span { height:100%; display:flex; align-items:center; white-space:nowrap; border-bottom:2px solid transparent; color:#6a6a6a; }
+.iq-ow .ow-subnav nav span.is-active { color:#181d1f; border-bottom-color:var(--ow-blue); }
+/* the views: gray, the one shown black in a blue box */
+.iq-ow .ow-view-nav span { height:30px!important; padding:2px 5px; border:2px solid transparent!important; border-radius:6px; color:#6a6a6a!important; }
+.iq-ow .ow-view-nav span.is-active { border-color:var(--ow-blue)!important; color:#181d1f!important; }
+/* the toolbar: Bulk Action and the filter (a pale blue pill, its funnel orange) together, the rest after a gap */
+.iq-ow .ow-toolbar { flex-wrap:nowrap; gap:12px 24px; }
+.iq-ow .ow-tool { gap:5px; }
+.iq-ow .ow-tool .iq-ow-bulk { width:18px; height:18px; }
+.iq-ow .ow-toolbar .ow-tool.iq-ow-filter { margin-left:-6px; padding:5px 10px; border-radius:6px; background:#f0f9ff; }
+.iq-ow .ow-toolbar .ow-tool.iq-ow-filter > .ow-icon { color:#bd4b00; }
+.iq-ow .ow-toolbar .iq-ow-group { position:relative; margin-left:31px; margin-right:-9px; padding:5px 9px; border-radius:7px; } /* (the padding is for its light blue when its menu is open: the words stay where they were) */
+.iq-ow .ow-toolbar .iq-ow-group.is-open { background:#d9eefb; }
 .iq-ow .iq-ow-date { padding:3px 8px; width:120px; border:1px solid #e4e7e9; border-radius:4px; }
-.iq-ow .ow-table-scroll { overflow:hidden; }
+/* the table: the header is its own table, the rows scroll under it */
+.iq-ow .ow-table-scroll { overflow:hidden; display:flex; flex-direction:column; }
+.iq-ow .iq-ow-head { flex:none; }
+.iq-ow .iq-ow-rows { flex:1; min-height:0; overflow:hidden; }
+.iq-ow .ow-table th { color:#000; padding-right:6px; }
 .iq-ow .ow-table th > div { gap:8px; }
+.iq-ow .ow-table th > div > span:first-child { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.iq-ow .iq-ow-sort { width:16px; height:16px; flex:none; margin-right:-4px; }
 .iq-ow .ow-table th .ow-dots, .iq-ow .ow-name-content .ow-dots { display:grid; place-items:center; width:20px; min-width:20px; font-size:19px; line-height:1; color:#272c2f; }
 .iq-ow .ow-mission-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .iq-ow .ow-name-content .ow-dots { margin-left:auto; }
-.iq-ow .ow-group-button { cursor:default; }
+.iq-ow .iq-ow-flag { width:18px; height:18px; flex:none; color:#bd1f59; }
+.iq-ow .ow-group-row { background:#f0f9ff; }
+.iq-ow .ow-data-row.is-boosted { background:#fff2c5; }
+.iq-ow .ow-group-button { position:relative; cursor:default; }
+.iq-ow .ow-group-button .ow-number { min-width:18px; }
+.iq-ow .ow-number { color:#181d1f; font-size:13px; }
+.iq-ow .ow-count { color:#6a6a6a; }
+.iq-ow .ow-total { color:#bd4b00; }
+.iq-ow .iq-ow-center, .iq-ow .ow-timer-cell { text-align:center; }
+.iq-ow .ow-collapse-icon { position:relative; width:20px; height:20px; border-radius:5px; background:var(--ow-blue); }
+.iq-ow .ow-collapse-icon .ow-icon { width:16px; height:16px; }
+.iq-ow .ow-collapse-icon path { stroke-width:2.6; }
+/* the tree: a line from each group's icon down to what it holds (unit icon at x 27, team icon at x 46) */
+.iq-ow .ow-collapse-icon::after { content:''; position:absolute; left:calc(50% - .5px); top:100%; height:12px; border-left:1px solid #a2acb5; }
+.iq-ow .ow-tree { left:45.5px; height:21px; border-color:#a2acb5; }
+.iq-ow .iq-ow-rail { position:absolute; left:26.5px; top:0; bottom:0; border-left:1px solid #a2acb5; }
+.iq-ow .iq-ow-branch { position:absolute; left:26.5px; top:0; width:9.5px; height:21px; border-left:1px solid #a2acb5; border-bottom:1px solid #a2acb5; border-radius:0 0 0 6px; }
+.iq-ow .iq-ow-branch:not(.is-last)::after { content:''; position:absolute; left:-1px; top:0; height:42px; border-left:1px solid #a2acb5; }
+/* the timers: pills as wide as their time */
+.iq-ow .ow-timer { min-width:0; padding:1px 7px; border-radius:11px; font-size:13px; font-weight:600; line-height:18px; }
+.iq-ow .ow-timer.is-red { background:#bd1f59; }
+.iq-ow .ow-timer.is-green { background:#007a33; }
+.iq-ow .ow-timer.is-gray { background:#6a6a6a; }
+.iq-ow .ow-timer.is-outline { padding:0 6px; border:1px solid #6a6a6a; background:#fff; color:#6a6a6a; font-weight:500; }
+.iq-ow .ow-state i { background:#bd1f59; }
+.iq-ow .ow-state.state-closed i { background:transparent; }
+.iq-ow .ow-state.state-canceled { color:inherit; }
+.iq-ow .ow-state.state-canceled i { background:#e8e8e8; border:0; }
 /* the mission detail panel (Response tab) */
 .iq-od { position:absolute; top:48px; right:0; bottom:0; z-index:20; width:440px; display:flex; flex-direction:column; background:#fff; border-left:1px solid #e3e6e8; border-radius:14px 0 0 0; box-shadow:-6px 0 18px #0000001a; white-space:normal; will-change:transform; }
 .iq-od > header { display:flex; align-items:center; justify-content:space-between; padding:12px 18px 2px 22px; }
@@ -137,3 +180,41 @@
 .iq-dr-st-row .iq-dr-chip { font-size:10.5px; line-height:1.4; }
 /* the two pages of the web window (Overview / Data Board), cross-faded */
 .iq-ol-page { position:absolute; inset:0; }
+/* History (the real board, 2026-10-20): one date-range box at the right of the toolbar; the filter is plain, not a pill */
+.iq-ow .iq-ow-range { margin-left:auto; display:inline-flex; align-items:center; gap:14px; padding:6px 10px; border:1px solid #d3d3d3; border-radius:4px; font-size:13px; white-space:nowrap; }
+.iq-ow .iq-ow-range .ow-icon { width:15px; height:15px; }
+.iq-ow .ow-toolbar .ow-tool.iq-ow-filter.is-plain { background:none; padding:5px 0; margin-left:0; }
+/* a column's ⋮ menu: View Options, the column's filter, Hide Column / Apply / Close */
+.iq-ow .ow-table .ow-dots.is-open { background:#d9eef8; border-radius:3px; }
+.iq-ow .iq-ow-cm { position:absolute; top:41px; z-index:30; width:300px; background:#fff; border:1px solid #e2e5e7; border-radius:4px; box-shadow:0 8px 22px rgb(17 34 51 / 16%); font-size:14px; color:#181d1f; }
+.iq-ow .iq-ow-cm.is-person { width:318px; }
+.iq-ow .iq-ow-cm-view { display:flex; align-items:center; justify-content:space-between; margin:0 16px; padding:16px 2px 14px; border-bottom:1px solid #d3d3d3; font-size:15px; }
+.iq-ow .iq-ow-cm-view svg { width:14px; height:14px; }
+.iq-ow .iq-ow-cm-filter { display:flex; align-items:center; justify-content:space-between; padding:16px 18px 0; }
+.iq-ow .iq-ow-cm-filter b { font-size:16px; font-weight:500; }
+.iq-ow .iq-ow-cm-filter span { display:inline-flex; align-items:center; gap:10px; font-size:12px; }
+.iq-ow .iq-ow-cm-filter svg { width:19px; height:19px; }
+.iq-ow .iq-ow-cm-search { display:flex; align-items:center; gap:7px; margin:14px 16px 6px; padding:7px 10px; border:1px solid #e2e5e7; border-radius:4px; color:#8d949a; font-size:14px; }
+.iq-ow .iq-ow-cm-search.has-value { color:#181d1f; border-color:#1271b7; }
+.iq-ow .iq-ow-cm-search svg { width:16px; height:16px; flex:none; }
+.iq-ow .iq-ow-cm-head { display:block; padding:16px 18px 10px; font-size:16px; font-weight:500; }
+.iq-ow .iq-ow-cm-field { position:relative; margin:0 16px; }
+.iq-ow .iq-ow-cm-select { display:flex; align-items:center; justify-content:space-between; margin:0 16px; padding:7px 10px; border:1px solid #d3d3d3; border-radius:4px; color:#8d949a; font-size:14px; }
+.iq-ow .iq-ow-cm-field .iq-ow-cm-select { margin:0; }
+.iq-ow .iq-ow-cm-select.has-value { color:#181d1f; }
+.iq-ow .iq-ow-cm-select .ow-icon { width:15px; height:15px; color:#6a6a6a; }
+.iq-ow .iq-ow-cm-drop { position:absolute; left:0; right:0; top:0; z-index:2; background:#fff; border:1px solid #e2e5e7; border-radius:4px; box-shadow:0 8px 20px rgb(17 34 51 / 16%); }
+.iq-ow .iq-ow-cm-find { display:flex; align-items:center; justify-content:space-between; padding:7px 10px; border:2px solid #1271b7; border-radius:4px; color:#8d949a; }
+.iq-ow .iq-ow-cm-find .ow-icon { width:15px; height:15px; transform:rotate(180deg); }
+.iq-ow .iq-ow-cm-person { display:flex; align-items:center; gap:10px; padding:7px 16px; font-size:14px; }
+.iq-ow .iq-ow-cm-person:first-of-type { margin-top:8px; }
+.iq-ow .iq-ow-cm-drop footer { display:flex; justify-content:flex-end; padding:10px 14px; border-top:1px solid #e2e5e7; margin-top:8px; }
+.iq-ow .iq-ow-cm-box { display:inline-grid; place-items:center; width:17px; height:17px; flex:none; border:1.5px solid #5b6165; border-radius:3px; background:#fff; }
+.iq-ow .iq-ow-cm-box.is-on { background:#1271b7; border-color:#1271b7; }
+.iq-ow .iq-ow-cm-box svg { width:14px; height:14px; }
+.iq-ow .iq-ow-cm > footer { display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:16px 16px 16px; }
+.iq-ow .iq-ow-cm-hide { display:inline-flex; align-items:center; gap:6px; margin-right:auto; color:#6a6a6a; font-size:12px; text-decoration:underline; }
+.iq-ow .iq-ow-cm-hide svg { width:16px; height:16px; }
+.iq-ow .iq-ow-cm-apply { padding:7px 16px; border-radius:6px; background:#b9c9d6; color:#fff; font-size:14px; }
+.iq-ow .iq-ow-cm-apply.is-ready { background:#1271b7; }
+.iq-ow .iq-ow-cm-close { padding:6px 14px; border:1px solid #d3d3d3; border-radius:6px; background:#fff; font-size:14px; }

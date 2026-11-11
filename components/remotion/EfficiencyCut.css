@@ -1,0 +1,56 @@
+/* Increased Efficiency, the Remotion cut (components/remotion/EfficiencyCut.jsx, lib/remotion/efficiencyCut.mjs): .rc-*. The stage is 1600 x 900, scaled to the video; everything in it is placed by the clock
+   (transforms written each frame), so nothing here animates by itself. */
+/* (the stage, the words, the title, the art layer and the outlines are every cut's: components/remotion/CutParts.css) */
+
+/* the tablet: the product's board in the flat black frame of every cut (.rc-device, CutParts.css), its own cards hidden (they are drawn over it, .rc-card) */
+.rc-tablet { z-index:5; }
+.rc-tablet .mi-column-cards { visibility:hidden; }
+.rc-colshade { position:absolute; top:calc(80 * var(--ref-u)); bottom:0; z-index:3; background:rgb(12 18 26); pointer-events:none; }
+
+/* a mission: the board's card (at 1 board unit = 1 px, 334 wide), moved and scaled by the clock */
+.rc-cards { position:absolute; inset:0; z-index:10; }
+.rc-card { position:absolute; left:0; top:0; transform-origin:0 0; }
+.rc-card-pop { transform-origin:167px 64.5px; }
+.rc-card .mi-interactive { width:1080px; }
+.rc-card .mi-reference.mi-interactive--tablet .mi-tablet-board.iq2-iso-board { width:1080px; height:auto; overflow:visible; background:none; }
+.rc-card:not(.is-up) .iq2-iso-stack .chip { box-shadow:0 1px 9px #1e293b1c; }/* on the board: the board's own shadow; lifted or moving: the lifted card's */
+.rc-card .chip .chip-pill { background:var(--rc-pill, #007a33); transform:scale(var(--rc-pop, 1)); transform-origin:50% 50%; }
+.rc-card .chip-points { opacity:var(--rc-pts-o, 1); transform:scale(var(--rc-pts-s, 1)); transform-origin:50% 50%; }
+.rc-card .chip-who { opacity:var(--rc-who, 1); }
+
+/* the schedules beside a lifted mission (the product's schedule pill) */
+.rc-sched { position:absolute; left:0; top:0; z-index:11; display:flex; flex-direction:column; align-items:flex-start; gap:10px; transform-origin:0 50%; }
+.rc-sched .ev2-schedule { position:static; transform-origin:0 50%; }
+
+/* the personal code by the mission */
+.rc-code { position:absolute; left:0; top:0; z-index:12; transform-origin:0 0; }
+.rc-code .adx-quick-code { position:relative; opacity:1; }
+.rc-code .pc-keypad button[data-demo-active] { background:#1271b7; color:#fff; box-shadow:0 0 0 3px #8ccdf7, 0 5px 12px #1271b740; scale:1.045; z-index:2; }
+
+/* the phones */
+.rc-phone { position:absolute; z-index:13; transform-origin:50% 50%; }
+.rc-phone .ph-fit { width:100%; max-width:none; }
+.rc-phone-face { position:absolute; top:0; display:block; filter:drop-shadow(0 6px 14px rgb(0 0 0 / 45%)); }
+.rc-phone .es-phone-mission { margin-bottom:0; }
+.rc-phone-card { transform-origin:50% 0; }
+
+/* the picture of the three people, in the bounds of the tablet's frame */
+.rc-photo { position:absolute; z-index:4; overflow:hidden; background:#000; }
+.rc-photo img { position:absolute; display:block; max-width:none; }
+
+/* the team's faces */
+.rc-face { position:absolute; left:0; top:0; z-index:14; transform-origin:50% 50%; }
+.rc-face img { display:block; width:100%; height:100%; filter:drop-shadow(0 4px 10px rgb(0 0 0 / 40%)); }
+.rc-face-ring { position:absolute; inset:-5%; border:4px solid #ffec00; border-radius:50%; box-shadow:0 0 16px rgb(255 236 0 / 55%); }
+.rc-face-badge { position:absolute; right:-8%; top:-8%; display:grid; place-items:center; min-width:38%; height:38%; padding:0 .3em; border-radius:999px; background:#1271b7; color:#fff; font-weight:700; line-height:1; box-shadow:0 0 0 3px #0e1013; }
+
+/* the end: each person's shift (missions as the timer's green, the idle gaps hatched), the time won back outlined; no logo after it */
+.rc-shift { position:absolute; inset:0; z-index:15; }
+.rc-shift-row { position:absolute; left:0; width:1600px; }
+.rc-shift-face { position:absolute; display:block; filter:drop-shadow(0 4px 10px rgb(0 0 0 / 40%)); }
+.rc-lane { position:absolute; top:0; border-radius:24px; background:#22262c; box-shadow:inset 0 0 0 1px #2e333a; }
+.rc-gap { position:absolute; top:10px; bottom:10px; border-radius:6px; background:repeating-linear-gradient(-45deg, #3a4048 0 6px, transparent 6px 12px); opacity:.85; }
+.rc-block { position:absolute; top:0; height:100%; display:flex; align-items:center; justify-content:center; border-radius:24px; background:#007a33; color:#fff; font:600 17px var(--font-poppins),sans-serif; white-space:nowrap; overflow:hidden; transform-origin:50% 50%; box-shadow:0 6px 16px rgb(0 0 0 / 30%); }
+.rc-block--new { background:#1271b7; }
+.rc-saved { position:absolute; pointer-events:none; }
+

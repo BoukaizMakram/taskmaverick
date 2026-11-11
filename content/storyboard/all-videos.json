@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "frames": {},
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "refs": {
+    "at": "2026-11-03T01:05:09.394Z",
+    "items": [
+      {
+        "id": "ref-mvzzhtj9obgu6",
+        "kind": "video",
+        "url": "/storyboard/references/e611bd2e616fe3e4f2ac.mp4",
+        "name": "improved-quality-film.mp4",
+        "x": 1254.8,
+        "y": -1217.7,
+        "w": 1195.4,
+        "h": 672.4
+      }
+    ]
+  },
+  "rev": 13
+}

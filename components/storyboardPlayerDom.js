@@ -11,19 +11,25 @@
 // just make me a good video"). The slides are only what the video is built from: the director (directorOf) drops the ones that only hold the
 // start of the next one's words and the ones that look like the one before, and tells each frame what comes in late, what is written and how
 // long it is on. With the right side gone (the Panel parked off the slide) the art is centered.
-import {ANIM_CPS, animSeconds, layersOf, letterCount} from '@/lib/storyboardEdits.mjs';
-import {LATE, ease, easeInv, fadeFrames, isArt, isOverlay, isTypingStep, locate, pairLayers, pairLists, roleOf, sameLook, takeOver, timelineOf, windowEasing, windowKeys, WRITE, writeProgress} from '@/lib/storyboardPlayer.mjs';
-import {FONT_STACK, STAGE, applyEdits, bubblePad, drawShape, elementOf, frameHtml, isBubble, moveTo, parentScale, parseStyle, placeTimelines, scaleOf, setTextNumbers, sizeTo, translateOf, whenFontsLoaded} from './storyboardDom';
+import {ANIM_CPS, animSeconds, layersOf, letterCount, mergeVideoText} from '@/lib/storyboardEdits.mjs';
+import {LATE, ease, easeInv, easyEase, fadeFrames, fadeWithin, isArt, isOverlay, isTypingStep, legsAt, legsFade, locate, pairLayers, pairLists, quadMatrix, roleOf, sameLook, sceneOf, takeOver, timelineOf, windowEasing, windowKeys, WRITE, writeProgress} from '@/lib/storyboardPlayer.mjs';
+import {FONT_STACK, STAGE, applyEdits, blackPlate, bubblePad, drawShape, elementOf, frameHtml, isBubble, lookNow, lookOf, lookTargetAt, moveTo, narrowPanel, parentScale, parseStyle, partsOfKind, placeTimelines, scaleOf, scaleTo, screenRectOf, setTextNumbers, sizeTo, translateOf, whenFontsLoaded} from './storyboardDom';
 import {prepareWriting} from './storyboardHandwriting';
 import {clickTarget, targetSelector} from '@/lib/demoTargets.mjs';
 import {LESSON_FILM, LESSON_PLAY, LESSON_TARGETS, lessonAsset, lessonHtmlOf} from '@/lib/storyboardLesson.mjs';
+import {SECTIONS, SECTION_STOPS} from '@/lib/sections/index.mjs';
+import {rowsRect} from '@/lib/sections/rows.mjs';
+import {POINT as POINTER_AT, POINTER_ASSET, POINTER_LAYER, cornerOf, pointerHtmlOf, pointerMove} from '@/lib/storyboardPointer.mjs';
+const POINTER_ROOM = POINTER_AT.room; // (stage px: a fingertip never lower than this above the picture's bottom, so the whole hand is seen)
 import {HAND_STOPS as QUALITY_STOPS, RATE_LABELS} from '@/lib/improvedQualityV2Story.mjs';
 import {HAND_STOPS as EFFICIENCY_STOPS} from '@/lib/efficiencyV2Story.mjs';
 
-const STOPS = {'improved-quality-v2': QUALITY_STOPS, 'increased-efficiency-v2': EFFICIENCY_STOPS}; // (the demos' hand: what it clicks, chapter by chapter)
+const STOPS = {'improved-quality-v2': QUALITY_STOPS, 'increased-efficiency-v2': EFFICIENCY_STOPS, ...SECTION_STOPS}; // (the demos' hand: what it clicks, chapter by chapter)
 
 const STD_MOVE = 0.6; // every move of the video takes as long: the cursor going somewhere, a click (it presses, then the screen changes), a title and the art changing over
 const END_CLICK = 0.95; // the last click of a part, made at the end of its last frame (press, ring, the cursor fades)
+const JOIN_PEN = 0.35; // the words of a video that goes on from the one before (`joins`): the pen waits this long for that video's words to fade (the All videos page crosses two parts in 0.45 s)
+const SAY_TAIL = 0.2; // the words written before the cursor acts (`wordsFirst`): the cursor sets off this soon after the last letter, not after a reading pause (the user, 2026-10-21: "between text and action there is a big pause, please remove")
 const CLICK_TOTAL = 1.15; // a click move: the cursor presses, the screen changes (0.3-0.6 of it), THEN the cursor goes on to the next (0.66-1.0 of it)
 const TITLE_HOLD = 2.4, SCENE_MOVE = STD_MOVE, CLICK_MOVE = STD_MOVE; // a title stays long enough to read
 const ZOOM_MOVE = 0.9; // the art pushed in or pulled back (its own scale changes by a third or more): a zoom is slower than the other moves, so it is seen
@@ -72,9 +78,13 @@ const FILM_GAP = 14; // stage px between a video (its timeline) and the card und
 const CLIP = 10; // seconds of the video in the drawer: its timeline runs over it
 
 const decode = text => text.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+// A pure function of one string (an asset's HTML), kept for the next time it is asked (the user, 2026-10-22: "make the storyboard tool mooore ... faster": a video's script reads
+// the same assets again at every edit; parsing them was most of what an edit cost).
+const keep = fn => { const cache = new Map(); return key => { if (cache.has(key)) return cache.get(key); const value = fn(key); if (cache.size > 4000) cache.clear(); cache.set(key, value); return value; }; };
 // The words of a captured asset: what its paragraphs SHOW (its aria-label is always the whole sentence, even while the demo has only typed the
 // start of it); the aria-label only when it has no paragraph.
-function capturedWords(html) {
+const capturedWords = keep(html => capturedWordsOf(html));
+function capturedWordsOf(html) {
   const doc = new DOMParser().parseFromString(html, 'text/html');
   doc.querySelectorAll('style, script').forEach(n => n.remove());
   const paragraphs = [...doc.querySelectorAll('p')];
@@ -97,7 +107,6 @@ const squash = text => String(text ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '
 //    target (a selector the cursor goes to), layers / edit (when the cursor is carried in), tune}), timeline}
 const handOf = x => x.layers.find(l => roleOf(l) === 'hand');
 // The scene a slide belongs to: the line it was captured in (a duplicate of a slide, in a line of its own, is still a slide of that scene: it plays by that scene's rules).
-const sceneOf = f => (f.copyOf && String(f.copyOf).includes('/') ? String(f.copyOf).split('/')[0] : f.chapter);
 const artsOf = x => x?.layers.filter(isArt) ?? [];
 const biggest = list => [...list].sort((a, b) => b.box.w * b.box.h - a.box.w * a.box.h)[0];
 const handAt = (x, hand) => [hand.box.x + (x.edit?.moves?.[hand.key]?.[0] ?? 0), hand.box.y + (x.edit?.moves?.[hand.key]?.[1] ?? 0)];
@@ -105,12 +114,24 @@ const handAt = (x, hand) => [hand.box.x + (x.edit?.moves?.[hand.key]?.[0] ?? 0),
 function carryLayer(x, from, layer) {
   const key = layer.key, mine = k => k === key || k.startsWith(`${key}/`) || k.startsWith(`${key}#`);
   const copy = name => { const out = {...(x.edit?.[name] ?? {})}; for (const [k, v] of Object.entries(from.edit?.[name] ?? {})) if (mine(k)) out[k] = v; return out; };
-  const edit = {...x.edit, hidden: (x.edit?.hidden ?? []).filter(k => k !== key), moves: copy('moves'), scales: copy('scales'), sizes: copy('sizes'), styles: copy('styles'), texts: copy('texts'), bubbles: copy('bubbles'), tips: copy('tips')};
-  const rest = x.layers.filter(l => l.key !== key && !(roleOf(l) === 'hand' && roleOf(layer) === 'hand')), behind = roleOf(layer) === 'panel'; // (the panel goes behind the art, just over the plate)
-  const at = behind ? rest.findIndex(l => roleOf(l) === 'plate') + 1 : rest.length;
+  const edit = {...x.edit, hidden: (x.edit?.hidden ?? []).filter(k => k !== key), moves: copy('moves'), scales: copy('scales'), sizes: copy('sizes'), styles: copy('styles'), texts: copy('texts'), bubbles: copy('bubbles'), tips: copy('tips'), vtext: copy('vtext')}; // (`vtext`: the look the video gave the words)
+  const rest = x.layers.filter(l => l.key !== key && !(roleOf(l) === 'hand' && roleOf(layer) === 'hand')), behind = roleOf(layer) === 'panel', own = x.layers.findIndex(l => l.key === key); // (the panel goes behind the art, just over the plate; on a slide that has it over the art, a tablet zoomed into, it stays there)
+  const at = behind && x.layers.slice(0, Math.max(0, own)).some(isArt) ? own : behind ? rest.findIndex(l => roleOf(l) === 'plate') + 1 : rest.length;
   x.layers = [...rest.slice(0, at), layer, ...rest.slice(at)];
   x.edit = edit;
   x.carried = true;
+  const owner = from.owners?.[key] ?? from.frame?.id; // (`from` is sometimes only a slide's own edit and cursor: no owner then)
+  if (owner) x.owners = {...(x.owners ?? {}), [key]: owner}; // (the slide whose words and look these are: a change to them is made there, it is not always a slide the video plays)
+}
+// The gray side (the panel) of `from` on slide x, where `from` has it (x's own move of it taken off): a slide whose words' side was parked off it gets it back.
+function bringPanel(x, from) {
+  const panel = from.layers.find(l => roleOf(l) === 'panel');
+  if (!panel) return;
+  carryLayer(x, from, panel);
+  const moves = {...(x.edit?.moves ?? {})}, ofPanel = k => k === panel.key || k.startsWith(`${panel.key}/`);
+  for (const k of Object.keys(moves)) if (ofPanel(k)) delete moves[k];
+  for (const [k, v] of Object.entries(from.edit?.moves ?? {})) if (ofPanel(k)) moves[k] = v;
+  x.edit = {...x.edit, moves};
 }
 // where a layer is in a frame (stage px): its box, moved
 const rectOf = (x, l) => ({x: l.box.x + (x.edit?.moves?.[l.key]?.[0] ?? 0), y: l.box.y + (x.edit?.moves?.[l.key]?.[1] ?? 0), w: l.box.w, h: l.box.h});
@@ -124,7 +145,8 @@ function tipIn(x, rect, margin = 40) {
 // A list that was shown stopped at a place after another, each with a swipe of the hand, is scrolled ONCE, by the time (the user, 2026-10-13: "scroll continuously and show text"):
 // after the click that opens it, only the first slide of each scene is played (its words) and what the last slide shows is the art in all of them; the engine moves the list from
 // where it is when it opens to where the last slide has it (`driveScroll`). -> {kept, scroll: {from, to, selector, at (the slide the scroll starts with)}} (no scroll: the slides as they were)
-const offsetOf = (html, selector) => { const el = new DOMParser().parseFromString(html ?? '', 'text/html').querySelector(selector), m = /translateY\((-?[\d.]+)px\)/.exec(el?.getAttribute('style') ?? ''); return m ? Number(m[1]) : null; }; // (where a list is scrolled to in a slide: its translateY)
+const offsetOf = (html, selector) => offsetIn(`${selector}|${html ?? ''}`); // (where a list is scrolled to in a slide: its translateY; the selector has no "|", the first one ends it)
+const offsetIn = keep(both => { const at = both.indexOf('|'), selector = both.slice(0, at), html = both.slice(at + 1); const el = new DOMParser().parseFromString(html, 'text/html').querySelector(selector), m = /translateY\((-?[\d.]+)px\)/.exec(el?.getAttribute('style') ?? ''); return m ? Number(m[1]) : null; });
 function oneScroll(kept, spec, htmlOf) {
   const last = kept.findLast(x => spec.scenes.includes(sceneOf(x.frame))), art = last && artsOf(last)[0];
   const opens = kept.findLastIndex(x => sceneOf(x.frame) === spec.opens && x.handGone);
@@ -143,13 +165,14 @@ function oneScroll(kept, spec, htmlOf) {
 // are not played. `at` is the slide where the cursor arrives on the video, `end` the last one of the scene (the one after the click on Submit). -> the slides, with the beats of the lesson put in.
 // The video PLAYS before the quiz is answered (the user, 2026-10-13: "make the video on top playing before answering the quiz"): the lesson opens paused (the picture blurred, its play
 // button) and the cursor goes to the play button; it presses, the clip plays by the clock (`film`, `driveFilm`) while the cursor waits on it (`rest`); then it goes to the statements.
-function lessonBeats(kept, spec) {
+function lessonBeats(kept, spec, go = false) { // (`go`: the hand presses play and leaves while the clip plays, the CEO, 2026-10-16: "click and go")
   const at = kept.findIndex(x => sceneOf(x.frame) === spec.scene && x.arrival), end = kept.findLastIndex(x => sceneOf(x.frame) === spec.scene);
   if (at < 0 || end <= at + 1) return kept;
   const base = kept[at], art = artsOf(base)[0];
   if (!art) return kept;
-  const beat = (id, state, own) => ({...base, frame: {...base.frame, id: `${base.frame.id}~lesson${id}`}, layers: base.layers.map(l => (l.key === art.key ? {...l, asset: lessonAsset(state)} : l)), arrival: true, clickSel: undefined, target: undefined, merged: false, emph: undefined, drag: false, clickOut: false, handGone: false, endClick: false, rest: false, carried: true, ...own});
-  const playing = beat('-play', 'play', {arrival: false, rest: true, holdSel: LESSON_PLAY, film: true, profileMove: LESSON_FILM.press, profileHold: LESSON_FILM.press + LESSON_FILM.clip + LESSON_FILM.tail});
+  const beat = (id, state, own) => ({...base, frame: {...base.frame, id: `${base.frame.id}~lesson${id}`}, layers: base.layers.map(l => (l.key === art.key ? {...l, asset: lessonAsset(state, spec.topic)} : l)), arrival: true, clickSel: undefined, target: undefined, merged: false, emph: undefined, drag: false, clickOut: false, handGone: false, endClick: false, rest: false, carried: true, ...own});
+  if (spec.topic) return [...kept.slice(0, at + 1), beat('-open', '00', {clickSel: LESSON_TARGETS[0]}), beat('2', '10', {clickSel: LESSON_TARGETS[1]}), beat('3', '11', {clickSel: LESSON_TARGETS[2]}), ...kept.slice(end)]; // (a written training: the same lesson screen with its notice where the video is, no clip to play: the cursor ticks the first two statements and presses Submit & Close)
+  const playing = beat('-play', 'play', {arrival: false, rest: !go, handGone: go, holdSel: go ? undefined : LESSON_PLAY, film: true, profileMove: LESSON_FILM.press, profileHold: LESSON_FILM.press + LESSON_FILM.clip + LESSON_FILM.tail});
   return [...kept.slice(0, at + 1), beat('-open', 'play', {clickSel: LESSON_PLAY}), playing, beat('1', '00', {clickSel: LESSON_TARGETS[0]}), beat('2', '10', {clickSel: LESSON_TARGETS[1]}), beat('3', '11', {clickSel: LESSON_TARGETS[2]}), ...kept.slice(end)];
 }
 // The video opens on the mission as a card and opens it AT ONCE (the user, 2026-10-13: "expand the mission as soon as the video starts"): it was the card with the words of the first scene
@@ -166,20 +189,122 @@ function openCard(kept, spec) {
 // seconds ... so 3 seconds for writing and highlighting and 0.7 seconds for holding it"): once the move into the scene is over, the highlight comes in (`spec.fade`), THEN the words are written,
 // so that highlight and words together take `spec.seconds` (the pen goes at the speed that fits: the words are not all as long), and the scene stays `spec.hold` more. The slide that has the words.
 const BEAT_MOVE = 0.5; // the move into a scene of these, when the video does not say (the usual one)
-function beatsOf(kept, spec) {
-  for (const id of spec.scenes) {
-    const at = kept.findIndex((y, i) => sceneOf(y.frame) === id && !!y.layer && y.layer.kind === 'bubble' && !!squash(y.text) && squash(y.text) !== squash(kept[i - 1]?.text) && y.layers.some(isOverlay)); // (the slide that writes the scene's words, with its highlight)
+// (the user, 2026-10-29: "make all text speed 30 letters per second": the pen goes at the video's `cps` and the scene takes the highlight's fade + the words' letters / cps; only seconds that were
+// asked for in the video's Speed (`spec.fixed`) are kept, and then the pen goes at the speed that fits)
+function beatsOf(kept, spec, cps = ANIM_CPS.default) {
+  for (const id of [...spec.scenes, ...(spec.plain ?? [])]) { // (`plain`: scenes that only show something, with no highlight: the same time to read)
+    const at = kept.findIndex((y, i) => sceneOf(y.frame) === id && !!y.layer && y.layer.kind === 'bubble' && !!squash(y.text) && squash(y.text) !== squash(kept[i - 1]?.text) && (y.layers.some(isOverlay) || spec.plain?.includes(id))); // (the slide that writes the scene's words, with its highlight)
     const x = kept[at];
     if (!x) continue;
     const base = x.intro ? TITLE.in : (x.profileMove ??= BEAT_MOVE); // (what has to be over before the highlight comes: the move into the slide, or, for the first slide of a video, the art coming in)
-    x.beat = {at: (x.intro ? TITLE.in : 0) + spec.fade + WRITE.gap, write: spec.seconds - spec.fade - WRITE.gap, fade: spec.fade}; // (the pen touches just after the highlight is in; `at` counts from the end of the move, so a first slide, which has none, counts the art coming in)
-    x.profileHold = base + spec.seconds + spec.hold;
+    const write = spec.fixed ? spec.seconds - spec.fade - WRITE.gap : Math.max(0.3, letterCount(x.text) / cps), seconds = spec.fixed ? spec.seconds : spec.fade + WRITE.gap + write;
+    x.beat = {at: (x.intro ? TITLE.in : 0) + spec.fade + WRITE.gap, write, fade: spec.fade}; // (the pen touches just after the highlight is in; `at` counts from the end of the move, so a first slide, which has none, counts the art coming in)
+    x.profileHold = base + seconds + spec.hold;
   }
+}
+// ---- The heartbeat (the CEO, 2026-10-16: "it has to also reflect the board how it looks and when it's showing the live heartbeat you gotta show it like moving") ----
+// The sections' boards are captured at states, not at times: their timers are the same in every slide. In their videos the timers that run count up in real time, one second a second, from
+// the first slide where they run, across the slides (a timer is known by its mission and its kind), and stop when the mission is closed (they stay at what they had reached). Which run is the
+// board's own rule (the timer rules in CLAUDE.md): the overview's table by the row's state (Open: the open timer and the duration; Claimed: the claimed timer and the duration; Closed: none),
+// a mission card by its column (Open: the Timer; Claimed: the Timer and the Execution timer; Closed: none).
+const TICKING = new Set(SECTIONS.map(s => s.board));
+const secondsOf = text => { const m = /^(\d{1,3}):(\d{2})(?::(\d{2}))?$/.exec(String(text ?? '').trim()); return m ? (m[3] != null ? Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]) : Number(m[1]) * 60 + Number(m[2])) : null; };
+const clockText = (s, three) => (three ? [Math.floor(s / 3600), Math.floor(s / 60) % 60, s % 60] : [Math.floor(s / 60), s % 60]).map(n => String(n).padStart(2, '0')).join(':');
+function timersIn(root) {
+  const out = [];
+  for (const el of root.querySelectorAll('.ow-timer')) {
+    const row = el.closest('tr'), td = el.closest('td'), table = el.closest('table');
+    if (!row || !td || !table) continue;
+    let head = table; while (head && !head.querySelector('th[data-iq-col]')) head = head.parentElement; // (the header may be a table of its own, over the rows')
+    const col = head?.querySelectorAll('th[data-iq-col]')[[...row.children].indexOf(td)]?.getAttribute('data-iq-col');
+    const state = /state-(open|claimed|closed|canceled)/.exec(row.querySelector('.ow-state')?.getAttribute('class') ?? '')?.[1];
+    const name = row.querySelector('.ow-mission-name')?.textContent.trim();
+    if (!col || !name) continue;
+    out.push({el, key: `ow|${name}|${col}`, running: state === 'open' ? col === 'open' || col === 'duration' : state === 'claimed' ? col === 'claimed' || col === 'duration' : false});
+  }
+  for (const el of root.querySelectorAll('.chip-pill, .chip-exec')) {
+    const column = /^(open|claimed|closed)/i.exec(el.closest('section[aria-label]')?.getAttribute('aria-label') ?? '')?.[1]?.toLowerCase() ?? el.closest('[data-sec-tick]')?.getAttribute('data-sec-tick') ?? undefined, chip = el.closest('.chip'); // (a card on its own, `FlowPart`, says its column itself: `data-sec-tick`)
+    const card = chip?.querySelector('.chip-title')?.textContent.trim() || el.closest('[data-mission-id]')?.getAttribute('data-mission-id'), kind = el.classList.contains('chip-exec') ? 'exec' : 'pill'; // (by its title: the same mission opened on the phone is the same clock)
+    if (!column || !card) continue;
+    out.push({el, key: `m|${card}|${kind}`, running: column === 'open' ? kind === 'pill' : column === 'claimed'});
+  }
+  for (const el of root.querySelectorAll('.iq2-m-summary .sec-timer')) { // (a mission by itself, Mission Details: its Timer runs unless it is closed, gray)
+    const title = el.closest('.iq2-m-summary')?.querySelector('h3')?.textContent.trim();
+    if (title) out.push({el, key: `m|${title}|pill`, running: !el.classList.contains('sec-timer--gray')});
+  }
+  return out.filter(t => secondsOf(t.el.textContent) != null);
+}
+// -> {key: {base (seconds), t0 (the video's second it starts running), stop (the second it stops, or null)}}: from the slides in the order they play.
+// The seconds a video counts its timers faster (the CEO, 2026-10-28: "the timers are not moving, eventually they should be moving in a quick way"): `tick: {scenes, rate}` of a video's profile, the
+// timers that run count `rate` seconds a second from the start of the first of those scenes to the start of the slide after the last of them. -> [{from, to, k}]
+function tickWindows(kept, timeline, tick) {
+  const at = tick?.scenes?.length ? kept.map((x, i) => (tick.scenes.includes(sceneOf(x.frame)) ? i : -1)).filter(i => i >= 0) : [];
+  if (!at.length) return [];
+  const a = timeline.items[at[0]], b = timeline.items[at.at(-1)], next = timeline.items[at.at(-1) + 1];
+  if (!a || !b) return [];
+  return [{from: a.start, to: next ? next.start : b.start + b.move + b.hold, k: tick.rate}];
+}
+// The seconds a timer of the plan shows at the video's second `t` (`from`: what it started at, when it goes on from the video before).
+const run = (p, a, b) => (b - a) + (p.fast ?? []).reduce((n, w) => n + (w.k - 1) * Math.max(0, Math.min(b, w.to) - Math.max(a, w.from)), 0); // (the seconds a timer has counted between two moments of the video: faster in the video's `tick` scenes)
+const timerAt = (p, from, t) => from + Math.max(0, Math.floor(run(p, p.t0, t)));
+function timerPlan(kept, timeline, htmlOf, tick = null) {
+  const plan = {}, seen = new Map(); // (the timers of each piece of art, read once: the slides share a few)
+  const timersOf = asset => {
+    if (!seen.has(asset)) { const html = htmlOf(asset) ?? ''; seen.set(asset, /ow-timer|chip-pill|chip-exec|sec-timer/.test(html) ? timersIn(new DOMParser().parseFromString(html, 'text/html')).map(({el, key, running}) => ({key, running, base: secondsOf(el.textContent)})) : []); }
+    return seen.get(asset);
+  };
+  kept.forEach((x, i) => {
+    const t = timeline.items[i]?.start ?? 0;
+    for (const {key, running, base} of artsOf(x).flatMap(l => timersOf(l.asset))) {
+      const p = plan[key];
+      if (running && !p) plan[key] = {base, t0: t, stop: null};
+      else if (!running && p && p.stop == null) p.stop = t;
+    }
+  });
+  const fast = tickWindows(kept, timeline, tick);
+  if (fast.length) for (const p of Object.values(plan)) p.fast = fast;
+  return plan;
+}
+// ---- The people of a queue, by the clock (the user, 2026-11-03, Increased Efficiency: "the avatars shouldn't stop unless it's in the mission like actually doing the task, otherwise move") ----
+// A slide is a move and a hold, so what goes through several slides stops at each one, and with no hold the next slide would be drawn in the middle of the motion, a stutter. So the avatars of a queue are not moved by the slides. `profile.faces`
+// {<words of a slide's label>: {at, seconds, curve}}: what a slide of that label changes in an avatar (`data-iq-target="face-…"`: its left, top and size, as the stage put them) is a leg of its own, starting `at` seconds after the slide starts (before it,
+// when negative), `seconds` long (without it: the slide's own move, so an avatar stays on the card it carries, if `curve` is the slide's own too), on `curve` ([influence, out] of `easyEase`). The legs add up (`legsAt`) and the video draws them in every
+// picture of those slides, moves and holds alike (`facesAt`), so an avatar stops where the legs say and not where a slide does, and the next slide is got ready in a hold as usual. -> {frames (the ids of the slides it draws), paths: {key: {from, legs}}}
+// `fade` [out, in] (seconds) instead of `seconds` (the user, 2026-11-03, Increased Efficiency: "when closing a mission, just fade in in left side don't go back with an animation"): the avatar does not go there, it fades out where it is from `at`,
+// is put in its new place and size at once, unseen, and fades in there (`cut` of a leg, `legsFade`). Its opacity is drawn by the clock only while it fades: the rest of the time it is the slide's.
+const FACE = '[data-iq-target^="face-"]', faceSeen = new WeakMap(); // (`faceSeen`: an avatar's own opacity, kept while the clock draws it)
+const moveClock = (u, c) => (c.influence ? easyEase(u, c.influence, c.out ?? c.influence) : ease(u)); // (the eased share of a move, as `show` eases it)
+// The rectangle behind the words of a `card` (the same screen): stage px round the words' box, its corners, its shadow; its paint is the gray side's (`paintOf`: the first of the panel or what is in it that has one)
+const CARD = {x: 30, y: 22, radius: 22, shadow: '0 18px 48px rgba(0, 0, 0, 0.45)'};
+const paintOf = el => {
+  for (const e of [el, ...el.querySelectorAll('*')].slice(0, 8)) { const c = getComputedStyle(e); if (c.backgroundImage !== 'none' || !/^(transparent|rgba\(0, 0, 0, 0\))$/.test(c.backgroundColor)) return {backgroundColor: c.backgroundColor, backgroundImage: c.backgroundImage}; }
+  return {backgroundColor: '#2f3033'};
+};
+const midBefore = new WeakMap(); // (a card's slide: the copy of the words before kept on its gray side, `keepBefore`)
+const focusMemo = new WeakMap(); // (Focus: a slide's outlines' middle height as the video lays it out, `focusYOf`: frame -> {key (the layout), y})
+const midOwn = new WeakMap(); // (the words in the middle first, `middleAt`: slot -> {stamp, layout, wrap, panel (the copy's box, stage px), words, z, arts: [[el, opacity]]})
+const notPlaced = keyframes => { const rest = keyframes.map(({left, top, width, height, ...k}) => k); return rest.some(k => Object.keys(k).some(p => p !== 'offset')) ? Object.assign(rest, {easing: keyframes.easing}) : null; }; // (the keyframes without where it is and its size: null, nothing left)
+const facesIn = html => Object.fromEntries([...html.matchAll(/data-iq-target="(face-[\w-]+)"[^>]*?style="left: ([\d.-]+)px; top: ([\d.-]+)px; width: ([\d.-]+)px/g)].map(m => [m[1], m.slice(2).map(Number)]));
+function facePlan(kept, timeline, artHtml, moves) {
+  const plan = {frames: new Set(), paths: {}};
+  kept.forEach((x, i) => {
+    const own = Object.entries(moves).find(([label]) => String(x.frame?.label ?? '').includes(label))?.[1], prev = kept[i - 1];
+    if (!own || !prev) return;
+    plan.frames.add(x.frame.id);
+    if (own.at < 0) plan.frames.add(prev.frame.id); // (it starts on the slide before)
+    const item = timeline.items[i], was = facesIn(artHtml(prev)), t0 = item.start + own.at, t1 = t0 + (own.fade ? own.fade[0] + own.fade[1] : own.seconds ?? item.move), cut = own.fade && {cut: t0 + own.fade[0], fade: own.fade};
+    for (const [key, to] of Object.entries(facesIn(artHtml(x)))) {
+      const from = was[key], by = from ? to.map((v, k) => v - from[k]) : [];
+      if (by.some(Boolean)) (plan.paths[key] ??= {from, legs: []}).legs.push({t0, t1, by, curve: own.curve, ...cut});
+    }
+  });
+  return plan.frames.size ? plan : null;
 }
 export function directorOf(frames, edits, video, profile = null) {
   if (!edits || !video) return {played: frames, info: new Map(), timeline: timelineOf(frames)};
-  const htmlOf = hash => edits.library[hash] ?? video.assets[hash] ?? lessonHtmlOf(hash);
-  const found = frames.map(frame => { const edit = edits.frames[frame.id], all = layersOf(frame, edit), off = NO_MARKS[video.video]?.has(sceneOf(frame)), layers = all.filter(l => !/ripple/i.test(l.name ?? '') && !(off && isMark(l))); return {frame, edit, layers, carried: layers.length !== all.length, rippled: all.some(l => /ripple/i.test(l.name ?? '')), ...wordsOfFrame(edit, htmlOf, layers)}; }); // (the demo's own click ripple is not played: the video clicks by itself; nor is an outline in a scene that has none)
+  const htmlOf = hash => edits.library[hash] ?? video.assets[hash] ?? lessonHtmlOf(hash) ?? pointerHtmlOf(hash);
+  const ceo = !profile?.pointer; // (the hand points and leaves, `pointMarks`; the videos with a cursor of their own, `pointBeats`, do not)
+  const found = frames.map(frame => { const edit = edits.frames[frame.id], all = layersOf(frame, edit), off = NO_MARKS[video.video]?.has(sceneOf(frame)), layers = all.filter(l => !/ripple|^pointer hint$/i.test(l.name ?? '') && !(off && isMark(l))); return {frame, edit, layers, carried: layers.length !== all.length, rippled: all.some(l => /ripple/i.test(l.name ?? '')), hint: all.find(l => /^pointer hint$/i.test(l.name ?? '')), ...wordsOfFrame(edit, htmlOf, layers)}; }); // (the demo's own click ripple is not played: the video clicks by itself; nor is an outline in a scene that has none)
   const look = x => JSON.stringify([{...x.edit, note: undefined, anims: undefined}, x.layers.map(l => `${l.key}:${l.asset}`), x.frame.bubble ?? '', x.text]);
   // a slide of the storyboard that shows the tablet, a title or the words half faded (a step of a fade): the video does its own fades, it never shows one
   const faded = x => x.layers.some(l => (isArt(l) || ['title', 'words'].includes(roleOf(l))) && x.edit?.styles?.[l.key]?.opacity < 0.99);
@@ -198,7 +323,7 @@ export function directorOf(frames, edits, video, profile = null) {
   const titled = x => x.layers.some(l => roleOf(l) === 'title');
   // A video that opens on the software: the slide of it coming in (the demo's scene-in, caught half there) is not played; the video brings it in itself.
   if (kept.length > 1 && !titled(kept[0]) && /\/start(#\d+)?$/.test(kept[0].frame.id) && artsOf(kept[0]).some(a => artsOf(kept[1]).some(b => b.key === a.key))) kept.shift();
-  if (kept[0] && !titled(kept[0])) kept[0].intro = true;
+  if (kept[0] && !titled(kept[0])) { if (profile?.joins) kept[0].joined = true; else kept[0].intro = true; } // (`joins`: the picture the video before ends on is this one, it is there already; only its words are new)
   kept = kept.filter((x, i) => !(i > 0 && titled(kept[i - 1]) && !titled(x) && !squash(x.text) && kept.slice(i + 1, i + 4).some(y => squash(y.text) && !titled(y))));
   // What the slides add to the tablet to show the cursor is on something (a bolder, bigger text) is not how the tablet is: the video applies it when
   // the cursor arrives, smoothly (`emph`).
@@ -223,9 +348,165 @@ export function directorOf(frames, edits, video, profile = null) {
   const html = l => (l ? htmlOf(l.asset) ?? '' : '');
   const isTitle = x => x.layers.some(l => roleOf(l) === 'title');
   const panelAway = x => { const panel = x?.layers.find(l => roleOf(l) === 'panel'); return !panel || rectOf(x, panel).x > STAGE * 0.97; }; // (the words' side is not on the slide: the panel is parked off it)
+  // The detailed twin of a video (the user, 2026-10-14: "the same videos but citing all details, and always having that gray area to the right"; then: "same wording as we had, just additional steps",
+  // "short", "let the user read"): the slides are the video's own, the cursor does what it does there, and the words the video had stay where they were (a scene's own words, and each time it changes
+  // them: `ownText`, what the slide said before the gaps were filled). What the twin adds are STEPS, one at each beat of a scene that has none of its own words to say: each time the cursor goes to
+  // something, each result of a click, and, in the scenes of `spec.each`, each slide where the software changes (lib/storyboardDetails.mjs, or the words typed over a step in the video:
+  // `edits.captions`). The slides between two beats keep the words, and the words' side (the gray area) is on every slide: one that had it parked (the tablet alone in the middle) has it back.
+  function detailBeats(list, spec) {
+    const given = edits?.captions?.[spec.run] ?? {}, each = new Set(spec.each ?? []), steps = new Map(), originals = new Map(), source = list.find(y => y.layer?.kind === 'bubble' && !isTitle(y)); // (`source`: a slide that has a chat box, to lend it to the ones that have none)
+    let scene = null, now = null, said = '';
+    list.forEach((x, i) => {
+      if (isTitle(x)) { scene = null; now = null; return; }
+      const id = sceneOf(x.frame), prev = list[i - 1], first = id !== scene;
+      scene = id;
+      if (artsOf(x).length && panelAway(x)) { // (the gray area is always there)
+        const from = [...list.slice(0, i).reverse(), ...list.slice(i + 1)].find(y => !isTitle(y) && !panelAway(y));
+        if (from) bringPanel(x, from);
+      }
+      const own = squash(x.ownText) ? x.ownText : '', list2 = spec.scenes?.[id] ?? [];
+      const changed = !first && !!own && squash(own) !== squash(said); // (the scene changes its own words here)
+      const moved = (prev && sceneOf(prev.frame) === id && prev.arrival) || x.arrival || (each.has(id) && !first && screenOf(prev) !== screenOf(x)); // (the cursor goes to something, a click has its result, the software changes)
+      if (first || changed) { // (the video's own words)
+        const n = originals.get(id) ?? 0;
+        originals.set(id, n + 1);
+        const text = given[`${id}:o${n}`] ?? (own || x.text);
+        said = own || x.text;
+        now = {run: spec.run, beat: `${id}:o${n}`, text};
+        if (first) steps.set(id, 0);
+      } else if (moved && list2.length) { // (a step)
+        const k = steps.get(id) ?? 0;
+        steps.set(id, k + 1);
+        const at = Math.min(k, list2.length - 1);
+        now = {run: spec.run, beat: `${id}:${at}`, text: given[`${id}:${at}`] ?? list2[at]};
+      }
+      if (!now || (!first && sceneOf(prev.frame) !== id && !now)) return;
+      if (x.layer?.kind !== 'bubble' && source) { carryLayer(x, source, source.layer); x.layer = source.layer; }
+      if (x.layer?.kind !== 'bubble') return;
+      const key = x.layer.key, texts = {...(x.edit?.texts ?? {})}, bubbles = {...(x.edit?.bubbles ?? {})};
+      for (const k of Object.keys(texts)) if (k.startsWith(`${key}/`)) delete texts[k];
+      texts[`${key}/0.0`] = now.text;
+      if (bubbles[key]) { const {words, ...rest} = bubbles[key]; if (Object.keys(rest).length) bubbles[key] = rest; else delete bubbles[key]; } // (its words are shown)
+      x.edit = {...x.edit, texts, bubbles}; x.text = now.text; x.caption = now; x.carried = true;
+    });
+  }
+  // The cursor that points (the user, 2026-10-15: "a new line of videos like the videos with details, but no yellow highlight, only the cursor visible all the time, pointing on things we are talking
+  // about, on the bottom right of where the highlight rectangle was"; "another line where we have the yellow highlight with the cursor at the same time when we highlight"): every slide with
+  // software has a cursor. Where the demo's own cursor is (a click, a drag) it is as it was; elsewhere it is the pointer layer (lib/storyboardPointer.mjs), at the bottom right of the slide's
+  // highlight, else where the slide before left it, else low in the picture. `spec.marks`: the highlights are drawn too, and come in as the cursor gets there (`lateLead` 0); else they are not
+  // drawn at all. A cursor that would fade after its click stays. A title (words alone) has no software and no cursor.
+  function pointBeats(list, spec) {
+    let last = null; // where the cursor's fingertip was left, in slide coordinates
+    // (the user, 2026-10-20: "the cursor not showing until I want to highlight or click on something ... shouldn't be there if there is no continuous movement, clicks or highlight": a slide
+    // with nothing to point at has no cursor, and a cursor left waiting is kept only between two things of one scene on one screen, with no film between: `calmAround`)
+    const targets = list.map(y => !isTitle(y) && (!!y.arrival || y.layers.some(isMark) || !!y.hint || (!!handOf(y) && !y.rest)));
+    const calmAround = i => {
+      const a = targets.findLastIndex((t, k) => t && k < i), b = targets.findIndex((t, k) => t && k > i);
+      if (a < 0 || b < 0) return false;
+      for (let k = a + 1; k <= b; k++) { const y = list[k]; if (isTitle(y) || y.film || sceneOf(y.frame) !== sceneOf(list[a].frame) || uiOf(y) !== uiOf(list[a])) return false; }
+      return true;
+    };
+    list.forEach((x, i) => {
+      if (isTitle(x)) { last = null; return; }
+      for (const flag of ['clickOut', 'handGone', 'handOut', 'endClick']) x[flag] = false;
+      const marks = x.layers.filter(isMark);
+      if (!targets[i] && handOf(x) && !calmAround(i)) { x.layers = x.layers.filter(l => roleOf(l) !== 'hand'); x.rest = false; x.cursorOnly = false; x.carried = true; } // (a cursor left waiting: it goes)
+      const real = handOf(x);
+      if (real) {
+        const [hx, hy] = handAt(x, real);
+        last = {x: hx + real.box.w * TIP.x, y: hy + real.box.h * TIP.y};
+      } else if (artsOf(x).length && (marks.length || x.hint)) { // (something to point at)
+        let at = last;
+        if (marks.length) {
+          at = cornerOf(marks.map(l => { const r = rectOf(x, l), s = x.edit?.sizes?.[l.key]; return {x: r.x, y: r.y, w: s?.[0] || r.w, h: s?.[1] || r.h}; }), STAGE * 9 / 16);
+          if (spec.marks) x.lateLead = 0;
+        } else if (x.hint) { at = cornerOf([rectOf(x, x.hint)], STAGE * 9 / 16); } // (a slide with no outline that says what it is about: the cursor goes to it, as it would to an outline's corner)
+        x.layers = [...x.layers.filter(l => roleOf(l) !== 'hand'), POINTER_LAYER];
+        x.edit = {...x.edit, moves: {...(x.edit?.moves ?? {}), [POINTER_LAYER.key]: pointerMove(at, TIP)}};
+        x.carried = true; last = at;
+      }
+      if (!spec.marks && marks.length) { x.layers = x.layers.filter(l => !isMark(l)); x.carried = true; }
+    });
+  }
+  // The hand points, then leaves (the CEO, 2026-10-16: "the hand shows something and disappears and then the words come up and they send the hand again"; "we certainly don't point and speak at
+  // the same time"; "pop it a little bit when you point with the hand"; "the finger ... just appears where it needs to appear, and then it circles, as if the finger, when you press it somewhere,
+  // it creates a circle of what you're showing me"): a slide that brings in a yellow outline is played as the words first (the slide without its new outlines), then for each new outline the
+  // hand going to it (out of the words; on a big board it appears there: `slot.bottom`) and the outline coming out of its fingertip, popped (`placePoint`, `revealMark`, `popMarks`), then the
+  // hand leaving (it fades where it is); the outlines stay. Not a slide where the cursor clicks (its outline is the click's), nor the videos with a cursor of their own (`pointer`).
+  const POINT = {move: 0.6, circle: 0.45, rest: 0.45, leave: 0.5, after: 1.2}; // seconds: the hand going there, the circle coming out of it, the hand staying on it, the hand leaving, the scene after it
+  // `handless` (the CEO, 2026-10-28: "I don't need the finger, just pop them up and highlight them", on what is only shown): no hand at all; the words first, then every new outline of the slide together, popped.
+  function pointMarks(list, handless = false) {
+    const out = [];
+    for (const x of list) {
+      const prev = out.at(-1), boxOf = (y, l) => { const r = rectOf(y, l), sz = y.edit?.sizes?.[l.key]; return [r.x, r.y, sz?.[0] || r.w, sz?.[1] || r.h]; };
+      const stays = l => !!prev && sceneOf(prev.frame) === sceneOf(x.frame) && prev.layers.some(p => p.key === l.key && boxOf(prev, p).every((v, n) => Math.abs(v - boxOf(x, l)[n]) <= 6)); // (the same outline, still there: the captures call every outline `circle`, a new scene's is a new one)
+      const fresh = isTitle(x) || x.arrival || handOf(x) || !artsOf(x).length ? [] : x.layers.filter(l => isMark(l) && !stays(l));
+      if (!fresh.length) { out.push(x); continue; }
+      const copy = (tag, own) => ({...x, frame: {...x.frame, id: `${x.frame.id}~${tag}`}, carried: true, intro: false, beat: undefined, profileMove: undefined, profileHold: undefined, extra: undefined, still: undefined, ...own});
+      const said = !!prev && !isTitle(prev) && !!squash(x.text) && squash(prev.text) === squash(x.text) && screenOf(prev) === screenOf(x) && !handOf(prev); // (the words are there already, on this screen)
+      if (!said) out.push({...x, layers: x.layers.filter(l => !fresh.includes(l)), carried: true, extra: undefined}); // (the words, first)
+      if (handless) { out.push(copy('marks', {lateLead: 0, lateFade: POINT.circle, profileMove: 0.1, profileHold: 0.1 + POINT.circle + (x.profileHold != null ? Math.max(POINT.after, x.profileHold) : POINT.after), extra: x.extra})); continue; }
+      let moves = null;
+      fresh.forEach((m, k) => {
+        const r = rectOf(x, m), s = x.edit?.sizes?.[m.key], at = cornerOf([{x: r.x, y: r.y, w: s?.[0] || r.w, h: s?.[1] || r.h}], STAGE * 9 / 16); // (its bottom right corner: put right by `placePoint`)
+        moves = {...(x.edit?.moves ?? {}), [POINTER_LAYER.key]: pointerMove(at, TIP)};
+        out.push(copy(`point${k}`, {layers: [...x.layers.filter(l => !fresh.includes(l) || fresh.indexOf(l) <= k), POINTER_LAYER], edit: {...x.edit, moves}, point: m.key, lateLead: 0, lateFade: POINT.circle, profileMove: POINT.move, profileHold: POINT.move + POINT.circle + POINT.rest}));
+      });
+      out.push(copy('left', {layers: [...x.layers, POINTER_LAYER], edit: {...x.edit, moves}, handGone: true, profileMove: POINT.leave, profileHold: POINT.leave + (x.profileHold != null ? Math.max(POINT.after, x.profileHold - POINT.move) : POINT.after), extra: x.extra}));
+    }
+    return out;
+  }
+  // The cursor goes from one thing to the next (the user, 2026-10-19: "don't fade out the cursor between two things, it should just move to the next place, pop, then so on, change all of them"):
+  // between two slides where it works (it points, it presses) in one run of the video (no title between), it stays on screen where it was (the words of the next thing are written meanwhile), then
+  // glides to the next, which pops. It comes in at the first one (out of the words, or where it goes on a big board) and fades only after the last one (before a title, at the end).
+  // But only while its work goes on without a pause (the user, 2026-10-20: "the cursor not showing until I want to highlight or click on something ... the cursor shouldn't be there if there
+  // is no continuous movement, clicks or highlight"): from one thing to the next in the SAME scene, on the same screen, with no title and no film between them (`calm`), it stays and glides
+  // (step by step: Yes, Yes, No, Add video; the outlines of one scene one after the other; Menu, then its item). Otherwise (the next scene's words to be written, a video that plays,
+  // another screen) it fades after what it did and comes in again for the next thing.
+  function keepHand(list) {
+    let from = -1; // (the last slide that has the cursor at work)
+    const calm = (a, b) => { for (let k = a + 1; k <= b; k++) { const y = list[k]; if (isTitle(y) || y.film || sceneOf(y.frame) !== sceneOf(list[a].frame) || uiOf(y) !== uiOf(list[a])) return false; } return true; };
+    list.forEach((x, i) => {
+      if (isTitle(x)) { from = -1; return; }
+      const j = list.findIndex((y, k) => k > i && (isTitle(y) || (!!handOf(y) && !y.handGone && !y.rest))), more = j > i && !isTitle(list[j]); // (the cursor works again later in this run)
+      const hand = handOf(x);
+      if (hand && !x.handGone && !x.rest) { from = i; if (more && calm(i, j)) x.clickOut = false; return; }
+      if (!more || from < 0 || !calm(from, j)) return;
+      if (hand) { x.handGone = false; x.rest = true; x.carried = true; return; } // (it was to fade: it stays)
+      carryLayer(x, list[from], handOf(list[from])); x.rest = true; x.cursorOnly = true;
+    });
+  }
   const tabletSig = x => artsOf(x).map(l => signature(l, x.edit, x.frame)).join('|');
   const artHtml = x => artsOf(x).map(html).join('');
   const screenOf = x => artHtml(x).replace(/-?\d+(\.\d+)?/g, '#'); // (what the screen shows, its clocks and counts, and how far along its animations are, left out)
+  const uiOf = x => artsOf(x).map(l => `${l.key}{${uiSkeleton(html(l))}}`).join('|'); // (which screen it is: see uiSkeleton)
+  // The cursor leaves when the screen changes (the user, 2026-10-20: "the cursor should fade out and come from the left of the words if the scene UI changed, it should never stay put at
+  // something when screen changes even when something like a picture appears, only stay if it's same UI and continuous movement like the step by step yes yes no add video ... on all videos"):
+  // wherever the cursor would go on from one slide to the next onto another screen (`uiOf`), it stays where it was (where it pressed) and fades out as the screen changes, and comes in again
+  // from the left of the words for what it does next (`enter`). A cursor that was to wait there (`rest`) fades instead; one that was to go on to its next thing gets a slide of its own to fade
+  // in (`~away`: the new screen with the old cursor; the press, if there was one, is made in the move into it). On the same screen (ticking Yes, Yes, No, adding a video, a menu it opens itself)
+  // it goes on as before. Every line, the pointer lines too.
+  function leaveOnNewScreen(list) {
+    const out = [];
+    for (const x of list) {
+      const prev = out.at(-1), hand = handOf(x), before = prev && handOf(prev);
+      if (prev && before && hand && !isTitle(prev) && !isTitle(x) && !prev.handGone && !prev.handOut && !prev.endClick && uiOf(prev) !== uiOf(x)) {
+        if ((x.rest || x.cursorOnly) && !x.arrival) { x.rest = false; x.cursorOnly = false; x.handGone = true; x.carried = true; } // (it was to wait there: it fades where it was)
+        else {
+          const away = {...x, frame: {...x.frame, id: `${x.frame.id}~away`}, layers: x.layers.filter(l => roleOf(l) !== 'hand' && !/highlight/i.test(l.name ?? '') && !isMark(l)), carried: true, handGone: true, rest: false, cursorOnly: false, arrival: false, merged: false,
+            clickSel: undefined, target: undefined, drag: false, point: null, emph: undefined, intro: false, beat: undefined, profileMove: undefined, profileHold: undefined, extra: undefined, still: undefined, lateLead: undefined, lateFade: undefined};
+          carryLayer(away, prev, before); // (the cursor where it was: it fades there as the screen changes)
+          out.push(away);
+          x.intro = false;
+          if (x.handGone && !x.arrival) { x.layers = x.layers.filter(l => roleOf(l) !== 'hand'); x.handGone = false; x.carried = true; } // (it was there only to fade: `~away` does that, it does not come in again to fade)
+        }
+      } else if (prev?.handGone && hand && (x.rest || x.cursorOnly) && !x.arrival && !x.point) { // (it has gone: a slide that only kept it waiting has none)
+        x.layers = x.layers.filter(l => roleOf(l) !== 'hand'); x.rest = false; x.cursorOnly = false; x.carried = true;
+      }
+      out.push(x);
+    }
+    return out;
+  }
   const far = (x, a, y, b) => Math.hypot(...handAt(x, a).map((v, k) => v - handAt(y, b)[k])) > 25;
   // Where the cursor clicks. The demo's click ripple marks the slide the click GIVES (caught as it was clicked): the click is made from the slide before it, the
   // cursor there (it is brought in from the ripple's slide when that one has none). Without ripples: where the cursor rests when the art changes in the next slide.
@@ -271,11 +552,14 @@ export function directorOf(frames, edits, video, profile = null) {
     }
   });
   kept.forEach((x, i) => { const y = kept[i + 1], a = natural[i], b = y && handOf(y); if (a && b && !isTitle(y) && /^(Click|After the click)/i.test(labelOf(y)) && Math.hypot(...handAt(x, a).map((v, k) => v - handAt(y, b)[k])) < 25 && words(x) !== words(y)) addClick(i, y); }); // (a click named so: a list still scrolling under a still cursor is not one)
-  const sources = [...clicks].sort((p, q) => p - q);
+  let sources = [...clicks].sort((p, q) => p - q);
+  const known = new Set();
   for (const s of sources) { // what is clicked, by the demo's own name for it (the slides are named after the hand's stops): the cursor goes exactly to it
     const named = f => f && {chapter: sceneOf(f), label: f.label}, aim = clickTarget(STOPS[video.video], named(kept[s].frame), named(gives.get(s)?.frame));
-    if (aim) { kept[s].clickSel = targetSelector(video.video, aim.name, aim.n); kept[s].drag = aim.stop.kind === 'scroll' || Number.isFinite(aim.stop.hold); } // (a stop held: the hand drags, or swipes up)
+    if (aim) known.add(s);
+    if (aim) { kept[s].clickSel = targetSelector(video.video, aim.name, aim.n); kept[s].drag = aim.stop.kind === 'scroll' || Number.isFinite(aim.stop.hold); kept[s].leaves = !!aim.stop.leave; } // (`leave`: the hand goes after this press, it is not one of a run: the CEO, 2026-10-16) // (a stop held: the hand drags, or swipes up)
   }
+  if (SECTION_STOPS[video.video]) sources = sources.filter(s => known.has(s)); // (a section names every press in its spec: a change between two slides that matches none is the page re-centered for the next target, not a press)
   const plays = sources.length ? kept.findIndex((x, i) => i > sources.at(-1) && x.layers.some(l => /timeline/i.test(l.name ?? ''))) : -1; // (a video starts playing: one more click, on its play button)
   const playArrival = plays > 0 && artHtml(kept[plays - 1]).includes('iq2-kb-film') ? plays - 1 : -1;
   const arrivals = [...sources, ...(playArrival >= 0 ? [playArrival] : [])];
@@ -294,7 +578,7 @@ export function directorOf(frames, edits, video, profile = null) {
     arrivals.forEach((a, k) => {
       const next = arrivals[k + 1], c = a + 1;
       if (!kept[c] || isTitle(kept[c])) return;
-      if (profile?.keepCursor && next !== undefined && !together(a, next) && handOf(kept[a]) && kept.slice(c, next).every(y => !isTitle(y))) { // the cursor is ONE thing from its first click to the end of the video (the user, 2026-10-13: "just keep it visible", "don't show the cursor coming from text"): it does not fade out and come in again from the words; it rests where it clicked while the words of the next scene come, then goes to the next click
+      if (!ceo && profile?.keepCursor && next !== undefined && !together(a, next) && handOf(kept[a]) && kept.slice(c, next).every(y => !isTitle(y))) { // the cursor is ONE thing from its first click to the end of the video (the user, 2026-10-13: "just keep it visible", "don't show the cursor coming from text"): it does not fade out and come in again from the words; it rests where it clicked while the words of the next scene come, then goes to the next click
         for (let j = c; j < next; j++) { carryLayer(kept[j], kept[a], handOf(kept[a])); kept[j].rest = true; kept[j].cursorOnly = true; } // (`cursorOnly`: the cursor is all this slide has to keep it; an empty beat is still dropped)
         if (next === playArrival) carryLayer(kept[next], kept[lastSource], natural[lastSource]);
         aim(kept[next], next);
@@ -305,9 +589,11 @@ export function directorOf(frames, edits, video, profile = null) {
         if (next !== undefined) { if (next === playArrival) carryLayer(kept[next], kept[lastSource], natural[lastSource]); aim(kept[next], next); }
         return;
       }
+      if (ceo && kept[a].leaves) { if (!kept[a].target) kept[a].clickOut = true; aim(kept[next], next); return; } // (a press after which there is something to look at: the hand goes, and comes again for the next one)
       const x = kept[c];
       if (c === next) { if (next === playArrival) carryLayer(x, kept[lastSource], natural[lastSource]); aim(x, next); return; } // (the frame after the click is where the next click is)
       if (kept.slice(c + 1, next + 1).some(y => screenOf(y) !== screenOf(x))) { // the screen goes on by itself before the next click (a lesson plays, a quiz comes up): the cursor rests where it clicked, then goes to the next
+        if (ceo) { if (!kept[a].target) kept[a].clickOut = true; aim(kept[next], next); return; } // (the CEO, 2026-10-16: "when you press on it, make the hand disappear ... make the hand appear again and close it": it presses and goes, and comes again for the next press)
         for (let j = c; j < next; j++) { carryLayer(kept[j], kept[a], handOf(kept[a])); kept[j].rest = true; }
         aim(kept[next], next);
         return;
@@ -330,7 +616,7 @@ export function directorOf(frames, edits, video, profile = null) {
   const firstArrival = kept.findIndex(x => x.arrival);
   kept.forEach((x, i) => { // new words while the cursor is still at work: they come in the next frame, after the click (and the panel stays away until then)
     const prev = kept[i - 1], next = kept[i + 1];
-    if (firstArrival < 0 || i <= firstArrival || !x.arrival || !x.merged || x.wordsDelayed || x.layer?.kind !== 'bubble' || !squash(x.text) || !next || isTitle(next) || squash(prev.text) === squash(x.text)) return;
+    if (profile?.wordsFirst || firstArrival < 0 || i <= firstArrival || !x.arrival || !x.merged || x.wordsDelayed || x.layer?.kind !== 'bubble' || !squash(x.text) || !next || isTitle(next) || squash(prev.text) === squash(x.text)) return;
     if (squash(next.text) !== squash(x.text)) { carryLayer(next, x, x.layer); next.layer = x.layer; next.text = x.text; }
     next.wordsDelayed = true; // (once: they are not pushed on again)
     x.layers = x.layers.filter(l => l.kind !== 'bubble'); x.layer = null; x.text = ''; x.carried = true;
@@ -369,9 +655,9 @@ export function directorOf(frames, edits, video, profile = null) {
   kept = kept.filter((x, i) => i === 0 || i === kept.length - 1 || !!squash(x.text) || isTitle(x) || (!!handOf(x) && !x.cursorOnly) || x.layers.some(isOverlay) || kept[i - 1].arrival || isTitle(kept[i - 1]) || isTitle(kept[i + 1]) || !artsOf(kept[i - 1]).length); // (the software coming in after words only is a beat: it comes in alone, then the words)
   // Words first, then the cursor: a slide where new words come with the cursor is played twice, the words written first (no cursor), then the cursor comes in.
   kept = kept.flatMap((x, i) => {
-    if (!x.arrival || x.merged || x.wordsDelayed || kept[i - 1]?.arrival || !squash(x.text) || x.layer?.kind !== 'bubble' || (i > 0 && squash(kept[i - 1].text) === squash(x.text))) return [x];
-    const first = {...x, frame: {...x.frame, id: `${x.frame.id}~words`}, layers: x.layers.filter(l => roleOf(l) !== 'hand' && !/highlight/i.test(l.name ?? '')), arrival: false, emph: undefined, clickSel: undefined, target: undefined, endClick: false, clickOut: false, merged: false, carried: true};
-    const left = profile?.keepCursor && i > 0 && handOf(kept[i - 1]); // (the cursor of the scene before is still there: it stays where it was left while the words are written, it does not come in from them)
+    if (!x.arrival || (x.merged && !profile?.wordsFirst) || x.wordsDelayed || (kept[i - 1]?.arrival && !profile?.wordsFirst) || !squash(x.text) || x.layer?.kind !== 'bubble' || (i > 0 && squash(kept[i - 1].text) === squash(x.text))) return [x];
+    const first = {...x, frame: {...x.frame, id: `${x.frame.id}~words`}, layers: x.layers.filter(l => roleOf(l) !== 'hand' && !/highlight/i.test(l.name ?? '')), arrival: false, emph: undefined, clickSel: undefined, target: undefined, endClick: false, clickOut: false, merged: false, carried: true, say: !!profile?.wordsFirst};
+    const left = !ceo && profile?.keepCursor && i > 0 && handOf(kept[i - 1]); // (the cursor of the scene before is still there: it stays where it was left while the words are written, it does not come in from them)
     if (left) { carryLayer(first, kept[i - 1], left); first.rest = true; }
     x.intro = false; // (the video opens once: the slide with the words is the one that comes in; this one, the same screen with the cursor, did it again: the tablet faded out and in when the cursor came — the user, 2026-10-13: "the tablet flickers a lot")
     return [first, x];
@@ -383,6 +669,7 @@ export function directorOf(frames, edits, video, profile = null) {
     if (!prev?.clickOut || !prev.arrival || !hand || isTitle(x) || handOf(x)) return;
     carryLayer(x, prev, hand); x.handGone = true;
   });
+  for (const x of kept) x.ownText = x.text; // (what each slide says in the video itself: the detailed twin keeps these words, and adds steps; the gaps that follow are filled with words that are not the slide's own)
   { // The right side is never empty (the user, 2026-10-13: "don't keep the right side empty, always fade out and show the first word right away", "show the text on the right as soon as you highlight, maybe highlight after showing the first word"):
     // a slide that has the software and no words (the outline that comes before its words, the cursor that clicks before the words come) is played with the words of the next slide that has them: the old words fade
     // out, the first word of the new ones is written at once, the outline and the clicks come after it. A slide that is only the outline, the same screen as the next one that has the words, is not a beat of its own.
@@ -400,7 +687,13 @@ export function directorOf(frames, edits, video, profile = null) {
     });
     if (ahead.size) kept = kept.filter((x, i) => !ahead.has(i));
   }
-  if (profile?.lesson) kept = lessonBeats(kept, profile.lesson); // (the click on the training video opens the lesson screen)
+  if (profile?.wordsFirst) kept.forEach((x, i) => { // (the words came before the click: they stay while what it opened goes on, a video playing, as the words pushed on after a click did)
+    const p = kept[i - 1];
+    if (!p || isTitle(x) || isTitle(p) || squash(x.text) || !squash(p.text) || p.layer?.kind !== 'bubble' || sceneOf(p.frame) !== sceneOf(x.frame) || !artsOf(x).length) return;
+    carryLayer(x, p, p.layer); x.layer = p.layer; x.text = p.text; x.wordsKept = true;
+    if (!panelAway(p) && panelAway(x)) bringPanel(x, p); // (and their gray side: the slide the click opened may have it parked off the picture, the words would float over the plate)
+  });
+  if (profile?.lesson) kept = lessonBeats(kept, profile.lesson, true); // (the click on the training video opens the lesson screen; the cursor presses play and goes while the clip plays, in every video: the user, 2026-10-20, no cursor waiting where nothing moves)
   { // the closed mission and the rating that follows it (the user, 2026-10-13: "the mission shouldn't move at all, just fade out the tablet and zoom in the mission simultaneously, because now it disappears then appears to left and moves"; then: "the mission shouldn't change its position, why it came here, just fade out the tablet and keep the mission in it's right position and then after tablet completly fade out zoom in on it"): the slides where the card is lifted out over the dimmed board (it was lifted to the middle: the card travelled) are not played; the board goes to the rating in ONE move: the tablet fades out first, the card staying exactly where it is on the board, then, the tablet gone, the card zooms to its place in the rating (`fadeThenZoom`, `TABLET_FADE`)
     const from = kept.findIndex(x => sceneOf(x.frame) === 'rate'), lifted = i => sceneOf(kept[i].frame) === 'emphasis' && artsOf(kept[i]).some(isLifted);
     if (video.video === 'improved-quality-v2' && from > 1 && sceneOf(kept[from - 1].frame) === 'emphasis') {
@@ -431,10 +724,214 @@ export function directorOf(frames, edits, video, profile = null) {
     if (s.extra) own.at(-1).extra = s.extra;
   }
   if (profile?.open) openCard(kept, profile.open); // (the card, then the mission opened: at once)
-  if (profile?.beats) beatsOf(kept, profile.beats); // (instructions, alert, link: the same beat)
+  if (profile?.beats) beatsOf(kept, ceo ? {...profile.beats, scenes: []} : profile.beats, profile.cps ?? ANIM_CPS.default); // (instructions, alert, link: the same beat; the CEO's videos have the words first, then the hand points: `pointMarks`)
   let scroll = null; // (a list scrolled by the time: see oneScroll)
   if (profile?.scroll) { const r = oneScroll(kept, profile.scroll, htmlOf); kept = r.kept; scroll = r.scroll ?? null; }
+  if (profile?.detail) detailBeats(kept, profile.detail); // (the detailed twin of a video: a caption for each beat of each scene, the gray area always there)
+  if (profile?.wordsFirst && profile?.detail) kept = kept.flatMap((x, i) => { // (the detailed twin's own steps too: a step written on the slide where the cursor comes is written first, then the cursor and the highlight come: the user, 2026-10-21, "do not highlight or pop until the text finishes writing")
+    const p = kept[i - 1];
+    if (!x.arrival || !p || isTitle(p) || !squash(x.text) || x.layer?.kind !== 'bubble' || squash(p.text) === squash(x.text)) return [x];
+    const first = {...x, frame: {...x.frame, id: `${x.frame.id}~say`}, layers: x.layers.filter(l => roleOf(l) !== 'hand' && !/highlight/i.test(l.name ?? '') && !isMark(l)), arrival: false, emph: undefined, clickSel: undefined, target: undefined, endClick: false, clickOut: false, merged: false, drag: false, carried: true, intro: false, beat: undefined, say: true};
+    x.intro = false;
+    return [first, x];
+  });
+  if (profile?.pointer) pointBeats(kept, profile.pointer); // (the cursor instead of, or with, the yellow highlight: the videos "cursor only" and "highlight and cursor")
+  else { kept = pointMarks(kept, !!profile?.handless); keepHand(kept); } // (the hand points at what is outlined; it stays and goes on to the next thing, and leaves after the last one; `handless`: no hand at all, the outlines pop)
+  kept = leaveOnNewScreen(kept); // (but not onto another screen: there it fades, and comes in again from the words)
+  // Words are never written without the gray side behind them (the user, 2026-10-21: "some videos has this issue, where text background is not visible yet text is still visible"): a slide
+  // that shows words while its gray side is parked off the picture (words kept over the slide a click opened, the words of the next slide brought forward) gets it from the nearest slide
+  // that has it in place, of its own scene first. Every video, every line.
+  kept.forEach((x, i) => {
+    if (isTitle(x) || x.layer?.kind !== 'bubble' || !squash(x.text) || (x.edit?.hidden ?? []).includes(x.layer.key) || !panelAway(x)) return;
+    const ok = y => y && !isTitle(y) && !panelAway(y), scene = sceneOf(x.frame);
+    let near = null;
+    for (let d = 1; d < kept.length && !(near && sceneOf(near.frame) === scene); d++) for (const y of [kept[i - d], kept[i + d]]) if (ok(y) && (!near || (sceneOf(y.frame) === scene && sceneOf(near.frame) !== scene))) near = y;
+    if (near) bringPanel(x, near);
+  });
+  // A slide of its own time, by its name (`profile.slides`: {<words of the slide's id or label>: {move, hold, influence, fade, pen, beat}}; the user, 2026-10-30: "make the animation smooth as heck"): `move` seconds to come in, `hold` seconds in all, `influence`: the move goes by After Effects' Easy Ease at that influence (`easyEase`), so does what comes in with it (`fadesAt`), `out`: another influence for the end of the move, `fade`: the seconds what comes in last (an outline) takes, `beat: false`: no beat of its own (the pen does not wait after the move for a highlight that is not there).
+  // `pen` (the user, 2026-10-30: "show the missions when saying work in work missions on the right"): the words are written WITH this slide's move, the pen touching `pen` seconds after the slide starts; the slide before has no words and does not wait once it is in. Not in a detailed video: its steps are written on those slides.
+  // `wait` (the user's comment on the video, 2026-10-30: "show photo ... and then show the text"): the pen touches that many seconds after the move is over, so what comes in is seen first. `pull` (the same day: "Pull to the right before going up"): a card that goes up in this slide is pulled out to the right first, by that share of its width (`pullKeys`). `over` (the user, 2026-11-02: "zoom in to the tablet then fade in our tablet with same boundries as tablet for the frame"): the art of this slide comes in over the art of the slide before, which stays under it, where one going and then the other coming would dip to the plate (`landOn`). `post` {each, fade, at}: the cards this slide brings in pop one after the other, `each` seconds apart, `fade` seconds each, from the share `at` of the move, as missions being posted do, instead of fading in over all of it. `natural`, `rest`: 0 lets a slide be as short as its `hold` says, instead of the video's own least time (the slides of a queue: `facePlan`).
+  if (profile?.slides) kept.forEach((x, i) => { const label = `${x.frame?.id} ${x.frame?.label ?? ''}`; for (const [needle, own] of Object.entries(profile.slides)) if (label.includes(needle)) { if (own.move != null) x.profileMove = own.move; if (own.hold != null) x.profileHold = own.hold; if (own.natural != null) x.natural = own.natural; if (own.rest != null) x.profileRest = own.rest; if (own.influence != null) x.influence = own.influence; if (own.out != null) x.easeOut = own.out; if (own.fade != null) x.lateFade = own.fade; if (own.beat === false) x.beat = undefined; if (own.wait != null) x.penAt = own.wait; if (own.pull != null) x.pull = own.pull; if (own.over) x.over = true; if (own.post) x.post = own.post; if (own.pen != null && !profile.detail && kept[i - 1]) { const p = kept[i - 1]; p.layers = p.layers.filter(l => l.kind !== 'bubble'); p.layer = null; p.text = ''; p.carried = true; p.profileHold = p.profileMove; x.penAt = own.pen - (x.profileMove ?? 0); } } });
+  // The dots of a code come in one by one (`profile.dots` {lead, each, fade, tail}; the user, 2026-10-30: "the code dot should be one by one show up in a smooth fast animation"): a slide whose code has more dots than the slide
+  // before (`data-sec-dots` on the row of boxes) draws the new ones by the clock, each `each` seconds after the one before, fading and growing over `fade`: the move into it is a few hundredths of a second, so the
+  // dots do not fade in together with it, and it stays until the last one is in (`dotsAt`).
+  if (profile?.dots) {
+    let before = 0;
+    for (const x of kept) {
+      if (isTitle(x)) { before = 0; continue; }
+      const m = /data-sec-dots="(-?\d+)"/.exec(artHtml(x)), n = m ? Math.max(0, Number(m[1])) : null;
+      if (n == null) continue;
+      if (n > before) { const d = profile.dots; x.dots = {from: before, to: n, lead: d.lead, each: d.each, fade: d.fade}; x.profileMove = 0.03; x.profileHold = 0.03 + d.lead + (n - before - 1) * d.each + d.fade + d.tail; }
+      before = n;
+    }
+  }
+  // A run of slides that each add one thing, played as ONE slide (`profile.pops` {label, selector, lead, each, fade, tail}; the user, 2026-10-30: "showing avatars should one after one very fast"): a slide is a move and a hold, and
+  // the next one is got ready in that hold, so what comes one after the other very fast is drawn by the clock. Only the last slide of the run is played (the ones whose label has `label`), with no move: it is the picture
+  // before it but for what comes in, and the first things of `selector`, one for each slide of the run, pop `each` seconds apart (`fadesAt`).
+  // `with` {label, selector, tally, tail} (the user, 2026-11-02: "show missions and avatars same time same speed as we have avatars right now"): the slides of that label right after the run are in the run, what they add pops
+  // with what it adds, the first with the first; `tally` {selector, words}: the text that counts them as they come in. A cursor that pointed at those slides goes with them: the last one's alone would appear on the last thing.
+  if (profile?.pops) for (const p of [].concat(profile.pops)) { // (`across`: what `selector` finds comes `across` at a time, phone by phone in the page: the k-th of each together) (`tally`: of the run itself) (`with` {each, fade}: the speed of the run when they join it)
+    const named = (x, label) => !!label && String(x?.frame?.label ?? '').includes(label), adds = x => named(x, p.label), joins = x => named(x, p.with?.label);
+    let run = 0, joined = 0;
+    kept = kept.filter((x, i) => {
+      if (!adds(x) && !(run && joins(x))) return true;
+      if (adds(x)) run++; else joined++;
+      if (adds(kept[i + 1]) || joins(kept[i + 1])) return false;
+      const each = (joined && p.with.each) || p.each, fade = (joined && p.with.fade) || p.fade;
+      x.pops = {groups: [{selector: p.selector, count: run, across: p.across ?? 1}, ...(joined ? [{selector: p.with.selector, count: joined}] : [])], tally: joined ? p.with.tally ?? null : p.tally ?? null, lead: p.lead, each, fade}; x.profileMove = 0; x.profileHold = p.lead + (Math.max(run, joined) - 1) * each + fade + (joined ? p.with.tail ?? p.tail : p.tail);
+      if (joined || p.across) { x.layers = x.layers.filter(l => l !== POINTER_LAYER); x.carried = true; }
+      run = joined = 0;
+      return true;
+    });
+  }
+  // The name that comes on a card when its mission closes (`profile.names` {lead, fade, up, down, tail, stroke}; the user, 2026-10-30: "just fade in the name, bold a bit then unbold, the weight of the text should be
+  // smooth bolding, not harsh transitioning"): a slide with a name the slide before does not have draws it by the clock (`namesAt`), and stays until it has settled.
+  if (profile?.names) {
+    const namesIn = x => new Set([...artHtml(x).matchAll(/data-iq-target="(card-[\w-]+-who)"/g)].map(m => m[1]));
+    let before = null;
+    for (const x of kept) {
+      if (isTitle(x)) { before = null; continue; }
+      const now = namesIn(x), added = before ? [...now].filter(name => !before.has(name)) : [], n = profile.names;
+      if (added.length) { x.names = {...n, targets: added}; x.profileHold = Math.max(x.profileHold ?? 0, n.lead + (n.swell ?? n.fade) + n.up + n.down + n.tail); }
+      before = now;
+    }
+  }
+  // One thing that runs through its colors by the clock (`profile.pulse` {label, selector, colors, each, up, down, grow, influence, tail}; the user's comment on the video, 2026-10-30: "pop the green and do it fast green,orange red in one second"; then, 2026-11-02: "pop once, go over colors then remove the pop"): the slide of that
+  // name has no move, and what `selector` finds grows once over `up` seconds, takes each color `each` seconds after the one before, then settles over `down` (`fadesAt`). The slide's own picture is the last color. By the clock for the reason `pops` is: slides of a few pictures stutter.
+  if (profile?.pulse) {
+    const {label, tail, ...spec} = profile.pulse;
+    for (const x of kept) if (String(x.frame?.label ?? '').includes(label)) { x.pulse = spec; x.profileMove = 0; x.profileHold = spec.up + spec.colors.length * spec.each + spec.down + tail; }
+  }
+  if (profile?.stagger) { // the cards of a panel come in one by one over the dimmed screen, then the words are written (the user, 2026-10-21: "while missions showing up it can be like first mission then 2nd then 3rd ... one by one while everything is dimmed a bit and then text then highlight")
+    const has = x => !isTitle(x) && artHtml(x).includes(profile.stagger.panel);
+    const at = kept.findIndex((x, i) => has(x) && !(i > 0 && has(kept[i - 1])));
+    if (at >= 0) { const x = kept[at], n = (artHtml(x).match(profile.stagger.count) ?? []).length; x.stagger = {...profile.stagger, total: profile.stagger.lead + Math.max(0, n - 1) * profile.stagger.each + profile.stagger.fade}; }
+  }
+  kept.forEach((x, i) => { // a press that gives a slide with no cursor (its work ends there): the cursor stays where it pressed, goes along with the screen and fades as it changes; it does not vanish mid-press under the new slide
+    const prev = kept[i - 1], hand = prev && handOf(prev);
+    if (!prev?.arrival || !hand || prev.handGone || prev.endClick || isTitle(prev) || isTitle(x) || handOf(x)) return;
+    carryLayer(x, prev, hand); x.handGone = true;
+  });
+  // The words go before the software changes (`profile.clearFirst` {move, hold, influence, end}; the user, 2026-11-04, Increased Efficiency, all its variations: "fade out Timers Change In Color To Create A Sense Of Urgency before going
+  // to next art. always fade out before changing art for the whole video"): where a slide is another screen than the one before it (`uiOf`) and that one has words, a copy of it with no words, outlines or cursor comes between
+  // them (`~clear`): the words fade out over its move (`clear` in the engine: 'fade-out'), the software staying as it is, and only then does the screen change; the next words are written once the new screen is in (`penAt` 0).
+  // Words the new screen only carries over (the same words, the end of a scene) are not its own: they are gone from it and from the slides after it that still say them, so the side stays empty until the next words.
+  // Not after a `/before` slide of the same scene: the words written there are the next screen's (`fromBefore`). `end`: the video ends with its words gone too (the part after it opens on another screen: the All videos
+  // page crosses into it). Before the variations' own copies (`middle`, `focus`), which then see the words gone and the new ones come.
+  if (profile?.clearFirst) {
+    const c = profile.clearFirst, said = x => !!x && !isTitle(x) && x.layer?.kind === 'bubble' && !!squash(x.text) && artsOf(x).length > 0, at = scroll && {at: kept[scroll.at], last: kept[scroll.last]};
+    const clear = x => ({...x, frame: {...x.frame, id: `${x.frame.id}~clear`, label: 'The words go'}, layers: x.layers.filter(l => l.kind !== 'bubble' && !isOverlay(l) && roleOf(l) !== 'hand'), layer: null, text: '', carried: true, clear: true,
+      arrival: false, merged: false, clickSel: undefined, target: undefined, drag: false, point: null, emph: undefined, endClick: false, clickOut: false, handGone: false, handOut: false, rest: false, cursorOnly: false, leaves: false, intro: false, joined: false,
+      beat: undefined, extra: undefined, still: undefined, lateLead: undefined, lateFade: undefined, names: null, dots: null, pops: null, pulse: null, post: null, over: false, pull: 0, stagger: undefined, say: false, wordsDelayed: false, wordsKept: false, hint: undefined, holdSel: undefined,
+      submit: undefined, peerSubmit: undefined, sendPeers: false, peerFlow: undefined, fadeThenZoom: false, showStep: 0, scrolls: false, caption: undefined,
+      profileMove: c.move, profileHold: c.hold, influence: c.influence, easeOut: undefined, natural: 0, profileRest: 0, penAt: undefined});
+    const out = [];
+    let stale = null; // (the words the new screen carried over: not said on it)
+    kept.forEach((x, i) => {
+      const prev = kept[i - 1];
+      if (stale && (isTitle(x) || squash(x.text) !== stale)) stale = null;
+      if (said(prev) && !isTitle(x) && artsOf(x).length && uiOf(prev) !== uiOf(x) && !(sceneOf(prev.frame) === sceneOf(x.frame) && /\/before\b/.test(prev.frame.id))) {
+        out.push(clear(prev));
+        if (squash(x.text) === squash(prev.text)) stale = squash(x.text);
+        else if (squash(x.text) && x.penAt == null && !x.beat) x.penAt = 0;
+      }
+      if (stale) { x.layers = x.layers.filter(l => l.kind !== 'bubble'); x.layer = null; x.text = ''; x.carried = true; }
+      out.push(x);
+    });
+    if (c.end && said(out.at(-1))) out.push(clear(out.at(-1)));
+    kept = out;
+    if (at) scroll = {...scroll, at: kept.indexOf(at.at), last: kept.indexOf(at.last)};
+  }
+  // The words in the middle first (a variation of the video, `profile.middle`: lib/storyboardVariations.mjs; the user, 2026-11-03: "show text in middle then go to the right, so middle with gray background, then go to the
+  // right and show art to the left with fade in", for every new sentence): before each slide that brings new words over the software, a copy of it (`~middle`) where the gray of the words' side covers the whole picture
+  // and the words are written in its middle; the slide itself is then the gray going back to its side, the words with it, and the software fading in at the left (`middleAt` in the engine, by the clock). The copy is the
+  // slide but for what is drawn over the software and the cursor, which come once it is all there, so the rest is the SAME in both and the move between them is drawn by `middleAt` alone. What the slide before goes
+  // on to (a zoom, another screen) happens in the move into the copy, under the gray coming in. Not a title, nor a slide with no words' side.
+  // On the SAME screen as the slide before (the user, the same day: "if the text shown like in same scene we don't have to go to gray background, just put it in art area with rectangle background on it and fade out and start
+  // action"; `uiOf`, a zoom in or out is the same screen; the first slide of a part is when it is the picture the part before ends on, `/before`): no gray; the words are written on a rectangle in the middle of the
+  // software's side (`card`), then the rectangle and they fade out, they come in at their place on the gray side, and the slide goes on (`centerWords`, `middleAt`, the words' case in `prepare`).
+  if (profile?.middle) {
+    const look = profile.middle, at = scroll && {at: kept[scroll.at], last: kept[scroll.last]};
+    const slideBefore = x => { const all = video.frames ?? [], k = all.findIndex(f => f.id === x.frame.id), p = k > 0 ? all[k - 1] : null, w = p && wordsOfFrame(edits.frames[p.id], htmlOf, layersOf(p, edits.frames[p.id])); return w?.layer?.kind === 'bubble' && squash(w.text) ? p : null; }; // (the slide before it on the board: the part before's last)
+    kept = kept.flatMap((x, i) => {
+      const prev = kept[i - 1], panel = x.layers.find(l => roleOf(l) === 'panel');
+      if (isTitle(x) || x.layer?.kind !== 'bubble' || !squash(x.text) || (prev && squash(prev.text) === squash(x.text)) || !artsOf(x).length || !panel || panelAway(x) || x.pops || x.pulse || x.dots || x.stagger || x.over || x.post || x.film) return [x];
+      const card = prev ? !isTitle(prev) && uiOf(prev) === uiOf(x) : /\/before\b/.test(x.frame.id); // (the same screen: a rectangle in the software's side, no gray)
+      const before = !card ? null : prev ? (squash(prev.text) ? prev.frame : null) : slideBefore(x); // (the slide whose words the right side keeps while the card is on: the slide before, or the part before's last for a part's first slide)
+      const copy = {...x, frame: {...x.frame, id: `${x.frame.id}~middle`}, layers: x.layers.filter(l => !isOverlay(l) && roleOf(l) !== 'hand'), carried: true, middle: {words: x.layer.key, panel: panel.key, arts: card ? [] : artsOf(x).map(l => l.key), card, before},
+        arrival: false, merged: false, clickSel: undefined, target: undefined, drag: false, point: null, emph: undefined, endClick: false, clickOut: false, handGone: false, handOut: false, rest: false, cursorOnly: false, leaves: false,
+        beat: undefined, extra: undefined, still: undefined, lateLead: undefined, lateFade: undefined, names: undefined, pull: 0, say: false, wordsDelayed: false, hint: undefined, holdSel: undefined, submit: undefined, peerSubmit: undefined, sendPeers: false, peerFlow: undefined, fadeThenZoom: false, showStep: 0, scrolls: false,
+        profileMove: look.cover, profileHold: undefined, influence: look.influence, easeOut: undefined, natural: undefined, profileRest: undefined, penAt: 0};
+      x.intro = false; x.joined = false; x.profileMove = look.reveal; x.influence = look.influence; x.easeOut = undefined; if (x.profileHold != null) x.profileHold = Math.max(x.profileHold, look.reveal + look.still); // (`intro`, `joined`: the copy opens the video now) (no hold of its own: its move and rest give it, and a cursor that comes to click its own)
+      return [copy, x];
+    });
+    if (at) scroll = {...scroll, at: kept.indexOf(at.at), last: kept.indexOf(at.last)}; // (the slides the list scrolls between, where they are now)
+  }
+  // The second words over the art (a variation of the video, `profile.aside`: lib/storyboardVariations.mjs; the user, 2026-11-04: "the secondary text wouldn't replace the text to the right, rather show up in middle of art (or in a place
+  // where users might be watching) fades out and keep right side same"): the words a new screen comes with are written on the gray side as always (the first ones); a sentence that comes after them on the SAME screen (`uiOf`), while
+  // they are on, is the second one: it is written on a rectangle in the middle of the software's side (a `~middle` copy with `card`, as the variation `middle` has them, `centerWords`, `middleAt`), the rectangle and it fade out,
+  // and the gray side keeps the first words all along: the slide itself and the ones after it that still say the second words show the first ones (`held`: carried, never written again; `keepBefore` hands them over with no dip).
+  // Not a `/before` slide (its words are the next screen's), nor where the gray side is empty (after `clearFirst` took the words off), nor a section's closing words (`closingScenes`, from `closing` in its spec): those are first words.
+  if (profile?.aside && !profile?.middle) {
+    const look = profile.aside, at = scroll && {at: kept[scroll.at], last: kept[scroll.last]}, out = [];
+    let shown = null, second = null; // (the slide whose words the gray side shows; the second words those words stand for)
+    const hold = x => { carryLayer(x, shown, shown.layer); x.layers = x.layers.filter(l => l.kind !== 'bubble' || l.key === shown.layer.key); x.layer = shown.layer; x.text = shown.text; x.held = true; x.carried = true; };
+    kept.forEach((x, i) => {
+      const prev = kept[i - 1], panel = x.layers.find(l => roleOf(l) === 'panel'), w = squash(x.text);
+      if (isTitle(x) || x.layer?.kind !== 'bubble' || !w) { shown = null; second = null; out.push(x); return; } // (a title, or nothing on the gray side)
+      if (second && w === second && shown) { hold(x, shown); out.push(x); return; } // (the second words' scene goes on: the first ones stay)
+      if (shown && w === squash(shown.text)) { out.push(x); return; }
+      const card = !!shown && !!prev && !isTitle(prev) && uiOf(prev) === uiOf(x) && !/\/before\b/.test(x.frame.id) && !profile.closingScenes?.includes(sceneOf(x.frame)) && artsOf(x).length && !!panel && !panelAway(x) && !(x.pops || x.pulse || x.dots || x.stagger || x.over || x.post || x.film);
+      if (!card) { shown = x; second = null; out.push(x); return; } // (first words: on the gray side)
+      out.push({...x, frame: {...x.frame, id: `${x.frame.id}~middle`}, layers: x.layers.filter(l => !isOverlay(l) && roleOf(l) !== 'hand'), carried: true, middle: {words: x.layer.key, panel: panel.key, arts: [], card: true, before: prev.frame, aside: true},
+        arrival: false, merged: false, clickSel: undefined, target: undefined, drag: false, point: null, emph: undefined, endClick: false, clickOut: false, handGone: false, handOut: false, rest: false, cursorOnly: false, leaves: false, intro: false, joined: false,
+        beat: undefined, extra: undefined, still: undefined, lateLead: undefined, lateFade: undefined, names: undefined, pull: 0, say: false, wordsDelayed: false, hint: undefined, holdSel: undefined, submit: undefined, peerSubmit: undefined, sendPeers: false, peerFlow: undefined, fadeThenZoom: false, showStep: 0, scrolls: false,
+        profileMove: Math.max(look.cover, x.profileMove ?? 0), profileHold: undefined, influence: look.influence, easeOut: undefined, natural: undefined, profileRest: undefined, penAt: 0}); // (a slide whose own move is longer, two steps, keeps it: what the screen does comes under the rectangle coming in)
+      second = w; hold(x);
+      const after = x.profileHold != null ? x.profileHold - (x.profileMove ?? 0) : null; // (what the slide stayed once its move was over)
+      x.profileMove = look.reveal; x.influence = look.influence; x.easeOut = undefined; x.penAt = undefined; if (after != null) x.profileHold = look.reveal + Math.max(look.still, after);
+      out.push(x);
+    });
+    kept = out;
+    if (at) scroll = {...scroll, at: kept.indexOf(at.at), last: kept.indexOf(at.last)};
+  }
+  // Focus (a variation of the video, `profile.focus`; the user, 2026-11-04: "it feels like I have to look left right center"): the words of a scene sit at the height of the yellow outlines it draws, so the eye goes straight
+  // across. The slides that say the same words one after the other in one scene are a group; the first of them with outlines is the one the words are as high as (`focus`, its frame: the engine measures those outlines
+  // as the video lays them out, `focusWords`). A group with no outline keeps its words where they are.
+  if (profile?.focus) {
+    let group = [];
+    const close = () => { const marked = group.find(y => y.layers.some(isMark)); for (const y of group) y.focus = marked?.frame ?? null; group = []; };
+    kept.forEach((x, i) => {
+      const prev = kept[i - 1];
+      if (!(prev && !isTitle(x) && !isTitle(prev) && sceneOf(x.frame) === sceneOf(prev.frame) && !!squash(x.text) && squash(x.text) === squash(prev.text))) close();
+      if (!isTitle(x) && squash(x.text)) group.push(x);
+    });
+    close();
+  }
   const hv = profile?.hover ?? HOVER, tempo = profile?.tempo ?? 1; // (a video that has to be short moves faster, and what the cursor rests on thickens over longer)
+  // The slides that show the same words (a scene's click after click): a change to how the words look or to the words themselves (the video's text editor) is made in all of them, so they do
+  // not jump when the next click plays. They are the ones that are joined by: the same chat box (the director shows one slide's chat box in the others, `carryLayer`: its owner's edits, and the
+  // owner, a slide the video may not even play, is one of them: what is typed there is what they all say), or one after the other in one scene with the same words (their chat boxes may have
+  // other keys: each is changed by its own). -> Map(frame id -> [{frame, key}]) for each group of more than one
+  const sameWords = new Map();
+  { const shown = x => x.layer?.kind === 'bubble' && !!squash(x.text), up = new Map(), boxKey = new Map(), byLayer = new Map();
+    const find = id => { let r = id; while (up.get(r) !== r) r = up.get(r); return r; }, join = (p, q) => { if (!up.has(p)) up.set(p, p); if (!up.has(q)) up.set(q, q); up.set(find(p), find(q)); };
+    for (const x of kept) {
+      if (!shown(x)) continue;
+      boxKey.set(x.frame.id, x.layer.key); join(x.frame.id, x.frame.id);
+      const owner = x.owners?.[x.layer.key];
+      if (owner) { if (!boxKey.has(owner)) boxKey.set(owner, x.layer.key); join(x.frame.id, owner); }
+      const same = byLayer.get(x.layer); if (same) join(x.frame.id, same); else byLayer.set(x.layer, x.frame.id);
+    }
+    let before = null;
+    for (const x of kept) { // (one after the other, in one scene, the same words)
+      if (!shown(x)) { before = null; continue; }
+      if (before && sceneOf(x.frame) === sceneOf(before.frame) && squash(x.text) === squash(before.text)) join(before.frame.id, x.frame.id);
+      before = x;
+    }
+    const groups = new Map();
+    for (const id of up.keys()) { const root = find(id); groups.set(root, [...(groups.get(root) ?? []), {frame: id, key: boxKey.get(id)}]); }
+    for (const list of groups.values()) if (list.length > 1) for (const t of list) sameWords.set(t.frame, list); }
   const info = new Map(), simple = x => x.layers.map(l => ({key: l.key, role: roleOf(l), sig: ''}));
   kept.forEach((x, i) => {
     const prev = kept[i - 1], title = x.layers.some(l => roleOf(l) === 'title'), prevTitle = !!prev?.layers.some(l => roleOf(l) === 'title');
@@ -452,9 +949,10 @@ export function directorOf(frames, edits, video, profile = null) {
     }
     const anims = {};
     let pen = 0;
-    if (x.layer?.kind === 'bubble' && squash(x.text) && !(prev && squash(prev.text) === squash(x.text))) { // (words that are new: a pen writes them)
-      const own = x.edit?.anims?.[x.layer.key], anim = profile?.cps ? {type: 'handwrite', cps: profile.cps} : own?.cps ? own : own?.wps ? {type: 'handwrite', cps: own.wps * 6} : {type: 'handwrite', cps: ANIM_CPS.default}; // (an older one in seconds was only the old default: the video goes at the usual speed)
+    if (x.layer?.kind === 'bubble' && squash(x.text) && !x.held && !(prev && squash(prev.text) === squash(x.text))) { // (words that are new: a pen writes them) (`held`: the first words kept on the gray side, `aside`: written already)
+      const anim = {type: 'handwrite', cps: profile?.cps ?? ANIM_CPS.default}; // (the user, 2026-10-29: "make all text speed 30 letters per second": a video's pen is its own `cps` (30 by default), never the speed a slide's chat box was given)
       anims[x.layer.key] = x.beat ? {type: 'handwrite', cps: letterCount(x.text) / x.beat.write} : anim; // (a beat: the pen goes at the speed that has the words written when the beat says)
+      if (profile?.focus) anims[x.layer.key] = {type: 'reveal', seconds: animSeconds(anims[x.layer.key], x.text)}; // (Focus: word by word, at the pace the pen had: `revealWords`)
       pen = animSeconds(anims[x.layer.key], x.text);
     }
     const hand = handOf(x), before = prev && handOf(prev), arrival = !!x.arrival, bars = x.layers.filter(l => /timeline/i.test(l.name ?? '')).map(l => l.key);
@@ -467,17 +965,29 @@ export function directorOf(frames, edits, video, profile = null) {
     const quick = profile?.dwell != null && arrival && !title && !bars.length && x.profileHold == null; // (the cursor has come to what it clicks: it presses at once, it does not wait on it; the user, 2026-10-13: "doesn't stop at something for a while before clicking")
     const penAfter = pen > 0 && !!prev && panelAway(prev) && !panelAway(x); // (the words' side comes in with this slide: the words are written once it is there)
     info.set(x.frame.id, {
-      anims, pen, penAfter, title, late, keep, still, introIn: x.introIn ?? null, submit: x.submit, showStep: x.showStep ?? 0, slowDrag, scrolls: !!x.scrolls, click, intro: !!x.intro, clickOut: !!x.clickOut, handOut: !!x.handOut, handGone: !!x.handGone, rest: !!x.rest, film: !!x.film, fadeThenZoom: !!x.fadeThenZoom, peerSubmit: x.peerSubmit ?? null, sendPeers: !!x.sendPeers, peerFlow: x.peerFlow ?? null, holdSel: x.rest ? x.holdSel ?? null : null, endClick: !!x.endClick, hover: arrival, emph: arrival ? x.emph : undefined, target: x.target ?? null, clickSel: arrival ? x.clickSel ?? null : null, drag: arrival && !!x.drag, layers: x.carried ? x.layers : undefined, edit: x.carried ? x.edit : undefined,
-      titleKeys: x.layers.filter(l => roleOf(l) === 'title').map(l => l.key), barKeys: bars,
-      tune: {move, penAfter, minHold: x.profileHold ?? (title ? Math.max(TITLE_HOLD, (move ?? 0.5) + TITLE.in + 1.2) : x.sendPeers ? (move ?? 0.5) + (x.peerFlow === 'draw' ? PEER_DRAW.total : 0) + PEER_SEND.total : x.peerFlow === 'draw' ? (move ?? 0.5) + PEER_DRAW.total : bars.length ? (move ?? 0.5) + LATE.lead + LATE.fade + PLAY_SECONDS : arrival ? (move ?? 0.5) + (quick ? profile.dwell : hv.lead + hv.fade + hv.pause) + (x.endClick ? END_CLICK : 0) : 0), late: late.size > 0, ...(x.extra ? {extra: x.extra} : {}), ...(x.natural != null ? {natural: x.natural} : {}), ...(x.beat ? {penAt: x.beat.at, lateLead: 0, lateFade: x.beat.fade} : {}), ...(quick ? {natural: 0, rest: profile.dwell} : {})},
+      anims, pen, penAfter, caption: x.caption ?? null, title, late, keep, still, point: x.point ?? null, introIn: x.introIn ?? profile?.titleIn ?? null, titleIn: profile?.titleIn ?? null, submit: x.submit, showStep: x.showStep ?? 0, slowDrag, scrolls: !!x.scrolls, click, intro: !!x.intro, clickOut: !!x.clickOut, handOut: !!x.handOut, handGone: !!x.handGone, rest: !!x.rest, film: !!x.film, dots: x.dots ?? null, names: x.names ?? null, pops: x.pops ?? null, pulse: x.pulse ?? null, pull: x.pull ?? 0, over: !!x.over, middle: x.middle ?? null, focus: x.focus ?? null, post: x.post ?? null, stagger: x.stagger ? {selector: x.stagger.selector, lead: x.stagger.lead, each: x.stagger.each, fade: x.stagger.fade} : null, fadeThenZoom: !!x.fadeThenZoom, clear: !!x.clear, held: !!x.held, peerSubmit: x.peerSubmit ?? null, sendPeers: !!x.sendPeers, peerFlow: x.peerFlow ?? null, holdSel: x.rest ? x.holdSel ?? null : null, endClick: !!x.endClick, hover: arrival, emph: arrival ? x.emph : undefined, target: x.target ?? null, clickSel: arrival ? x.clickSel ?? null : null, drag: arrival && !!x.drag, layers: x.carried ? x.layers : undefined, edit: x.carried ? x.edit : undefined,
+      titleKeys: x.layers.filter(l => roleOf(l) === 'title').map(l => l.key), barKeys: bars, sameWords: sameWords.get(x.frame.id) ?? null,
+      tune: {move, penAfter, ...(x.influence ? {influence: x.influence} : {}), ...(x.easeOut ? {out: x.easeOut} : {}), ...(profile?.detail && x.caption ? {tail: profile.detail.read} : {}), minHold: x.profileHold ?? (title ? Math.max(TITLE_HOLD, (move ?? 0.5) + TITLE.in + 1.2) : x.sendPeers ? (move ?? 0.5) + (x.peerFlow === 'draw' ? PEER_DRAW.total : 0) + PEER_SEND.total : x.peerFlow === 'draw' ? (move ?? 0.5) + PEER_DRAW.total : bars.length ? (move ?? 0.5) + LATE.lead + LATE.fade + PLAY_SECONDS : arrival ? (move ?? 0.5) + (quick ? profile.dwell : hv.lead + hv.fade + hv.pause) + (x.endClick ? END_CLICK : 0) : 0), late: late.size > 0, ...(x.extra ? {extra: x.extra} : {}), ...(x.natural != null ? {natural: x.natural} : {}), ...(x.profileRest != null ? {rest: x.profileRest} : {}), ...(x.lateLead != null ? {lateLead: x.lateLead} : {}), ...(x.lateFade != null ? {lateFade: x.lateFade} : {}), ...(x.penAt != null ? {penAt: x.penAt} : {}), ...(x.beat ? {penAt: x.beat.at, lateLead: 0, lateFade: x.beat.fade} : {}), ...(x.stagger ? {penAt: x.stagger.total + 0.15} : {}), ...(x.joined ? {penAt: profile?.firstPen ?? JOIN_PEN} : x.intro && profile?.firstPen != null ? {penAt: profile.firstPen} : {}), ...(quick ? {natural: 0, rest: profile.dwell} : {}), ...(x.say ? {tail: SAY_TAIL, natural: 0} : {})},
     });
   });
   const played = kept.map(x => x.frame);
-  const trace = kept.map(x => ({id: x.frame.id, text: x.text, layers: x.layers.map(l => l.key).join(','), arrival: !!x.arrival, target: x.target, clickSel: x.clickSel, drag: !!x.drag, handOut: !!x.handOut, handGone: !!x.handGone, clickOut: !!x.clickOut, click: info.get(x.frame.id).click, pen: info.get(x.frame.id).pen})); // (what the director made: for looking at it)
+  const trace = kept.map(x => ({id: x.frame.id, owners: x.owners ?? null, layerKey: x.layer?.key ?? null, group: info.get(x.frame.id)?.sameWords?.map(t => t.frame) ?? null, text: x.text, layers: x.layers.map(l => l.key).join(','), arrival: !!x.arrival, target: x.target, clickSel: x.clickSel, drag: !!x.drag, handOut: !!x.handOut, handGone: !!x.handGone, clickOut: !!x.clickOut, rest: !!x.rest, point: x.point ?? null, click: info.get(x.frame.id).click, pen: info.get(x.frame.id).pen})); // (what the director made: for looking at it)
   const timeline = timelineOf(played, id => info.get(id).pen, id => info.get(id).tune, profile ? {natural: profile.natural, rest: profile.rest} : {});
   timeline.items.forEach((item, i) => { trace[i].start = item.start; trace[i].move = item.move; trace[i].hold = item.hold; });
   const driven = scroll && profile ? {...profile, scroll: {...scroll, t0: timeline.items[scroll.at].start + timeline.items[scroll.at].move, t1: timeline.items[scroll.last].start + timeline.items[scroll.last].hold - 0.45}} : profile; // (the list is scrolled from when the words of the first scene have come, to just before the end)
-  return {played, info, trace, timeline, profile: driven};
+  const timers = TICKING.has(video.video) ? timerPlan(kept, timeline, htmlOf, profile?.tick) : null; // (the sections' timers count up in the video: the heartbeat)
+  return {played, info, trace, timeline, profile: driven, timers, faces: profile?.faces ? facePlan(kept, timeline, artHtml, profile.faces) : null, middle: profile?.middle || profile?.aside ? middlePlan(kept, timeline) : null};
+}
+// The words in the middle first (`profile.middle`, the director's `~middle` copies): when each part of it is, in seconds of the video, by the copy's id: the gray comes in over the move into the copy (t0 to t1), stays
+// while the words are written (to t2), and goes back over the move into the slide itself (t2 to t3), each on its move's curve. -> {[id]: {words, panel, arts, card, before (the slide whose words the gray side keeps meanwhile), t0, t1, t2, t3, cover, reveal}} | null
+function middlePlan(kept, timeline) {
+  const plan = {};
+  kept.forEach((x, i) => {
+    const a = timeline.items[i], b = timeline.items[i + 1];
+    if (!x.middle || !a || !b) return;
+    plan[x.frame.id] = {...x.middle, t0: a.start, t1: a.start + a.move, t2: b.start, t3: b.start + b.move, cover: {influence: a.influence ?? 0, out: a.out}, reveal: {influence: b.influence ?? 0, out: b.out}};
+  });
+  return Object.keys(plan).length ? plan : null;
 }
 
 // An element at `f` (0 to 1) of what it shows (its own opacity is kept).
@@ -487,6 +997,21 @@ const setFade = (el, f) => {
   el.style.opacity = f >= 1 ? el.dataset.plBase : String(base * f);
 };
 const clamp01 = v => Math.min(1, Math.max(0, v));
+const scaleNow = el => Number(String(el.style.scale || '1').split(/\s+/)[0]) || 1; // (the size a thing is drawn at now, by its own `scale`)
+// The words of a text as spans, made once (`data-sb-words`): what comes in word by word (the Focus variation: `revealWords`, a title's words). The spaces stay as they are between them, so the lines wrap where they did.
+function wordSpans(el) {
+  if (el.dataset.sbWords === undefined) {
+    const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [];
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) if (n.nodeValue.trim()) nodes.push(n);
+    for (const n of nodes) {
+      const frag = document.createDocumentFragment();
+      for (const bit of n.nodeValue.split(/(\s+)/)) { if (!bit) continue; if (/^\s+$/.test(bit)) { frag.append(bit); continue; } const s = document.createElement('span'); s.className = 'sb-w'; s.style.display = 'inline-block'; s.textContent = bit; frag.append(s); }
+      n.replaceWith(frag);
+    }
+    el.dataset.sbWords = '';
+  }
+  return [...el.querySelectorAll('.sb-w')];
+}
 // An element at `size` times its own scale.
 const setSize = (el, size) => {
   if (el.dataset.plScale0 === undefined) el.dataset.plScale0 = el.style.scale;
@@ -574,13 +1099,39 @@ const opacityOf = el => {
   return Number.isFinite(o) ? o : 1;
 };
 
-// The cursor comes in: from the top left of the words (else from afar), fading in at once, and glides to where it goes. `delayed`: after the one
-// before has clicked and faded out.
+// Which screen a piece of the software shows, from its HTML (leaveOnNewScreen): its tags and classes three levels down (where a device, a panel or a page is
+// told apart), what something is in (is-*, has-*, --modifiers, selected, checked, open, done...) and every text left out, and what opens OVER it named
+// wherever it is (the Knowledge Base, the photo / video viewer, a mission's side panel, a video player, a lesson, a gallery: "even when something like a
+// picture appears"). A menu or a dropdown is left out, all of it: what the cursor opens itself is part of the same screen (Menu, then Knowledge Base).
+const UI_DEPTH = 3, UI_VOID = new Set(['img', 'br', 'hr', 'input', 'meta', 'link', 'source', 'col', 'area', 'base', 'embed', 'param', 'track', 'wbr']);
+const UI_MENU = /(^|[-_])(menu|dropdown|popover|picker)([-_]|$)/, UI_STATE = /^(is-|has-)|--|active|selected|checked|open|done|ready|ng-/;
+const UI_OVER = /^(iq-knowledge|iq-mv|iq-od|iq2-m-player|iq2-kb-film|iq-ur-gallery-row|sb-lq-video|sb-lq-text|ow-dialog|ow-drawer)$/;
+const uiSkeleton = keep(source => uiSkeletonOf(source));
+function uiSkeletonOf(source) {
+  const out = [], over = new Set();
+  let depth = -1, skip = null;
+  for (const m of String(source ?? '').matchAll(/<(\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?)>/g)) {
+    const [, close, tag, attrs, self] = m, t = tag.toLowerCase();
+    if (close) { if (skip === depth) skip = null; depth--; continue; }
+    depth++;
+    const cls = (/class="([^"]*)"/.exec(attrs)?.[1] ?? '').split(/\s+/).filter(Boolean);
+    if (skip == null && cls.some(c => UI_MENU.test(c))) skip = depth;
+    if (skip == null) {
+      for (const c of cls) if (UI_OVER.test(c)) over.add(c);
+      if (depth <= UI_DEPTH) out.push(`${depth}:${t}${cls.filter(c => !UI_STATE.test(c)).sort().map(c => `.${c}`).join('')}`);
+    }
+    if (self || UI_VOID.has(t)) { if (skip === depth) skip = null; depth--; }
+  }
+  return `${out.join(' ')}+${[...over].sort().join(',')}`;
+}
+
+// The cursor comes in: from the left of the words, at their middle (else from afar), fading in at once, and glides to where it goes (the user, 2026-10-20:
+// "come from the left of the words"). `delayed`: after the one before has clicked and faded out.
 function enter(el, B, play, delayed) {
   const k = parentScale(el) || 1, [bx, by0] = translateOf(el), o = opacityOf(el);
   const hand = B.layers.find(l => l.role === 'hand'), root = hand && elementOf(B.stage, hand.key), r = root?.getBoundingClientRect();
   const words = B.layers.find(l => l.role === 'words'), box = words && elementOf(B.stage, words.key)?.getBoundingClientRect();
-  const from = box && r ? [box.left - (r.left + r.width * TIP.x), box.top - (r.top + r.height * TIP.y)] : HAND_FROM;
+  const from = box && r ? [box.left - (r.left + r.width * TIP.x), box.top + box.height / 2 - (r.top + r.height * TIP.y)] : HAND_FROM;
   const at = delayed ? 0.5 : 0, at2 = at + (1 - at) * 0.2, pos = f => `${bx + from[0] * f / k}px ${by0 + from[1] * f / k}px`;
   play(el, [{translate: pos(1), opacity: 0, offset: 0}, {translate: pos(1), opacity: 0, offset: at}, {translate: pos(0.8), opacity: o, offset: at2}, {translate: pos(0), opacity: o, offset: 1}]);
 }
@@ -618,6 +1169,7 @@ function flip(a, b, play, keys, moving, found = {gone: []}) {
   const sa = ra.width / (a.offsetWidth || ra.width), sb = rb.width / (b.offsetWidth || rb.width);
   const rel = (el, r, s) => { const q = el.getBoundingClientRect(); return {x: (q.left - r.left) / s, y: (q.top - r.top) / s, w: q.width / s, h: q.height / s}; };
   const visit = (ea, eb, inherited, under, carried = 0) => { // `under`: inside something the demo moves by its own styles (the content scrolls, a section folds): it goes by those. `carried`: what the things above it that the demo grows (their height goes from the one to the other) have already moved it by: the page lays out what comes after them by itself
+    if (ea.dataset?.secChip && eb.dataset?.secChip && ea.dataset.secChip !== eb.dataset.secChip) return 0; // (two cards that only changed places: each glides as a whole, what is in one is not the other's: a schedule only one has would stay behind, fading)
     const A = rel(ea, ra, sa), B = rel(eb, rb, sb), dx = A.x - B.x, dy = A.y - B.y, own = [dx - inherited[0], dy - inherited[1] + carried];
     let moved = moving.has(eb);
     if (!under && !moved && eb.style && B.w > 1 && B.h > 1 && A.w > 1 && A.h > 1 && Math.abs(dx) < 500 && Math.abs(dy) < 500) {
@@ -657,17 +1209,32 @@ function showGone(root, gone, play, w) {
 const TRACKS = /^\s*-?[\d.]+(fr|px|%)(\s+-?[\d.]+(fr|px|%))*\s*$/; // (a list of tracks: 1fr 2fr, 20px)
 const sameTracks = (a, b) => TRACKS.test(a) && TRACKS.test(b) && a.trim().split(/\s+/).length === b.trim().split(/\s+/).length && a.match(/fr|px|%/g).join() === b.match(/fr|px|%/g).join(); // (the same number of tracks in the same units: it can go from the one to the other)
 const heightOf = el => { const r = el.getBoundingClientRect(); return el.offsetWidth && r.width ? r.height * (el.offsetWidth / r.width) : el.offsetHeight; }; // (its own px: the scale it is drawn at taken out)
-function morph(a, b, start, play0, end = 1) { // (`end`: the share of the move by which it is there: a drag, the cursor letting go)
+// What sits beside cards on their own (`.sec-after` in `FlowPart`: a mission's schedules) between two states of them: 'in' (it comes: hidden in `a`, shown in `b`), 'out' (it goes) or null (neither, or both at once).
+function besideOf(a, b) {
+  if (!a.querySelector('.sec-flow-inner')) return null;
+  const shown = root => [...root.querySelectorAll('.sec-after > *')].map(e => Number(e.style.opacity || 1) > 0.5), x = shown(a), y = shown(b);
+  if (!x.length || x.length !== y.length) return null;
+  const came = x.some((v, i) => !v && y[i]), went = x.some((v, i) => v && !y[i]);
+  return came === went ? null : came ? 'in' : 'out';
+}
+function morph(a, b, start, play0, end = 1, pull = null, post = null) { // (`end`: the share of the move by which it is there: a drag, the cursor letting go) (`pull`: `glideFrom`) (`post`: `post` of a slide, with the move's `seconds`)
   const moving = new Set(), play = (el, keyframes, own = true) => { if (own && keyframes.some(k => GEOMETRY.some(p => p in k))) moving.add(el); play0(el, keyframes); }; // (what moves a box by the demo's own styles: not the fades, not the screen's own glide)
   const twins = new Map(), named = new Map(), index = (el, path) => { twins.set(path, el); const k = moveKeyOf(el); if (k && !named.has(k)) named.set(k, el); [...el.children].forEach((c, i) => index(c, `${path}.${i}`)); };
   index(a, '');
   const keys = (from, to) => windowKeys(from, to, start, end); // (it goes from the one to the other over its part of the move, easing in and out in the move's time: not at the fastest from the first moment)
+  // Cards on their own that make room for what comes beside them, or close up when it goes (`FlowPart` centers the cards and what is beside them as one group, by the transform of `.sec-flow-inner`; the user, 2026-11-04,
+  // Increased Efficiency's schedules: "when schedule fade in just move missions to left before faded in and fade out and move missions to right"): one after the other, not together. Coming in: the cards move over the first
+  // half of the move, then it fades in over the second; going: it fades out over the first half, then the cards move back. (`besideOf`)
+  const side = besideOf(a, b), mid = start + (end - start) / 2, windowed = (t0, t1) => (from, to) => windowKeys(from, to, t0, t1);
+  const keysFor = el => (!side ? keys : el.classList?.contains('sec-flow-inner') ? (side === 'in' ? windowed(start, mid) : windowed(mid, end)) : el.parentElement?.classList.contains('sec-after') ? (side === 'in' ? windowed(mid, end) : windowed(start, mid)) : keys);
+  let posted = 0;
+  const comes = el => { const o = getComputedStyle(el).opacity; if (!post || !moveKeyOf(el)) return keys({opacity: 0}, {opacity: o}); const t0 = post.at + posted++ * post.each / post.seconds; return windowKeys({opacity: 0, scale: '0.4'}, {opacity: o, scale: '1'}, t0, Math.min(1, t0 + post.fade / post.seconds)); };
   const visit = (el, path) => {
     const twin = twins.get(path), name = moveKeyOf(el), was = name && named.get(name);
-    if (was && was !== twin) { glideFrom(was, el, play, keys); return; } // (a card that went to another place, another column: it glides there)
-    if (name && twin && moveKeyOf(twin) && !was) { play(el, keys({opacity: 0}, {opacity: getComputedStyle(el).opacity})); return; } // (a card that was not there: it comes in)
+    if (was && was !== twin) { glideFrom(was, el, play, keys, pull); return; } // (a card that went to another place, another column: it glides there)
+    if (name && twin && moveKeyOf(twin) && !was) { play(el, comes(el)); return; } // (a card that was not there: it comes in)
     if (!twin) { // new in this state: it comes in (with all it holds)
-      if (path && el.style) play(el, keys({opacity: 0}, {opacity: getComputedStyle(el).opacity}));
+      if (path && el.style) play(el, comes(el));
       return;
     }
     if (twin.tagName !== el.tagName) { arrives(el, play, keys); return; } // (one thing put in the place of another, a picture by the video it took: a drawer slides in, the rest is just there, crossed with the old screen by the dissolve it comes in with)
@@ -684,15 +1251,22 @@ function morph(a, b, start, play0, end = 1) { // (`end`: the share of the move b
           if (Math.abs(ha - hb) > 0.5) { from.height = `${ha}px`; to.height = `${hb}px`; }
           continue;
         }
+        if (prop === 'clipPath' && (A === 'none') !== (B === 'none') && /^inset\(/.test(A === 'none' ? B : A)) { // (a panel that opens all the way drops its clip: `none` cannot be moved to, it switched half way, the "pop then open" snapped; it goes to the same clip opened all the way, with its corners: the builders' QA, 2026-10-21)
+          const open = `inset(0px 0px 0px 0px round ${/round\s+([^)]*)\)/.exec(A === 'none' ? B : A)?.[1] ?? '0px'})`;
+          from[prop] = A === 'none' ? open : A; to[prop] = B === 'none' ? open : B;
+          continue;
+        }
         from[prop] = A; to[prop] = B;
       }
       if (!path) { // the screen itself: it goes from where (and how big) the old one is on the screen to where the new one is, with the rest of it. Measured: the two slides can
         // have the demo's camera zoomed differently (the board lifting a mission is caught mid-zoom), so their own scale and place are not what is seen, and going from the one
         // to the other would make the whole screen swell and shrink back (the pulse in the Pop up).
-        const span = glideSpan(twin, el);
+        // Cards on their own (`FlowPart`) are matched by the layer's own box, not by its first card: what moves the cards is the transform of `.sec-flow-inner`, morphed below, and matching the first card too moved them twice
+        // (the user, 2026-11-04, on Increased Efficiency's two missions: "the missions go to right before going to left" as their schedules came in).
+        const span = glideSpan(twin, el, el.querySelector('.sec-flow-inner') ? coreOf : anchorOf);
         if (span) { Object.assign(from, span.from); Object.assign(to, span.to); }
       }
-      if (Object.keys(to).length) play(el, keys(from, to), !!path); // (the screen's own glide is not the demo's)
+      if (Object.keys(to).length) play(el, keysFor(el)(from, to), !!path); // (the screen's own glide is not the demo's)
     }
     [...el.children].forEach((c, i) => visit(c, `${path}.${i}`));
   };
@@ -705,12 +1279,19 @@ function morph(a, b, start, play0, end = 1) { // (`end`: the share of the move b
 // of the left side, whole. What is cut off at the slide's other edges (a zoom on a part of a board) is left as it is.
 const FIT = {margin: 60, slack: 6}; // stage px
 const TABLET = {x: 0, y: 25, w: 1220, h: 851}; // stage px: the frame of the tablet in the 6th slide of the Scratch line
-const WORDS = {margin: 24, size: 35, font: 'montserrat', width: 380}; // stage px: the words on the right side are written this big (the user, 2026-10-10: "font size 50"; 2026-10-13: "make text 45 size") and are all one width, 380: what the room at the right of a tablet gives them, in the middle of the room, whatever the slide (the user, 2026-10-13, on words running edge to edge in a slide with no tablet: "fix this spacing to always be like this on all of them"); `margin`: the least space they keep from the edges of the room
+const PEN_K = 2; // the pen's canvas px per stage px in a video (the board's play button has 3: it can be looked at close)
+const WORDS = {margin: 24, size: 26, font: 'montserrat', width: 380}; // stage px: the words on the right side are written this big (the user, 2026-10-10: "font size 50"; 2026-10-13: "make text 45 size") and are all one width, 380: what the room at the right of a tablet gives them, in the middle of the room, whatever the slide (the user, 2026-10-13, on words running edge to edge in a slide with no tablet: "fix this spacing to always be like this on all of them"); `margin`: the least space they keep from the edges of the room
 const DEVICE = {right: 1235 / 1285}; // where the iPad's frame ends in its photo (the photo has an empty margin round the frame: x 47 to 1235 of 1285)
 // The web report (the dashboard) is shown as big as the tablet, over the edge of the plate (the user, 2026-10-13: "make the dashboard bigger like what we did with the tablet in previous
 // videos, where it sticks out of the dark gray right side area and big enough"). It has no photo margin round it, so what is SEEN is the window itself: it ends where the tablet's frame
 // is seen to end (x 1172), and is on the same middle line as the tablet (stage px).
 const REPORT = {x: 40, w: 1132, margin: 40};
+// The video "cursor and pop-up" (the user, 2026-10-19: "highlighting using cursor but with a small popup of the area we are highlighting and slight dimming of other things"): the area a
+// highlight is round lifts out as a card `grow` times as big at most (less where it would leave the picture or run into the words: `margin` stage px), `lift` stage px up, and the rest
+// of the picture (not the words, not the cursor) is dimmed by `dim` of black. `popMarks`, `spotsAt`.
+const POP = {grow: 1.05, lift: 4, margin: 12, dim: 0.3};
+const UNNAMED = /^(id|data-sb-(root|for|still|target|trim|size)|data-pl-.*|data-iq-target|data-card|data-mission-id)$/; // (what a copy of the software must not carry: the names the video finds its pieces by; its looks, data-sb-font-size and the like, it keeps)
+const unnamed = el => { for (const e of [el, ...el.querySelectorAll('*')]) for (const a of [...e.attributes]) if (UNNAMED.test(a.name)) e.removeAttribute(a.name); return el; };
 // What an element shows, in client px: the boxes of what paints in it (text, pictures, backgrounds, borders), each cut by what clips it. null: nothing.
 function paintedBox(root) {
   let box = null;
@@ -745,12 +1326,12 @@ function zoomLayer(el, f, C, D) {
 // The same screen laid out another way (the cards of a board in another order, at other places): each card that is in both glides from where it was to
 // where it is (and to its size), like the software moving it; what is only in the new one fades in, the old one fades out under it ("magic move"). The
 // cards are known by the demo's own names for them. -> how many glide (0: not this kind of change).
-const MOVE_KEYS = ['data-card', 'data-mission-id', 'data-iq-target'];
+const MOVE_KEYS = ['data-sec-chip', 'data-card', 'data-mission-id', 'data-iq-target']; // (`data-sec-chip`: a card on its own, `FlowPart`, is known by the whole of it, not by its `.chip`: what sits beside it, a schedule, goes with it)
 const moveKeyOf = el => { for (const k of MOVE_KEYS) { const v = el.getAttribute?.(k); if (v) return `${k}=${v}`; } return null; };
 // The two ends of a glide: where `el` has to start (its translate and scale) to look as `from` does on the screen (the same middle, the same width), and where it
 // is. Measured on the screen, so it is right whatever holds the two (the demo's camera can be zoomed more in one slide than in the other). null: they are at one place.
-function glideSpan(from, el) {
-  const piece = anchorOf(el), ra = anchorOf(from).getBoundingClientRect(), rb = piece.getBoundingClientRect(), pk = parentScale(el) || 1, [tx, ty] = translateOf(el), [sx, sy] = scaleOf(el);
+function glideSpan(from, el, anchor = anchorOf) { // (`anchor`: what is matched in the two, the first card by default)
+  const piece = anchor(el), ra = anchor(from).getBoundingClientRect(), rb = piece.getBoundingClientRect(), pk = parentScale(el) || 1, [tx, ty] = translateOf(el), [sx, sy] = scaleOf(el);
   const dx = (ra.left + ra.right - rb.left - rb.right) / 2, dy = ra.top - rb.top, s = rb.width > 1 && ra.width > 1 ? ra.width / rb.width : 1; // (the middles side to side, the tops up and down: a card that grows keeps its top)
   if (Math.hypot(dx, dy) < 0.5 && Math.abs(s - 1) < 0.002) return null;
   const own = {scale: el.style.scale, translate: el.style.translate};
@@ -765,11 +1346,25 @@ function glideSpan(from, el) {
   el.style.scale = own.scale; el.style.translate = own.translate; // (and put back)
   return {from: start, to: {translate: `${tx}px ${ty}px`, scale: `${sx} ${sy}`}};
 }
-// `el` glides from where `from` is (and from its size) to where it is. `keys(from, to)`: the keyframes of the move. -> false when they are at one place.
-function glideFrom(from, el, play, keys) {
+// A card that goes up is pulled out to the right first (the user's comment on the video, 2026-10-30: "Pull to the right before going up"): out, up beside the others, back in. Each leg is on the slide's own curve over
+// its share of the move's TIME: `clock` is how far the move's clock has gone at a share of its time, and a keyframe's offset is in that clock, so a leg is not over in the fast middle of the move. `by`: how far out, the
+// card's own px (0: the card it passes, which goes down in the same time). -> the keyframes of the move.
+const PULL = {out: 0.42, up: [0.22, 0.82], back: 0.6}; // shares of the move's time
+function pullKeys({from, to}, by, clock, n = 48) {
+  const nums = v => String(v).replace(/px/g, '').trim().split(/\s+/).map(Number), mix = (p, q, f) => p + (q - p) * f, leg = (t, t0, t1) => clock(clamp01((t - t0) / (t1 - t0)));
+  const [ax, ay = 0] = nums(from.translate), [bx, by0 = 0] = nums(to.translate), [fx, fy = fx] = nums(from.scale), [gx, gy = gx] = nums(to.scale);
+  return Array.from({length: n + 1}, (_, i) => {
+    const t = i / n, f = leg(t, ...PULL.up), out = by * (leg(t, 0, PULL.out) - leg(t, PULL.back, 1));
+    return {translate: `${mix(ax, bx, f) + out}px ${mix(ay, by0, f)}px`, scale: `${mix(fx, gx, f)} ${mix(fy, gy, f)}`, offset: i === 0 ? 0 : i === n ? 1 : clock(t)};
+  });
+}
+// `el` glides from where `from` is (and from its size) to where it is. `keys(from, to)`: the keyframes of the move. `pull` {by, clock}: `pullKeys`, `by` a share of the card's width. -> false when they are at one place.
+function glideFrom(from, el, play, keys, pull = null) {
   const span = glideSpan(from, el);
   if (!span) return false;
-  play(el, keys(span.from, span.to));
+  const chip = el.hasAttribute('data-sec-chip') || el.hasAttribute('data-mission-id'), rises = chip && anchorOf(from).getBoundingClientRect().top > anchorOf(el).getBoundingClientRect().top + 1;
+  play(el, pull && chip ? pullKeys(span, rises ? pull.by * anchorOf(el).getBoundingClientRect().width / (parentScale(el) || 1) : 0, pull.clock) : keys(span.from, span.to));
+  if (rises) play(el, [{zIndex: 5, offset: 0}, {zIndex: 5, offset: 1}]); // (a card that rises passes over the one going down: a moving mission is above the others)
   return true;
 }
 
@@ -832,6 +1427,45 @@ function liftKeys({from, to, cFrom, cTo, pk}, opacity, n = 10, settle = true) { 
     return {opacity, scale: `${sx} ${sy}`, translate: `${bx + (cx - cTo.x - (sx - gx) * ux) / pk}px ${by + (cy - cTo.y - (sx - gx) * uy) / pk}px`, offset: g};
   });
 }
+// Missions that go onto a board (the user, 2026-10-30: "those missions shouldn't transition to the tablet by fading out, the tablet should show up with no missions and those exact missions should go to tablet"):
+// a layer of cards over the tablet (`data-sec-free`, FlowPart) that is gone in the next slide is not faded. A copy of it stays over the new slide and each card glides, getting smaller, to the card of its name on
+// the board, one just after the other; the board's own cards wait hidden and are exactly under the copy when the move is over. Measured, so it is right wherever the video has put the tablet. A card that is not
+// on the board fades. -> the keys of the layers it took.
+const LAND = {share: 0.76, step: 0.12}; // of the move: what a card takes, and how long after the one before it sets off
+function landCards(A, B, gone, play, ghosts) {
+  const taken = new Set();
+  for (const key of gone) {
+    const root = elementOf(A.stage, key);
+    if (!root?.hasAttribute('data-sec-free')) continue;
+    const copy = unnamed(root.cloneNode(true));
+    copy.style.zIndex = '900';
+    B.stage.append(copy); ghosts.push(copy);
+    [...copy.querySelectorAll('.sec-chip')].forEach((chip, i) => {
+      const goal = B.stage.querySelector(`[data-iq-target="${CSS.escape(chip.dataset.secChip)}"] .chip`), span = goal && glideSpan(goal, chip), t0 = i * LAND.step;
+      if (!goal) { play(chip, fadeFrames('swap-out', 1)); return; }
+      if (span) play(chip, windowKeys(span.to, span.from, t0, t0 + LAND.share));
+      play(goal, fadeFrames('hide', 0));
+    });
+    taken.add(key);
+  }
+  return taken;
+}
+// The software coming in over what was there (`over` of a slide), the old art staying as it is under it, the old slide being under the new one. On a picture of itself (`data-sec-land` on the picture: the corners of the device in it, in the
+// picture's own px, top left first, clockwise; the user, 2026-11-02: "zoom in to the tablet then fade in our tablet with same boundries as tablet for the frame", then "I shouldn't see fully the tablet in ai image, I should see the tablet UI asap"):
+// the picture is pushed in until those corners are its box's, where the new art is, and the new art goes with them from the first moment, so what is seen growing is the software: it fades in early (`LANDING.fade`, shares of the time), while the
+// picture's own is still small. Sampled, by the same corners: what the browser makes between two far matrices is not the same for the two, and one has to stay on the other. The new art's `transform` works about its origin, inside its other scales.
+const LANDING = {samples: 24, fade: [0.12, 0.5]};
+function landOn(from, to, play, clock) {
+  const q = from.dataset.secLand?.split(' ').map(Number), img = from.querySelector('img');
+  if (q && img) {
+    const corners = [0, 2, 4, 6].map(i => [q[i], q[i + 1]]), W = from.offsetWidth, H = from.offsetHeight, box = [[0, 0], [W, 0], [W, H], [0, H]], at = c => corners.map(([x, y], i) => [x + (box[i][0] - x) * c, y + (box[i][1] - y) * c]);
+    const R = from.getBoundingClientRect(), r = to.getBoundingClientRect(), u = R.width / W, sx = r.width / to.offsetWidth, sy = r.height / to.offsetHeight, [ox, oy] = getComputedStyle(to).transformOrigin.split(' ').map(parseFloat), own = to.style.transform;
+    const inner = ([x, y]) => [(R.left + x * u - r.left) / sx - ox, (R.top + y * u - r.top) / sy - oy], steps = Array.from({length: LANDING.samples + 1}, (_, i) => i / LANDING.samples); // (a point of the box, in the px of that `transform`)
+    play(img, steps.map(c => ({transform: quadMatrix(corners, at(c)), offset: c})));
+    play(to, steps.map(c => ({transform: `${own} ${quadMatrix(box.map(inner), at(c).map(inner))}`, offset: c})));
+  }
+  play(to, fadeWithin(opacityOf(to), ...LANDING.fade, clock));
+}
 function magicMove(a, b, play, start = 0) {
   const inA = new Map();
   for (const el of a.querySelectorAll(MOVE_KEYS.map(k => `[${k}]`).join(','))) { const k = moveKeyOf(el); if (k && !inA.has(k)) inA.set(k, el); }
@@ -875,43 +1509,56 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
   let frozen = false; // a text is being retyped in the picture: nothing is drawn again under it
   let playing = false; // the video is playing (not looked at by seeking): what plays by itself (the film) is let to
   let nowT = 0; // the video's time as it was shown last
+  let carried = null; // the seconds its timers start from, when the video goes on from the one before it (`joins`, `carryTimers`): {timer key: seconds}
+  let meter = null; const measured = new WeakMap(); // (a slot never shown, where a slide is laid out to measure where an element is on it: `measure`)
   const hover = () => { const p = src.script?.profile?.hover; return p ? {...HOVER, ...p, transition: `-webkit-text-stroke-width ${p.fade}s cubic-bezier(0.4, 0, 0.2, 1)`} : HOVER; }; // (what the cursor rests on thickens: the video's own way, else the usual)
   // A list that is scrolled by the time (the profile's `scroll`): from where it is when it opens to where it ends, once, easing in and out. Every slot has it at the same place at any moment, so
   // no move between two slides scrolls it by itself, and the words change over it without it stopping.
   function driveScroll(slot, t) {
     const sc = src.script?.profile?.scroll;
     if (!sc || !slot.info?.scrolls) return; // (the list is moved by the time in the slides that are on it, not in the ones before or after)
-    const list = slot.stage.querySelector(sc.selector);
-    if (list) list.style.transform = `translateY(${sc.from + (sc.to - sc.from) * ease(clamp01((t - sc.t0) / Math.max(0.01, sc.t1 - sc.t0)))}px)`;
+    const y = sc.from + (sc.to - sc.from) * ease(clamp01((t - sc.t0) / Math.max(0.01, sc.t1 - sc.t0)));
+    // the list, and its copy in each popped card (`popMarks`), so a card shows the list where it is: in each, the first one (the selector can match more than the list)
+    for (const root of [slot.stage, ...slot.stage.querySelectorAll('.sb-pop')]) {
+      const card = root === slot.stage ? null : root, list = [...root.querySelectorAll(sc.selector)].find(el => el.closest('.sb-pop') === card);
+      if (list) list.style.transform = `translateY(${y}px)`;
+    }
   }
 
-  const dropPrep = () => { if (prep) { for (const anim of prep.anims) anim.cancel(); prep = null; } };
+  const dropPrep = () => { if (prep) { for (const anim of prep.anims) anim.cancel(); for (const el of prep.ghosts ?? []) el.remove(); prep = null; } };
   // The move's animations only live while the move is shown: a paused one holds its first keyframe, which would override the fades the frames do by their clock.
   const liveAnims = p => { if (!p.live) { for (const [el, keyframes] of p.specs) { const anim = el.animate(keyframes, {duration: D, fill: 'both', easing: keyframes.easing && CAN_LINEAR ? keyframes.easing : 'linear'}); anim.pause(); p.anims.push(anim); } p.live = true; } };
   const idleAnims = p => { if (p?.live) { for (const anim of p.anims) anim.cancel(); p.anims = []; p.live = false; } };
-  const fresh = (slot, frame) => slot.frame === frame && slot.edit === src.edits.frames[frame.id] && slot.library === src.edits.library && slot.video === src.video && slot.info === (src.script?.info.get(frame.id) ?? null);
+  const fresh = (slot, frame) => slot.frame === frame && slot.edit === src.edits.frames[frame.id] && slot.library === src.edits.library && slot.video === src.video && slot.shared === src.edits.videoText && slot.looks === src.edits.looks && slot.info === (src.script?.info.get(frame.id) ?? null);
 
   // Draw `frame` on a slot the way the board draws it.
-  function build(slot, frame) {
-    dropPrep();
+  function build(slot, frame, keepPrep = false) { // (`keepPrep`: the meter's slot, the move being got ready is not its)
+    if (!keepPrep) dropPrep();
     const {edits, video} = src, info = src.script?.info.get(frame.id) ?? null, raw = edits.frames[frame.id], edit = info?.edit ?? raw, layers = info?.layers ?? layersOf(frame, raw), look = frameLook(frame, video);
-    const htmlOf = hash => edits.library[hash] ?? video.assets[hash] ?? lessonHtmlOf(hash);
+    const htmlOf = hash => edits.library[hash] ?? video.assets[hash] ?? lessonHtmlOf(hash) ?? pointerHtmlOf(hash);
     slot.shell.className = `${look.shell} sb-player sb-pl-shell`;
-    slot.stage.className = `${look.stageClass} sb-stage sb-in-video${src.script?.profile?.dimMenu ? ' sb-dim-menu' : ''}`; // (sb-dim-menu: the menu's shade is shown: components/Storyboard.css)
+    slot.stage.className = `${look.stageClass} sb-stage sb-in-video${src.script?.profile?.dimMenu ? ' sb-dim-menu' : ''}${popping() ? ' sb-popping' : ''}`; // (sb-dim-menu: the menu's shade is shown; sb-popping: the pop-up video, its cursor over the cards: components/Storyboard.css)
     slot.stage.removeAttribute('style');
     for (const [name, value] of Object.entries(parseStyle(look.stageStyle))) slot.stage.style.setProperty(name, value);
     if (look.scene) slot.stage.dataset.scene = look.scene; else delete slot.stage.dataset.scene;
     if (look.view) slot.stage.dataset.view = look.view; else delete slot.stage.dataset.view;
     slot.pens.clear();
     slot.stage.innerHTML = frameHtml(layers, htmlOf, `pl${slot.index}-`, frame.bubble);
-    applyEdits(slot.stage, edit);
+    applyEdits(slot.stage, edit, edits.looks); // (the shared looks too: the background, the plate, the gray side, the outlines, as on every slide)
+    for (const l of layers) if (roleOf(l) === 'hand') { // the cursor is over everything in a video (the user, 2026-10-21: "still the fricking improved quality cursor"): its layer's root, not only the `.dh-hand` in it (a demo's cursor comes in a wrapper, which the board stacks with the others: 26, under a highlight at 28)
+      const root = elementOf(slot.stage, l.key);
+      if (!root) continue;
+      root.style.setProperty('z-index', '1000', 'important');
+      if (getComputedStyle(root).position === 'static') root.style.position = 'relative';
+    }
+    if (src.script?.timers) for (const {el, key, running} of timersIn(slot.stage)) Object.assign(el.dataset, {sbTimer: key, sbRun: running ? '1' : '', sbOwn: el.textContent.trim()}); // (the heartbeat: `tickTimers`; a copy of the art keeps these, so a popped card ticks too)
     const bgCss = slot.stage.style.background || '#fff'; // (applyEdits put the frame's background on its stage: it goes on the layer behind it)
     slot.stage.style.background = '';
     slot.bg.style.background = bgCss;
     Object.assign(slot, {bgCss});
-    Object.assign(slot, {frame, edit: raw, library: edits.library, video, look, layers: layers.map(l => ({key: l.key, role: roleOf(l), art: isArt(l), name: l.name ?? '', sig: signature(l, edit, frame)})), stamp: ++stamps});
+    Object.assign(slot, {frame, edit: raw, library: edits.library, shared: edits.videoText, looks: edits.looks, video, look, layers: layers.map(l => ({key: l.key, role: roleOf(l), art: isArt(l), pointer: l.asset === POINTER_ASSET, name: l.name ?? '', sig: signature(l, edit, frame)})), stamp: ++stamps});
     slot.info = info;
-    slot.hover = undefined; slot.ring = null; slot.clicking = false; slot.hoverFrom0 = false; slot.rest = null; slot.pressImg = null;
+    slot.hover = undefined; slot.ring = null; slot.clicking = false; slot.hoverFrom0 = false; slot.rest = null; slot.pressImg = null; slot.vlive = null; slot.vundo = null;
     slot.raw = layers; slot.base = new Map(); slot.fit = undefined; slot.drawEdit = edit;
     if (info?.peerSubmit) for (const el of slot.stage.querySelectorAll('.iq2-rating--peers .iq2-rate-submit')) el.classList.toggle('is-ready', info.peerSubmit === 'ready'); // (the peers' too: blue while they rate; `sendPeers` presses them)
     if (info?.peerFlow) { // (the connector and the faces of the peers' ratings are drawn by the clock, `pensAt`: the rules at the end of Storyboard.css find them by these marks; a face is tied to its card by who it is)
@@ -927,7 +1574,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     // Fonts still loading: the chat boxes' shapes are drawn again around their words once they are in, with no
     // move held (measured under one, a shape would be drawn around the words where the move holds them).
     const redraw = () => { if (slot.stamp === stamp) { dropPrep(); endPens(slot); drawShape(slot.stage, edit); onRedraw?.(); } }; // (the pens were made with a font that was not there yet)
-    whenFontsLoaded(edit, redraw); // (a font picked for the words)
+    whenFontsLoaded(fontsOf(edit, edits.videoText), redraw); // (a font picked for the words, on the slide or in the video)
     if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(redraw);
   }
 
@@ -941,21 +1588,173 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
   const layoutKeyOf = () => `${screenWidth}|${document.fonts?.status}|${document.styleSheets.length}`;
   function layoutSlot(slot) {
     const layers = slot.raw;
+    middleOwn(slot); // (the words in the middle first: laid out from where the slide has them)
+    revertVideoScale(slot); // (the video's own sizes are put on at the end too)
+    revertVideoText(slot); // (the video's own look for its texts is put on at the end, over a layout that starts from the slide's)
+    undoBoard(slot); // (a big board's layout is made again from the slide's)
     for (const l of layers) for (const el of partsOf(slot.stage, l.key)) { if (el.dataset.sbTrim) { const [w, h] = JSON.parse(el.dataset.sbTrim); el.style.width = w; el.style.height = h; delete el.dataset.sbTrim; } if (slot.base.has(el)) { const b = slot.base.get(el); moveTo(el, b.at); el.style.scale = b.scale; } else slot.base.set(el, {at: translateOf(el), scale: el.style.scale}); }
     slot.tablet = false;
-    setWordsFont(slot, layers);
-    const tablet = tabletFit(slot, layers); // (the words go at its right: it is placed first)
-    spreadWords(slot, layers);
-    if (!tablet) fitArt(slot, layers);
-    centerArt(slot, layers);
+    const fonted = setWordsFont(slot, layers);
+    setTitleFont(slot, layers);
+    if (!boardLayout(slot, layers)) { // (a big board: all of it across the picture, the words under it)
+      const tablet = tabletFit(slot, layers); // (the words go at its right: it is placed first)
+      if (!tablet) narrowPanel(slot.stage, {tablet: false, words: false}); // (no tablet: the gray side from where its frame would end, the words in its middle: spreadWords)
+      if (!spreadWords(slot, layers) && fonted) drawShape(slot.stage, slot.drawEdit); // (the boxes are drawn round the words as they are now: spreadWords does it when it has moved them)
+      if (!tablet) fitArt(slot, layers);
+      centerArt(slot, layers);
+    }
+    blackPlate(slot.stage, (el, prop, value) => setStyle(slot, el, prop, value)); // (bare software: black behind it, components/storyboardDom.js)
     if (slot.info?.showStep) keepStepInView(slot, slot.info.showStep);
     placeHand(slot, layers);
     centerHand(slot, layers);
     if (src.script?.profile?.centerMarks) centerMarks(slot, layers);
     if (src.script?.profile?.marksInside) keepMarksIn(slot, layers, src.script.profile.marksInside);
     placeBars(slot);
+    applyVideoText(slot);
+    applyVideoScale(slot);
+    if (popping() || ceoMode()) popMarks(slot, layers); // (an outline is a card of what it is round, lifted a little; the video "cursor and pop-up" dims the rest too)
+    placePoint(slot, layers); // (the hand on what it points at: the outline comes out of its fingertip)
+    if (slot.info?.middle) centerWords(slot, slot.info.middle);
+    if (src.script?.profile?.focus && !slot.bottom) focusWords(slot, layers); // (Focus: the words left-aligned, as high as what they are about; not a big board's band)
     slot.layoutKey = layoutKeyOf(slot);
   }
+  // The words in the middle first (`profile.middle`; the user, 2026-11-03, on a picture of it with the words still at the right: "center the text bro"): a `~middle` copy has its words LAID OUT in the middle of the picture, last, so the pen,
+  // which writes on a canvas of its own where the words are when it is made ready, writes them there; the move on to the slide itself glides them to their place as it does any words that move (a copy of them over the
+  // panel too, on a zoomed tablet: `overPanel`). On a `card` (the same screen as the slide before) they are in the middle of the software's side, at the left of the gray side. `m`: {words, panel, card}.
+  // Focus (`profile.focus`, a variation; the user, 2026-11-04: "it feels like I have to look left right center"): the words on the gray side are left-aligned, so their lines start next to the software, and stand as high as the
+  // yellow outlines of their scene (`info.focus`: the slide that draws them, measured as the video lays it out, `focusYOf`), kept `margin` px inside the picture; a scene with no outline leaves them where they are.
+  function focusWords(slot, layers) {
+    const look = src.script.profile.focus, S = slot.stage.getBoundingClientRect(), k = S.width / STAGE, H = STAGE * 9 / 16;
+    if (!k) return;
+    for (const l of layers) {
+      const el = roleOf(l) === 'words' ? elementOf(slot.stage, l.key) : null, p = el?.hasAttribute('data-sb-bubble') ? el.querySelector('p') : null;
+      if (!p || (p.getBoundingClientRect().left - S.left) / k < STAGE * 0.6) continue; // (words on the gray side only)
+      if (look.align) { el.dataset.sbAlign = ''; el.style.setProperty('--sb-align', look.align); }
+      const y = slot.info?.focus ? focusYOf(slot.info.focus, slot) : null;
+      if (y == null) continue;
+      const q = p.getBoundingClientRect(), half = q.height / k / 2, m = look.margin ?? 70, at = Math.min(H - m - half, Math.max(m + half, y)), pk = parentScale(el) || 1, [x0, y0] = translateOf(el);
+      moveTo(el, [x0, y0 + (S.top + at * k - (q.top + q.bottom) / 2) / pk]);
+    }
+  }
+  // The middle height of the yellow outlines of a slide as the video lays it out (stage px), kept for the layout: measured on the slide itself when it is the one being laid out, else on the slot never shown (`meter`)
+  function focusYOf(frame, slot) {
+    const key = layoutKeyOf(), was = focusMemo.get(frame);
+    if (was && was.key === key) return was.y;
+    let on = slot;
+    if (slot.frame !== frame) {
+      meter ??= makeSlot(screen, 2);
+      if (meter.frame !== frame || !meter.raw) build(meter, frame, true);
+      if (meter.layoutKey !== key) layoutSlot(meter); // (its own layout measures it, as the slide being laid out: below)
+      const done = focusMemo.get(frame);
+      if (done && done.key === key) return done.y;
+      on = meter;
+    }
+    const S = on.stage.getBoundingClientRect(), k = S.width / STAGE, boxes = on.layers.filter(l => /outline|highlight/i.test(l.name ?? '')).map(l => elementOf(on.stage, l.key)?.getBoundingClientRect()).filter(r => r && r.height > 1);
+    const y = boxes.length && k ? ((Math.min(...boxes.map(r => r.top)) + Math.max(...boxes.map(r => r.bottom))) / 2 - S.top) / k : null;
+    focusMemo.set(frame, {key, y});
+    return y;
+  }
+  function centerWords(slot, m) {
+    const el = elementOf(slot.stage, m.words), p = el?.querySelector('p') ?? el, S = slot.stage.getBoundingClientRect(), panel = m.card ? elementOf(slot.stage, m.panel) : null;
+    if (!el || !S.width) return;
+    const q = p.getBoundingClientRect(), k = parentScale(el) || 1, [x, y] = translateOf(el), edge = panel ? Math.min(S.right, Math.max(S.left, panel.getBoundingClientRect().left)) : S.right; // (the software's side ends where the gray side starts)
+    if (!q.width) return;
+    moveTo(el, [x + ((S.left + edge) / 2 - (q.left + q.right) / 2) / k, y + (S.top + S.height / 2 - (q.top + q.bottom) / 2) / k]);
+    drawShape(slot.stage, slot.drawEdit); // (a box round the words goes with them)
+  }
+  // ---- The video's own size of an element (the video editor's handles, the user, 2026-10-22: "if I want to resize object it should apply ... same way after effects
+  // has it"): `frames[id].vscale[key] = [fx, fy]` (lib/storyboardEdits.mjs), put on over the video's layout (over the tablet's fit too, which would undo a size given
+  // to the slide), around the element's middle; taken off at the start of the next layout. The slide on the board is not touched.
+  function revertVideoScale(slot) { for (const [el, scale, translate] of slot.sundo ?? []) { el.style.scale = scale; el.style.translate = translate; } slot.sundo = null; }
+  function applyVideoScale(slot) {
+    const sizes = slot.drawEdit?.vscale ?? {}, places = slot.drawEdit?.vmove ?? {}, undo = []; // (and its place in the video: `vmove`, stage px)
+    const keys = new Set([...Object.keys(sizes), ...Object.keys(places)]), u = (slot.stage.getBoundingClientRect().width / STAGE) || 1;
+    for (const key of keys) {
+      const el = elementOf(slot.stage, key);
+      if (!el) continue;
+      undo.push([el, el.style.scale, el.style.translate]);
+      const f = sizes[key], d = places[key];
+      if (f) {
+        const before = el.getBoundingClientRect(), [sx, sy] = scaleOf(el);
+        scaleTo(el, [sx * f[0], sy * f[1]]);
+        const after = el.getBoundingClientRect(), k = parentScale(el) || 1, [tx, ty] = translateOf(el); // (it grows from its middle wherever its own transform starts from: the tablet's fit starts from its corner)
+        moveTo(el, [tx + (before.left + before.right - after.left - after.right) / 2 / k, ty + (before.top + before.bottom - after.top - after.bottom) / 2 / k]);
+      }
+      if (d) { const k = parentScale(el) || 1, [tx, ty] = translateOf(el); moveTo(el, [tx + d[0] * u / k, ty + d[1] * u / k]); }
+    }
+    slot.sundo = undo.length ? undo : null;
+  }
+  // ---- The video's own text (the user, 2026-10-14: "double click any text on any video ... change the text size, font, content, position, boundaries on the fly") ----
+  // A frame's `vtext` (lib/storyboardEdits.mjs): how a text looks and where its box is in the VIDEO, put on after the video has laid everything out, so it has the last word over the
+  // video's own Montserrat 35 and the words spread over the right side. The slide on the board is not touched. A text that has a `rect` is put there (stage px, its box's top left,
+  // `h` 0: as tall as its words); one that has only a look stays where it was, around the middle of its box (so a bigger size grows it evenly, as a centered text should).
+  // What it sets is saved first (`vundo`) and put back at the start of the next layout, so what is taken off comes back as it was and nothing is left behind.
+  const VT_PROPS = ['translate', 'width', 'height', 'display', '--sb-fit', '--sb-font', '--sb-font-size', '--sb-color', '--sb-weight', '--sb-align', '--sb-line', '--sb-spacing'];
+  const VT_DATA = ['sbFont', 'sbFontSize', 'sbColor', 'sbWeight', 'sbAlign', 'sbLine', 'sbSpacing', 'sbSize', 'sbFit'];
+  function revertVideoText(slot) {
+    for (const [el, props, data] of slot.vundo ?? []) {
+      for (const [name, value] of props) { if (value === '') el.style.removeProperty(name); else el.style.setProperty(name, value); }
+      for (const [name, value] of data) { if (value === undefined) delete el.dataset[name]; else el.dataset[name] = value; }
+    }
+    slot.vundo = null;
+  }
+  function setTextLook(el, o) { // only what the text was given
+    const put = (attr, name, value) => { if (value == null) return; el.dataset[attr] = ''; el.style.setProperty(name, value); };
+    put('sbFont', '--sb-font', o.font ? FONT_STACK[o.font] : null);
+    put('sbFontSize', '--sb-font-size', o.fontSize ? `${o.fontSize}px` : null);
+    put('sbColor', '--sb-color', o.color ?? null);
+    put('sbWeight', '--sb-weight', o.weight ? String(o.weight) : null);
+    put('sbAlign', '--sb-align', o.align ?? null);
+    put('sbLine', '--sb-line', o.lineHeight ? `${o.lineHeight}px` : null);
+    put('sbSpacing', '--sb-spacing', o.letterSpacing != null ? `${o.letterSpacing}px` : null);
+  }
+  const ownOf = slot => ({...(slot.drawEdit?.vtext ?? {}), ...(slot.vlive ?? {})}); // (what a text was given alone: what is kept, and what is being changed in the editor, the second says it all for a text it has)
+  // What each text is given: the look of ALL the words of the videos (the user, 2026-10-14: a change in the text editor is for every video's words unless the text was made unique) under what the text
+  // was given alone. A text with nothing but the shared look stays around the middle of its box, like one with a look of its own.
+  const vtextOf = slot => { // (and the video's own look of its words over the shared one: the video's inspector, the user, 2026-10-21: "first it should apply to only the video I have")
+    const own = ownOf(slot), shared = src.edits?.videoText?.words, mine = (slot.drawEdit ?? slot.edit)?.ownLooks?.['kind:words'];
+    if (!shared && !mine) return own;
+    const words = {...(shared ?? {}), ...(mine ?? {})}, out = {...own};
+    for (const l of slot.raw ?? []) if (l.kind === 'bubble') out[l.key] = {...words, ...(own[l.key] ?? {})};
+    return out;
+  };
+  function applyVideoText(slot) {
+    const own = Object.entries(vtextOf(slot)).filter(([, o]) => o && Object.keys(o).length);
+    slot.vundo = null;
+    if (!own.length) return;
+    const stage = slot.stage, S = stage.getBoundingClientRect(), u = S.width / STAGE || 1, undo = [];
+    let bubbles = false;
+    for (const [key, o] of own) {
+      const el = elementOf(stage, key);
+      if (!el) continue;
+      undo.push([el, VT_PROPS.map(name => [name, el.style.getPropertyValue(name)]), VT_DATA.map(name => [name, el.dataset[name]])]);
+      const bubble = isBubble(el), box = () => (bubble ? screenRectOf(el) : el.getBoundingClientRect()), first = box();
+      setTextLook(el, o);
+      if (o.rect) {
+        const [, , w, h] = o.rect;
+        if (bubble) sizeTo(el, [w, h]);
+        else { // (a text that is not a chat box: a box of its own width, and height when it has one)
+          if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+          const k = u / (parentScale(el) || 1);
+          el.style.width = `${w * k}px`; if (h) el.style.height = `${h * k}px`;
+        }
+      }
+      const now = box(), pk = parentScale(el) || 1, [tx, ty] = translateOf(el);
+      const by = o.rect ? [S.left + o.rect[0] * u - now.left, S.top + o.rect[1] * u - now.top] : [(first.left + first.right - now.left - now.right) / 2, (first.top + first.bottom - now.top - now.bottom) / 2];
+      if (Math.abs(by[0]) > 0.01 || Math.abs(by[1]) > 0.01) moveTo(el, [tx + by[0] / pk, ty + by[1] / pk]);
+      bubbles ||= bubble;
+    }
+    slot.vundo = undo;
+    if (bubbles) drawShape(stage, slot.drawEdit);
+  }
+  function textBoxOf(slot, key) {
+    const el = elementOf(slot.stage, key);
+    if (!el) return null;
+    const S = slot.stage.getBoundingClientRect(), u = S.width / STAGE || 1, r = isBubble(el) ? screenRectOf(el) : el.getBoundingClientRect(), look = lookOf(el), own = ownOf(slot)[key] ?? {}, two = n => Math.round(n * 100) / 100;
+    return {key, bubble: isBubble(el), kind: isBubble(el) ? 'words' : null, rect: [(r.left - S.left) / u, (r.top - S.top) / u, r.width / u, r.height / u].map(two), look: {font: look.font, fontSize: two(look.size), weight: look.weight, color: look.color, align: look.align, lineHeight: look.lineHeight, letterSpacing: look.letterSpacing}, own, auto: !(own.rect && own.rect[3] > 0)};
+  }
+  // The fonts a frame's texts use (the slide's and the video's): they are loaded when they are first used.
+  const fontsOf = (edit, shared) => ({styles: {...(edit?.styles ?? {}), ...Object.fromEntries(Object.entries(edit?.vtext ?? {}).map(([key, o]) => [`vtext:${key}`, {font: o.font}])), ...(shared?.words?.font ? {'vtext:shared': {font: shared.words.font}} : {}), ...(edit?.ownLooks?.['kind:words']?.font ? {'vtext:video': {font: edit.ownLooks['kind:words'].font}} : {})}});
   // The step a mission's list is scrolled to is not under the mission's own header (the user, 2026-10-13: "in video proof don't scroll up too much, I wanna see the video step text"): the demo scrolls the
   // list as far as its last step goes, and the first words of that step end up under the header that stays at the top. The list is put back down by what hides them, `gap` stage px of room above them left
   // (the header moves with it the other way: it stays where it is).
@@ -1020,6 +1819,305 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       moveTo(el, [x + ((u.left + u.right) / 2 - (now.left + now.right) / 2) / pk, y + ((u.top + u.bottom) / 2 - (now.top + now.bottom) / 2) / pk]);
     }
   }
+  // ---- The pop-up of what a highlight is round (the video "cursor and pop-up", the user, 2026-10-19) ----
+  // Each yellow outline of the slide is the frame of a card: its yellow border is not drawn, and the software under it is copied into it (each piece of the art at the very place and size it is
+  // seen, cut to the outline's box), so it is the same picture. The card is IN the outline: it fades and glides when the outline does, and grows (to `POP.grow`) and rises as it comes in. A
+  // shade over everything but the words and the cursor (z-index 9: over the software, under the outlines) dims the rest as much as the cards are in (`spotsAt`, by the clock). Done last in a
+  // layout, on the art and the outlines where they are put.
+  const popping = () => !!src.script?.profile?.pointer?.popup;
+  const ceoMode = () => !src.script?.profile?.pointer; // (the hand points and leaves, the outlines pop a little: the CEO, 2026-10-16; the videos with a cursor of their own do it their way)
+
+  // ---- A big board (the CEO, 2026-10-16: "any big board, I'm losing a lot of space on the right when I write on the right"; "in the wide boards, instead of putting the words on the right,
+  // maybe they should be on the bottom"; "show the board on the full image as opposed to on the small image"; "we have a lot of valuable real estate horizontally") ----
+  // A slide whose software is the web window (the overview, a report, the planning, a dashboard) and that has the words' side shows the window's WHOLE page (not panned to a part of it)
+  // across the picture, the gray side becomes a band under it, and the words are written in the middle of that band. What is drawn over the page goes with it; an outline that knows what it is
+  // round (`data-sb-target`, the sections' capture) is put round it again. Every change is kept to be undone (`boardUndo`): a layout always starts from the slide.
+  // Edge to edge (the user, 2026-10-21: "for the boards, you should go edge to edge ... instead of having that light gray background behind the board, just make the board edge to edge and with a gray
+  // area down. Make it as big as possible"; the CEO, 2026-10-20: "it looks like it got cut off at the bottom", "use the space to make the board be the size of the whole thing"): the window is as wide as
+  // the picture and as tall as everything over the band (taller than its page: white under it; shorter: cut), square, no shadow; the plate is not seen.
+  const BOARD = {margin: 0, top: 0, band: 132, gap: 0, words: 1320};
+  function undoBoard(slot) { for (const [el, prop, value] of (slot.boardUndo ?? []).reverse()) { if (value) el.style.setProperty(prop, value); else el.style.removeProperty(prop); } slot.boardUndo = []; slot.bottom = false; }
+  const setStyle = (slot, el, prop, value) => { (slot.boardUndo ??= []).push([el, prop, el.style.getPropertyValue(prop)]); el.style.setProperty(prop, value); };
+  function boardLayout(slot, layers) {
+    const panel = layers.find(l => /^panel$/i.test(l.name ?? '')), panelEl = panel && elementOf(slot.stage, panel.key);
+    const S = slot.stage.getBoundingClientRect(), k = S.width / (slot.stage.offsetWidth || 1), W = slot.stage.offsetWidth, H = slot.stage.offsetHeight;
+    if (!panelEl || !k) return false;
+    const edge = (panelEl.getBoundingClientRect().left - S.left) / k;
+    if (edge > W * 0.97 || edge < W * 0.3) return false; // (no words' side on this slide)
+    const win = bigDevice(slot, layers);
+    if (!win?.matches('.iq2-report')) return false;
+    // the whole page: it was panned to what the slide is about; what is drawn over it goes with it
+    const page = win.querySelector('.iq2-report-page'), kw = win.getBoundingClientRect().width / (win.offsetWidth || 1); // (client px per window px)
+    const pan = page ? -(Number(/translateX\((-?[\d.]+)px\)/.exec(page.style.transform || '')?.[1]) || 0) : 0;
+    if (page && Math.abs(pan) > 0.5) {
+      setStyle(slot, page, 'transform', 'translateX(0px)');
+      for (const l of layers) {
+        if (isArt(l) || ['plate', 'panel', 'words', 'title'].includes(roleOf(l))) continue;
+        for (const el of partsOf(slot.stage, l.key)) { const [x, y] = translateOf(el); moveTo(el, [x + pan * kw / (parentScale(el) || 1), y]); }
+      }
+    }
+    if (page && page.offsetWidth > win.clientWidth + 1) setStyle(slot, win, 'width', `${page.offsetWidth + win.offsetWidth - win.clientWidth}px`);
+    // across the picture and down to the band: as tall as the room over it (cut at the bottom if its page is taller, white under the page if it is shorter)
+    const room = H - BOARD.band - BOARD.top - BOARD.gap;
+    let r = win.getBoundingClientRect();
+    const f = (W - 2 * BOARD.margin) / (r.width / k), sw = r.width / k / (win.offsetWidth || 1); // (stage px per window px)
+    if (Math.abs((r.height / k) * f - room) > 0.5) setStyle(slot, win, 'height', `${room / f / sw}px`);
+    for (const [prop, value] of [['border-radius', '0px'], ['box-shadow', 'none'], ['border-color', 'transparent']]) setStyle(slot, win, prop, value); // (edge to edge: no rounded corner that looks cut off, no shadow on the band)
+    r = win.getBoundingClientRect();
+    const rs = {x: (r.left - S.left) / k, y: (r.top - S.top) / k, w: r.width / k, h: r.height / k};
+    applyFit(slot, layers, slot.fit = {f, C: [rs.x + rs.w / 2, rs.y + rs.h / 2], D: [W / 2, BOARD.top + room / 2]}, S, k);
+    // the gray side is the band under it
+    for (const [prop, value] of [['left', '-2px'], ['top', `${H - BOARD.band}px`], ['width', `${W + 4}px`], ['height', `${BOARD.band + 4}px`]]) setStyle(slot, panelEl, prop, value);
+    moveTo(panelEl, [0, 0]);
+    // the words in the middle of the band, as wide as it lets them be, centered
+    for (const l of layers) {
+      const el = roleOf(l) === 'words' ? elementOf(slot.stage, l.key) : null, p = el?.hasAttribute('data-sb-bubble') ? el.querySelector('p') : null;
+      if (!p) continue;
+      setTextNumbers(el, {size: WORDS.size});
+      el.dataset.sbAlign = ''; el.style.setProperty('--sb-align', 'center');
+      sizeTo(el, [Math.min(BOARD.words, W - 2 * 80) + 2 * bubblePad(el)[0], 0]);
+      const after = p.getBoundingClientRect(), pk = parentScale(el) || 1, [x, y] = translateOf(el);
+      moveTo(el, [x + (S.left + (W / 2) * k - (after.left + after.right) / 2) / pk, y + (S.top + (H - BOARD.band / 2) * k - (after.top + after.bottom) / 2) / pk]);
+    }
+    drawShape(slot.stage, slot.drawEdit);
+    remeasureMarks(slot, layers, win, f * k);
+    slot.bottom = true; slot.tablet = false;
+    return true;
+  }
+  // An outline that knows what it is round (the sections' capture writes it: `data-sb-target`, its room `data-sb-pad-x` / `-y`, stage px) is put round it again, as the window shows it now.
+  function remeasureMarks(slot, layers, win, kf) {
+    const W0 = win.getBoundingClientRect();
+    for (const l of layers.filter(isMark)) {
+      const el = elementOf(slot.stage, l.key), name = el?.dataset.sbTarget;
+      if (!name) continue;
+      let t = null;
+      if (name.startsWith('col:')) { const th = slot.stage.querySelector(`th[data-iq-col="${CSS.escape(name.slice(4))}"]`), area = th?.closest('.ow-table-scroll'); if (th && area) { const a = th.getBoundingClientRect(), b = area.getBoundingClientRect(); t = {left: a.left, top: a.top, right: a.right, bottom: b.bottom}; } }
+      else if (name.startsWith('head:')) { const q = slot.stage.querySelector(`th[data-iq-col="${CSS.escape(name.slice(5))}"]`)?.getBoundingClientRect(); if (q?.width) t = {left: q.left, top: q.top, right: q.right, bottom: q.bottom}; } // (a column's title)
+      else if (name.startsWith('rows:')) { const [state, to] = name.slice(5).split(':'); t = rowsRect(slot.stage, CSS.escape(state), CSS.escape(to)); } // (the rows of a state, up to a column: the CEO, 2026-10-20)
+      else { const q = slot.stage.querySelector(`[data-iq-target="${CSS.escape(name)}"]`)?.getBoundingClientRect(); if (q?.width) t = {left: q.left, top: q.top, right: q.right, bottom: q.bottom}; }
+      if (!t) continue;
+      t = {left: Math.max(t.left, W0.left), top: Math.max(t.top, W0.top), right: Math.min(t.right, W0.right), bottom: Math.min(t.bottom, W0.bottom)}; // (what the window shows of it)
+      if (t.right - t.left < 2 || t.bottom - t.top < 2) continue;
+      const px = (Number(el.dataset.sbPadX) || 8) * kf, py = (Number(el.dataset.sbPadY) || 8) * kf, goal = {left: t.left - px, top: t.top - py, w: t.right - t.left + 2 * px, h: t.bottom - t.top + 2 * py};
+      const m = el.getBoundingClientRect(), own = m.width / (el.offsetWidth || 1);
+      if (!own) continue;
+      if (!el.dataset.sbTrim) el.dataset.sbTrim = JSON.stringify([el.style.width, el.style.height]); // (a layout again starts from the outline as it was)
+      el.style.width = `${goal.w / own}px`; el.style.height = `${goal.h / own}px`;
+      const now = el.getBoundingClientRect(), pk = parentScale(el) || 1, [x, y] = translateOf(el);
+      moveTo(el, [x + (goal.left - now.left) / pk, y + (goal.top - now.top) / pk]);
+    }
+  }
+  // The titles in a video are 36 px (the CEO, 2026-10-16: the intro "was at 60 and we went down"; the user's answer, 2026-10-19: titles 36, words 26).
+  const TITLE_SIZE = 36;
+  function setTitleFont(slot, layers) { for (const l of layers) if (roleOf(l) === 'title') { const el = elementOf(slot.stage, l.key); if (el) setTextNumbers(el, {size: TITLE_SIZE}); } }
+  // The hand on what it points at (`info.point`, `pointMarks`): its fingertip at the outline's bottom right corner (the user, 2026-10-19), never so low the hand is cut by the picture's edge or
+  // hangs over the words' band; the outline's circle comes out of that point (`revealMark`: its middle and its radius, in the outline's own px).
+  function placePoint(slot, layers) {
+    const key = slot.info?.point, hand = layers.find(l => roleOf(l) === 'hand'), mark = key && elementOf(slot.stage, key), handEl = hand && elementOf(slot.stage, hand.key);
+    if (!mark || !handEl) return;
+    const S = slot.stage.getBoundingClientRect(), k = S.width / (slot.stage.offsetWidth || 1), m = mark.getBoundingClientRect(), own = m.width / (mark.offsetWidth || 1);
+    if (!k || !own || m.width < 2) return;
+    // at the outline's bottom right corner, a little inside (the user, 2026-10-19: "the cursor shouldn't cover the text in UI when highlighting, it should be better if it's down right corner"): the
+    // hand hangs out of the outline, down and to the right, over nothing it is about; never so low that it leaves the board (a big board: the words' band is under it) or the picture
+    const H = handEl.getBoundingClientRect(), below = H.height * (1 - TIP.y), right = H.width * (1 - TIP.x), win = slot.bottom ? bigDevice(slot, layers)?.getBoundingClientRect() : null;
+    const floor = win ? win.bottom - below : S.bottom - POINTER_ROOM * k;
+    const tip = {x: Math.min(m.right - POINTER_AT.dx * k, S.right - right - 4 * k), y: Math.max(m.top + 4 * k, Math.min(m.bottom - POINTER_AT.dy * k, floor))};
+    fingertipTo(handEl, () => tip);
+    const fx = (tip.x - m.left) / own, fy = (tip.y - m.top) / own, w = m.width / own, h = m.height / own;
+    Object.assign(mark.dataset, {sbFx: fx.toFixed(1), sbFy: fy.toFixed(1), sbFr: (Math.hypot(Math.max(fx, w - fx), Math.max(fy, h - fy)) + 40).toFixed(1)});
+  }
+  // The outline coming out of the fingertip (0 to 1): a circle that grows from it until all of it (and its glow) is in.
+  function revealMark(el, f) {
+    el.dataset.sbReveal = String(clamp01(f)); // (how far its card has popped: `spotsAt`)
+    if (f >= 1 || !el.dataset.sbFr) { el.style.removeProperty('clip-path'); return; }
+    el.style.clipPath = `circle(${(Number(el.dataset.sbFr) * ease(f)).toFixed(1)}px at ${el.dataset.sbFx}px ${el.dataset.sbFy}px)`;
+  }
+  function popMarks(slot, layers) {
+    for (const el of slot.stage.querySelectorAll('.sb-pop, :scope > .sb-spot-shade')) el.remove();
+    const marks = layers.filter(isMark).map(l => elementOf(slot.stage, l.key)).filter(Boolean), S = slot.stage.getBoundingClientRect(), k = S.width / (slot.stage.offsetWidth || 1);
+    if (!marks.length || !k) return;
+    // what each piece of the art is seen over: its own box, or what paints in it when that is not under the outline (a root can be an empty box its cards hang out of: Increased Efficiency's
+    // "Mission cards" is 1600 x 0, and tested by its own box it was never copied, so the card was a white box over the very pill it is about). `paintedBox` walks the piece: only when needed, once.
+    const arts = layers.filter(isArt).flatMap(l => partsOf(slot.stage, l.key)).map(E => ({E, q: E.getBoundingClientRect()})), room = POP.margin * k;
+    const over = (b, R) => !!b && b.right > R.left && b.left < R.right && b.bottom > R.top && b.top < R.bottom;
+    const seen = a => (a.q.width && a.q.height ? a.q : null), painted = a => (a.p === undefined ? (a.p = paintedBox(a.E)) : a.p);
+    const words = layers.filter(l => roleOf(l) === 'words').map(l => elementOf(slot.stage, l.key)?.querySelector('p') ?? elementOf(slot.stage, l.key)).filter(Boolean).map(el => el.getBoundingClientRect()).filter(r => r.width > 1);
+    for (const M of marks) {
+      const R = M.getBoundingClientRect(), km = R.width / (M.offsetWidth || 1);
+      if (R.width < 4 || R.height < 4 || !km) continue;
+      const card = document.createElement('div');
+      card.className = 'sb-pop';
+      card.style.cssText = `left:${-M.clientLeft}px;top:${-M.clientTop}px;width:${M.offsetWidth}px;height:${M.offsetHeight}px;border-width:${M.clientTop}px ${M.clientLeft}px`; // (the card has the outline's yellow border: "do cursor, do highlight and pop", the CEO)
+      for (const a of arts) {
+        if (!over(seen(a), R) && !over(painted(a), R)) continue;
+        const {E, q} = a, s = ownScale(E, q);
+        if (!s) continue;
+        const copy = unnamed(E.cloneNode(true));
+        copy.style.cssText += `;position:absolute;left:${(q.left - R.left) / km - M.clientLeft}px;top:${(q.top - R.top) / km - M.clientTop}px;right:auto;bottom:auto;margin:0;box-sizing:border-box;width:${E.offsetWidth}px;height:${E.offsetHeight}px;translate:none;rotate:none;scale:none;transform:scale(${s / km});transform-origin:0 0;opacity:1;visibility:visible;transition:none;animation:none;z-index:auto`;
+        card.append(copy);
+      }
+      // as big as it may grow about its middle: inside the picture, and not into the words at its right
+      const cx = (R.left + R.right) / 2, cy = (R.top + R.bottom) / 2 - POP.lift * k, right = Math.min(S.right, ...words.filter(w => w.left > cx).map(w => w.left)) - room;
+      const grow = Math.max(1, Math.min(POP.grow, 2 * (cx - S.left - room) / R.width, 2 * (right - cx) / R.width, 2 * (cy - S.top - room) / R.height, 2 * (S.bottom - room - cy) / R.height));
+      Object.assign(card.dataset, {grow: String(grow), lift: String(POP.lift * k / km)});
+      M.classList.add('sb-popped');
+      M.append(card);
+    }
+    if (popping() && slot.stage.querySelector('.sb-pop')) shadeOf(slot); // (the CEO's videos only lift the outlined area; the pop-up video dims the rest too)
+  }
+  // Client px per px of the element's own (`q`: its box on the screen): by its width, its height if it has none, by its scales if it is an empty box.
+  function ownScale(E, q) {
+    if (E.offsetWidth) return q.width / E.offsetWidth;
+    if (E.offsetHeight) return q.height / E.offsetHeight;
+    const t = getComputedStyle(E).transform, m = new DOMMatrixReadOnly(t === 'none' ? undefined : t);
+    return (parentScale(E) || 1) * scaleOf(E)[0] * Math.hypot(m.a, m.b);
+  }
+  const shadeOf = slot => slot.stage.querySelector(':scope > .sb-spot-shade') ?? slot.stage.appendChild(Object.assign(document.createElement('div'), {className: 'sb-spot-shade'}));
+  // The cards as far in as their outlines are (the outline's own opacity, by the clock or by the move), and the shade as dark as the most of them. `shade` false: this slide's is not shown
+  // (the slide under a move between two of one design: the new one has its own, the two would dim twice).
+  function spotsAt(slot, shade = true) {
+    let most = 0;
+    for (const card of slot.stage.querySelectorAll('.sb-pop')) {
+      const M = card.parentElement, f = M.dataset.sbReveal != null ? Number(M.dataset.sbReveal) : clamp01(Number(getComputedStyle(M).opacity) || 0), g = Number(card.dataset.grow) || 1; // (an outline the hand points at comes in by its circle: `revealMark`)
+      card.style.scale = String(1 + (g - 1) * f);
+      card.style.translate = `0px ${-(Number(card.dataset.lift) || 0) * f}px`;
+      most = Math.max(most, f);
+    }
+    const el = slot.stage.querySelector(':scope > .sb-spot-shade');
+    if (el) el.style.opacity = String(shade && popping() ? POP.dim * most : 0);
+  }
+  // The cards of a panel one by one (`stagger`): each fades in and rises a little, `each` seconds after the one before, once the move into the slide is over.
+  function staggerAt(slot, local, item) {
+    const spec = slot?.info?.stagger;
+    if (!spec) return;
+    slot.stage.querySelectorAll(spec.selector).forEach((el, k) => { const f = ease(clamp01((local - (item?.move ?? 0) - spec.lead - k * spec.each) / spec.fade)); el.style.opacity = String(f); el.style.translate = `0px ${((1 - f) * 14).toFixed(1)}px`; });
+  }
+  // The dots of a code one by one (`dots`): the ones the slide adds are drawn by the clock, once the move into the slide is over.
+  function dotsAt(slot, local, item) {
+    const spec = slot?.info?.dots;
+    if (!spec) return;
+    slot.stage.querySelectorAll('.sec-dot').forEach(el => {
+      const k = Number(el.dataset.secDot);
+      if (!(k >= spec.from && k < spec.to)) return;
+      const f = ease(clamp01((local - (item?.move ?? 0) - spec.lead - (k - spec.from) * spec.each) / spec.fade));
+      el.style.opacity = String(f); el.style.scale = String(0.3 + 0.7 * f);
+    });
+  }
+  // The name that comes on a card (`names`), by the clock from the start of the slide: it fades in as the avatar leaves, swells a little and settles. A text stroke, as what the cursor rests on: the letters do not
+  // move, and it goes smoothly from one weight to the other, which a font's own weights do not. (`swell`: seconds after it starts that it swells, else once it is in; `influence`: it fades on After Effects' curve)
+  function namesAt(slot, local) {
+    const spec = slot?.info?.names;
+    if (!spec) return;
+    const t = local - spec.lead, at = spec.swell ?? spec.fade, grown = t < at + spec.up ? smoothstep((t - at) / spec.up) : 1 - smoothstep((t - at - spec.up) / spec.down), fading = clamp01(t / spec.fade), shown = spec.influence ? easyEase(fading, spec.influence) : ease(fading);
+    for (const name of spec.targets) for (const el of slot.stage.querySelectorAll(`[data-iq-target="${CSS.escape(name)}"]`)) {
+      el.style.opacity = String(shown);
+      el.style.setProperty('-webkit-text-stroke', `${(grown * spec.stroke).toFixed(3)}px currentColor`);
+    }
+  }
+  // The timers of the slide at the video's second `t` (`timerPlan`): a running one counts up from where it started running, a stopped one shows what it had reached.
+  function tickTimers(slot, t) {
+    const plan = src.script?.timers;
+    if (!plan) return;
+    for (const el of slot.stage.querySelectorAll('[data-sb-timer]')) {
+      const key = el.dataset.sbTimer, p = plan[key], own = el.dataset.sbOwn ?? '', three = own.split(':').length === 3, from = carried?.[key] ?? p?.base;
+      const s = !p ? null : el.dataset.sbRun ? timerAt(p, from, t) : p.stop != null ? timerAt(p, from, p.stop) : null;
+      const text = s == null ? own : clockText(s, three);
+      if (el.textContent !== text) el.textContent = text;
+    }
+  }
+  // The avatars of a queue at the video's second `t` (`facePlan`), on a slide of its turns.
+  function facesAt(slot, t) {
+    const plan = src.script?.faces;
+    if (!plan?.frames.has(slot?.frame?.id)) return;
+    for (const [key, path] of Object.entries(plan.paths)) {
+      const [left, top, size] = legsAt(path, t), seen = legsFade(path, t);
+      for (const el of slot.stage.querySelectorAll(`[data-iq-target="${key}"]`)) {
+        el.style.left = `${left}px`; el.style.top = `${top}px`; el.style.width = el.style.height = `${size}px`;
+        if (seen != null) { if (!faceSeen.has(el)) faceSeen.set(el, el.style.opacity); el.style.opacity = String(seen); }
+        else if (faceSeen.has(el)) { el.style.opacity = faceSeen.get(el); faceSeen.delete(el); }
+      }
+    }
+  }
+  // The avatars' opacity as their slide has it: a move is made from the slides' own (`prepare`), or one got ready while an avatar fades would fade it again by the slide. `facesAt` draws it again after.
+  function facesOwn(slot) { for (const el of slot.stage.querySelectorAll(FACE)) if (faceSeen.has(el)) { el.style.opacity = faceSeen.get(el); faceSeen.delete(el); } }
+  // The words in the middle first (`middlePlan`, a variation of the video), by the clock, on the slide of a `~middle` copy: the gray of the words' side covers the whole picture (a copy of the panel, `.sb-mid`, stretched from
+  // where the panel is to all of the picture, over everything but the words), the words are in the middle of the picture, over it, and the software is unseen under it. In the move on to the slide itself the copy's slide is
+  // the one seen (the two are the same, so the move shows the old one's pieces): the gray goes back to the panel, the words to their place, the software fades in. In the move into the copy the gray comes in over what changes
+  // under it. All of it is given back after (`middleOwn`), before a move is got ready and before the slide is laid out again: those measure the slide as it is.
+  function middleAt(slot, t) {
+    const m = src.script?.middle?.[slot?.frame?.id];
+    if (!m) return;
+    if (t < m.t0 || t >= m.t3) { middleOwn(slot); return; }
+    let own = midOwn.get(slot);
+    if (!own || own.stamp !== slot.stamp || own.layout !== slot.layoutKey || !own.wrap.isConnected) own = midSetUp(slot, m);
+    if (!own) return;
+    const cover = t < m.t1 && m.t1 > m.t0 ? moveClock((t - m.t0) / (m.t1 - m.t0), m.cover) : 1, back = t < m.t2 ? 0 : moveClock((t - m.t2) / Math.max(1e-3, m.t3 - m.t2), m.reveal);
+    if (m.card) { // (the same screen: the rectangle behind the words comes in with them and goes with them, in the first half of the move on to the slide, as the words do: 'swap-out')
+      own.wrap.style.opacity = String(t < m.t2 ? cover : 1 - Math.min(1, back / 0.5));
+      own.words.style.zIndex = '901';
+      if (m.before && t < m.t2 && !midBefore.get(slot)?.isConnected) { const words = wordsLaidOut(m.before); if (words) keepBefore(slot, words); } // (the words before at their place when the move into the card was not got ready (a jump on the timeline, a part's first slide): the slide before, laid out as the video has it, its box and look the video's own: the user, 2026-11-04, "it should always be same size, on edit and when transitioning")
+      return;
+    }
+    const {x, y, w, h} = own.panel, W = STAGE, H = STAGE * 9 / 16, lerp = (a, b) => a + (b - a) * back;
+    const L = lerp(Math.min(0, x), x), T = lerp(Math.min(0, y), y), R = lerp(Math.max(W, x + w), x + w), B = lerp(Math.max(H, y + h), y + h), sx = (R - L) / w, sy = (B - T) / h; // (its box now: from all of the picture to the panel's)
+    own.wrap.style.transform = `translate(${L - sx * x}px, ${T - sy * y}px) scale(${sx}, ${sy})`;
+    own.wrap.style.opacity = String(cover);
+    own.words.style.zIndex = '901'; // (over the gray: the words are laid out in the middle, `centerWords`, and glided to their place by the move, the pen's canvas being over everything)
+    const seen = t < m.t1 ? null : back; // (the software: as its move has it while the gray comes over it, then unseen under it, then fading in)
+    for (const [el, o] of own.arts) el.style.opacity = seen == null ? o : String((o === '' ? 1 : Number(o) || 0) * seen);
+  }
+  // The words before, kept at their place on the gray side over a card's slide (`midBefore`): a copy of the slide before's words as they are once written, its box, place and look as the video has them (the text editor's
+  // box, `vtext`, too). Over everything but the cursor. Not taken away by `middleOwn`: it lives as long as the slide drawn on the slot.
+  function keepBefore(slot, from) {
+    midBefore.get(slot)?.remove();
+    const g = unnamed(from.cloneNode(true)), p = g.querySelector('p') ?? g;
+    p.style.removeProperty('visibility'); g.style.removeProperty('opacity'); g.style.zIndex = '901';
+    slot.stage.append(g);
+    midBefore.set(slot, g);
+  }
+  // The words of a slide as the video lays them out (its words' font and box, the text editor's box), on the slot that is never shown (`meter`, `measure`'s)
+  function wordsLaidOut(frame) {
+    meter ??= makeSlot(screen, 2);
+    if (meter.frame !== frame || !meter.raw) build(meter, frame, true);
+    if (meter.layoutKey !== layoutKeyOf(meter)) layoutSlot(meter);
+    const l = meter.raw?.find(x => x.kind === 'bubble');
+    return l ? elementOf(meter.stage, l.key) : null;
+  }
+  function midSetUp(slot, m) {
+    middleOwn(slot);
+    const panel = elementOf(slot.stage, m.panel), words = elementOf(slot.stage, m.words), S = slot.stage.getBoundingClientRect(), u = S.width / STAGE;
+    if (!panel || !words || !u) return null;
+    if (m.card) { // (a rectangle round the words, in the paint of the gray side, in the middle of the software: `centerWords` put the words there)
+      const q = (words.querySelector('p') ?? words).getBoundingClientRect();
+      if (!q.width) return null;
+      const card = document.createElement('div');
+      card.className = 'sb-mid sb-mid--card';
+      Object.assign(card.style, {position: 'absolute', left: `${(q.left - S.left) / u - CARD.x}px`, top: `${(q.top - S.top) / u - CARD.y}px`, width: `${q.width / u + 2 * CARD.x}px`, height: `${q.height / u + 2 * CARD.y}px`, zIndex: '900', pointerEvents: 'none', opacity: '0', borderRadius: `${CARD.radius}px`, boxShadow: CARD.shadow, ...paintOf(panel)});
+      slot.stage.append(card);
+      const own = {stamp: slot.stamp, layout: slot.layoutKey, wrap: card, words, z: words.style.zIndex, arts: []};
+      midOwn.set(slot, own);
+      return own;
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'sb-mid';
+    Object.assign(wrap.style, {position: 'absolute', left: '0', top: '0', width: `${STAGE}px`, height: `${STAGE * 9 / 16}px`, zIndex: '900', pointerEvents: 'none', transformOrigin: '0 0', opacity: '0'});
+    const copy = unnamed(panel.cloneNode(true));
+    wrap.append(copy);
+    slot.stage.append(wrap);
+    const r = copy.getBoundingClientRect(); // (the copy, not the panel: the panel may be under a move's animation, the copy never is)
+    if (!r.width || !r.height) { wrap.remove(); return null; }
+    const own = {stamp: slot.stamp, layout: slot.layoutKey, wrap, panel: {x: (r.left - S.left) / u, y: (r.top - S.top) / u, w: r.width / u, h: r.height / u}, words, z: words.style.zIndex, arts: m.arts.flatMap(key => partsOf(slot.stage, key)).map(el => [el, el.style.opacity])}; // (`by`: from where the words are to the middle of the picture)
+    midOwn.set(slot, own);
+    return own;
+  }
+  function middleOwn(slot) {
+    const own = slot && midOwn.get(slot);
+    if (!own) return;
+    midOwn.delete(slot);
+    own.wrap.remove();
+    own.words.style.zIndex = own.z;
+    for (const [el, o] of own.arts) el.style.opacity = o;
+  }
   function ensureLayout(slot) { if (slot.raw && slot.layoutKey !== layoutKeyOf(slot)) { dropPrep(); layoutSlot(slot); } }
   // The words in a video are Montserrat, 35 (the user, 2026-10-14: "on the videos fix the font to be monsterrat 35 size"): the slides keep their own (a handwriting face, 35), the video
   // writes every chat box of words in the same plain one, whatever slide it is on and whether it is spread over the words' side or not. Before the layout measures them.
@@ -1032,15 +2130,15 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       setTextNumbers(el, {size: WORDS.size});
       changed = true;
     }
-    if (changed) drawShape(slot.stage, slot.drawEdit);
+    return changed;
   }
   // The words have all the right side to be written on (the user, 2026-10-09: "this whole space should be able to be used when writing"): a chat box there is
   // as wide as the side less its margins, in its middle, at the height it had (the slides keep their own narrower boxes).
   function spreadWords(slot, layers) {
     const box = slot.stage.getBoundingClientRect(), k = box.width / (slot.stage.offsetWidth || 1), panel = layers.find(l => /^panel$/i.test(l.name ?? '')), panelEl = panel && elementOf(slot.stage, panel.key);
-    if (!k || !panelEl) return;
+    if (!k || !panelEl) return false;
     const W = slot.stage.offsetWidth, left = (panelEl.getBoundingClientRect().left - box.left) / k;
-    if (left > W * 0.97 || left < W * 0.3) return; // (no words' side on this slide)
+    if (left > W * 0.97 || left < W * 0.3) return false; // (no words' side on this slide)
     let edge = left, margin = WORDS.margin; // (where the room for the words begins)
     if (slot.tablet) { // the tablet is over the edge of the plate: the words have what is left at the right of it (the user, 2026-10-13: "center it between the tablet and the right side": from where the tablet's frame is SEEN to end, the photo of it has an empty margin at its right)
       const dev = bigDevice(slot, layers), q = dev?.getBoundingClientRect();
@@ -1060,6 +2158,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       spread = true;
     }
     if (spread) drawShape(slot.stage, slot.drawEdit);
+    return spread;
   }
   // The art going into the words' side: filmed from further back (FIT). Measured on every layout, from the slide as it is (`slot.fit`, stage px): a style
   // that came in late (the demo's own stylesheet) is counted.
@@ -1069,7 +2168,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     if (panelAt >= 0 && layers.some((l, i) => i < panelAt && isArt(l))) return; // the panel is stacked OVER the art: what runs under it is hidden on purpose (a zoom: the screen pushed in, cut by the panel), not to be pulled back
     const box = slot.stage.getBoundingClientRect(), k = box.width / (slot.stage.offsetWidth || 1), panel = layers.find(l => /^panel$/i.test(l.name ?? '')), panelEl = panel && elementOf(slot.stage, panel.key);
     const edge = panelEl && (panelEl.getBoundingClientRect().left - box.left) / k, W = slot.stage.offsetWidth, H = slot.stage.offsetHeight;
-    if (!k || !edge || edge > W * 0.97) return; // (no words' side on this slide)
+    if (!k || !edge || edge > W * 0.97 || edge < W * 0.3) return; // (no words' side on this slide: the panel is parked, or covers it all, the words under the art)
     let all = null;
     for (const l of layers.filter(isArt)) for (const el of partsOf(slot.stage, l.key)) { const p = paintedBox(el); if (p) all = all ? {left: Math.min(all.left, p.left), top: Math.min(all.top, p.top), right: Math.max(all.right, p.right), bottom: Math.max(all.bottom, p.bottom)} : p; }
     if (!all) return;
@@ -1085,6 +2184,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       const role = roleOf(l);
       if (['plate', 'panel', 'words', 'title'].includes(role)) continue;
       for (const el of partsOf(slot.stage, l.key)) {
+        if (el.hasAttribute('data-sec-free')) continue; // (cards over the tablet, not on it: they stay where the slide before had them, `landCards`)
         if (role !== 'hand') { zoomLayer(el, fit.f, C, D); continue; }
         const tipAt = () => { const r = el.getBoundingClientRect(); return [r.left + r.width * TIP.x, r.top + r.height * TIP.y]; }; // (client px)
         const goal = (p => [D[0] + fit.f * (p[0] - C[0]), D[1] + fit.f * (p[1] - C[1])])(tipAt());
@@ -1168,7 +2268,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       }
     }
     el = el || hit || near;
-    if (el?.matches?.('button[aria-label="Add"]')) el = root.querySelector('button[aria-label="Menu"]') ?? el; // (the plus is never what the videos click: the burger menu is, whatever the slide's cursor is nearer to)
+    if (el?.matches?.('button[aria-label="Add"]') && !/data-iq-target="add"/.test(info.clickSel ?? '')) el = root.querySelector('button[aria-label="Menu"]') ?? el; // (the plus is never what the Improved Quality videos click: the burger menu is, whatever the slide's cursor is nearer to; but a section that says the plus is what is pressed (the On-Demand list) is obeyed)
     if (!el) return;
     if (!label) for (const e of info.emph ?? []) { const t = elementOf(slot.stage, e.key); if (t && el.contains(t)) label = t; }
     if (!label) { const texts = [...el.querySelectorAll('*')].filter(n => [...n.childNodes].some(c => c.nodeType === 3 && c.data.trim())); if (texts.length === 1) label = texts[0]; } // (one text in it: that is what is clicked)
@@ -1303,13 +2403,14 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     for (const key of Object.keys(slot.info?.anims ?? {})) {
       if (slot.pens.has(key)) continue;
       const bubble = elementOf(slot.stage, key);
-      slot.pens.set(key, bubble && isBubble(bubble) ? prepareWriting(slot.stage, bubble) : null); // (null: nothing to write; it is done)
+      slot.pens.set(key, bubble && isBubble(bubble) && slot.info.anims[key]?.type !== 'reveal' ? prepareWriting(slot.stage, bubble, PEN_K) : null); // (null: nothing to write; it is done) (a reveal has no pen: `revealWords`)
     }
   }
   // What fades in and out by the clock (the last click's cursor, the outlines that come late, a cursor that has gone or goes out, the opening, a title). Apart from the pens because a move is
   // got ready AHEAD (`prepare`, in the first pictures of the hold) from what the slide it goes from looks like, and that is what it looks like at the END of its hold, not at that moment: the
   // opening card (which comes in over the first fraction of a second) was read half faded, so the move began with it faint, a flash, and an outline that was not in yet was read as not there.
   function fadesAt(slot, local, item, mode) {
+    const onCurve = item?.influence ? u => easyEase(u, item.influence) : null; // (a slide on After Effects' curve: what comes in with it goes by that curve too)
     const endTm = slot.info?.endClick && item && !mode ? local - (item.hold - END_CLICK) : null; // (seconds into the last click of the part)
     if (slot.info?.endClick) { // the last click: the cursor presses, then fades
       const f = mode === 'before' || endTm === null ? 1 : 1 - clamp01((endTm - 0.45) / 0.45);
@@ -1317,8 +2418,8 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     }
     const late = slot.info?.late;
     if (late?.size) {
-      const f = mode === 'before' ? 0 : mode === 'done' || !item ? 1 : clamp01((local - (slot.info?.intro ? TITLE.in : item.move) - (slot.info?.tune?.lateLead ?? LATE.lead)) / (slot.info?.tune?.lateFade ?? LATE.fade));
-      for (const key of late) for (const el of partsOf(slot.stage, key)) setFade(el, f);
+      const p = mode === 'before' ? 0 : mode === 'done' || !item ? 1 : clamp01((local - (slot.info?.intro ? slot.info.titleIn ?? TITLE.in : item.move) - (slot.info?.tune?.lateLead ?? LATE.lead)) / (slot.info?.tune?.lateFade ?? LATE.fade)), f = onCurve ? onCurve(p) : p;
+      for (const key of late) for (const el of partsOf(slot.stage, key)) { if (slot.info?.point === key && el.dataset.sbFr) { setFade(el, f > 0 ? 1 : 0); revealMark(el, f); } else setFade(el, f); } // (an outline the hand points at comes out of its fingertip: whole, by a growing circle, not faint: a faint card shows the page twice)
     }
     if (slot.info?.handGone) for (const l of slot.layers) if (l.role === 'hand') for (const el of partsOf(slot.stage, l.key)) setFade(el, mode === 'before' ? 1 : 0); // (it pressed and faded out in the move)
     if (slot.info?.handOut) { // (the last click is made and the video plays: the cursor fades out)
@@ -1326,13 +2427,32 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       for (const l of slot.layers) if (l.role === 'hand') for (const el of partsOf(slot.stage, l.key)) setFade(el, f);
     }
     if (slot.info?.intro) { // (the video opens on the software: it comes in, a little small and faint, and settles)
-      const p = mode === 'done' || !item ? 1 : clamp01(local / (slot.info.introIn ?? TITLE.in)), f = ease(p), size = 0.94 + 0.06 * f;
+      const p = mode === 'done' || !item ? 1 : clamp01(local / (slot.info.introIn ?? TITLE.in)), f = (onCurve ?? ease)(p), size = 0.94 + 0.06 * f;
       for (const l of slot.layers) if (l.art) for (const el of partsOf(slot.stage, l.key)) { setFade(el, f); setSize(el, size); }
+      for (const l of slot.layers) if (l.pointer) for (const el of partsOf(slot.stage, l.key)) setFade(el, f); // (the cursor that points comes in with the software, not before it)
     }
-    if (slot.info?.title) { // (a title: small and faint, it grows and comes in; the conclusion stays: it does not fade out at the end)
-      const inP = mode === 'before' ? 0 : mode === 'done' || !item ? 1 : clamp01((local - (item?.move ?? 0)) / TITLE.in);
-      const f = ease(inP), size = TITLE.from + (1 - TITLE.from) * ease(inP);
+    const titleLook = src.script?.profile?.focus?.title;
+    if (slot.info?.title && titleLook) { // (Focus: the title's words rise one after the other, and it pushes in, slowly, while it holds: "better titles", the user, 2026-11-04)
+      const since = mode === 'before' ? -1 : mode === 'done' || !item ? Infinity : local - (item?.move ?? 0), hold = item ? Math.max(0.5, item.hold - (item.move ?? 0)) : 1;
+      for (const key of slot.info.titleKeys) for (const el of partsOf(slot.stage, key)) {
+        if (el.matches('svg')) continue;
+        setFade(el, since < 0 ? 0 : 1);
+        for (const [i, w] of wordSpans(el).entries()) { const g = since === Infinity ? 1 : easyEase(clamp01((since - i * titleLook.each) / titleLook.fade), 0.7); w.style.opacity = g >= 1 ? '' : String(g); w.style.translate = g >= 1 ? '' : `0 ${((1 - g) * titleLook.rise).toFixed(3)}em`; }
+        setSize(el, 1 + titleLook.push * easyEase(clamp01(since / hold), 0.5));
+      }
+    } else if (slot.info?.title) { // (a title: small and faint, it grows and comes in; the conclusion stays: it does not fade out at the end)
+      const inP = mode === 'before' ? 0 : mode === 'done' || !item ? 1 : clamp01((local - (item?.move ?? 0)) / (slot.info.titleIn ?? TITLE.in));
+      const f = (onCurve ?? ease)(inP), size = TITLE.from + (1 - TITLE.from) * f;
       for (const key of slot.info.titleKeys) for (const el of partsOf(slot.stage, key)) { setFade(el, f); setSize(el, size); }
+    }
+    if (slot.info?.pops) { // (what a run of slides adds, one after the other: each comes in fast and settles at its size. Here, with what the clock fades: the move into the next slide has to go from all of them in)
+      const {groups, tally, lead, each, fade} = slot.info.pops, t = mode === 'before' ? -1 : mode === 'done' || !item ? Infinity : local - lead;
+      for (const {selector, count, across = 1} of groups) [...slot.stage.querySelectorAll(selector)].slice(0, count * across).forEach((el, i) => { const g = clamp01((t - (i % count) * each) / fade); setFade(el, clamp01(g * 2.5)); setSize(el, 0.4 + 0.6 * SPRING(g)); });
+      if (tally) for (const el of slot.stage.querySelectorAll(tally.selector)) if (el.firstChild) el.firstChild.textContent = `${tally.words}${t < 0 ? 0 : Math.min(groups.at(-1).count, Math.floor(t / each) + 1)}`;
+    }
+    if (slot.info?.pulse) { // (one pop, the colors a time each while it is out, then it settles. Here too: the move into the next slide has to go from the last color. A color changes at once)
+      const {selector, colors, each, up, down, grow, influence} = slot.info.pulse, t = mode === 'before' ? 0 : mode === 'done' || !item ? Infinity : local, k = Math.max(0, Math.min(colors.length - 1, Math.floor((t - up) / each))), out = easyEase(clamp01(t / up), influence) - easyEase(clamp01((t - up - colors.length * each) / down), influence);
+      for (const el of slot.stage.querySelectorAll(selector)) { el.style.background = colors[k]; el.style.scale = String(1 + grow * out); }
     }
     // The peers' ratings (the user, 2026-10-13: "the green guy review goes down for a split second if I play the video, but if I drag the timeline I don't see this glitch"): the connector is drawn out of
     // the mission, the cards pop as it gets to them, the faces on the mission pop when their Submit is pressed; all by the clock, so scrubbing shows it right. It is here, with the other things the
@@ -1354,6 +2474,30 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
   }
   // What the frame does by its clock: the pens write (before: not there yet; done: written), what comes in after the art fades in once the
   // move is over, the first title fades in.
+  // The pen of a frame that is still moving in (the user, 2026-10-13/14: "show the first word right away"): it touches as soon as the old words are gone, which is part way through the move, so it
+  // writes DURING the move; one that waited for the move to end came in with a chunk of its letters already written (a long move, the rating's drag, brought a whole caption in at once).
+  function writeDuringMove(slot, local, item) {
+    for (const [key, anim] of Object.entries(slot.info?.anims ?? {})) {
+      const bubble = elementOf(slot.stage, key), words = bubble?.querySelector('p');
+      if (!bubble || !words || !isBubble(bubble)) continue;
+      const progress = writeProgress(item, animSeconds(anim, words.textContent), local);
+      if (anim.type === 'reveal') { revealWords(words, progress, animSeconds(anim, words.textContent)); continue; }
+      if (progress > 0 && progress < 1) {
+        if (!slot.pens.has(key) || (slot.pens.get(key) && !slot.pens.get(key).alive())) { words.style.visibility = ''; slot.pens.set(key, prepareWriting(slot.stage, bubble, PEN_K)); }
+        const pen = slot.pens.get(key);
+        if (pen) pen.progress(progress); else words.style.visibility = '';
+      } else { slot.pens.get(key)?.hide(); words.style.visibility = progress <= 0 ? 'hidden' : ''; }
+    }
+  }
+  // Words that come in word by word (a `reveal`, the Focus variation): each word fades in and rises a little over `fade` seconds, one after the other, the last one in when the pen would have been done (`seconds`).
+  // progress <= 0: none; >= 1: all, as they are.
+  function revealWords(p, progress, seconds) {
+    const look = src.script?.profile?.focus ?? {}, spans = wordSpans(p);
+    p.style.visibility = progress <= 0 ? 'hidden' : '';
+    if (progress <= 0 || progress >= 1) { for (const s of spans) { s.style.opacity = ''; s.style.translate = ''; } return; }
+    const n = spans.length, fade = Math.min(look.fade ?? 0.42, seconds * 0.6), t = progress * seconds, gap = n > 1 ? (seconds - fade) / (n - 1) : 0;
+    spans.forEach((s, i) => { const g = easyEase(clamp01((t - i * gap) / fade), 0.6); s.style.opacity = String(g); s.style.translate = `0 ${((1 - g) * (look.rise ?? 0.35)).toFixed(3)}em`; });
+  }
   function pensAt(slot, local, item, mode) {
     const endTm = slot.info?.endClick && item && !mode ? local - (item.hold - END_CLICK) : null; // (seconds into the last click of the part)
     fadesAt(slot, local, item, mode);
@@ -1361,8 +2505,9 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       const bubble = elementOf(slot.stage, key), words = bubble?.querySelector('p');
       if (!bubble || !words || !isBubble(bubble)) continue;
       const progress = mode === 'before' ? -1 : mode === 'done' ? 2 : writeProgress(item, animSeconds(anim, words.textContent), local);
+      if (anim.type === 'reveal') { revealWords(words, progress, animSeconds(anim, words.textContent)); continue; }
       if (progress > 0 && progress < 1) {
-        if (!slot.pens.has(key) || (slot.pens.get(key) && !slot.pens.get(key).alive())) { words.style.visibility = ''; slot.pens.set(key, prepareWriting(slot.stage, bubble)); }
+        if (!slot.pens.has(key) || (slot.pens.get(key) && !slot.pens.get(key).alive())) { words.style.visibility = ''; slot.pens.set(key, prepareWriting(slot.stage, bubble, PEN_K)); }
         const pen = slot.pens.get(key);
         if (pen) pen.progress(progress); else words.style.visibility = '';
       } else {
@@ -1434,12 +2579,23 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     B.hoverFrom0 = false;
     const live = shown?.mode === 'static' && shown.index === a && !!timeline.items[a]; // (the slide it goes from is on show, held: it is by the clock)
     fadesAt(A, 0, null, 'done'); // (the move goes from the slide as it is when its hold is over)
+    facesOwn(A); facesOwn(B); middleOwn(A); middleOwn(B);
     // A list that is scrolled by the time is where it is WHEN THE MOVE STARTS in both slides, not where it is as the move is got ready: it is got ready ahead, during the hold, while the list is
     // still scrolling, and the move took that place as the one it goes from, so the report jumped back up as the move to the next scene began and scrolled down again (the user, 2026-10-13:
     // "between touring the report and who performed the scrolling goes up and down when playing, not when I drag the timeline").
     const startsAt = timeline.items[b]?.start;
     if (startsAt != null) { driveScroll(A, startsAt); driveScroll(B, startsAt); }
-    const specs = [], play = (el, keyframes) => { specs.push([el, keyframes]); };
+    const specs = [], byClock = src.script?.faces?.frames.has(B.frame.id), play = (el, keyframes) => { const own = byClock && el.matches(FACE) ? notPlaced(keyframes) : keyframes; if (own) specs.push([el, own]); }; // (`byClock`: where an avatar of a queue is is drawn by `facesAt`: an animation would be over what it draws; it still fades by the slide, under a code panel)
+    // A card of the video "cursor and pop-up" that goes (its outline is not in the next slide, or is another one): the old slide is UNDER the new one, so it would go behind the new software
+    // at once; a copy of it fades out over the new slide instead, quickly, as the screen starts to move, and the shade with it (`spotsAt` reads the copy's opacity). Removed with the move.
+    const ghosts = [], ghostOf = el => {
+      if (!el.querySelector(':scope > .sb-pop')) return;
+      const o = opacityOf(el), g = unnamed(el.cloneNode(true));
+      g.style.opacity = String(o);
+      delete g.dataset.sbReveal; // (the copy is as far in as it is seen, its opacity: with the old card's "all in" the shade stayed dark the whole move, then snapped off: `spotsAt`)
+      B.stage.append(g); if (popping()) shadeOf(B); ghosts.push(g);
+      play(g, fadeFrames('swap-out', o)); // (over the first half of the move, and the shade with it: in a quarter it went in a picture or two, a snap: the builders' QA, 2026-10-21)
+    };
     const slide = (el, by, fromBy, toBy, wait = 0) => { // glide: the pointer's px, in the element's own space (`wait`: it stays put for that share of the move first)
       const k = parentScale(el) || 1, [bx, by0] = translateOf(el), at = f => `${bx + by[0] * f / k}px ${by0 + by[1] * f / k}px`;
       play(el, wait ? windowKeys({translate: at(fromBy)}, {translate: at(toBy)}, wait, 1) : [{translate: at(fromBy)}, {translate: at(toBy)}]);
@@ -1458,19 +2614,47 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       const artLeaves = !scene && gone.some(k => A.layers.find(l => l.key === k)?.art) && B.layers.some(l => l.art); // (a piece of the software leaves while another stays and changes: it goes first)
       const unlike = ({key, from}) => { const l = B.layers.find(x => x.key === key), as = partsOf(A.stage, from), bs = partsOf(B.stage, key); return !!l?.art && !!as[0] && !!bs[0] && !morphable(as[0], bs[0]) && differentArt(as[0], bs[0]); };
       const swapped = matched.some(m => m.same !== true && unlike(m)); // (a pair of art that has nothing in common: one goes, the other comes)
+      const landed = landCards(A, B, gone, play, ghosts); // (cards that go onto the board of this slide: they are not faded)
+      const overPanel = el => { const g = unnamed(el.cloneNode(true)); g.querySelector('p')?.style.removeProperty('visibility'); B.stage.append(g); ghosts.push(g); play(el, fadeFrames('hide', 0)); return g; }; // (the old slide is under the new one, so under a panel stacked over the software: its words go on in a copy over that panel, as they are once the pen has written them)
       for (const {key, from, same: looksSame} of matched) {
-        const as = partsOf(A.stage, from), bs = partsOf(B.stage, key), ca = as[0] && centerOf(as[0]), cb = bs[0] && centerOf(bs[0]);
-        const role = B.layers.find(l => l.key === key)?.role, same = (looksSame && ((as[0]?.style.scale ?? '') === (bs[0]?.style.scale ?? '') || (!!as[0] && !!bs[0] && !glideSpan(bs[0], as[0])))) || role === 'hand'; // (the same look in the same place and size on the screen is the same thing, whatever the styles that put it there say: two copies crossed would dip, the picture seen through itself: the flicker when the cursor comes in) // (the cursor is one thing: it glides, it is never crossed with another; one filmed from further back in the next is not the same)
+        const role = B.layers.find(l => l.key === key)?.role;
+        const as = role === 'words' && (panelOver(A) || panelOver(B)) ? partsOf(A.stage, from).map(overPanel) : partsOf(A.stage, from), bs = partsOf(B.stage, key), ca = as[0] && centerOf(as[0]), cb = bs[0] && centerOf(bs[0]);
+        if (role === 'words' && (B.info?.middle || A.info?.middle?.card)) { // (the words in the middle first: the words before fade where they are while the new ones are written in the middle or on a card; from a card they fade, and come in at their place: no glide)
+          swapping = true;
+          if (B.info?.middle?.card && as[0]) { keepBefore(B, as[0]); for (const el of as) play(el, fadeFrames('hide', 0)); } // (into a card: the words before stay at their place, a copy of them over the card's slide, while the new ones are written on the card; the user, 2026-11-04: "it shouldn't remove the right side")
+          else for (const el of as) play(el, fadeFrames('swap-out', opacityOf(el)));
+          for (const el of bs) play(el, fadeFrames(B.info?.held ? 'there' : penned(key) && !B.info?.penAfter ? 'pen-in' : 'swap-in', opacityOf(el))); // (`held`: the first words, which the card's slide kept at this very place: they are just there)
+          const kept = A.info?.middle?.card ? midBefore.get(A) : null; // (from a card: the words before go as the card goes, and the new ones come in at their place, "when it fades out from center then fade in on the right")
+          if (kept?.isConnected && B.info?.held) play(kept, fadeFrames('hide', 0)); // (the second words over the art, `aside`: the gray side keeps the first ones, the slide's own are those, already in place)
+          else if (kept?.isConnected) { const g = unnamed(kept.cloneNode(true)); B.stage.append(g); ghosts.push(g); play(kept, fadeFrames('hide', 0)); play(g, fadeFrames('swap-out', 1)); }
+          continue;
+        }
+        if (role === 'plate' && looksSame && as[0] && bs[0] && getComputedStyle(as[0]).background !== getComputedStyle(bs[0]).background) { // (the plate that goes black with no tablet on it and gray with one: a copy of the new one fades in over the old, under its words' side, so it does not snap at the end of the move; unseen until the move: this is made ready while the old slide is on)
+          const g = unnamed(bs[0].cloneNode(true));
+          g.style.opacity = '0';
+          as[0].after(g); ghosts.push(g);
+          play(g, fadeFrames('fade-in', 1));
+        }
+        const same = (looksSame && ((as[0]?.style.scale ?? '') === (bs[0]?.style.scale ?? '') || (!!as[0] && !!bs[0] && !glideSpan(bs[0], as[0])))) || role === 'hand'; // (the same look in the same place and size on the screen is the same thing, whatever the styles that put it there say: two copies crossed would dip, the picture seen through itself: the flicker when the cursor comes in) // (the cursor is one thing: it glides, it is never crossed with another; one filmed from further back in the next is not the same)
+        if (B.info?.over && B.layers.find(l => l.key === key)?.art) { landOn(as[0], bs[0], play, B.info.tune?.influence ? u => easyEase(u, B.info.tune.influence) : ease); continue; }
         const by = ca && cb ? [cb.x - ca.x, cb.y - ca.y] : [0, 0], moves = Math.abs(by[0]) > 0.01 || Math.abs(by[1]) > 0.01;
         const click = !!B.info?.click && !!B.layers.find(l => l.key === key)?.art; // (a click: the screen changes after the cursor has pressed)
         if (role === 'hand') B.hoverFrom0 = !A.info?.handGone && Math.hypot(by[0], by[1]) < 30; // (the cursor stays: what it rests on is bold already)
         if (role === 'panel' && (panelOver(A) || panelOver(B))) { // the panel is stacked over the art in one of the two (a zoom: the screen pushed in, cut by the panel): B's is the one on show, over B's art all through the move, so what runs under it is cut all the way
-          for (const el of as) play(el, fadeFrames('hide', 0));
           const top = Math.max(0, ...B.layers.filter(l => l.art).flatMap(l => partsOf(B.stage, l.key)).map(e => Number(getComputedStyle(e).zIndex) || 0));
+          // The tablet the video has fitted, zoomed into or out of (the user, 2026-11-02: "just zoom in to tablet and cut right side"): the fitted one is over the gray side and is seen to end where the gray side of the zoom starts (PANEL_EDGE), so the
+          // panel that is over the software stands still there all through the move and cuts it from the first moment to the last, nothing jumps; the one under the software goes to its own place, for what is seen over and under the tablet.
+          if (A.tablet && panelOver(B)) { if (moves) for (const el of as) slide(el, by, 0, 1); continue; }
+          if (panelOver(A) && B.tablet) { // (the old slide is under the new one: a copy of its panel over the new tablet, under the new words)
+            for (const el of as) { const g = unnamed(el.cloneNode(true)); g.style.zIndex = String(top + 1); B.stage.append(g); ghosts.push(g); play(el, fadeFrames('hide', 0)); }
+            if (moves) for (const el of bs) slide(el, by, -1, 0);
+            continue;
+          }
+          for (const el of as) play(el, fadeFrames('hide', 0));
           for (const el of bs) { if (moves) slide(el, by, -1, 0); if ((Number(getComputedStyle(el).zIndex) || 0) <= top) play(el, [{zIndex: top + 1, offset: 0}, {zIndex: top + 1, offset: 1}]); }
           continue;
         }
-        if (B.info?.late?.has(key) && overlay(B, key)) { for (const el of as) play(el, fadeFrames('quick-out', opacityOf(el))); for (const el of bs) play(el, fadeFrames('hide', 0)); continue; } // (an outline that changes: it goes, the new one comes after: pensAt)
+        if (B.info?.late?.has(key) && overlay(B, key)) { for (const el of as) { ghostOf(el); play(el, fadeFrames('quick-out', opacityOf(el))); } for (const el of bs) play(el, fadeFrames('hide', 0)); continue; } // (an outline that changes: it goes, the new one comes after: pensAt)
         if (same && role !== 'hand' && overlay(B, key)) { // an outline that is the same one a little further on: the NEW frame's glides from where the old one is (the old one waits out of sight), so it is over the new art all the way and never goes behind it (the user, 2026-10-12: no highlight behind the UI)
           for (const el of as) play(el, fadeFrames('hide', 0));
           if (moves) for (const el of bs) slide(el, by, -1, 0);
@@ -1498,12 +2682,12 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
                 return {translate: at(where), opacity: B.info?.handGone ? o * (1 - away) : o, offset: i / N};
               }));
             }
-          } else if (A.info?.handGone) for (const el of bs) enter(el, B, play, false); // (the one before has gone: this one comes in, from the words)
+          } else if (A.info?.handGone) for (const el of bs) { if (popping() || B.bottom) play(el, fadeFrames('swap-in', opacityOf(el))); else enter(el, B, play, false); } // (the one before has gone: this one comes in, from the words; the pop-up video: it fades in where it is)
           else if (B.info?.rest) { // it waits where it clicked (put exactly where the one before is) while the screen goes on
             for (const el of bs) { const k = parentScale(el) || 1, [x, y] = translateOf(el); moveTo(el, [x - by[0] / k, y - by[1] / k]); }
           } else if (B.info?.handGone) { // the click that ends its work: it stays where it pressed (going along with the tablet) and fades out once the screen has changed
-            const k0 = tabletBy;
-            for (const el of bs) { const k = parentScale(el) || 1, [bx, by0] = translateOf(el), o = opacityOf(el), at = f => `${bx + (-by[0] + k0[0] * f) / k}px ${by0 + (-by[1] + k0[1] * f) / k}px`; play(el, [{translate: at(0), opacity: o, offset: 0}, {translate: at(0.3), opacity: o, offset: 0.3}, {translate: at(0.6), opacity: 0, offset: 0.6}, {translate: at(1), opacity: 0, offset: 1}]); }
+            const k0 = tabletBy, swapsArt = gone.some(g => A.layers.find(l => l.key === g)?.art) && added.some(g => B.layers.find(l => l.key === g)?.art), [h, z] = swapsArt ? [0.15, 0.45] : [0.3, 0.6]; // (a screen swapped for another goes over the first half of the move: the cursor goes with it, it is never left alone on an empty picture: the user, 2026-10-21)
+            for (const el of bs) { const k = parentScale(el) || 1, [bx, by0] = translateOf(el), o = opacityOf(el), at = f => `${bx + (-by[0] + k0[0] * f) / k}px ${by0 + (-by[1] + k0[1] * f) / k}px`; play(el, [{translate: at(0), opacity: o, offset: 0}, {translate: at(h), opacity: o, offset: h}, {translate: at(z), opacity: 0, offset: z}, {translate: at(1), opacity: 0, offset: 1}]); }
           } else if (moves && B.info?.click) { // a click: the cursor stays on what it clicks (it goes along with the tablet, which glides to its new place), presses, the screen changes, THEN it goes on to the next
             const wait = 0.66, k0 = tabletBy;
             for (const el of bs) { const k = parentScale(el) || 1, [bx, by0] = translateOf(el), at = (dx, dy) => `${bx + dx / k}px ${by0 + dy / k}px`; play(el, [{translate: at(-by[0], -by[1]), offset: 0}, {translate: at(-by[0] + k0[0] * wait, -by[1] + k0[1] * wait), offset: wait}, {translate: at(0, 0), offset: 1}]); }
@@ -1514,7 +2698,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
           const start = B.info?.click ? (B.info?.slowDrag ? 0.12 : 0.3) : artLeaves && !isLifted(B.layers.find(l => l.key === key)) ? 0.45 : 0, end = B.info?.click && A.info?.drag ? DRAG.end : 1; // (a click: the old screen until the cursor has pressed, then the new one, moving; a drag: as the cursor goes; another piece leaving: once it has gone, unless it is a lifted card, which goes along with the board leaving)
           const wait = start ? 0 : B.info?.still ?? 0, lead = start || wait; // (`wait`: a scene that asks for the screen to stand still a moment before it moves, the user, 2026-10-13: the new screen is there from the first moment, at the place of the old one, and goes after `wait` of the move: no dissolve, which showed two screens at once)
           if (moves) for (const el of bs.slice(1)) slide(el, by, -1, 0, lead); // (the screen itself goes to its place in the morph)
-          const found = morph(as[0], bs[0], lead, play, end), till = Math.min(end, lead + TAKE_OVER); // (found.gone: what is only in the old screen; it fades out over the first part of the move, like the dissolve)
+          const found = morph(as[0], bs[0], lead, play, end, B.info?.pull ? {by: B.info.pull, clock: B.info.tune?.influence ? u => easyEase(u, B.info.tune.influence) : ease} : null, B.info?.post ? {...B.info.post, seconds: B.info.tune.move} : null), till = Math.min(end, lead + TAKE_OVER); // (found.gone: what is only in the old screen; it fades out over the first part of the move, like the dissolve)
           const lonely = !start && showGone(as[0], found.gone, play, till); // (no click: the old screen is not shown but for that)
           for (const el of as) { if (lonely && el === as[0]) continue; const o = opacityOf(el); play(el, start ? takeOver(o, start, TAKE_OVER).old : fadeFrames('hide', 0)); } // (a click: the old screen stays under the new one while it comes in, then goes: what is the same does not change, what is different is crossed, never cut)
           if (start) for (const el of bs) { const o = opacityOf(el); play(el, takeOver(o, start, TAKE_OVER).next); } // (the root's own opacity is not morphed then)
@@ -1529,7 +2713,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
           if (gliding && el === as[0]) { if (toNew) play(el, [{...toNew.to, offset: 0}, {...toNew.from, offset: 1}]); }
           else if (moves && !other) slide(el, by, 0, 1, role === 'hand' && B.info?.click ? 0.45 : 0); // (a click: the cursor presses first, then goes on to the next)
           if (!same) play(el, fadeFrames(swap ? 'swap-out' : click ? 'click-out' : 'out', opacityOf(el)));
-          if (!same && role === 'title') play(el, [{scale: '1'}, {scale: String(1 + TITLE.grow)}]); // (a title that goes grows a little, whatever takes its place)
+          if (!same && role === 'title') play(el, [{scale: String(scaleNow(el))}, {scale: String(scaleNow(el) * (1 + TITLE.grow))}]); // (a title that goes grows a little, whatever takes its place, from the size it is: Focus pushes it in)
         }
         for (const el of bs) {
           if (same) { play(el, fadeFrames('hide', 0)); continue; } // it is there already (the first glided to it): its copy waits
@@ -1539,25 +2723,34 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
         }
       }
       // what is only in one of the two: a picture is crossed (the new over the old, which leaves after it: no dip to the background), words are swapped
-      for (const key of gone) for (const el of partsOf(A.stage, key)) { if (A.layers.find(l => l.key === key)?.role === 'title') play(el, [{scale: '1'}, {scale: String(1 + TITLE.grow)}]); } // (a title that goes grows a little)
+      for (const key of gone) for (const el of partsOf(A.stage, key)) { if (A.layers.find(l => l.key === key)?.role === 'title') play(el, [{scale: String(scaleNow(el))}, {scale: String(scaleNow(el) * (1 + TITLE.grow))}]); } // (a title that goes grows a little, from the size it is)
       const artSwap = (gone.some(k => A.layers.find(l => l.key === k)?.art) || swapped) && added.some(k => B.layers.find(l => l.key === k)?.art); // (the software shown by another piece: the phones, then the tablet: one goes, then the other comes)
-      for (const key of gone) for (const el of partsOf(A.stage, key)) play(el, fadeFrames((artSwap || artLeaves) && A.layers.find(l => l.key === key)?.art ? 'swap-out' : A.layers.find(l => l.key === key)?.role === 'hand' ? (A.info?.handOut || A.info?.endClick || A.info?.handGone ? 'hide' : A.info?.clickOut && B.info?.click ? 'click-out' : scene ? 'swap-out' : 'fade-out') : overlay(A, key) ? 'quick-out' : words(A.stage, key) || scene ? 'swap-out' : 'out', opacityOf(el))); // (a highlight goes first)
+      for (const key of gone) for (const el of partsOf(A.stage, key)) ghostOf(el); // (a card of the pop-up video that goes: over the new slide)
+      for (const key of gone) for (const el of partsOf(A.stage, key)) {
+        if (landed.has(key)) { play(el, fadeFrames('hide', 0)); continue; } // (its copy is on the way, over the new slide)
+        const hand = A.layers.find(l => l.key === key)?.role === 'hand', kind = (artSwap || artLeaves) && A.layers.find(l => l.key === key)?.art ? 'swap-out' : hand ? (A.info?.handOut || A.info?.endClick || A.info?.handGone ? 'hide' : artSwap || artLeaves || scene ? 'swap-out' : A.info?.clickOut && B.info?.click ? 'click-out' : 'fade-out') : B.info?.clear ? 'fade-out' : overlay(A, key) ? 'quick-out' : words(A.stage, key) || scene ? 'swap-out' : 'out'; // (a highlight goes first) (`clear`: the words, and the outlines with them, fade over the whole move, the software staying: `clearFirst`)
+        if (hand && kind !== 'hide' && opacityOf(el) > 0) { // a cursor that fades out as the screen moves: over the new slide, not under it (the user, 2026-10-20: "pop shouldn't be on top of cursor": the old slide is under the new one, its cards and pops)
+          const g = unnamed(el.cloneNode(true)); g.style.opacity = String(opacityOf(el)); B.stage.append(g); ghosts.push(g);
+          play(g, fadeFrames(kind, opacityOf(el))); play(el, fadeFrames('hide', 0)); continue;
+        }
+        play(el, fadeFrames(kind, opacityOf(el)));
+      }
       for (const key of added) for (const el of partsOf(B.stage, key)) {
-        if (B.layers.find(l => l.key === key)?.role === 'hand') { enter(el, B, play, false); continue; } // (the cursor comes in from the top left of the words)
+        if (B.layers.find(l => l.key === key)?.role === 'hand') { if (popping() || B.bottom) play(el, fadeFrames('swap-in', opacityOf(el))); else enter(el, B, play, false); continue; } // (the cursor comes in from the top left of the words; the pop-up video: it fades in where it is)
         if (!scene && isLifted(B.layers.find(l => l.key === key)) && A.layers.some(l => l.art)) { // a card lifted out of the board: it rises from where the board has the card
           const zoom = !!B.info?.fadeThenZoom, o = opacityOf(el), span = zoom || sceneOf(A.frame) === sceneOf(B.frame) ? liftSpan(el, A.stage) : null; // (a card of the same name on the board of ANOTHER scene — covered by what is on it, a list on a page — is not the one this rises from: it comes in by itself; except the closed mission, which goes from its place on the board to the rating)
           if (span && zoom) { play(el, Object.assign(liftKeys(span, o, 12, false), {easing: windowEasing(TABLET_FADE.share, 1)})); continue; } // (the closed mission, the user, 2026-10-13: it stays exactly on its place on the board, drawn over its own card, while the tablet fades out (the first half of the move); then it zooms to the rating, easing in and out, with no lift and no overshoot)
-          if (span) { play(el, liftKeys(span, o)); continue; }
+          if (span) { play(el, liftKeys(span, o, 10, !B.info?.tune?.influence)); continue; } // (a move on After Effects' curve, `influence`: the curve is all it has, no overshoot: Increased Efficiency's two missions, `Pair`)
           const [sx, sy] = scaleOf(el), [tx, ty] = translateOf(el), k = parentScale(el) || 1, card = el.querySelector('.chip') ?? el, rc = centerOf(el), cc = centerOf(card); // (no such card on the board: it grows where it is, from 85%, around its card)
           const d = rc && cc ? [(cc.x - rc.x) / k, (cc.y - rc.y) / k] : [0, 0], at = g => `${tx + d[0] * (1 - g)}px ${ty + d[1] * (1 - g)}px`, size = g => `${sx * g} ${sy * g}`;
           play(el, Array.from({length: 11}, (_, i) => { const g = i / 10, h = 0.85 + 0.15 * SPRING(g); return {opacity: o * Math.min(1, g * 2.5), scale: size(h), translate: at(h), offset: g}; }));
           continue;
         }
         if (B.info?.keep?.has(key)) continue; // (the same outline as before, by another name: it is there)
-        play(el, fadeFrames(B.info?.late.has(key) || B.layers.find(l => l.key === key)?.role === 'title' ? 'hide' : artSwap && B.layers.find(l => l.key === key)?.art ? 'swap-in' : penned(key) && !B.info?.penAfter ? 'pen-in' : words(B.stage, key) ? (swapping || scene ? 'swap-in' : 'fade-in') : scene ? 'swap-in' : 'in', opacityOf(el))); // (a highlight waits until the art is in: pensAt)
+        play(el, fadeFrames(B.info?.late.has(key) || B.layers.find(l => l.key === key)?.role === 'title' ? 'hide' : artSwap && B.layers.find(l => l.key === key)?.art ? 'swap-in' : penned(key) && !B.info?.penAfter ? (B.info?.tune?.penAt < 0 ? 'there' : 'pen-in') : words(B.stage, key) ? (swapping || scene ? 'swap-in' : 'fade-in') : scene ? 'swap-in' : 'in', opacityOf(el))); // (a highlight waits until the art is in: pensAt) (`there`: a pen that writes from the start of the move has no old words to wait for: `slides`, `pen`)
       }
     }
-    prep = {a, b, sa, sb, stampA: A.stamp, stampB: B.stamp, specs, anims: [], live: false, glide};
+    prep = {a, b, sa, sb, stampA: A.stamp, stampB: B.stamp, specs, anims: [], live: false, glide, ghosts};
     if (live) fadesAt(A, nowT - timeline.items[a].start, timeline.items[a]); // (and back to where the clock has it: the picture shown next is not the end of the hold)
     if (startsAt != null) { driveScroll(A, nowT); driveScroll(B, nowT); } // (the lists go back to where they are NOW: a picture shown with them at the move's start would flash the end of the scroll)
     return prep;
@@ -1572,7 +2765,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     const slot = slots[next];
     if (slot.layoutKey !== layoutKeyOf()) { ensureLayout(slot); return; }                                                     // 2. laid out: measured, everything placed
     if (Object.keys(slot.info?.anims ?? {}).some(key => !slot.pens.has(key))) { warmPens(slot); return; }                     // 3. the pen made ready (the costly part: thinning the letters)
-    prepare(a, b);                                                                                                            // 4. the animations of the move (made once, then kept)
+    if (timeline.items[b]?.move) prepare(a, b);                                                                               // 4. the animations of the move (made once, then kept; a slide with no move just comes on)
   }
 
   // The word of a rating (Poor, Fair, Good, Great, Excellent) is the one the knob is at, all the way: the knob is moved over a move, the word is the slide's own at its two ends.
@@ -1615,6 +2808,7 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     for (const anim of p.anims) anim.currentTime = u * D;
     followRate(B); // (the word of a rating goes with its knob)
     pensAt(A, 0, null, 'done'); pensAt(B, 0, null, 'before'); // (what was written stays; what is to be written is not there yet)
+    if (timeline.items[b]) writeDuringMove(B, tm, timeline.items[b]); // (...until the pen touches: that is part way through the move)
     clickAt(B, B.info?.click ? tm : -1, A);
     shown = {mode: 'move', a, b};
   }
@@ -1628,6 +2822,9 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       return timeline;
     },
     get timeline() { return timeline; },
+    // The All videos page plays a section's parts as one video: where a part's timers end, and the part after it goes on from there if it `joins` it (a mission's timer does not jump between two parts). `script`: the part's own.
+    timersEnd(script) { const plan = script?.timers, end = script?.timeline?.total; return plan ? Object.fromEntries(Object.entries(plan).map(([key, p]) => [key, timerAt(p, carried?.[key] ?? p.base, p.stop ?? end)])) : null; },
+    carryTimers(values, script) { carried = script?.profile?.joins ? values : null; },
     // Show the video at second `t`. `ahead`: while playing, the next frame is got ready during the hold.
     show(t, ahead = false) {
       if (!src.frames.length || !src.edits || !src.video) return null;
@@ -1636,13 +2833,41 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
       if (frozen) return at;
       nowT = t;
       for (const slot of slots) driveScroll(slot, t);
-      if (at.moving) showMove(at.index - 1, at.index, ease(at.progress), at.progress * timeline.items[at.index].move);
-      else {
+      if (at.moving) {
+        const influence = timeline.items[at.index].influence; // (a slide that moves in by After Effects' curve; else the usual one)
+        showMove(at.index - 1, at.index, influence ? easyEase(at.progress, influence, timeline.items[at.index].out) : ease(at.progress), at.progress * timeline.items[at.index].move);
+        if ((popping() || ceoMode()) && prep) { spotsAt(slots[prep.sa], !prep.glide); spotsAt(slots[prep.sb]); } // (the cards, and the pop-up video's shade, as far in as their outlines are)
+        if (prep) { tickTimers(slots[prep.sa], t); tickTimers(slots[prep.sb], t); facesAt(slots[prep.sb], t); middleAt(slots[prep.sa], t); middleAt(slots[prep.sb], t); staggerAt(slots[prep.sb], at.progress * timeline.items[at.index].move, timeline.items[at.index]); dotsAt(slots[prep.sb], at.progress * timeline.items[at.index].move, timeline.items[at.index]); namesAt(slots[prep.sb], at.progress * timeline.items[at.index].move); } // (the heartbeat; the cards of a panel wait until the move is over)
+      } else {
         showStatic(at.index);
         pensAt(slots[shown.slot], at.local, timeline.items[at.index]);
+        staggerAt(slots[shown.slot], at.local, timeline.items[at.index]);
+        dotsAt(slots[shown.slot], at.local, timeline.items[at.index]);
+        namesAt(slots[shown.slot], at.local);
         if (ahead && at.index + 1 < src.frames.length) prepareAhead(at.index);
+        if (popping() || ceoMode()) spotsAt(slots[shown.slot]);
+        tickTimers(slots[shown.slot], t);
+        facesAt(slots[shown.slot], t);
+        middleAt(slots[shown.slot], t);
       }
       return at;
+    },
+    // Where the element `key` is on the played slide `index` once it is all there: its middle and size, stage px, and what the video gives it (`vmove`), measured on a slot of its own that is
+    // never shown (the video editor's motion path, the user, 2026-10-22: "make the keyframes actually show the selected layer position line, and I should able to change it"). Kept until
+    // the slide or its edits change. -> {x, y, w, h, vmove} | null
+    measure(index, key) {
+      const frame = src.frames[index];
+      if (!frame || !src.edits) return null;
+      let kept = measured.get(frame);
+      if (!kept || kept.edit !== src.edits.frames[frame.id] || kept.script !== src.script || kept.looks !== src.edits.looks || kept.size !== screenWidth) { kept = {edit: src.edits.frames[frame.id], script: src.script, looks: src.edits.looks, size: screenWidth, at: new Map()}; measured.set(frame, kept); }
+      if (kept.at.has(key)) return kept.at.get(key);
+      meter ??= makeSlot(screen, 2);
+      if (meter.frame !== frame || meter.stamp !== kept.stamp) { build(meter, frame, true); layoutSlot(meter); kept.stamp = meter.stamp; }
+      const el = elementOf(meter.stage, key), S = meter.stage.getBoundingClientRect(), u = S.width / STAGE;
+      if (!el || !u) { kept.at.set(key, null); return null; }
+      const r = el.getBoundingClientRect(), out = {x: ((r.left + r.right) / 2 - S.left) / u, y: ((r.top + r.bottom) / 2 - S.top) / u, w: r.width / u, h: r.height / u, vmove: meter.drawEdit?.vmove?.[key] ?? [0, 0]};
+      kept.at.set(key, out);
+      return out;
     },
     // The frame on, when it is held (not moving): where a text can be retyped. -> {stage, frame, edit, index} | null
     current() {
@@ -1656,6 +2881,35 @@ export function createPlayerEngine(screen, {onRedraw} = {}) {
     freeze(on) {
       frozen = !!on;
       if (frozen && shown?.mode === 'static') pensAt(slots[shown.slot], 0, null, 'done');
+    },
+    // The video's text editor: the text box `key` of the frame that is on, as it is now ({key, bubble, rect: [x, y, w, h] (stage px), look, own (what the video gave it), auto}), or null.
+    textBox(key) { return shown?.mode === 'static' ? textBoxOf(slots[shown.slot], key) : null; },
+    // ... changed at once: `patch` is what `setVideoText` takes (a value of null takes one off), put on the text now; what it is changed to is kept on the frame being shown until the board
+    // hands the frame down again (the edits it is saved with). `after(box)` is called if a font that was not there yet comes in and sets the text another way. -> the box, as `textBox`.
+    liveText(key, patch, after) {
+      if (shown?.mode !== 'static') return null;
+      const slot = slots[shown.slot], own = mergeVideoText(ownOf(slot)[key], patch);
+      slot.vlive = {...(slot.vlive ?? {}), [key]: own};
+      revertVideoText(slot); applyVideoText(slot);
+      if (own.font) whenFontsLoaded({styles: {font: {font: own.font}}}, () => { if (slot.vlive?.[key] === own) { revertVideoText(slot); applyVideoText(slot); after?.(textBoxOf(slot, key)); } });
+      return textBoxOf(slot, key);
+    },
+    // The video's colors in the board's inspector (components/Storyboard.jsx, the shared looks): the part a double-click at (x, y) is on, on the frame that is on ({kind, key}, or null:
+    // the software), and the look the first part of a kind has there now ({fill} | {stroke, strokeWidth}, or null: none on it)
+    lookTarget(x, y) { const front = this.onScreen().at(-1); return front ? lookTargetAt(x, y, front.stage) : null; },
+    // The slides on the picture now: the one held, or the two of a move, the one in front last (the video editor picks on them at any moment, the user, 2026-10-22: "I don't want it to
+    // move the playhead"). -> [{stage, frame, index}]
+    onScreen() {
+      if (shown?.mode === 'static') { const s = slots[shown.slot]; return s.frame ? [{stage: s.stage, frame: s.frame, index: shown.index}] : []; }
+      if (shown?.mode !== 'move') return [];
+      return slots.filter(s => s.frame && s.shell.style.visibility === 'visible').sort((a, b) => Number(a.shell.style.zIndex) - Number(b.shell.style.zIndex)).map(s => ({stage: s.stage, frame: s.frame, index: src.frames.indexOf(s.frame)}));
+    },
+    kindLook(kind) {
+      const slot = shown?.mode === 'static' ? slots[shown.slot] : slots.find(s => s.frame);
+      if (!slot?.frame) return null;
+      if (kind === 'background') return {fill: slot.bg.style.background || '#ffffff'}; // (the frame's background is on the layer behind the stage)
+      const el = partsOfKind(slot.stage, kind)[0];
+      return el ? lookNow(slot.stage, {kind}, el) : null; // (the element itself: an outline the video copied over its picture has no key)
     },
     dispose() { watch?.disconnect(); dropPrep(); for (const slot of slots) { endPens(slot); slot.shell.remove(); } backdrop.remove(); },
   };

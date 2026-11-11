@@ -15,19 +15,27 @@ import {fileURLToPath} from 'node:url';
 import {
   STYLE_KEYS, addBlank, addBlankIn, addCopy, addInserts, addLine, setBubble, setLock, setTails, sizeBubbles, deleteFrame, duplicateLine, hasChanges, hideLayer, hideLine, intoLine, layersOf,
   linesOf, makeExport, moveFrame, normalizeEdits, noteOf, orderedFrames, readExport, removeInsert, renameLine, resetAsset, resetFrame,
-  moveLayers, moveLine, setAnim, setBackground, setLineShelf, setLineView, setMove, setName, setNote, setScale, setSize, setStyle, setText, setTip, styleValue,
+  moveLayers, moveLine, setAnim, setBackground, setLineShelf, setLineView, setMove, setName, setNote, setScale, setSize, setStyle, setText, setTip, setVideoMove, styleValue,
 } from '../lib/storyboardEdits.mjs';
 import {cellsOf, followersOf, slidesOrder} from '../lib/storyboardCells.mjs';
-import {VIDEO_RUNS, shelvedRuns} from '../lib/storyboardVideos.mjs';
+import {DETAIL_VARIANTS, allRunsOf, shelvedRuns} from '../lib/storyboardVideos.mjs';
+import {SECTION_BOARDS, sectionOfBoard} from '../lib/sections/index.mjs';
+import {partsOf, stitchedBoards} from '../lib/storyboardAllVideos.mjs';
 import {storyboardStore} from '../lib/storyboardStore.mjs';
 import {TRASH, addToTrash, trashEntry, trashVideo} from '../lib/storyboardTrash.mjs';
 import {copyFrames} from '../lib/storyboardClipboard.mjs';
-import {linkedParts, splitKey} from '../lib/storyboardLinks.mjs';
+import {splitKey} from '../lib/storyboardLinks.mjs';
 import {PAINT_PRESETS, normalizePaint} from '../lib/storyboardPaint.mjs';
 import {elementAt, findRoot, parseHtml, textOf, textsOf, wrapperScale} from '../lib/storyboardHtml.mjs';
+import {CAPS, DASHES, LINE_CAPS, LINE_JOINS, frameFromStage} from '../lib/storyboardPaths.mjs';
+import {ANIMATED, BLEND_MODES, EFFECTS, EFFECT_TYPES, FX_PROP, LABELS, LAYER_KINDS, addEffect, addKeyAt, addVideoLayer, isAnimated, isAnimatedProp, keyTimes, layersOf as videoLayersOf, propsInKey, removeEffect, removeKeyAt, removeVideoLayer, setAnimated, setLayerAt, setSpan, stackVideoLayer, updateVideoLayer} from '../lib/storyboardLayers.mjs';
+import {addVideoComment, commentNumber, commentsOf as videoCommentsOf, removeVideoComment, updateVideoComment} from '../lib/storyboardComments.mjs';
+import {LOOKS, ORIGINAL, activeVariation, addVariation, removeVariation, renameVariation, setActiveVariation, variationsOf} from '../lib/storyboardVariations.mjs';
+import {cutLayoutOf, cutOf} from '../lib/remotion/cuts.mjs';
+import {cutWordsOf, setCutText} from '../lib/remotion/cutWords.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const VIDEOS = [{id: 'improved-quality-v2', name: 'Improved Quality'}, {id: 'increased-efficiency-v2', name: 'Increased Efficiency'}];
+const VIDEOS = [{id: 'improved-quality-v2', name: 'Improved Quality'}, {id: 'increased-efficiency-v2', name: 'Increased Efficiency'}, ...SECTION_BOARDS, {id: 'all-storyboards', name: 'All storyboards'}]; // (All storyboards: the cuts scene by scene, scripts/capture-cuts.mjs)
 const BOARDS = [...VIDEOS.map(v => v.id), TRASH];
 const store = storyboardStore(path.join(ROOT, 'content', 'storyboard'));
 
@@ -46,10 +54,12 @@ Look
 Change (one thing; the rest of the board is left exactly as it is)
   note <frame> <words>           the note under a frame ("" takes it off)
   name <frame> <words>           the name a frame shows in its header instead of its label ("" takes it off)
-  text <frame> <key> <words>     retype a text (its duplicates along the line too, as on the
-                                 page; --only: this one alone). \\n starts a new line in a bubble
+  text <frame> <key> <words>     retype a text, in that frame alone (nothing is linked; --only
+                                 is no longer needed). \\n starts a new line in a bubble
   move <frame> <asset> <dx> <dy> move by stage px (the frame is 1600 x 900); --to: put its top
                                  left corner at <x> <y>
+  vmove <frame|line> <asset> <dx> <dy>  its place in the VIDEO on that slide (or on every slide of a line, in one save), stage px over where the video lays
+                                 it out, as a drag in the video editor; the slide on the board is not touched; 0 0 takes it off
   scale <frame> <asset> <s> [sy] scale a UI element (1 = as captured)
   size <frame> <asset> <w> <h>   the size of a box (a picture, the spotlight, a chat bubble)
   tip <frame> <bubble> <dx> <dy> move where a bubble's tail points (stage px)
@@ -83,9 +93,52 @@ Change (one thing; the rest of the board is left exactly as it is)
   line-add <name> [--after <line> | --first]   line-rename <line> <name>
   line-duplicate <line>          line-delete <line> (its frames go to the Trash)
   line-view <line> videos|slides a line of videos (Animations) as videos, one player each, or as the slides they are made of
+  section-lines                  a section's board: its five lines of videos (Videos, Videos in detail and its three variants), at the top, each holding its videos (run again to repair)
   line-shelf <line> <video>... | none   the videos of the board (their ids or the start of their titles, in the order they stand in) put together in this line, side by side,
                                  instead of each at the right of its own last line; none puts them back (the videos of the board: runs)
   runs                           the videos of the board: id, title, its lines, the line that holds it
+  all-videos                     the board "All videos" (/storyboard?video=all-videos): for each finished board, whether its stitched video is Final or In progress, and the
+                                 videos of its line "Videos" it plays one after the other (a board is Final when its id is in FINAL_BOARDS, lib/storyboardAllVideos.mjs)
+
+Layers of a video (the video editor's shapes, texts and pictures, with keyframes: lib/storyboardLayers.mjs). <video> is a video's id or
+title (runs), or a video of a line of videos by its name. Values: x y w h (the 1600 x 900 picture, top left), rotation (deg), opacity (0-1),
+from to (seconds on screen), fill (a color, a ready paint or a gradient as JSON), stroke strokeWidth radius, text font size weight color
+align, src (a picture: /storyboard/uploads/...), name, hidden locked (true/false). An open page shows each change within seconds.
+  vlayers [video]                the videos that have layers, or one video's layers: id, kind, name, time, place, keyframes
+  vlayer-add <video> <rect|ellipse|text|image|path> [k=v ...]   a new layer (on top); prints its id. A path: points="100,100;400,100;400,300" (on the picture; a curved
+                                 point: x,y,inX,inY,outX,outY) endCap=arrow|triangle|circle|square|diamond|bar|none startCap= stroke=#7b3cf0 strokeWidth=4 dash=solid|dashed|dotted
+                                 closed=true fill=#hex trimEnd=0..1 (animated: vlayer-key <video> <id> <s> trimEnd=1: the line drawn in, After Effects' Trim Paths)
+  vlayer-set <video> <id> k=v ... [--at <s>]   change a layer; with --at, an animated value gets a keyframe at that second
+  vlayer-key <video> <id> <s> [k=v ...]   a keyframe at <s> seconds (the values given are animated from then on; none: all the animated ones)
+  vlayer-unkey <video> <id> <s> [prop]   take a keyframe off (or only that property's)
+  vlayer-still <video> <id> <prop> [--at <s>]   stop animating a property (it keeps its value at --at, else at its first keyframe)
+  vlayer-order <video> <id> front|back|forward|backward   the stacking
+  vlayer-rm <video> <id>         delete a layer
+  vlayer-fx <video> <id> <blur|shadow|glow|brightness|contrast|saturation|hue|grayscale|sepia|invert> [number=v ... color=#hex]   an effect on a layer (its numbers can have keyframes: vlayer-key ... fx:<effect id>:<number>=v)
+  vlayer-fx-rm <video> <id> <effect id>   take an effect off (vlayers shows the ids)
+  vlayer-span <video> <element name> <from s|-> <to s|->   trim an element of the slides: not seen before / after (clear: seen the whole time again)
+
+Comments on a video (the video editor's pins, the user, 2026-10-29: a point on the picture at a second, with words; lib/storyboardComments.mjs; never in the video itself). They are read and
+answered here: an open page shows each change within seconds. <board> is a board's id (--video <board> gives it too); <video> is as for the layers; <n|id> is a comment's number (what its pin
+says) or its id. The picture is 1600 x 900: x y are px from its top left, <second> is the second of the video it is at. A board with variations: each has its own comments, and these commands read
+and change the ones of the variation that plays (variation-use); vcomments lists another variation's under "<video> [v2]".
+  vcomments [<video>] [--video <board>]   every comment of every video (of one board with --video or with the board first; of one video with <video>): board, video, number, id, second, x y,
+                                 [done], the words (a JSON string)
+  vcomment-add <board> <video> <second> <x> <y> "<words>"   a comment there; prints its number and id
+  vcomment-set <board> <video> <n|id> [text="<words>"] [done=true|false] [at=<s>] [x=<px>] [y=<px>]   change one (the words, whether it is done, its second, its point)
+  vcomment-rm <board> <video> <n|id>   delete a comment
+
+Variations of a board's videos (the user, 2026-11-03: another way to play the same video, picked in the All videos page's inspector: Comments | Variations; lib/storyboardVariations.mjs).
+Variation 1 (v1) is the video as it is made; the one picked plays everywhere (the board, All videos, the video editor, an export). Looks: ${Object.keys(LOOKS).join(', ')}.
+  variations                     the board's variations, the one that plays marked *
+  variation-add <look> ["<name>"] [--id v5]  a new variation with that look, played from now on; prints its id (--id: the one it should have, if free)
+  variation-use <id>             play that one (v1: the video as it is made)
+  variation-name <id> "<name>"    rename one
+  variation-rm <id>              delete one (Variation 1 plays if it was the one)
+
+The words of a board's Remotion cut (Increased Efficiency's Variation 4; lib/remotion/cutWords.mjs; on the All videos page a double-click on them retypes them; the MP4 render reads the same).
+  cut-texts                      every text of the cut: title, each sentence and the label over it (<id>:kicker); * = retyped, with what the narration says; the cut's length
+  cut-text <key> "<words>"        retype one (" / " between lines); "" puts the narration's words back
 
 Files
   export [file]                  the whole storyboard, editable (every board and the Trash)
@@ -202,6 +255,81 @@ function insertHtml(b, f, key, name, html, box) {
 
 // ---- Commands ----
 const num = (v, name) => { const n = Number(v); if (!Number.isFinite(n)) fail(`${name} must be a number`); return n; };
+// ---- A video's layers: which video, which layer, the values typed ----
+function videoTitleOf(b, ref) {
+  if (!ref) fail('Which video? Its id or title (runs), or a video of a line of videos by its name.');
+  const runs = allRunsOf(b.id), cells = Object.values(b.edits.lines?.added ?? {}).flatMap(l => l.videos ?? []).map(v => v.name).filter(Boolean);
+  const titles = [...new Set([...runs.map(x => x.title), ...cells, ...Object.keys(b.edits.layers ?? {})])];
+  const byId = runs.find(x => x.id === ref);
+  if (byId) return byId.title;
+  const exact = titles.find(t => t === ref) ?? titles.find(t => norm(t) === norm(ref));
+  if (exact) return exact;
+  const some = titles.filter(t => norm(t).startsWith(norm(ref)));
+  if (some.length === 1) return some[0];
+  fail(`${some.length ? 'More than one' : 'No'} video matches "${ref}": ${(some.length ? some : titles).join(' | ')}`);
+}
+function layerOfVideo(b, title, id) {
+  const items = videoLayersOf(b.edits, title), l = items.find(x => x.id === id) ?? items.find(x => norm(x.name) === norm(id));
+  if (!l) fail(`${title} has no layer "${id}": ${items.map(x => `${x.id} (${x.name})`).join(', ') || 'none yet'}`);
+  return l;
+}
+// ---- Comments on a video: which board, which video, which comment ----
+// The board of a comment command: given first (`vcomment-add improved-quality-v2 <video> …`) or by --video. The ones that write need one of the two (no guessing which board to write to).
+function commentBoard(rest, needed) {
+  if (rest[0] && BOARDS.includes(rest[0])) return {board: rest[0], rest: rest.slice(1)};
+  if (flags.video != null) return {board: flags.video, rest};
+  if (needed) fail(`Which board? Give it first (vcomment-… <board> <video> …) or with --video: ${VIDEOS.map(v => v.id).join(', ')}`);
+  return {board: null, rest};
+}
+function commentOfVideo(b, title, ref) {
+  const items = videoCommentsOf(b.edits, title), n = /^\d+$/.test(String(ref ?? '')) ? Number(ref) : 0;
+  const c = items.find(x => x.id === ref) ?? (n ? items[n - 1] : null);
+  if (!c) fail(`${title} has no comment "${ref ?? ''}": ${items.map((x, i) => `${i + 1} (${x.id})`).join(', ') || 'none yet'}`);
+  return c;
+}
+const flag01 = (v, name) => { const s = String(v).toLowerCase(); if (['true', 'yes', '1', 'on'].includes(s)) return true; if (['false', 'no', '0', 'off'].includes(s)) return false; return fail(`${name} must be true or false`); };
+const pointIn = (x, y) => { if (x < 0 || x > 1600 || y < 0 || y > 900) fail('x y are px on the 1600 x 900 picture, from its top left'); };
+const LAYER_NUMBERS = new Set(['x', 'y', 'w', 'h', 'rotation', 'opacity', 'from', 'to', 'strokeWidth', 'radius', 'size', 'weight', 'capScale', 'trimStart', 'trimEnd']);
+// A path's points: "x,y;x,y;..." on the picture (1600 x 900); a curved point is "x,y,inX,inY,outX,outY" (the handles as offsets from the point)
+function pathPoints(v) {
+  const points = v.split(';').map(s => s.trim()).filter(Boolean).map(s => {
+    const n = s.split(',').map(Number);
+    if (![2, 6].includes(n.length) || n.some(x => !Number.isFinite(x))) fail(`"${s}" is not a point: x,y or x,y,inX,inY,outX,outY`);
+    return n.length === 2 ? {x: n[0], y: n[1]} : {x: n[0], y: n[1], ix: n[2], iy: n[3], ox: n[4], oy: n[5], smooth: true};
+  });
+  if (points.length < 2) fail('A path needs two points at least: points="100,100;400,100"');
+  return points;
+}
+function layerValues(pairs) {
+  const out = {};
+  for (const p of pairs) {
+    const at = p.indexOf('=');
+    if (at < 1) fail(`"${p}": values are key=value`);
+    const k = p.slice(0, at), v = p.slice(at + 1);
+    if (LAYER_NUMBERS.has(k) || FX_PROP.test(k)) out[k] = num(v, k); // (fx:<effect id>:<number>: an effect's number)
+    else if (k === 'blend') { if (!BLEND_MODES.some(([id]) => id === v)) fail(`"${v}" is not a blend mode: ${BLEND_MODES.map(([id]) => id).join(' ')}`); out.blend = v === 'normal' ? null : v; }
+    else if (k === 'label') { const n = /^\d+$/.test(v) ? Number(v) : LABELS.findIndex(x => x.name.toLowerCase() === v.toLowerCase()) + 1; if (!(n >= 1 && n <= LABELS.length)) fail(`"${v}" is not a label: 1-${LABELS.length}, or ${LABELS.map(x => x.name).join(', ')}`); out.label = n; }
+    else if (k === 'hidden' || k === 'locked' || k === 'closed') out[k] = v !== 'false';
+    else if (k === 'points') out.points = pathPoints(v);
+    else if (k === 'startCap' || k === 'endCap') { if (!CAPS.includes(v)) fail(`"${v}" is not an end: ${CAPS.join(' ')}`); out[k] = v; }
+    else if (k === 'dash') { if (!DASHES.includes(v)) fail(`"${v}" is not a dash: ${DASHES.join(' ')}`); out.dash = v; }
+    else if (k === 'lineCap') { if (!LINE_CAPS.includes(v)) fail(`"${v}" is not a line cap: ${LINE_CAPS.join(' ')}`); out.lineCap = v; }
+    else if (k === 'lineJoin') { if (!LINE_JOINS.includes(v)) fail(`"${v}" is not a line join: ${LINE_JOINS.join(' ')}`); out.lineJoin = v; }
+    else if (k === 'fill' && ['none', 'off', ''].includes(v)) out.fill = null;
+    else if (k === 'fill') {
+      const preset = PAINT_PRESETS.find(x => x.id === v);
+      let paint = ['none', 'off', ''].includes(v) ? null : preset ? preset.paint : v;
+      if (typeof paint === 'string' && paint.trim().startsWith('{')) { try { paint = JSON.parse(paint); } catch { fail('That JSON is not valid.'); } }
+      if (paint !== null && normalizePaint(paint) == null) fail(`"${v}" is not a color, a ready paint (${PAINT_PRESETS.map(x => x.id).join(', ')}) or a gradient as JSON`);
+      out.fill = paint;
+    } else if (k === 'stroke') out.stroke = ['none', 'off', ''].includes(v) ? null : v;
+    else if (k === 'text') out.text = v.replace(/\\n/g, '\n');
+    else if (['name', 'font', 'color', 'align', 'src'].includes(k)) out[k] = v;
+    else fail(`No value "${k}" for a layer: x y w h rotation opacity from to fill stroke strokeWidth radius text font size weight color align src name hidden locked blend label (a path: points closed startCap endCap capScale dash lineCap lineJoin trimStart trimEnd) (fx:<effect id>:<number> for an effect's number)`);
+  }
+  return out;
+}
+
 const commands = {
   async help() { console.log(HELP); },
 
@@ -272,10 +400,7 @@ const commands = {
     const was = textNow(b, f.id, layer, rest);
     if (was == null) fail(`No text at ${full}: see the texts command.`);
     const now = words.join(' ').replace(/\\n/g, '\n');
-    const also = flags.only ? [] : linkedParts({frames: b.frames, edits: b.edits, frame: f, key: full})
-      .filter(p => { const pl = layersOf(b.frames.find(g => g.id === p.frame), b.edits.frames[p.frame]).find(l => l.key === p.layer); return pl && textNow(b, p.frame, pl, p.rest) === was; });
-    const next = [{frame: f.id, key: full}, ...also].reduce((e, p) => setText(e, p.frame, p.key, now), b.edits);
-    await save(b, next, `Retyped ${full} in ${where(b, f)}${also.length ? ` and its ${also.length} duplicate${also.length > 1 ? 's' : ''} in this line` : ''}: ${JSON.stringify(was)} -> ${JSON.stringify(now)}`);
+    await save(b, setText(b.edits, f.id, full, now), `Retyped ${full} in ${where(b, f)} (that frame alone: nothing is linked): ${JSON.stringify(was)} -> ${JSON.stringify(now)}`);
   },
 
   async move(ref, asset, a, c) {
@@ -285,6 +410,12 @@ const commands = {
     if (flags.to) { if (key.includes('/') || !layer.box) fail('--to works on a whole asset.'); to = [cur[0] + (num(a, 'x') - (layer.box.x + cur[0] * k)) / k, cur[1] + (num(c, 'y') - (layer.box.y + cur[1] * k)) / k]; }
     else to = [cur[0] + num(a, 'dx') / k, cur[1] + num(c, 'dy') / k];
     await save(b, setMove(b.edits, f.id, key, to), `Moved ${key} in ${where(b, f)} (now ${r(to[0] * k)}, ${r(to[1] * k)} stage px from where it was captured)`);
+  },
+
+  async vmove(ref, asset, dx, dy) {
+    const b = await loadBoard(), d = [num(dx, 'dx'), num(dy, 'dy')];
+    const frames = ref == null || /[:#/]/.test(ref) ? [frameOf(b, ref)] : b.frames.filter(f => f.chapter === lineOf(b, ref).id);
+    await save(b, frames.reduce((e, f) => setVideoMove(e, f.id, assetOf(b, f, asset).key, d), b.edits), `${asset} in the video, ${d[0]}, ${d[1]} stage px from where it lays it out: ${frames.map(f => where(b, f)).join(', ')}`);
   },
 
   async typing(file) {
@@ -517,16 +648,44 @@ const commands = {
 
   async runs() {
     const b = await loadBoard(), shelf = shelvedRuns(b.edits.lines?.added, b.id);
-    for (const r of VIDEO_RUNS[b.id] ?? []) console.log(`${r.id.padEnd(14)} ${r.title.padEnd(46)} ${r.lines.join(', ')}${shelf.get(r.id) ? `   [in the line ${shelf.get(r.id).line}, place ${shelf.get(r.id).index + 1}]` : ''}`);
+    for (const r of allRunsOf(b.id)) console.log(`${r.id.padEnd(14)} ${r.title.padEnd(46)} ${r.lines.join(', ')}${shelf.get(r.id) ? `   [in the line ${shelf.get(r.id).line}, place ${shelf.get(r.id).index + 1}]` : ''}`);
+  },
+
+  // The board "All videos" (the user, 2026-10-29): each finished board's line "Videos" stitched into one video, with the status on top of it. Read only (the status is FINAL_BOARDS in lib/storyboardAllVideos.mjs).
+  async 'all-videos'() {
+    for (const e of stitchedBoards()) {
+      const b = await loadBoard(e.board), parts = partsOf(e.board, b.video, b.edits);
+      console.log(`${e.status.label.padEnd(12)} ${e.group.padEnd(10)} ${e.board.padEnd(28)} ${e.title}\n${parts.map((p, i) => `    ${i + 1}. ${p.id.padEnd(14)} ${p.title}  (${p.frames.length} slides)`).join('\n') || '    (no videos in its line "Videos")'}`);
+    }
   },
 
   async 'line-shelf'(line, ...names) {
-    const b = await loadBoard(), l = lineOf(b, line), runs = VIDEO_RUNS[b.id] ?? [];
+    const b = await loadBoard(), l = lineOf(b, line), runs = allRunsOf(b.id);
     if (!b.edits.lines?.added?.[l.id]) fail(`${l.title} is a captured line: put the videos in a line you added (line-add).`);
     if (!names.length) fail('Which videos? (their ids or the start of their titles, or none: see runs)');
     if (names.length === 1 && names[0] === 'none') { await save(b, setLineShelf(b.edits, l.id, []), `${l.title} holds no videos any more: each video is at the right of its own last line`); return; }
     const picked = names.map(n => { const r = runs.find(x => x.id === n) ?? runs.find(x => x.title.toLowerCase().startsWith(n.toLowerCase())); if (!r) fail(`No video "${n}" on this board (runs lists them).`); return r; });
     await save(b, setLineShelf(b.edits, l.id, picked.map(r => r.id)), `${l.title} holds the videos: ${picked.map(r => r.title).join(' | ')}`);
+  },
+
+  // A section's board gets its five lines of videos (docs/storyboard.md, "The other sections"): Videos, then Videos in detail and its three variants (DETAIL_VARIANTS), each at the top in that
+  // order and holding its videos side by side. Made once after the first capture; run again, it finds the lines by their titles and puts each one's videos back.
+  async 'section-lines'() {
+    const b = await loadBoard(), section = sectionOfBoard(b.id);
+    if (!section) fail(`${b.id} is not a section's board (lib/sections/index.mjs).`);
+    const runs = new Set(allRunsOf(b.id).map(r => r.id));
+    const wanted = [['Videos', null], ...DETAIL_VARIANTS.map(v => [`Videos in detail${v.title ? ` · ${v.title.replace(/^,\s*/, '')}` : ''}`, `-detail${v.suffix}`])];
+    let edits = b.edits, prev = null;
+    for (const [k, [title, suffix]] of wanted.entries()) {
+      let id = Object.entries(edits.lines?.added ?? {}).find(([x, l]) => l.title === title && !edits.lines?.deleted?.includes(x))?.[0];
+      if (!id) ({id, edits} = addLine(edits, {after: prev, title}));
+      edits = moveLine(edits, linesOf(b.video.chapters, edits).map(l => l.id), id, k);
+      const ids = suffix ? section.chunks.filter(c => !c.noTwin).map(c => c.id + suffix) : section.chunks.map(c => c.id);
+      for (const r of ids) if (!runs.has(r)) fail(`No video "${r}" on ${b.id} (runs lists them).`);
+      edits = setLineShelf(edits, id, ids);
+      prev = id;
+    }
+    await save(b, edits, `${section.name}: the lines ${wanted.map(w => w[0]).join(' | ')}, with their videos`);
   },
 
   async 'line-delete'(line) {
@@ -562,6 +721,193 @@ const commands = {
 
   async backup() { console.log(`Backed up: ${await store.backup(videoId, 'manual')}`); },
 
+  // ---- Layers of a video (lib/storyboardLayers.mjs; the video editor makes them too) ----
+  async vlayers(ref) {
+    const b = await loadBoard(), all = b.edits.layers ?? {};
+    if (!ref) {
+      const titles = Object.keys(all).filter(t => all[t].items.length);
+      if (!titles.length) { console.log('No video of this board has layers yet.'); return; }
+      for (const t of titles) console.log(`${pad(all[t].items.length, 3)} layer${all[t].items.length === 1 ? ' ' : 's'}  ${t}`);
+      return;
+    }
+    const title = videoTitleOf(b, ref), items = videoLayersOf(b.edits, title);
+    console.log(`${title}: ${items.length} layer${items.length === 1 ? '' : 's'} (back first)`);
+    for (const l of items) {
+      const look = l.kind === 'path' ? `${l.points.length} points${l.closed ? ' closed' : ''} ${l.stroke} ${l.strokeWidth}px${l.startCap !== 'none' ? ` start ${l.startCap}` : ''}${l.endCap !== 'none' ? ` end ${l.endCap}` : ''}${l.replaces?.length ? ` (stands for ${l.replaces.join(', ')})` : ''}` : l.kind === 'text' ? JSON.stringify(l.text) : l.kind === 'image' ? l.src : typeof l.fill === 'string' ? l.fill : l.fill ? `${l.fill.kind} gradient` : 'no fill';
+      console.log(`  ${pad(l.id, 12)} ${pad(l.kind, 8)} ${pad(JSON.stringify(l.name), 22)} ${r(l.from)}-${r(l.to)} s  x ${r(l.x)} y ${r(l.y)} w ${r(l.w)} h ${r(l.h)}${l.rotation ? ` rot ${r(l.rotation)}` : ''}${l.opacity !== 1 ? ` opacity ${r(l.opacity)}` : ''}  ${look}${l.hidden ? '  [hidden]' : ''}${l.locked ? '  [locked]' : ''}`);
+      if (l.blend || l.label) console.log(`      ${l.blend ? `blend ${l.blend}  ` : ''}${l.label ? `label ${l.label} (${LABELS[l.label - 1].name})` : ''}`);
+      for (const e of l.fx ?? []) console.log(`      fx ${pad(e.id, 14)} ${EFFECTS[e.type].name}${e.on === false ? ' [off]' : ''}  ${Object.entries(e.params).map(([k, v]) => `${k} ${r(v)}`).join('  ')}${e.color ? `  ${e.color}` : ''}`);
+      for (const k of l.keys ?? []) console.log(`      ◆ ${r(k.t)} s  ${propsInKey(k).map(p => `${p} ${r(k[p])}`).join('  ')}${k.ease ? `  (${k.ease})` : ''}`);
+    }
+  },
+  async 'vlayer-add'(ref, kind, ...pairs) {
+    if (!LAYER_KINDS.includes(kind)) fail(`vlayer-add <video> <${LAYER_KINDS.join('|')}> [k=v ...]`);
+    const b = await loadBoard(), title = videoTitleOf(b, ref), {edits, id} = addVideoLayer(b.edits, title, {kind, ...layerValues(pairs)});
+    if (!id) fail('That layer is not valid.');
+    await save(b, edits, `${title}: the ${kind} layer ${id} added`);
+  },
+  async 'vlayer-set'(ref, id, ...pairs) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id), values = layerValues(pairs), at = flags.at != null ? num(flags.at, '--at') : null;
+    if (!Object.keys(values).length) fail('Which values? k=v');
+    if (values.points) { // (a path's points are on the picture here: its frame is made to fit them)
+      if (l.kind !== 'path') fail(`${l.id} is not a path`);
+      Object.assign(values, frameFromStage(values.points, values.closed ?? !!l.closed) ?? {});
+    }
+    const next = updateVideoLayer(b.edits, title, l.id, x => (at != null ? setLayerAt(x, at, values) : {...x, ...values}));
+    await save(b, next, `${title}: ${l.id} ${pairs.join(' ')}${at != null ? ` (at ${at} s)` : ''}`);
+  },
+  async 'vlayer-key'(ref, id, t, ...pairs) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id), at = num(t, 'the second'), values = layerValues(pairs);
+    const bad = Object.keys(values).filter(k => !isAnimatedProp(k));
+    if (bad.length) fail(`Only ${ANIMATED.join(', ')} and an effect's numbers (fx:<effect id>:<number>) have keyframes (not ${bad.join(', ')}): vlayer-set changes the rest`);
+    const next = updateVideoLayer(b.edits, title, l.id, x => (Object.keys(values).length ? setLayerAt(Object.keys(values).reduce((c, p) => (isAnimated(c, p) ? c : setAnimated(c, p, at, true)), x), at, values) : addKeyAt(x, at)));
+    await save(b, next, `${title}: a keyframe of ${l.id} at ${at} s ${pairs.join(' ')}`);
+  },
+  async 'vlayer-unkey'(ref, id, t, prop) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id), at = num(t, 'the second');
+    if (!keyTimes(l).some(k => Math.abs(k - at) < 1 / 60)) fail(`${l.id} has no keyframe at ${at} s: ${keyTimes(l).map(r).join(', ') || 'none'}`);
+    await save(b, updateVideoLayer(b.edits, title, l.id, x => removeKeyAt(x, at, prop ?? null)), `${title}: the keyframe of ${l.id} at ${at} s taken off${prop ? ` (${prop})` : ''}`);
+  },
+  async 'vlayer-still'(ref, id, prop) {
+    if (!isAnimatedProp(prop ?? '')) fail(`vlayer-still <video> <id> <${ANIMATED.join('|')}|fx:<effect id>:<number>> [--at <s>]`);
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id), at = flags.at != null ? num(flags.at, '--at') : keyTimes(l, prop)[0] ?? 0;
+    await save(b, updateVideoLayer(b.edits, title, l.id, x => setAnimated(x, prop, at, false)), `${title}: the ${prop} of ${l.id} is not animated any more`);
+  },
+  async 'vlayer-fx'(ref, id, type, ...pairs) {
+    if (!EFFECT_TYPES.includes(type)) fail(`vlayer-fx <video> <id> <${EFFECT_TYPES.join('|')}> [number=value ... color=#hex]`);
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id), spec = EFFECTS[type], params = {}, extra = {};
+    for (const p of pairs) {
+      const at = p.indexOf('=');
+      if (at < 1) fail(`"${p}": values are key=value`);
+      const k = p.slice(0, at), v = p.slice(at + 1);
+      if (k === 'color' && spec.color) extra.color = v;
+      else if (spec.params.some(x => x.id === k)) params[k] = num(v, k);
+      else fail(`${spec.name} has: ${spec.params.map(x => x.id).join(' ')}${spec.color ? ' color' : ''} (not ${k})`);
+    }
+    let made = null;
+    const next = updateVideoLayer(b.edits, title, l.id, x => { const got = addEffect(x, type); made = got.id; return {...got.layer, fx: got.layer.fx.map(e => (e.id === got.id ? {...e, params: {...e.params, ...params}, ...extra} : e))}; });
+    await save(b, next, `${title}: ${spec.name} (${made}) on ${l.id}`);
+  },
+  async 'vlayer-fx-rm'(ref, id, fxId) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id);
+    if (!l.fx?.some(e => e.id === fxId)) fail(`${l.id} has no effect ${fxId}: ${(l.fx ?? []).map(e => e.id).join(', ') || 'none'}`);
+    await save(b, updateVideoLayer(b.edits, title, l.id, x => removeEffect(x, fxId)), `${title}: ${fxId} taken off ${l.id}`);
+  },
+  // an element of the slides, trimmed: it is not seen before <from> or after <to> (seconds; - for no limit; clear: the whole video again)
+  async 'vlayer-span'(ref, name, from, to) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref);
+    if (!name) fail('vlayer-span <video> <element name> <from s|-> <to s|->   (clear: the element is seen the whole time again)');
+    const span = from === 'clear' || (!from && !to) ? null : {...(from && from !== '-' ? {from: num(from, 'from')} : {}), ...(to && to !== '-' ? {to: num(to, 'to')} : {})};
+    await save(b, setSpan(b.edits, title, name, span), `${title}: ${name} ${span ? `is seen ${span.from != null ? `from ${span.from} s` : ''}${span.to != null ? ` until ${span.to} s` : ''}` : 'is seen the whole time'}`);
+  },
+  async 'vlayer-order'(ref, id, how) {
+    const dir = {front: 'front', back: 'back', forward: 1, backward: -1}[how];
+    if (dir == null) fail('vlayer-order <video> <id> front|back|forward|backward');
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id);
+    await save(b, stackVideoLayer(b.edits, title, l.id, dir), `${title}: ${l.id} to the ${how}`);
+  },
+  async 'vlayer-rm'(ref, id) {
+    const b = await loadBoard(), title = videoTitleOf(b, ref), l = layerOfVideo(b, title, id);
+    await save(b, removeVideoLayer(b.edits, title, l.id), `${title}: ${l.id} deleted`);
+  },
+  // ---- Comments on a video (lib/storyboardComments.mjs; the video editor's Comment tool makes them too, and shows a change made here within seconds) ----
+  async vcomments(...args) {
+    const {board, rest} = commentBoard(args, false), ref = rest[0] ?? null, ids = board ? [board] : VIDEOS.map(v => v.id);
+    let found = 0;
+    for (const id of ids) {
+      const all = (await store.read(id)).edits.comments ?? {}, runs = allRunsOf(id);
+      const mine = t => !ref || runs.some(x => x.title === t && x.id === ref) || norm(t) === norm(ref) || norm(t).includes(norm(ref));
+      for (const [title, v] of Object.entries(all)) {
+        if (!v.items.length || !mine(title)) continue;
+        const done = v.items.filter(c => c.done).length;
+        console.log(`${id} | ${title} | ${v.items.length} comment${v.items.length === 1 ? '' : 's'}${done ? `, ${done} done` : ''}`);
+        v.items.forEach((c, i) => console.log(`  ${pad(i + 1, 3)} ${pad(c.id, 12)} ${pad(`${r(c.at)} s`, 9)} x ${pad(r(c.x), 6)} y ${pad(r(c.y), 6)} ${c.done ? '[done] ' : ''}${JSON.stringify(c.text)}`));
+        found += v.items.length;
+      }
+    }
+    if (!found) console.log(`No comment${ref ? ` on a video that matches "${ref}"` : ''}${board ? ` on ${board}` : ' on any board'}.`);
+  },
+  async 'vcomment-add'(...args) {
+    const {board, rest} = commentBoard(args, true), [ref, second, x, y, ...words] = rest;
+    if (ref == null || second == null || x == null || y == null) fail('vcomment-add <board> <video> <second> <x> <y> "<words>"');
+    const at = num(second, 'the second'), px = num(x, 'x'), py = num(y, 'y');
+    pointIn(px, py);
+    const b = await loadBoard(board), title = videoTitleOf(b, ref), {edits, id} = addVideoComment(b.edits, title, {at, x: px, y: py, text: words.join(' ')});
+    if (!id) fail('That comment is not valid.');
+    await save(b, edits, `${title}: comment ${commentNumber(videoCommentsOf(edits, title), id)} (${id}) added at ${at} s, x ${px} y ${py}`);
+  },
+  async 'vcomment-set'(...args) {
+    const {board, rest} = commentBoard(args, true), [ref, which, ...pairs] = rest;
+    if (ref == null || which == null || !pairs.length) fail('vcomment-set <board> <video> <n|id> [text="<words>"] [done=true|false] [at=<s>] [x=<px>] [y=<px>]');
+    const b = await loadBoard(board), title = videoTitleOf(b, ref), c = commentOfVideo(b, title, which), patch = {};
+    for (const p of pairs) {
+      const cut = p.indexOf('=');
+      if (cut < 1) fail(`"${p}": values are key=value (text, done, at, x, y)`);
+      const k = p.slice(0, cut), v = p.slice(cut + 1);
+      if (k === 'text') patch.text = v;
+      else if (k === 'done') patch.done = flag01(v, 'done');
+      else if (k === 'at' || k === 'x' || k === 'y') patch[k] = num(v, k);
+      else fail(`A comment has text, done, at, x, y (not ${k})`);
+    }
+    pointIn(patch.x ?? c.x, patch.y ?? c.y);
+    const edits = updateVideoComment(b.edits, title, c.id, patch);
+    if (edits === b.edits) { console.log(`${title}: comment ${commentNumber(videoCommentsOf(b.edits, title), c.id)} (${c.id}) is already like that.`); return; }
+    await save(b, edits, `${title}: comment ${commentNumber(videoCommentsOf(edits, title), c.id)} (${c.id}) ${pairs.map(p => (p.startsWith('text=') ? 'text' : p)).join(' ')}`);
+  },
+  async 'vcomment-rm'(...args) {
+    const {board, rest} = commentBoard(args, true), [ref, which] = rest;
+    if (ref == null || which == null) fail('vcomment-rm <board> <video> <n|id>');
+    const b = await loadBoard(board), title = videoTitleOf(b, ref), c = commentOfVideo(b, title, which), n = commentNumber(videoCommentsOf(b.edits, title), c.id);
+    await save(b, removeVideoComment(b.edits, title, c.id), `${title}: comment ${n} (${c.id}) deleted`);
+  },
+  // ---- Variations of the board's videos (lib/storyboardVariations.mjs) ----
+  async variations() {
+    const b = await loadBoard(), on = activeVariation(b.edits).id;
+    for (const v of variationsOf(b.edits)) console.log(`${v.id === on ? '*' : ' '} ${pad(v.id, 5)} ${pad(v.name, 24)} ${v.look ? `${v.look}: ${LOOKS[v.look].label}` : 'as it is made'}`);
+  },
+  async 'variation-add'(look, ...words) {
+    if (!LOOKS[look]) fail(`variation-add <look> ["<name>"]: the looks are ${Object.keys(LOOKS).join(', ')}`);
+    const b = await loadBoard(), {edits, id} = addVariation(b.edits, {name: words.join(' '), look, id: flags.id ?? null}); // (`--id v5`: the id it should have, when it is free)
+    if (!id) fail('No more variations can be added to this board.');
+    await save(b, edits, `${b.id}: ${variationsOf(edits).find(v => v.id === id).name} (${id}, ${LOOKS[look].label}) added, and it plays`);
+  },
+  async 'variation-use'(id) {
+    const b = await loadBoard(), v = variationsOf(b.edits).find(x => x.id === id);
+    if (!v) fail(`No variation "${id}": ${variationsOf(b.edits).map(x => x.id).join(', ')}`);
+    const edits = setActiveVariation(b.edits, v.id);
+    if (edits === b.edits) { console.log(`${b.id}: ${v.name} plays already.`); return; }
+    await save(b, edits, `${b.id}: ${v.name} (${v.id}) plays`);
+  },
+  async 'variation-name'(id, ...words) {
+    const b = await loadBoard();
+    if (id === ORIGINAL.id || !b.edits.variations?.list.some(v => v.id === id) || !words.length) fail('variation-name <id> "<name>" (not v1)');
+    await save(b, renameVariation(b.edits, id, words.join(' ')), `${b.id}: ${id} is "${words.join(' ')}"`);
+  },
+  async 'variation-rm'(id) {
+    const b = await loadBoard();
+    if (id === ORIGINAL.id || !b.edits.variations?.list.some(v => v.id === id)) fail(`variation-rm <id>: ${(b.edits.variations?.list ?? []).map(v => v.id).join(', ') || 'this board has no variation but v1'}`);
+    await save(b, removeVariation(b.edits, id), `${b.id}: ${id} deleted`);
+  },
+  // ---- The words of a board's Remotion cut (lib/remotion/cutWords.mjs) ----
+  async 'cut-texts'() {
+    const b = await loadBoard(), c = cutOf(b.id, b.edits); // (as the variation that plays lays it out: a layout can be a cut of its own, lib/remotion/cuts.mjs)
+    if (!c) fail(`${b.id} has no Remotion cut`);
+    const words = cutWordsOf(b.edits, c.id), plan = c.make(words, {layout: cutLayoutOf(b.edits)});
+    const show = (key, lines, original) => console.log(`${key in words ? '*' : ' '} ${pad(key, 22)} ${JSON.stringify(lines.join(' / '))}${key in words ? `  (the narration: ${JSON.stringify(original.join(' / '))})` : ''}`);
+    show('title', plan.title.lines, plan.title.original);
+    for (const cap of plan.captions) { show(`${cap.id}:kicker`, cap.kickerLines ?? [cap.kicker], [cap.original.kicker]); show(cap.id, cap.lines, cap.original.lines); }
+    console.log(`${plan.seconds.toFixed(2)} s`);
+  },
+  async 'cut-text'(key, ...words) {
+    const b = await loadBoard(), c = cutOf(b.id, b.edits);
+    if (!c) fail(`${b.id} has no Remotion cut`);
+    const plan = c.make(cutWordsOf(b.edits, c.id), {layout: cutLayoutOf(b.edits)}), text = plan.textOf(key ?? '');
+    if (!text) fail(`cut-text <key> "<words>": the keys are title, ${plan.captions.map(x => x.id).join(', ')} (and <id>:kicker)`);
+    const value = words.join(' ').split(/\s+\/\s+/).map(l => l.trim()).filter(Boolean).join('\n');
+    const edits = setCutText(b.edits, c.id, key, value, text.original.join('\n'));
+    if (edits === b.edits) { console.log('Nothing to change.'); return; }
+    await save(b, edits, `${b.id}: the cut's ${key} is ${value ? JSON.stringify(value.split('\n').join(' / ')) : "the narration's again"}`);
+  },
   async restore(name) {
     if (!name) fail('Restore which backup? (see the backups command)');
     const edits = normalizeEdits(await store.readBackup(videoId, name).catch(() => fail(`No backup "${name}"`)));

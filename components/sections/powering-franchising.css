@@ -1,0 +1,62 @@
+/* Powering Franchising (components/sections/FranchisingStage.jsx): its own classes, prefixed sec-. The marketplace page (Missions › In Marketplace, tm/37-marketplace.png) is shared with
+   Innovating Consulting. */
+.sec-pf-ic { width:16px; height:16px; flex:none; }
+.sec-pf-ic.is-blue { color:#1271b7; }
+.sec-pf-market { flex:1; min-height:0; display:grid; grid-template-columns:318px 1fr; overflow:hidden; font-family:var(--font-poppins),sans-serif; color:#161919; }
+.sec-pf-filters { display:flex; flex-direction:column; gap:11px; padding:24px 26px 0 64px; }
+.sec-pf-filters h3 { margin:0 0 10px; font-size:19px; font-weight:500; }
+.sec-pf-filters h4 { display:flex; align-items:center; justify-content:space-between; margin:4px 0 2px; font-size:15px; font-weight:500; }
+.sec-pf-state { margin-top:14px !important; }
+.sec-pf-state span { display:grid; place-items:center; width:18px; height:18px; border-radius:4px; background:#1271b7; color:#fff; transform:rotate(180deg); }
+.sec-pf-state span .sec-pf-ic { width:13px; height:13px; }
+.sec-pf-select { display:flex; align-items:center; gap:6px; height:33px; padding:0 10px; border:1px solid #c9ced1; border-radius:3px; background:#fff; font-size:13px; }
+.sec-pf-select i { font-style:normal; color:#5d656a; }
+.sec-pf-select b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:500; color:#161919; }
+.sec-pf-select .sec-pf-ic { margin-left:auto; color:#5d656a; }
+.sec-pf-select.has-value { border-color:#1271b7; }
+.sec-pf-check { display:flex; align-items:center; gap:8px; font-size:13px; }
+.sec-pf-check i { width:15px; height:15px; border:1.5px solid #8d9398; border-radius:3px; }
+.sec-pf-main { min-width:0; padding:20px 40px 0 16px; overflow:hidden; }
+.sec-pf-bar { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.sec-pf-search { flex:1; display:flex; align-items:center; gap:9px; height:33px; padding:0 12px; border:1px solid #c9ced1; border-radius:4px; color:#5d656a; font-size:13px; }
+.sec-pf-btn { display:flex; align-items:center; gap:8px; height:35px; padding:0 10px; border:1px solid #dfe3e6; border-radius:6px; color:#5d656a; font-size:13px; white-space:nowrap; }
+.sec-pf-btn > i { width:1px; height:14px; background:#c9ced1; }
+.sec-pf-btn em { display:grid; place-items:center; min-width:20px; height:20px; padding:0 5px; border-radius:10px; background:#eef0f1; font-style:normal; font-size:11px; color:#5d656a; }
+.sec-pf-btn em.is-on { background:#1271b7; color:#fff; font-weight:600; }
+.sec-pf-section { display:flex; align-items:center; justify-content:space-between; margin:4px 0 12px; }
+.sec-pf-section h3 { display:flex; align-items:center; gap:8px; margin:0; font-size:17px; font-weight:500; }
+.sec-pf-section h3 .sec-pf-ic { width:19px; height:19px; }
+.sec-pf-section > span { display:flex; align-items:center; gap:5px; color:#1271b7; font-size:13.5px; }
+.sec-pf-catalogs { display:grid; width:max-content; grid-template-columns:repeat(4, 286px); gap:14px; margin-bottom:18px; }
+.sec-pf-catalog { box-sizing:border-box; display:flex; flex-direction:column; padding:14px; border:1px solid #dfe3e6; border-radius:8px; background:#fff; transform-origin:50% 50%; }
+.sec-pf-img { position:relative; height:118px; border-radius:6px; background:#eef2f4 center / cover no-repeat; }
+.sec-pf-catalog h4 { display:flex; align-items:center; gap:8px; margin:12px 0 4px; font-size:15px; font-weight:500; }
+.sec-pf-catalog h4 span:last-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sec-pf-logo { display:grid; place-items:center; flex:none; width:22px; height:22px; border-radius:5px; color:#fff; font-size:9.5px; font-weight:700; letter-spacing:.02em; }
+.sec-pf-catalog small { display:flex; align-items:center; gap:4px; color:#7b848a; font-size:11.5px; }
+.sec-pf-catalog small .sec-pf-ic { width:13px; height:13px; }
+.sec-pf-catalog p { margin:8px 0 12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12.5px; color:#30363a; }
+.sec-pf-catalog footer { display:flex; align-items:center; gap:10px; margin-top:auto; }
+.sec-pf-link { display:flex; align-items:center; gap:6px; color:#1271b7; font-size:13px; }
+.sec-pf-link > i { width:1px; height:13px; background:#c9ced1; }
+.sec-pf-link .sec-pf-ic { transform:rotate(-45deg); }
+.sec-pf-import { display:flex; align-items:center; gap:8px; height:30px; margin-left:auto; padding:0 14px; border:1.5px solid #1271b7; border-radius:6px; color:#1271b7; font-size:13px; font-weight:500; }
+.sec-pf-import b { font-size:18px; font-weight:400; line-height:1; }
+.sec-pf-import i { width:1px; height:13px; background:#9cc4e4; }
+.sec-pf-import.is-done { border-color:#eef6fc; background:#eef6fc; color:#1271b7; font-weight:400; }
+.sec-pf-compare { display:grid; place-items:center; width:28px; height:28px; border:1.5px solid #1f9d55; border-radius:6px; color:#1f9d55; }
+.sec-pf-compare .sec-pf-ic { width:14px; height:14px; }
+.sec-pf-bundles { display:grid; grid-template-columns:repeat(2, 580px); gap:14px; margin-bottom:18px; }
+.sec-pf-bundle { box-sizing:border-box; display:flex; gap:14px; height:150px; padding:10px; border:1px solid #dfe3e6; border-radius:8px; background:#fff; }
+.sec-pf-bimg { display:grid; place-items:center; flex:none; width:150px; border-radius:6px; background:#e9fbf6 center / cover no-repeat; }
+.sec-pf-bic { width:44px; height:44px; color:#a9c7c0; }
+.sec-pf-btext { flex:1; min-width:0; display:flex; flex-direction:column; }
+.sec-pf-btext header { display:flex; align-items:center; gap:7px; font-size:12px; }
+.sec-pf-btext header b { font-weight:600; }
+.sec-pf-btext header small { display:flex; align-items:center; gap:4px; margin-left:auto; color:#7b848a; font-size:11.5px; }
+.sec-pf-btext h4 { margin:8px 0 2px; font-size:17px; font-weight:500; }
+.sec-pf-btext p { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12.5px; color:#30363a; }
+.sec-pf-btext footer { display:flex; align-items:center; gap:10px; margin-top:auto; }
+.sec-pf-update { margin-left:auto; padding:5px 12px; border-radius:6px; background:#eef6fc; color:#1271b7; font-size:13px; }
+.sec-pf-missions { display:flex; gap:14px; }
+.sec-pf-mission { display:flex; align-items:center; gap:8px; width:286px; height:46px; padding:0 12px; border:1px solid #dfe3e6; border-radius:8px; font-size:13px; }

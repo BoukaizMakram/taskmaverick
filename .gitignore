@@ -37,3 +37,9 @@ next-env.d.ts
 /assets/quality-references/
 
 .claude/settings.local.json
+
+# storyboard videos exported as MP4 (scripts/storyboard-export.mjs); big, made again any time
+/exports/
+
+# files put on the storyboard's canvas as references (/api/storyboard/reference); they can be big
+/public/storyboard/references/

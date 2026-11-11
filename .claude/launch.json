@@ -1,0 +1,16 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "url": "http://localhost:3000",
+      "port": 3000
+    },
+    {
+      "name": "dev-3007",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "3007"],
+      "port": 3007
+    }
+  ]
+}

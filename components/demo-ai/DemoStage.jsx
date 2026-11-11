@@ -22,9 +22,17 @@
 // lib/sim/industryPacks.mjs), otherwise generated live (/api/demo-ai/industry)
 // while a "Setting up…" card shows. `onIndustry` tells the call when it's on
 // screen so Mav can present it. [[stage mission …]] posts one new mission.
+//
+// Videos: the storyboard's section videos (SectionVideo), drawn with the
+// visitor's industry (lib/sections/liveData.mjs: written for it by
+// /api/demo-ai/sections, at once from the workspace meanwhile) in a hidden frame
+// (liveCapture), on the whole stage (the 'video' layout). [[video play …]] plays
+// a part, [[video scene …]] a chapter in step with the voice, and [[video
+// rename|set|add|schedule|remove …]] changes what it shows: it is drawn again,
+// then the chapter that shows the change plays.
 // ---------------------------------------------------------------------------
 
-import { forwardRef, useCallback, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import SimDevice from '@/components/sim/SimDevice';
 import WebApp from '@/components/web/WebApp';
@@ -34,16 +42,41 @@ import { mentions, findPointable, clipOf, scrollersOf, cut } from './pointing';
 import { column, canClose, unitLabel } from '@/lib/sim/store.mjs';
 import { findPremade, toSim, industryKey } from '@/lib/sim/packs.mjs';
 import { INDUSTRY_PACKS } from '@/lib/sim/industryPacks.mjs';
+import SectionVideo, { runsOfBoard } from './SectionVideo';
+import { createLiveCapture } from './liveCapture';
+import { SECTIONS } from '@/lib/sections/index.mjs';
+import { LIVE, applyEdit, describe as describeData, fromPack, normalize } from '@/lib/sections/liveData.mjs';
 
 const W = 1600, H = 900;
-// [x, y, scale, opacity] of each screen per layout, in stage pixels.
+// [x, y, scale, opacity] of each screen per layout, in stage pixels, and the look round them: the storyboard videos' (the user, 2026-10-20: "the style like the background the
+// cursor etc."): the metal plate with its dark panel, Mav's words written in white where a video writes its words: in the room at the right of the one device shown (`side`,
+// `room`: where that room starts, as the video's tablet goes over the panel's edge) or in a band under the screens (`band`, as a video that shows a big board has them).
+// The screens are fitted as the videos fit them (sizes measured: the tablet 1000 x 697, the phone 380 x 794, the web window 1600 x 904): one tablet 1127 wide at x 45, as a video's.
+// (the tablet's photo has room round the device: of its 1000 x 697 box the device is x 36.6 to 961.2, y 17.1 to 679.9, so it is fitted by the device: one tablet is the device 1127 wide at x 45, y 45)
+const NO_VIDEO = [0, 0, 1, 0];
 export const LAYOUTS = {
-  devices: { phone: [110, 56, 0.98, 1], tablet: [515, 98, 1.03, 1], web: [140, 70, 0.8, 0] },
-  phone: { phone: [597, 30, 1.06, 1], tablet: [980, 170, 0.8, 0], web: [140, 70, 0.8, 0] },
-  tablet: { phone: [60, 90, 0.9, 0], tablet: [198, 32, 1.2, 1], web: [140, 70, 0.8, 0] },
-  web: { phone: [60, 90, 0.9, 0], tablet: [320, 170, 0.9, 0], web: [40, 22, 0.95, 1] },
-  all: { phone: [560, 262, 0.78, 1], tablet: [830, 352, 0.72, 1], web: [40, 30, 0.64, 1] },
+  devices: { phone: [84, 16, 0.93, 1], tablet: [446, -3, 1.113, 1], web: [147, 16, 0.816, 0], video: NO_VIDEO, look: { kind: 'band' } },
+  phone: { phone: [331, 53, 1, 1], tablet: [446, -3, 1.113, 0], web: [147, 16, 0.816, 0], video: NO_VIDEO, look: { kind: 'side', room: 1042.61 } },
+  tablet: { phone: [84, 16, 0.93, 0], tablet: [0.4, 24.2, 1.219, 1], web: [147, 16, 0.816, 0], video: NO_VIDEO, look: { kind: 'side', room: 1172 } },
+  web: { phone: [84, 16, 0.93, 0], tablet: [446, -3, 1.113, 0], web: [147, 16, 0.816, 1], video: NO_VIDEO, look: { kind: 'band' } },
+  all: { phone: [596, 217, 0.676, 1], tablet: [830, 295, 0.624, 1], web: [145, 16, 0.555, 1], video: NO_VIDEO, look: { kind: 'band' } },
+  video: { phone: [84, 16, 0.93, 0], tablet: [446, -3, 1.113, 0], web: [147, 16, 0.816, 0], video: [0, 0, 1, 1], look: { kind: 'video' } }, // (a storyboard video, the whole stage: it has its own words)
 };
+// The look's pieces, in stage px (lib/sections/captureCore.mjs: the plate, the panel at x 1042.61; components/storyboardPlayerDom.js: the words 380 wide, 26 px Montserrat).
+const LOOK = { panel: { x: 1042.61, w: 1601.69, h: 904.35 }, band: 770, words: 380, bandWords: 1100 };
+// The videos the call can play (the sections that have data: lib/sections/liveData.mjs), and the words they are asked for by.
+const VIDEOS = SECTIONS.filter(s => LIVE.includes(s.id));
+const VIDEO_WORDS = { 'precision-planning': ['planning', 'plan', 'schedule', 'scheduling', 'workload'], 'requesting-maintenance': ['maintenance', 'request', 'requests', 'repair', 'ticket'] };
+const slugOf = v => String(v ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+// "precision-planning schedules", "Planning", "maintenance ticket" → {section, run}
+function pickVideo(text, part = '') {
+  const words = slugOf(text).split('-').filter(Boolean), all = slugOf(`${text} ${part}`);
+  const section = VIDEOS.find(s => all.includes(s.id) || all.includes(slugOf(s.name))) || VIDEOS.find(s => words.some(w => VIDEO_WORDS[s.id]?.includes(w)));
+  if (!section) return {};
+  const runs = runsOfBoard(section.board), rest = slugOf(part || all.replace(section.id, '').replace(slugOf(section.name), ''));
+  const run = runs.find(r => rest && (rest.includes(r.id) || slugOf(r.title).includes(rest))) || runs.find(r => rest && r.lines.some(l => rest.split('-').includes(l))) || runs[0];
+  return { section, run };
+}
 // How long a directly-sent command takes to show its result.
 const SETTLE = { claim: 3000, close: 3400, capture: 4800, lesson: 2100, open: 950, board: 1400, home: 1300, unit: 1300, tickets: 1300, answer: 600, complete: 700, translate: 800, back: 700, menu: 900, proofs: 1300, knowledge: 1300, expand: 900, collapse: 700, tab: 650, request: 1900, rate: 800,
   overview: 1500, library: 1100, missions: 1100, create: 1300, edit: 1300, marketplace: 1100, catalog: 1100, process: 1300, reports: 1000, report: 1400, dashboard: 1200, section: 1000 };
@@ -159,9 +192,14 @@ function hintFor(root, c) {
   return null;
 }
 
-const DemoStage = forwardRef(function DemoStage({ store, interactive = false, onView, onAction, onIndustry, muted = true }, ref) {
-  const outer = useRef(null), inner = useRef(null), cursor = useRef(null), ripple = useRef(null), spot = useRef(null);
-  const frames = { phone: useRef(null), tablet: useRef(null), web: useRef(null) };
+const DemoStage = forwardRef(function DemoStage({ store, interactive = false, onView, onAction, onIndustry, muted = true, words = '' }, ref) {
+  const outer = useRef(null), inner = useRef(null), cursor = useRef(null), ripple = useRef(null), spot = useRef(null), panel = useRef(null), wordsBox = useRef(null);
+  const frames = { phone: useRef(null), tablet: useRef(null), web: useRef(null), video: useRef(null) };
+  const player = useRef(null), capture = useRef(null), onVideo = useRef(null); // the storyboard video on the stage, what draws it, and the part it plays ({section, run})
+  // The videos' data for each industry the call set up ({industry, data: {section: data}, edited: Set(section)}), and the one on screen.
+  const sectionsBy = useRef(new Map([['restaurant', { industry: 'Restaurant & cafe', data: Object.fromEntries(LIVE.map(id => [id, normalize(id)])), edited: new Set() }]]));
+  const sectionsKey = useRef('restaurant');
+  const [drawing, setDrawing] = useState(false);
   const [scale, setScale] = useState(0.5);
   const scaleRef = useRef(0.5);
   const layoutRef = useRef('devices');
@@ -194,13 +232,17 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
 
   const place = useCallback((name, animate) => {
     const spec = LAYOUTS[name] || LAYOUTS.devices;
-    for (const key of ['web', 'tablet', 'phone']) {
+    const go = (el, vars) => { if (!el) return; if (animate) gsap.to(el, { ...vars, duration: 0.9, ease: 'power3.inOut', overwrite: 'auto' }); else gsap.set(el, vars); };
+    for (const key of ['web', 'tablet', 'phone', 'video']) {
       const [x, y, s, o] = spec[key];
-      const el = frames[key].current;
-      if (!el) continue;
-      const vars = { x, y, scale: s, autoAlpha: o, transformOrigin: '0 0', zIndex: key === 'phone' ? 3 : key === 'tablet' ? 2 : 1 };
-      if (animate) gsap.to(el, { ...vars, duration: 0.9, ease: 'power3.inOut', overwrite: 'auto' }); else gsap.set(el, vars);
+      go(frames[key].current, { x, y, scale: s, autoAlpha: o, transformOrigin: '0 0', zIndex: key === 'video' ? 4 : key === 'phone' ? 3 : key === 'tablet' ? 2 : 1 });
     }
+    // the dark panel: the right side, or a band under the screens; the words in the middle of their room
+    const look = spec.look ?? { kind: 'band' }, band = look.kind === 'band';
+    go(panel.current, band ? { x: -1.69, y: LOOK.band, width: 1603.38, height: H - LOOK.band + 4 } : { x: LOOK.panel.x, y: 0, width: LOOK.panel.w, height: LOOK.panel.h });
+    const room = look.room ?? LOOK.panel.x;
+    go(wordsBox.current, band ? { x: (W - LOOK.bandWords) / 2, y: LOOK.band + (H - LOOK.band) / 2, width: LOOK.bandWords, autoAlpha: 1 } : { x: room + (W - room - LOOK.words) / 2, y: H / 2, width: LOOK.words, autoAlpha: look.kind === 'video' ? 0 : 1 });
+    if (inner.current) inner.current.dataset.look = look.kind;
   }, []);
   useLayoutEffect(() => { place('devices', false); gsap.set(cursor.current, { x: 1480, y: 820, autoAlpha: 0 }); gsap.set([spot.current, ripple.current], { autoAlpha: 0 }); }, [place]);
 
@@ -209,6 +251,7 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     const next = LAYOUTS[name] ? name : 'devices';
     layoutRef.current = next;
     place(next, true);
+    gsap.to([cursor.current, spot.current], { autoAlpha: 0, duration: 0.3, overwrite: 'auto' }); // (the screens move from under the hand; a video has a cursor of its own)
     report();
   }, [place, report]);
   const shown = device => (LAYOUTS[layoutRef.current] || LAYOUTS.devices)[device][3] > 0;
@@ -218,7 +261,13 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     const box = inner.current.getBoundingClientRect(), r = target.getBoundingClientRect ? target.getBoundingClientRect() : target, s = scaleRef.current;
     return { x: (r.left - box.left) / s, y: (r.top - box.top) / s, w: (r.right - r.left) / s, h: (r.bottom - r.top) / s };
   };
-  const glide = (x, y, duration = 0.5) => new Promise(resolve => { gsap.to(cursor.current, { autoAlpha: 1, duration: 0.15 }); gsap.to(cursor.current, { x, y, duration, ease: 'power2.inOut', overwrite: 'auto', onComplete: resolve }); });
+  // The hand glides there, and fades a moment after the last thing it went to (as in the videos: it does not stay parked on the screen).
+  const handRest = useRef(0);
+  const glide = (x, y, duration = 0.5) => new Promise(resolve => {
+    clearTimeout(handRest.current);
+    gsap.to(cursor.current, { autoAlpha: 1, duration: 0.15, overwrite: 'auto' });
+    gsap.to(cursor.current, { x, y, duration, ease: 'power2.inOut', overwrite: 'auto', onComplete: () => { handRest.current = setTimeout(() => gsap.to(cursor.current, { autoAlpha: 0, duration: 0.45, overwrite: 'auto' }), 2600); resolve(); } });
+  });
 
   // Point: glide next to the element and ring it (no click).
   const dodgeTimer = useRef(null);
@@ -239,7 +288,7 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     }
     const x = b.x + Math.min(b.w * 0.5, b.w - 6), y = b.y + Math.min(b.h * 0.5, 60);
     if (ring) {
-      const pad = 6;
+      const small = Math.min(b.w, b.h), pad = small < 36 ? 15 : small < 70 ? 11 : 8; // (the room a video's yellow outline leaves round what it is round: lib/sections/captureCore.mjs)
       gsap.killTweensOf(spot.current);
       gsap.set(spot.current, { x: b.x - pad, y: b.y - pad, width: b.w + pad * 2, height: b.h + pad * 2 });
       gsap.fromTo(spot.current, { autoAlpha: 0, scale: 1.04 }, { autoAlpha: 1, scale: 1, duration: 0.3, delay: duration * 0.6 });
@@ -468,6 +517,86 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     results.current = [...results.current, `${text} ${ok ? '✓' : '✗'}`].slice(-12);
     onAction?.(`${text} ${ok ? '✓' : '✗'}`);
   }, [onAction]);
+  // ---- storyboard videos -----------------------------------------------------------
+  // What draws them: a hidden frame, loaded a moment after the call starts, and the board's own videos made ready in it.
+  const sectionsNow = () => sectionsBy.current.get(sectionsKey.current) ?? sectionsBy.current.get('restaurant');
+  const dataOf = id => sectionsNow().data[id] ?? normalize(id);
+  const precapture = useCallback(entry => { for (const id of LIVE) capture.current?.capture(id, entry.data[id]).catch(() => {}); }, []);
+  useEffect(() => {
+    const cap = createLiveCapture();
+    capture.current = cap;
+    const t = setTimeout(() => cap.warm().then(ok => ok && precapture(sectionsNow())), 1500);
+    return () => { clearTimeout(t); cap.dispose(); capture.current = null; };
+  }, [precapture]); // eslint-disable-line react-hooks/exhaustive-deps
+  // The videos' data for an industry the call put on screen: the restaurant is the board's own; another is made from its workspace at once and written for it by the AI
+  // meanwhile (what the AI already changed in a video stays as it changed it).
+  const prepareSections = useCallback(({ key, industry, pack = null }) => {
+    sectionsKey.current = key;
+    let entry = sectionsBy.current.get(key);
+    if (!entry) {
+      entry = { industry, data: fromPack(pack) ?? Object.fromEntries(LIVE.map(id => [id, normalize(id)])), edited: new Set() };
+      sectionsBy.current.set(key, entry);
+      const ask = (tries = 2) => fetch('/api/demo-ai/sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ industry, pack }) })
+        .then(r => (r.ok ? r.json() : r.status >= 500 && r.status !== 502 && tries > 1 ? new Promise(resolve => setTimeout(resolve, 2500)).then(() => ask(tries - 1)) : null)); // (once more, a moment later, if the server could not answer; the route has tried the AI itself)
+      ask().then(res => {
+        if (!res?.sections) return;
+        for (const id of LIVE) if (res.sections[id] && !entry.edited.has(id)) entry.data[id] = normalize(id, res.sections[id]);
+        if (sectionsKey.current === key) precapture(entry);
+      }).catch(() => {});
+    }
+    precapture(entry);
+  }, [precapture]);
+  // A video drawn with the data it has now (made ready already, most of the time; else a card says it is being drawn).
+  const drawVideo = useCallback(async id => {
+    if (!capture.current) return null;
+    const job = capture.current.capture(id, dataOf(id));
+    const slow = setTimeout(() => setDrawing(true), 350);
+    try { return await job; } catch (error) { note(`video · drawing ${id} failed (${error.message})`, false); return null; } finally { clearTimeout(slow); setDrawing(false); }
+  }, [note]); // eslint-disable-line react-hooks/exhaustive-deps
+  const showVideo = useCallback(async (sectionId, runId) => {
+    const video = await drawVideo(sectionId);
+    if (!video || !player.current?.load(video, runId)) return false;
+    onVideo.current = { section: sectionId, run: runId };
+    if (layoutRef.current !== 'video') { setLayout('video'); await sleep(650); }
+    return true;
+  }, [drawVideo, setLayout]);
+  const runVideo = useCallback(async c => {
+    const cmd = lower(c.cmd), name = id => SECTIONS.find(s => s.id === id)?.name ?? id;
+    if (cmd === 'play' || cmd === 'show') {
+      const { section, run } = pickVideo(c.arg || c.section || c.name || '', c.part || c.chunk || '');
+      if (!section) { note(`video · play ${c.arg || ''} (no such video: ${VIDEOS.map(s => s.id).join(', ')})`, false); return; }
+      if (await showVideo(section.id, run.id)) { player.current.play(); note(`video · play ${section.name} — ${run.title}`); }
+      return;
+    }
+    if (cmd === 'scene' || cmd === 'chapter') {
+      const id = slugOf(c.arg || c.chapter || c.name || ''), on = onVideo.current;
+      if (!on) { note(`video · scene ${id} (no video on screen: play one first)`, false); return; }
+      if (layoutRef.current !== 'video') { setLayout('video'); await sleep(650); }
+      let ok = await player.current.scene(id);
+      if (!ok) { // (a chapter of another part of the same video: that part)
+        const run = runsOfBoard(SECTIONS.find(s => s.id === on.section)?.board).find(r => r.lines.includes(id));
+        if (run && await showVideo(on.section, run.id)) ok = await player.current.scene(id);
+      }
+      if (!ok) note(`video · scene ${id} (not a chapter of ${name(on.section)})`, false);
+      return;
+    }
+    if (cmd === 'hold' || cmd === 'pause' || cmd === 'stop') { player.current?.hold(); return; }
+    if (['rename', 'set', 'add', 'schedule', 'remove'].includes(cmd)) {
+      const asked = c.video ? pickVideo(c.video).section?.id : null;
+      const section = asked || onVideo.current?.section || (c.request || c.problem || c.ticket ? 'requesting-maintenance' : 'precision-planning');
+      const result = applyEdit(section, dataOf(section), c);
+      const label = `video · ${cmd} ${Object.entries(c).filter(([k]) => !['target', 'cmd', 'id'].includes(k)).map(([k, v]) => `${k}=${v}`).join('; ')}`;
+      if (result.error) { note(`${label} (${result.error})`, false); return; }
+      const entry = sectionsNow();
+      entry.data[section] = result.data; entry.edited.add(section);
+      const run = runsOfBoard(SECTIONS.find(s => s.id === section)?.board).find(r => r.lines.includes(result.chapter)) ?? runsOfBoard(SECTIONS.find(s => s.id === section)?.board)[0];
+      const ok = run && await showVideo(section, run.id) && await player.current.scene(result.chapter);
+      note(`${label} → ${result.said}${ok ? `, showing the chapter "${result.chapter}"` : ''}`, !!ok);
+      return;
+    }
+    note(`video · ${cmd} (unknown)`, false);
+  }, [note, showVideo, setLayout]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Put an industry on screen: its first team board on the tablet, the home
   // dashboard (with its unit on top) on the phone.
   const showUnit = useCallback(async unitId => {
@@ -493,6 +622,7 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     // The recorded demo's own restaurant / factory, or an industry already loaded: just show it.
     const already = premade?.builtin ? premade.unit : loaded.current.get(premade?.id || key);
     if (already && st.units.some(u => u.id === already)) {
+      prepareSections({ key: premade?.id || key, industry: premade?.industry || name });
       await showUnit(already);
       note(`stage · industry ${name} (already in the app)`);
       onIndustry?.(summary(already, 'existing'));
@@ -519,12 +649,13 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     const now = store.getState();
     const unit = store.loadPack(toSim(pack, { codes: now.units.map(u => u.id), titles: now.boards.map(b => b.title) }));
     loaded.current.set(premade?.id || key, unit.id);
+    prepareSections({ key: premade?.id || key, industry: pack.industry, pack }); // (the storyboard videos, for this industry too)
     setPreparing(null);
     busy.current = true;
     try { await showUnit(unit.id); } finally { busy.current = false; }
     note(`stage · industry ${pack.industry} (${premade ? 'premade' : 'generated'})`);
     onIndustry?.(summary(unit.id, premade ? 'premade' : 'generated'));
-  }, [store, showUnit, note, onIndustry, summary]);
+  }, [store, showUnit, note, onIndustry, summary, prepareSections]);
 
   // Post one new mission, live, on a team board (under Open), and show it.
   const postMission = useCallback(async c => {
@@ -552,6 +683,7 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     followId.current += 1;
     busy.current = true;
     try {
+      if (c.target === 'video') { await runVideo(c); return; }
       if (c.target === 'stage') {
         if (c.cmd === 'restore') { store.restoreMission(clean(c.arg || c.mission || '')); await sleep(150); return; }
         if (c.cmd === 'industry') { await loadIndustry(c.arg || c.name || c.industry || ''); return; }
@@ -611,7 +743,7 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
       // A claimed / closed / requested mission lands at the top of its column.
       if (ok && ['claim', 'close', 'request'].includes(c.cmd)) for (const d of ['tablet', 'phone']) listsOf(frames[d].current).forEach(l => scrollTo(l, 0));
     } finally { busy.current = false; }
-  }, [setLayout, pointAt, webClicks, deviceClicks, send, onAction, store, checkDone, loadIndustry, postMission]);
+  }, [setLayout, pointAt, webClicks, deviceClicks, send, onAction, store, checkDone, loadIndustry, postMission, runVideo]);
 
   // While a sentence plays, point at what it names, timed to the audio.
   // Make the screen show what the sentence talks about: close a drawer or an
@@ -667,12 +799,19 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     };
     requestAnimationFrame(tick);
   }, [pointAt, tidy]);
-  const unfollow = useCallback(() => { followId.current += 1; }, []);
+  const unfollow = useCallback(() => { followId.current += 1; player.current?.hold(); }, []); // (the voice was cut: the video finishes its chapter and waits)
 
   // What is on every screen right now, for the AI (sent with each turn).
   const describe = useCallback(() => {
     const st = store.getState();
-    const lines = [`Stage layout: ${layoutRef.current} — visible screens: ${['phone', 'tablet', 'web'].filter(shown).join(', ')}.`];
+    const lines = [`Stage layout: ${layoutRef.current} — visible screens: ${layoutRef.current === 'video' ? 'the storyboard video (the phone, tablet and web are hidden behind it)' : ['phone', 'tablet', 'web'].filter(shown).join(', ')}.`];
+    const info = player.current?.info, on = onVideo.current;
+    if (layoutRef.current === 'video' && info && on) {
+      const spec = SECTIONS.find(s => s.id === on.section), run = runsOfBoard(spec?.board).find(r => r.id === on.run);
+      lines.push(`VIDEO ON SCREEN: ${spec?.name} (${on.section}), part "${run?.title}" (${on.run}); chapter ${info.chapter} is ${info.playing ? 'playing' : 'held on its last picture'}; its chapters in order: ${info.chapters.join(', ')}.`);
+    }
+    const entry = sectionsNow();
+    lines.push(`VIDEO DATA (what the storyboard videos show${entry.industry ? ` for ${entry.industry}` : ''}): ${LIVE.map(id => `${SECTIONS.find(s => s.id === id)?.name}: ${describeData(id, entry.data[id])}`).join(' || ')}`);
     lines.push(`UNITS in the app: ${st.units.map(u => `${u.code} ${u.name} (${u.industry})`).join('; ')}.${preparingRef.current ? ` Still setting up: ${preparingRef.current} (not on screen yet).` : ''}`);
     if (st.industry) {
       const u = st.industry;
@@ -711,7 +850,9 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
     return lines.join('\n');
   }, [store]);
 
-  useImperativeHandle(ref, () => ({ run, follow, unfollow, setLayout, describe, get layout() { return layoutRef.current; } }), [run, follow, unfollow, setLayout, describe]);
+  // (the Video button with no video on the stage yet: the first one plays)
+  const chooseLayout = useCallback(name => (name === 'video' && !onVideo.current ? run({ target: 'video', cmd: 'play', arg: VIDEOS[0]?.id }) : setLayout(name)), [run, setLayout]);
+  useImperativeHandle(ref, () => ({ run, follow, unfollow, setLayout: chooseLayout, describe, get layout() { return layoutRef.current; }, get video() { return player.current; } }), [run, follow, unfollow, chooseLayout, describe]);
 
   // The industries loaded into the simulator, as Library folders and teams in the web app.
   const webLibrary = useMemo(() => sim.units.filter(u => !['L001', 'P001'].includes(u.id)).map(u => {
@@ -739,7 +880,10 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
   const onWeb = useCallback(viewOf('web'), [report]);
 
   return <div className={`dai-stage${interactive ? ' is-interactive' : ''}`} ref={outer}>
-    <div className="dai-stage-inner" ref={inner} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+    <div className="dai-stage-inner" ref={inner} data-look="band" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+      <div className="dai-plate" aria-hidden="true"/>
+      <div className="dai-panel" ref={panel} aria-hidden="true"/>
+      <div className="dai-words" ref={wordsBox} aria-live="polite">{words && <p key={words} dir="auto">{words}</p>}</div>
       <div className="dai-frame dai-frame--web" ref={frames.web}>
         <div className="dai-browser">
           <div className="dai-browser-bar"><span className="dai-lights"><i/><i/><i/></span><span className="dai-tab"><img src="/mission-logo.png" alt=""/>Taskmaverick</span></div>
@@ -749,10 +893,12 @@ const DemoStage = forwardRef(function DemoStage({ store, interactive = false, on
       </div>
       <div className="dai-frame dai-frame--tablet" ref={frames.tablet}><SimDevice store={store} device="tablet" initialScreen="board" initialBoard="L001-team-a" remote={remote.tablet} onView={onTablet} muted={muted}/></div>
       <div className="dai-frame dai-frame--phone" ref={frames.phone}><SimDevice store={store} device="phone" initialScreen="board" initialBoard="L001-team-a" remote={remote.phone} onView={onPhone} muted={muted}/></div>
+      <div className="dai-frame dai-frame--video" ref={frames.video}><SectionVideo ref={player}/></div>
       {preparing && <div className="dai-preparing" role="status"><LoadingLogo/><b>Setting up a {preparing} workspace…</b><small>Teams, missions, tickets and trainings for your industry</small></div>}
+      {drawing && !preparing && <div className="dai-preparing" role="status"><LoadingLogo/><b>Drawing the video…</b><small>With your own teams, missions and schedules</small></div>}
       <span className="dai-spot" ref={spot} aria-hidden="true"/>
       <span className="dai-ripple" ref={ripple} aria-hidden="true"/>
-      <span className="dai-cursor" ref={cursor} aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 2.5 19.5 13l-7 1.4 3.9 7.3-2.6 1.3-3.9-7.3L4.5 20Z" fill="#111" stroke="#fff" strokeWidth="1.4" strokeLinejoin="round"/></svg><em>Mav</em></span>
+      <span className="dai-cursor" ref={cursor} aria-hidden="true"><img src="/demo-hand.png" alt="" draggable={false}/></span>{/* (the videos' big yellow hand: its fingertip is the point it moves) */}
     </div>
   </div>;
 });

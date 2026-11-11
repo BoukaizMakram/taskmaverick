@@ -13,10 +13,10 @@
 // drawn on a frame's background picks the assets it touches. Frames picked together are
 // carried together (by their number bar). Ctrl/⌘+C / X / V copy, cut and paste the
 // picked assets or frames, onto any frame of any board (the other video's too); a picture is pasted from the clipboard or dropped on a frame;
-// Alt+drag pulls a duplicate out of an asset, into its frame or another one. The
-// same asset along a line of the board is linked: retyping it in one frame changes
-// its duplicates too, until it is made unique (right-click); a chat bubble is always
-// unique, and its handles resize its box (its words keep their size; with the Scale tool, K, the words scale with it). The pencil (P)
+// Alt+drag pulls a duplicate out of an asset, into its frame or another one. Nothing
+// is linked (the user, 2026-11-09): every frame's assets and words are its own, a copy
+// is a thing of its own from the moment it is made, and only Apply to all in this row /
+// Delete in the whole row (pressed) reach the other frames; a chat bubble's handles resize its box (its words keep their size; with the Scale tool, K, the words scale with it). The pencil (P)
 // draws on a frame, in the color of the wheel in the inspector (Alt+click picks one
 // from the board); each stroke is an asset.
 // Ctrl/⌘+D duplicates a frame, Delete takes an asset out of
@@ -34,39 +34,73 @@
 //
 // Panning and zooming move the board directly (no React render per wheel tick);
 // the page catches up when the movement settles.
-import {memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {memo, useCallback, useDeferredValue, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import Link from 'next/link';
+import {TextFields} from './StoryboardTextEditor';
 import StoryboardPlayer from './StoryboardPlayer';
-import {runsOf, shelvedRuns} from '@/lib/storyboardVideos.mjs';
+import StoryboardVideoEditor from './StoryboardVideoEditor';
+import StoryboardAllVideos from './StoryboardAllVideos';
+import {ALL_VIDEOS, ALL_VIDEOS_GROUP, ALL_VIDEOS_NAME} from '@/lib/storyboardAllVideos.mjs';
+import {ALL_STORYBOARDS, ALL_STORYBOARDS_NAME, ONLY_BOARDS} from '@/lib/storyboardAllStoryboards.mjs';
+import CommentPanel from './StoryboardCommentPanel';
+import {addVideoComment, commentNumber, commentsOf as videoCommentsOf, newCommentId, removeVideoComment, updateVideoComment} from '@/lib/storyboardComments.mjs';
+import {ExportMenuItem, ExportSection} from './StoryboardExport';
+import {profileOf, runsOf, shelvedRuns} from '@/lib/storyboardVideos.mjs';
+import {SPEED, setLineShelf, setVideoSpeed, videoSpeedOf, applyAlongRow, hideAlongRow} from '@/lib/storyboardEdits.mjs';
+import {BOARD_GROUPS, SECTION_BOARDS} from '@/lib/sections/index.mjs';
 import {cellsOf, duplicateVideo, expandLine, followersOf, slidesOrder, withSlides} from '@/lib/storyboardCells.mjs';
 import {FRAME, LAYOUT, clampZoom, fitRect, gapAt, glideZoom, intersects, dropTarget, keepView, lineDropIndex, layoutFrames, layoutGaps, panBy, parseView, restoreView, stepZoom, toWorld, union, viewBetween, viewKey, visibleWorld, wheelAction, zoomAt} from '@/lib/storyboardView.mjs';
 import {SNAP_REACH, snapBox, snapTargets} from '@/lib/storyboardSnap.mjs';
-import {EMPTY, FONTS, ANIM_CPS, animOf, animSeconds, animCps, hasAnim, setAnim, scaledLineHeight, addBlank, addBlankIn, addCopy, addInserts, addLine, createHistory, deleteFrame, duplicateLine, hasChanges, hideLayer, hideLine, intoLine, isEdited, lockOf, makeExport, readExport, setLock, setBubble, bubbleOf, layersOf, linesOf as boardLines, mergeEdits, moveFrame, moveInList, moveLayers, moveLine, noteOf, normalizeEdits, setBackground, backgroundOf, orderedFrames, record, redo, removeInsert, renameLine, resetAsset, resetFrame, setMove, setName, setNote, setLineView, setInsertHtml, setScale, setSize as setBoxSize, setStyle, setText, setTip, setUnique, styleOf, undo} from '@/lib/storyboardEdits.mjs';
+import {setLayerLook, layerLookOf, unhideLayer, setVideoScale, videoScaleOf, setVideoMove, videoMoveOf} from '@/lib/storyboardEdits.mjs';
+import {BLEND_MODES, EFFECTS, EFFECT_TYPES, KIND_LABEL, LABELS, addEffect, addVideoLayer, fxProp, isAnimated as layerAnimated, keyTimes as layerKeyTimes, layersOf as videoLayersOf, moveEffect, newLayerId, orderVideoLayers, patchEffect, removeEffect, removeKeyAt as removeLayerKey, removeVideoLayer, setAnimated as setLayerAnimated, setKeyEase, setLayerAt, setSpan, spansOf, splitVideoLayer, stackVideoLayer, updateVideoLayer, valueAt as layerValueAt} from '@/lib/storyboardLayers.mjs';
+import {BACKGROUND, setOwnLook, setSharedLook, setSharedLooks, sharedLookOf, setVideoTextAll, videoTextKindOf, EMPTY, FONTS, ANIM_CPS, animOf, animSeconds, animCps, hasAnim, setAnim, scaledLineHeight, addBlank, addBlankIn, addCopy, addInserts, addLine, createHistory, deleteFrame, duplicateLine, hasChanges, hideLayer, hideLine, intoLine, isEdited, lockOf, makeExport, readExport, setLock, setBubble, bubbleOf, layersOf, linesOf as boardLines, mergeEdits, moveFrame, moveInList, moveLayers, moveLine, noteOf, normalizeEdits, setBackground, backgroundOf, orderedFrames, record, redo, removeInsert, renameLine, resetAsset, resetFrame, setMove, setName, setNote, setLineView, setInsertHtml, setScale, setSize as setBoxSize, setStyle, setText, setTip, setCaption, setVideoText, setVideoTextKind, styleOf, undo} from '@/lib/storyboardEdits.mjs';
 import {TRASH, addToTrash, removeFromTrash, trashEntry, trashVideo} from '@/lib/storyboardTrash.mjs';
 import {groupParts, hashString, partInsert, partList, searchParts} from '@/lib/storyboardParts.mjs';
 import {PEN, PEN_WIDTHS, inkOf, normalizeHex, restyleInk, strokeInsert} from '@/lib/storyboardDraw.mjs';
+import {CAPS, CAP_NAMES, DASHES, LINE_CAPS, LINE_JOINS, refitPath, reversePoints, setSmooth} from '@/lib/storyboardPaths.mjs';
 import {ColorField, ColorWheel, EffectRow, IconButtons, LockButton, NumField, PaintField, PanelIcon, Section, SelectField, TextField, ToolButton, solidHex} from './StoryboardPanel';
-import {isGradient} from '@/lib/storyboardPaint.mjs';
+import {isGradient, paintFromCss} from '@/lib/storyboardPaint.mjs';
 import {RECT_FILL, rectFrom, rectInsert} from '@/lib/storyboardShapes.mjs';
 import {contentFactor, scaledBox, scaledStyles} from '@/lib/storyboardScale.mjs';
 import {copyFrames, copyLayers, copyPicks, isClip, layerKeyOf, pasteFrames, pasteLayers} from '@/lib/storyboardClipboard.mjs';
 import {addPick, framesOfPicks, groupPicks, hasPick, isBackdrop, nextLayer, picksOf, rectOf, removePick, sameSpot, samePicks} from '@/lib/storyboardPick.mjs';
-import {isUnique, linkOf, linkedLayers, linkedParts, splitKey} from '@/lib/storyboardLinks.mjs';
+import {linkOf, linkedLayers} from '@/lib/storyboardLinks.mjs';
 import {imageInsert, isImage} from '@/lib/storyboardImages.mjs';
+import StoryboardRefs, {makeRefs} from './StoryboardRefs';
+import {addRefs, changeRef, refBoxes, refsOf, removeRef} from '@/lib/storyboardRefs.mjs';
 import {writeWords} from './storyboardHandwriting';
-import {STAGE, applyEdits, assetsIn, boxOf, bubbleBoxOf, bubblePad, chainOf, colorAt, drawShape, editTargetAt, editTargetOf, elementOf, frameHtml, hitAt, isBubble, isWords, keyOf, layersAt, placeTimelines, linesOf, lookOf, whenFontsLoaded, moveTo, nameOf, parentScale, parseStyle, resizeKind, scaleOf, scaleTo, screenRectOf, setLines, setTextNumbers, sizeOf, sizeTo, stageBoxOf, stageOf, tailOff, tipToMiddle, targetKey, targetOf, textIn, textKeysOf, tipOf, translateOf, unitOf} from './storyboardDom';
+import {cacheGet, cachePut} from './storyboardCache';
+import {lookKindOfRoot, STAGE, applyEdits, blackPlate, assetsIn, boxOf, bubbleBoxOf, bubblePad, chainOf, colorAt, drawShape, drawShapes, editTargetAt, editTargetOf, elementOf, frameHtml, guidesOf, narrowPanel, hitAt, isBubble, isFixed, isWords, keyOf, layersAt, placeTimelines, linesOf, lookOf, whenFontsLoaded, moveTo, nameOf, parentScale, parseStyle, resizeKind, scaleOf, scaleTo, screenRectOf, setLines, setTextNumbers, sizeOf, sizeTo, stageBoxOf, stageOf, tailOff, tipToMiddle, targetKey, targetOf, textKeysOf, tipOf, translateOf, unitOf} from './storyboardDom';
 import './EfficiencyStoryDemo.css';
 import './ImprovedQualityDemo.css';
 import './ImprovedQualityV2Demo.css';
+import './LiveOversightDemo.css';
+import './sections/sections.css';
+import './sections/sectionStyles';
+import './TicketCard.css';// (the alert ticket's look: the captured sections' tickets are plain HTML here)
 import './EfficiencyV2Demo.css';
 import './ReferenceBoard.css';
 import './CaptionBubbles.css';
 import './DemoHand.css';
 import './web/web.css';// the web app's pieces (Shift+A > Web app) need its own rules, e.g. a mission's 16px logo
+import './remotion/CutParts.css';     // the Remotion cuts' pieces, on the board All storyboards (scripts/capture-cuts.mjs)
+import './remotion/EfficiencyCut.css';
+import './remotion/EfficiencyRedo.css'; // (the cut redone from the storyboard, if a row is made from it: capture-cuts --layout storyboard)
 import './Storyboard.css';
 
-const VIDEOS = [{id: 'improved-quality-v2', name: 'Improved Quality'}, {id: 'increased-efficiency-v2', name: 'Increased Efficiency'}];
+const VIDEOS = [{id: 'improved-quality-v2', name: 'Improved Quality'}, {id: 'increased-efficiency-v2', name: 'Increased Efficiency (previous)'}, ...SECTION_BOARDS]; // (the sections of the website: lib/sections/index.mjs)
 const BOARDS = [...VIDEOS, {id: TRASH, name: 'Trash'}];
+// The board menu (the user, 2026-10-20: "add the name of each section in the dropdown like Risk then indent and show subtitles"): the boards under their group's name (Operations, Training,
+// Risk, Knowledge: BOARD_GROUPS, the narration's order), then the rest (the Trash). A section still being built (`draft`) is in it too, marked "(in progress)" (the user, 2026-10-20:
+// "I wanna see other section even if not finished, just show where we are so far"). The group on top is "All videos" (the user, 2026-10-29): the one page of videos, the lines "Videos" stitched
+// (components/StoryboardAllVideos.jsx; it has no board of its own, so it is not in BOARDS: the shared looks are not copied to a file for it).
+const menuOf = () => {
+  // For now only All videos and All storyboards (the user, 2026-11-06: "hide all the other pages of storyboards ... keep just all videos and all storyboards"; lib/storyboardAllStoryboards.mjs
+  // ONLY_BOARDS; the other boards are still there, by their address)
+  if (ONLY_BOARDS) return {groups: [{name: ALL_VIDEOS_GROUP, boards: [{id: ALL_VIDEOS, name: ALL_VIDEOS_NAME}, {id: ALL_STORYBOARDS, name: ALL_STORYBOARDS_NAME}]}], rest: []};
+  const named = new Map(BOARDS.map(b => [b.id, b.draft ? {...b, name: `${b.name} (in progress)`} : b])), grouped = new Set(BOARD_GROUPS.flatMap(g => g.boards));
+  return {groups: [{name: ALL_VIDEOS_GROUP, boards: [{id: ALL_VIDEOS, name: ALL_VIDEOS_NAME}]}, ...BOARD_GROUPS.map(g => ({name: g.name, boards: g.boards.map(id => named.get(id)).filter(Boolean)})).filter(g => g.boards.length)], rest: BOARDS.filter(b => !grouped.has(b.id))};
+};
 // The Trash has no captured frames: its rows and frames come from what was deleted (trashVideo).
 const TRASH_VIDEO = {version: 1, video: TRASH, name: 'Trash', stage: {className: 'ad-stage', style: '', shell: 'es-player demo-text-scope'}, chapters: [], frames: [], assets: {}};
 const MENU_COLUMNS = 4; // the grid in the Shift+A menu (see .sb-tiles)
@@ -80,9 +114,14 @@ const writeLocal = (key, value) => { try { localStorage.setItem(key, value); } c
 // (content/storyboard/<video>.json, with its revision `rev`); this browser's copy ({rev, edits})
 // only adds changes made from that same revision that were not saved yet. Without the file
 // (production), this browser's copy. -> {edits, changed, file, rev}
-const localOf = videoId => { try { const kept = JSON.parse(readLocal(`storyboard:${videoId}`) || 'null'); return kept && 'edits' in kept ? {rev: kept.rev ?? null, edits: normalizeEdits(kept.edits)} : {rev: null, edits: normalizeEdits(kept ?? {})}; } catch { return {rev: null, edits: EMPTY}; } };
+// The copy is in IndexedDB (components/storyboardCache.js; it used to be localStorage, read once more for a copy kept there), with
+// `pending`: changes not yet in the file (null: a copy from before, it is not known).
+const localOf = async videoId => {
+  const kept = (await cacheGet('boards', videoId)) ?? (() => { try { return JSON.parse(readLocal(`storyboard:${videoId}`) || 'null'); } catch { return null; } })();
+  try { return kept && 'edits' in kept ? {rev: kept.rev ?? null, edits: normalizeEdits(kept.edits), pending: typeof kept.pending === 'boolean' ? kept.pending : null} : {rev: null, edits: normalizeEdits(kept ?? {}), pending: null}; } catch { return {rev: null, edits: EMPTY, pending: null}; }
+};
 async function loadSaved(videoId) {
-  const mine = localOf(videoId);
+  const mine = await localOf(videoId);
   try {
     const response = await fetch(`/api/storyboard?video=${videoId}`, {cache: 'no-store'});
     if (!response.ok) throw new Error();
@@ -99,18 +138,35 @@ async function postSaved(videoId, edits, rev = null, reason = 'save') {
   if (!response.ok) throw new Error(data.error || 'Save failed');
   return {rev: data.rev};
 }
-const keepLocal = (videoId, rev, edits) => writeLocal(`storyboard:${videoId}`, JSON.stringify({rev, edits}));
+const keepLocal = (videoId, rev, edits, pending = false) => cachePut('boards', videoId, {rev, edits, pending}).then(done => {
+  if (done == null) writeLocal(`storyboard:${videoId}`, JSON.stringify({rev, edits})); // (no IndexedDB here: as before)
+  else try { localStorage.removeItem(`storyboard:${videoId}`); } catch {} // (the old copy: room for the rest)
+});
+// A board opens with what this browser had of it (the user, 2026-10-22: "cache everything so it can make it super fast"), read
+// while the board's frames are still being fetched, and the file is asked only whether it changed since (`?rev=`: a few bytes
+// when it did not). -> {mine, check: Promise of {same} | {edits, rev} | null}, or no check (no copy of a revision of the file here).
+const early = new Map();
+const openLocal = videoId => {
+  const was = early.get(videoId);
+  if (was && performance.now() - was.at < 10000) return was.made;
+  const made = localOf(videoId).then(mine => ({mine, check: mine.rev != null && mine.pending != null ? fetch(`/api/storyboard?video=${videoId}&rev=${mine.rev}`, {cache: 'no-store'}).then(r => r.json()).catch(() => null) : null}));
+  early.set(videoId, {at: performance.now(), made});
+  return made;
+};
 // The Trash is a board of its own, saved like the others: what is deleted from a storyboard is
 // put in its file (and this browser's copy) right away, and taken out again when the delete is undone.
-async function changeTrash(change) {
+// Any board's file can be changed from the page of another (the Trash; the look of all the video words, kept alike on both boards).
+async function changeBoard(videoId, change) {
   for (let tries = 0; tries < 4; tries++) {
-    const saved = await loadSaved(TRASH), next = change(saved.edits);
-    if (!saved.file) { keepLocal(TRASH, null, next); return; }
-    const done = await postSaved(TRASH, next, saved.rev);
-    if (!done.conflict) { keepLocal(TRASH, done.rev, next); return; } // (else it changed meanwhile: read it again and redo)
+    const saved = await loadSaved(videoId), next = change(saved.edits);
+    if (next === saved.edits) return {rev: saved.rev, edits: saved.edits}; // (-> what the file holds now: the All videos page keeps its copy of the board by it)
+    if (!saved.file) { keepLocal(videoId, null, next); return {rev: null, edits: next}; }
+    const done = await postSaved(videoId, next, saved.rev);
+    if (!done.conflict) { keepLocal(videoId, done.rev, next); return {rev: done.rev, edits: next}; } // (else it changed meanwhile: read it again and redo)
   }
-  throw new Error('the Trash kept changing');
+  throw new Error(`the ${videoId} board kept changing`);
 }
+const changeTrash = change => changeBoard(TRASH, change);
 // A file to save (an export of the storyboard).
 const download = (name, data) => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'})), a = document.createElement('a');
@@ -161,17 +217,24 @@ const Icon = {
   rect: <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"><rect x="3.5" y="5" width="13" height="10" rx="1.4"/></svg>,
   scale: <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="10" width="7" height="7" rx="1.2"/><path d="M12 3.5h4.5V8M16.5 3.5 10.5 9.5"/></svg>,
   pencil: <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m13.2 3.6 3.2 3.2L7 16.2l-4 .8.8-4 9.4-9.4ZM11.4 5.4l3.2 3.2"/></svg>,
+  comment: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"><path d="M12 3.8a8.2 8.2 0 1 1-3.7 15.5L3.8 20.2l1-4.1A8.2 8.2 0 0 1 12 3.8Z"/><path d="M8.6 10.6h6.8M8.6 13.8h4.2"/></svg>,
 };
 
 // The sidebar's rows of buttons: where an asset is aligned (in its frame, or to the others picked
 // with it), how its text is aligned, and the weights a text can take.
 const ALIGN = [{id: 'left', label: 'Align left', icon: PanelIcon.left}, {id: 'hcenter', label: 'Align horizontal centers', icon: PanelIcon.hcenter}, {id: 'right', label: 'Align right', icon: PanelIcon.right},
   {id: 'top', label: 'Align top', icon: PanelIcon.top}, {id: 'vcenter', label: 'Align vertical centers', icon: PanelIcon.vcenter}, {id: 'bottom', label: 'Align bottom', icon: PanelIcon.bottom}];
+// (the video editor, several picked: spread with the same room between each, the first and the last staying)
+const DISTRIBUTE = [
+  {id: 'h', label: 'Distribute horizontally (3 or more)', icon: <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1.5" y="2" width="1.3" height="12" rx=".6"/><rect x="13.2" y="2" width="1.3" height="12" rx=".6"/><rect x="6.2" y="4.5" width="3.6" height="7" rx=".8"/></svg>},
+  {id: 'v', label: 'Distribute vertically (3 or more)', icon: <svg viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="1.5" width="12" height="1.3" rx=".6"/><rect x="2" y="13.2" width="12" height="1.3" rx=".6"/><rect x="4.5" y="6.2" width="7" height="3.6" rx=".8"/></svg>},
+];
 const TEXT_ALIGN = [{id: 'left', label: 'Text: left', icon: PanelIcon.tleft}, {id: 'center', label: 'Text: center', icon: PanelIcon.tcenter}, {id: 'right', label: 'Text: right', icon: PanelIcon.tright}, {id: 'justify', label: 'Text: justified', icon: PanelIcon.tjustify}];
 const WEIGHTS = [[300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'Semi Bold'], [700, 'Bold'], [800, 'Extra Bold'], [900, 'Black']];
 const TOUCHED = ['moves', 'scales', 'sizes', 'tips', 'styles'];
 const touched = (record, key) => TOUCHED.some(name => Object.keys(record?.[name] ?? {}).some(k => k === key || k.startsWith(`${key}/`)));
-const when = iso => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? '' : d.toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}); };
+const WHEN = typeof Intl === 'undefined' ? null : new Intl.DateTimeFormat([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}); // (one formatter: toLocaleString made one for every date, at every render of the board)
+const when = iso => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? '' : WHEN ? WHEN.format(d) : d.toISOString(); };
 
 // A line's name typed right on its label (double-click it): Enter or leaving it keeps it, Esc does not.
 function LineName({title, onDone}) {
@@ -196,9 +259,10 @@ function LineName({title, onDone}) {
 // drawn, its picture shows. The frame you are working on is drawn at once.
 const liveQueue = (() => {
   const jobs = new Map();
-  let raf = 0, center = {x: 0, y: 0};
+  let raf = 0, center = {x: 0, y: 0}, held = false;
   const run = () => {
     raf = 0;
+    if (held) return; // (the board is moving: frames are drawn once it settles, so the move stays smooth; until then their pictures show)
     const t0 = performance.now();
     while (jobs.size && performance.now() - t0 < 8) {
       let next = null, best = Infinity;
@@ -214,14 +278,37 @@ const liveQueue = (() => {
     drop(key) { jobs.delete(key); },
     now(key) { const job = jobs.get(key); if (job) { jobs.delete(key); job.draw(); } },
     center(point) { center = point; },
+    hold(on) { held = on; if (!on && jobs.size && !raf) raf = requestAnimationFrame(run); }, // (while the board moves: the user, 2026-10-22, "faster")
   };
+})();
+// A font that comes in after a frame was drawn changes the size of its words: the chat boxes of the frames drawn are drawn again then.
+// One listener for the board, not a wait on document.fonts.ready at each frame drawn (reading it made the page work its styles out
+// again, for every frame: the user, 2026-10-22, "faster").
+// Fonts come in one after another as frames come into view: all of it is drawn again once, in the next animation frame, every box
+// measured before any is drawn (drawShapes).
+const fontRedraws = (() => {
+  const all = new Set();
+  let on = false, raf = 0;
+  const again = () => {
+    raf = 0;
+    const now = [...all].filter(f => f.alive());
+    drawShapes(now.map(f => [f.stage, f.edit]));
+    for (const f of now) if (f.timelines.length) placeTimelines(f.stage, f.timelines);
+  };
+  const soon = () => { if (!raf) raf = requestAnimationFrame(again); };
+  return {add(entry) {
+    if (!on && document.fonts) { on = true; document.fonts.addEventListener('loadingdone', soon); document.fonts.ready.then(soon); }
+    all.add(entry);
+    return () => all.delete(entry);
+  }};
 })();
 
 // ---- One frame -----------------------------------------------------------------------
 // The picture (cheap, always) and, while it is in view and big enough to matter,
 // the live stage: the demo's own HTML with its changes put on (`urgent`: at once, not queued).
-const FrameArt = memo(function FrameArt({frame, video, live, urgent, cx, cy, edit, library}) {
+const FrameArt = memo(function FrameArt({frame, video, live, urgent, cx, cy, edit, library, looks, narrow = true, guides = false}) { // (`looks`: the shared looks, lib/storyboardEdits.mjs: every slide has them; `narrow`: the gray side of a slide with no tablet made narrower, not on Scratch and Fonts; `guides`: its guide lines shown)
   const stageRef = useRef(null), playerRef = useRef(null), artRef = useRef(null), drawn = useRef(false);
+  const [lines, setLines] = useState(null), [drawnAt, setDrawnAt] = useState(0), guidesRef = useRef(guides); guidesRef.current = guides;
   const stageStyle = useMemo(() => parseStyle(frame.stageStyle ?? video.stage.style), [frame.stageStyle, video]);
   const layers = useMemo(() => layersOf(frame, edit), [frame, edit?.hidden, edit?.inserts, edit?.order]); // eslint-disable-line react-hooks/exhaustive-deps
   const timelines = useMemo(() => layers.filter(l => /timeline/i.test(l.name ?? '')), [layers]);
@@ -229,40 +316,55 @@ const FrameArt = memo(function FrameArt({frame, video, live, urgent, cx, cy, edi
   useLayoutEffect(() => {
     const stage = stageRef.current;
     if (!stage || !live) { drawn.current = false; artRef.current?.removeAttribute('data-drawn'); return undefined; }
-    let gone = false;
+    let gone = false, unfont = null;
     const draw = () => {
       if (gone || stageRef.current !== stage) return;
       stage.innerHTML = html;
-      applyEdits(stage, edit);
+      applyEdits(stage, edit, looks);
+      if (narrow && narrowPanel(stage)) drawShape(stage, edit); // (no tablet on it: the gray side from where the tablet's frame would end, the words in its middle)
+      if (narrow) blackPlate(stage); // (bare software, no device's frame: black behind it)
       if (timelines.length) placeTimelines(stage, timelines); // (the timeline of a video is on its film, as in the video)
       drawn.current = true;
+      if (guidesRef.current) setDrawnAt(n => n + 1); // (the guide lines measured again)
       artRef.current?.setAttribute('data-drawn', ''); // (the capture and the white behind the stage are only for the moment before it is drawn: Storyboard.css)
       if (playerRef.current) playerRef.current.style.visibility = '';
-      document.fonts?.ready.then(() => { if (!gone && stageRef.current === stage) { drawShape(stage, edit); if (timelines.length) placeTimelines(stage, timelines); } });
+      unfont ??= fontRedraws.add({stage, edit, timelines, alive: () => !gone && stageRef.current === stage});
       whenFontsLoaded(edit, () => { if (!gone && stageRef.current === stage) drawShape(stage, edit); }); // (a font picked for the words: the chat box is drawn around them once it is in)
     };
     if (drawn.current || urgent) draw(); // a change to a frame already drawn, or the frame you are on: at once
     else liveQueue.add(frame.id, {x: cx, y: cy, draw});
-    return () => { gone = true; liveQueue.drop(frame.id); };
-  }, [live, html, edit]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => { gone = true; unfont?.(); liveQueue.drop(frame.id); };
+  }, [live, html, edit, looks, narrow]); // eslint-disable-line react-hooks/exhaustive-deps
   useLayoutEffect(() => { if (urgent && live) liveQueue.now(frame.id); }, [urgent, live, frame.id]);
+  useEffect(() => { // the guide lines of the slide as it is drawn (measured only while they are shown)
+    if (!guides || !live) { setLines(null); return undefined; }
+    const id = requestAnimationFrame(() => { const stage = stageRef.current; if (stage && drawn.current) setLines(guidesOf(stage)); });
+    return () => cancelAnimationFrame(id);
+  }, [guides, live, drawnAt]);
   return <div ref={artRef} className="sb-art" data-art="">
     {frame.thumb && <img className="sb-thumb" src={frame.thumb} alt="" draggable={false} decoding="async"/>}
+    {guides && lines && <svg className="sb-guides" viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">{lines.x.map(x => <line key={`x${x}`} x1={x} x2={x} y1={0} y2={900}/>)}{lines.y.map(y => <line key={`y${y}`} x1={0} x2={1600} y1={y} y2={y}/>)}</svg>}
     {live && <div ref={playerRef} className={`${frame.shell ?? video.stage.shell ?? 'es-player demo-text-scope'} sb-player`} style={drawn.current ? undefined : {visibility: 'hidden'}}><div className="ad-fit ad-fit--embed"><div ref={stageRef} className={`${frame.stageClass ?? video.stage.className} sb-stage`} style={stageStyle} data-scene={frame.scene.id ?? undefined} data-view={frame.scene.view ?? undefined}/></div></div>}
   </div>;
 });
 
 // (its name, time and notes are always there: zoomed far out the board hides them, .sb-world.is-far)
-const Frame = memo(function Frame({frame, index, x, y, video, live, urgent, solid, edit, library, note, selected, dragging, playing, isNew, onNote, cell}) {
-  return <div className={`sb-frame${cell ? ' is-cell' : ''}${solid ? ' is-solid' : ''}${selected ? ' is-selected' : ''}${playing ? ' is-playing' : ''}${dragging ? ' is-dragging' : ''}${isNew ? ' is-new' : ''}${isEdited(edit) ? ' is-edited' : ''}`} data-frame={frame.id} style={{left: x, top: y - HEAD, width: FRAME.w, height: HEAD + FRAME.h + NOTES_GAP + NOTES_H}}>
+const Frame = memo(function Frame({frame, index, x, y, video, live, urgent, solid, edit, library, looks, note, selected, dragging, isNew, onNote, cell, narrow, guides}) {
+  return <div className={`sb-frame${cell ? ' is-cell' : ''}${solid ? ' is-solid' : ''}${selected ? ' is-selected' : ''}${dragging ? ' is-dragging' : ''}${isNew ? ' is-new' : ''}${isEdited(edit) ? ' is-edited' : ''}`} data-frame={frame.id} style={{left: x, top: y - HEAD, width: FRAME.w, height: HEAD + FRAME.h + NOTES_GAP + NOTES_H}}>
     <div className="sb-fhead" data-ftitle={frame.id} style={{height: BAR, marginBottom: BAR_GAP}}>
-      <span className="sb-fname">{cell ? cell.name : edit?.name ?? `${frame.label}${frame.isCopy && !frame.isBlank ? ' · copy' : ''}`}</span>
-      <b className="sb-fnum">{index}</b>
-      <i className="sb-ftime">{cell ? 'VIDEO' : frame.time != null ? clock(frame.time) : ''}</i>
+      {cell ? <>
+        <b className="sb-fnum">{index}</b>
+        <span className="sb-fvtitle">{cell.name}</span>
+        <i className="sb-ftime"/>
+      </> : <>
+        <span className="sb-fname">{edit?.name ?? `${frame.label}${frame.isCopy && !frame.isBlank ? ' · copy' : ''}`}</span>
+        <b className="sb-fnum">{index}</b>
+        <i className="sb-ftime">{frame.time != null ? clock(frame.time) : ''}</i>
+      </>}
     </div>
     <div style={{height: FRAME.h}}>{cell
-      ? <div className="sb-art sb-art--cell" data-art=""><StoryboardPlayer cell frames={cell.frames} title={cell.name} edits={cell.edits} video={video} onFrame={cell.onFrame} onText={cell.onText}/></div>
-      : <FrameArt frame={frame} video={video} live={live} urgent={urgent} cx={x + FRAME.w / 2} cy={y + FRAME.h / 2} edit={edit} library={library}/>}</div>
+      ? <div className="sb-art sb-art--cell" data-art=""><StoryboardPlayer cell frames={cell.frames} title={cell.name} edits={cell.edits} video={video} onFrame={cell.onFrame} onText={cell.onText} onVideoText={cell.onVideoText} onCaption={cell.onCaption} onSelect={cell.onSelect} onEditing={cell.onEditing} onMenu={cell.onMenu} pins={cell.pins} commentTool={cell.commentTool} onDrawn={cell.onDrawn}/></div>
+      : <FrameArt frame={frame} video={video} live={live} urgent={urgent} cx={x + FRAME.w / 2} cy={y + FRAME.h / 2} edit={edit} library={library} looks={looks} narrow={narrow} guides={guides}/>}</div>
     <div className="sb-notes-wrap" style={{marginTop: NOTES_GAP, height: NOTES_H}}>
       <textarea className="sb-notes" data-sb-ui="" value={note} onChange={e => onNote(frame.id, e.target.value)} placeholder="Notes for this frame…" spellCheck="true"/>
     </div>
@@ -276,9 +378,12 @@ export default function Storyboard({video: videoId = 'improved-quality-v2'}) {
     let live = true;
     setVideo(null); setError('');
     if (videoId === TRASH) { setVideo(TRASH_VIDEO); return undefined; }
+    if (videoId === ALL_VIDEOS) return undefined; // (no frames of its own: it plays the other boards')
+    openLocal(videoId); // (the edits, at the same time as the frames)
     fetch(`/storyboard/${videoId}.json`).then(r => { if (!r.ok) throw new Error(); return r.json(); }).then(data => { if (live) setVideo(data); }).catch(() => { if (live) setError('The frames are not made yet. Run  npm run gen:storyboard  with the site running, then reload.'); });
     return () => { live = false; };
   }, [videoId]);
+  if (videoId === ALL_VIDEOS) return <StoryboardAllVideos menu={menuOf()} load={loadSaved} change={changeBoard}/>;
   if (error) return <div className="sb-root sb-message"><div><h1>Storyboard</h1><p>{error}</p><Link href="/">Home</Link></div></div>;
   if (!video) return <div className="sb-root sb-message"><div><h1>Storyboard</h1><p>Loading the frames…</p></div></div>;
   return <Board key={videoId} video={video} videoId={videoId}/>;
@@ -298,9 +403,19 @@ function Board({video: captured, videoId}) {
   const [playing, setPlaying] = useState(null);           // the frame whose chat boxes a pen is writing
   const writers = useRef([]);
   const [help, setHelp] = useState(false), [zoomMenu, setZoomMenu] = useState(false), [menu, setMenu] = useState(null);
-  const [playingId, setPlayingId] = useState(null);      // the frame the video is on while it plays (its number bar shows it)
+  // The frame the video is on while it plays (its number bar shows it): marked on the frame itself (data-sb-playing, an attribute React leaves alone), not
+  // kept in the board's state: the whole board was drawn again at every frame of a video playing, 0.1 s each time (the user, 2026-10-22: "super fast").
+  const playingId = useRef(null);
+  const setPlayingId = useCallback(id => {
+    if (playingId.current === id) return;
+    const frameEl = key => (key ? worldRef.current?.querySelector(`[data-frame="${CSS.escape(key)}"]`) : null);
+    frameEl(playingId.current)?.removeAttribute('data-sb-playing');
+    playingId.current = id;
+    frameEl(id)?.setAttribute('data-sb-playing', '');
+  }, []);
   const [hoverGap, setHoverGap] = useState(null);         // the gap between two frames the pointer is in: where the + shows
-  const [ctx, setCtx] = useState(null);                   // the right-click menu on assets: {x, y, frame, layers, linked, unique}
+  const [ctx, setCtx] = useState(null);                   // the right-click menu on assets: {x, y, frame, layers, linked, unique}; on a line's label: {x, y, line}; on a video: {x, y, video}; on a reference: {x, y, ref}
+  const [refSel, setRefSel] = useState(null), refSelRef = useRef(null), pointerAt = useRef(null); refSelRef.current = refSel; // the reference picked (its id: lib/storyboardRefs.mjs); where the pointer is on the canvas, in the window's px (a file pasted goes there); on a comment's pin: {x, y, pin}
   const [rectLook, setRectLook] = useState({fill: RECT_FILL, radius: 0}); // the rectangle tool: what the next one is filled with, its corners
   const rectLookRef = useRef(rectLook); rectLookRef.current = rectLook;
   const [pen, setPen] = useState(PEN);                    // the pencil: {color, width (stage px)}
@@ -347,7 +462,6 @@ function Board({video: captured, videoId}) {
   const allById = useMemo(() => Object.fromEntries(allFrames.map(f => [f.id, f])), [allFrames]);
   const cellsRef = useRef(cells); cellsRef.current = cells;
   const allFramesRef = useRef(allFrames); allFramesRef.current = allFrames;
-  const allByIdRef = useRef(allById); allByIdRef.current = allById;
   const [reorder, setReorder] = useState(null);           // frames being carried: {id (the one held), ids (all of them, in board order), chapter, index} = where they would land
   const frames = useMemo(() => (reorder ? moveInList(baseFrames, reorder.ids, reorder.chapter, reorder.index) : baseFrames), [baseFrames, reorder]);
   // the layout without the frames being carried: where they land is worked out against this, so the answer does not change as the others make room
@@ -367,10 +481,11 @@ function Board({video: captured, videoId}) {
   // lines (lib/storyboardVideos.mjs) has one, at the right of the last frame of its last line (and the + after it); it plays all the lines of the run, one after the other
   const videoSpots = useMemo(() => {
     const L = board.layout, rowOf = new Map(board.rows.map(r => [r.chapter.id, r])), out = [];
-    const runs = runsOf(video.video, [...rowOf.keys()]), shelved = shelvedRuns(edits.lines?.added, video.video, new Set(runs.map(r => r.id))); // (a line can hold the videos of the board side by side: the user, 2026-10-13)
+    const runs = runsOf(video.video, [...rowOf.keys()], true), shelved = shelvedRuns(edits.lines?.added, video.video, new Set(runs.map(r => r.id))); // (a line can hold the videos of the board side by side: the user, 2026-10-13)
     for (const run of runs) { // (the lines on the board: the captured ones and the ones added, like Animations)
       const shelf = shelved.get(run.id), shelfRow = shelf && rowOf.get(shelf.line);
-      if (shelfRow) { out.push({x: L.labelW + L.labelGap + shelf.index * (FRAME.w + L.gapX), y: shelfRow.y + BAR + BAR_GAP, key: run.id, title: run.title, chapters: run.lines}); continue; }
+      if (shelfRow) { out.push({x: L.labelW + L.labelGap + shelf.index * (FRAME.w + L.gapX), y: shelfRow.y + BAR + BAR_GAP, key: run.id, title: run.title, chapters: run.lines, shelf: shelf.line}); continue; }
+      if (run.twin) continue; // (a detailed video stands only in a line that holds it: at the end of its lines it would be a second video beside each one)
       const row = rowOf.get(run.last), mine = frames.filter(f => f.chapter === run.last && board.frames[f.id]);
       const end = mine.length ? Math.max(...mine.map(f => board.frames[f.id].x)) + FRAME.w : L.labelW + L.labelGap + FRAME.w; // (an empty line shows a frame-sized "Add a frame")
       out.push({x: end + 2 * L.gapX, y: row.y + BAR + BAR_GAP, key: run.id, title: run.title, chapters: run.lines});
@@ -396,14 +511,49 @@ function Board({video: captured, videoId}) {
 
   // ---- Load and save the changes (the file first, plus this browser's copy) ----
   const LOCAL = `storyboard:${videoId}`;
+  // The shared looks (lib/storyboardEdits.mjs `looks`) are the same on every board: a change made here (the look editor, Undo, Redo) is copied to the other boards' files; what comes from
+  // this board's file (loaded, or changed elsewhere) is not sent on. `looksSent`: the looks as this page last had them from the file or sent them.
+  const looksSent = useRef(undefined);
+  const sharedOf = e => JSON.stringify({looks: e.looks ?? null, videoText: e.videoText ?? null}); // (the look of all the video words is kept alike the same way)
+  useEffect(() => {
+    if (!loaded) return undefined;
+    const now = sharedOf(edits);
+    if (looksSent.current === undefined) { looksSent.current = now; return undefined; }
+    if (now === looksSent.current) return undefined;
+    const {looks, videoText} = edits, timer = setTimeout(() => {
+      looksSent.current = now;
+      for (const other of VIDEOS) if (other.id !== videoId) changeBoard(other.id, e => setVideoTextAll(setSharedLooks(e, looks ?? null), videoText ?? null)).catch(() => setStatus(`The look could not be copied to ${other.name} (it is copied with its own page)`));
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [edits, loaded, videoId, setStatus]);
   useEffect(() => {
     let live = true;
-    (async () => {
-      const {edits: merged, changed, file, rev} = await loadSaved(videoId);
-      if (!live) return;
+    const take = ({edits: merged, changed, file, rev}) => {
       revRef.current = rev;
       if (changed) dirty.current = true;
+      looksSent.current = sharedOf(merged); // (as the file has them: nothing to send)
       setToFile(file); setHistory(createHistory(merged)); setLoaded(true);
+    };
+    (async () => {
+      const {mine, check} = await openLocal(videoId);
+      if (!live) return;
+      early.delete(videoId); // (taken: a board opened again later reads what is kept then)
+      if (!check) { // (no copy here of a revision of the file: from the file, as always, and kept for the next time)
+        const saved = await loadSaved(videoId);
+        if (!live) return;
+        take(saved);
+        if (saved.file) keepLocal(videoId, saved.rev, saved.edits, saved.changed);
+        return;
+      }
+      take({edits: mine.edits, changed: mine.pending, file: true, rev: mine.rev}); // at once, as this browser last had it
+      const data = await check;
+      if (!live) return;
+      if (!data) { setToFile(false); return; } // (no file to save to: kept in this browser, as before)
+      if (data.same || !data.edits) return;
+      const remote = normalizeEdits(data.edits); // the file changed since (the command line, another board, another tab): it is taken, merged with what is not saved yet
+      revRef.current = data.rev;
+      setHistory(h => { const next = dirty.current ? mergeEdits(remote, h.present).edits : remote; looksSent.current = sharedOf(next); return h.past.length ? record(h, next) : createHistory(next); });
+      keepLocal(videoId, data.rev, remote, dirty.current);
     })();
     return () => { live = false; };
   }, [videoId, LOCAL]);
@@ -411,7 +561,7 @@ function Board({video: captured, videoId}) {
     if (!loaded || !dirty.current) return;
     saveStatus('Saving…');
     const timer = setTimeout(async () => {
-      keepLocal(videoId, revRef.current, edits);
+      keepLocal(videoId, revRef.current, edits, toFile);
       if (!toFile) { dirty.current = false; saveStatus('Saved in this browser'); return; }
       try {
         const done = await postSaved(videoId, edits, revRef.current);
@@ -442,7 +592,7 @@ function Board({video: captured, videoId}) {
         if (stop || data.same || !data.edits || data.rev === revRef.current) return;
         const remote = normalizeEdits(data.edits);
         revRef.current = data.rev;
-        setHistory(h => record(h, dirty.current ? mergeEdits(remote, h.present).edits : remote));
+        setHistory(h => { const next = dirty.current ? mergeEdits(remote, h.present).edits : remote; looksSent.current = sharedOf(next); return record(h, next); }); // (looks that came from the file are not sent on)
         keepLocal(videoId, data.rev, remote);
         saveStatus('Updated from the file');
       } catch {}
@@ -485,15 +635,16 @@ function Board({video: captured, videoId}) {
   const showView = useCallback(next => {
     viewRef.current = next;
     worldRef.current?.classList.add('is-moving');
+    liveQueue.hold(true);
     if (!raf.current) raf.current = requestAnimationFrame(paint);
     clearTimeout(settle.current);
-    settle.current = setTimeout(() => setView(viewRef.current), 130);
+    settle.current = setTimeout(() => { liveQueue.hold(false); setView(viewRef.current); }, 130);
   }, [paint]);
   const setViewNow = useCallback(next => { viewRef.current = next; committed.current = next; setView(next); }, []);
   const fit = useCallback((box, options) => fitRect(box, size, options), [size]);
   // open where it was looked at (the user, 2026-10-13: "when I refresh the website using f5 or ctrl+shift+r or any way, I wanna be where I was before, when I refresh it takes me up"):
   // the view is kept as it settles and when the page is left (below), and a board opens on it again; else on the first row: its label and its first frames, big enough to read
-  const opened = useRef(false);
+  const opened = useRef(false), lateView = useRef(null);
   const windowNow = useCallback(() => { const r = viewport.current?.getBoundingClientRect(); return r && r.width > 0 && r.height > 0 ? {w: r.width, h: r.height} : sizeRef.current; }, []); // (the window as it is: the first measure may not have come in)
   const keepNow = useCallback(() => { if (opened.current) writeLocal(viewKey(videoId), JSON.stringify(keepView(viewRef.current, windowNow()))); }, [videoId, windowNow]); // (before the board is open it is not kept: it would keep the view it has before it is placed)
   useEffect(() => {
@@ -502,12 +653,20 @@ function Board({video: captured, videoId}) {
     if (!row) return; // (the Trash has its rows only once what it holds is loaded)
     opened.current = true;
     const whole = union([...board.rows.map(r => ({x: r.x, y: r.y, w: r.w, h: r.h})), ...Object.values(board.frames).map(p => ({x: p.x, y: p.y - HEAD, w: FRAME.w, h: HEAD + FRAME.h + NOTES_GAP + NOTES_H}))]); // (the lines' labels and every frame: the frames go far to the right of the labels)
-    const kept = restoreView(parseView(readLocal(viewKey(videoId))), windowNow(), whole);
+    const raw = readLocal(viewKey(videoId)), kept = restoreView(parseView(raw), windowNow(), whole);
     if (kept) { setViewNow(kept); return; }
+    lateView.current = raw;
     const first = frames.filter(f => f.chapter === row.chapter.id).slice(0, 2).map(f => board.frames[f.id]).filter(Boolean);
     const box = union([{x: row.x, y: row.y, w: row.w, h: row.h}, ...first.map(p => ({x: p.x, y: p.y - HEAD, w: FRAME.w, h: HEAD + FRAME.h + NOTES_GAP + NOTES_H}))]);
     if (box) setViewNow(fit(box, {padding: 70}));
   }, [size, frames, board, fit, setViewNow, videoId, windowNow]);
+  useEffect(() => { // (a view kept by a reference far from the frames: the references are known only once the edits are in)
+    if (!loaded || !opened.current) return;
+    const raw = lateView.current, boxes = refBoxes(editsRef.current);
+    lateView.current = null;
+    const kept = raw && boxes.length ? restoreView(parseView(raw), windowNow(), union(boxes)) : null;
+    if (kept) setViewNow(kept);
+  }, [loaded, board, setViewNow, windowNow]);
   useEffect(() => { keepNow(); }, [view, keepNow]); // (it settles: kept)
   useEffect(() => { // (the page is left, a reload included, in the 130 ms before a move has settled: kept as it is)
     const hide = () => { if (document.visibilityState === 'hidden') keepNow(); };
@@ -547,7 +706,7 @@ function Board({video: captured, videoId}) {
   }, [showView, stopGlide]);
   const frameBox = useCallback(id => { const p = board.frames[id]; return p && {x: p.x, y: p.y - HEAD, w: FRAME.w, h: HEAD + FRAME.h + NOTES_GAP + NOTES_H}; }, [board]);
   const focusFrame = useCallback(id => { const box = frameBox(id); if (box) { setSelection({frame: id, key: null, depth: 0}); setFrameSel([id]); goTo(fit(box, {padding: 70, maxZoom: 0.9})); } }, [frameBox, goTo, fit]);
-  const fitAll = useCallback(() => goTo(fit(!trashing && videoSpots.length && frames.length ? union([board.bounds, ...videoSpots.map(v => ({x: v.x, y: v.y - HEAD, w: FRAME.w, h: HEAD + FRAME.h + NOTES_GAP + NOTES_H}))]) : board.bounds, {padding: 50})), [board, videoSpots, frames, trashing, goTo, fit]); // (the videos at the right of the lines are part of the board)
+  const fitAll = useCallback(() => goTo(fit(union([board.bounds, ...(!trashing && videoSpots.length && frames.length ? videoSpots.map(v => ({x: v.x, y: v.y - HEAD, w: FRAME.w, h: HEAD + FRAME.h + NOTES_GAP + NOTES_H})) : []), ...refBoxes(editsRef.current)].filter(Boolean)) ?? board.bounds, {padding: 50})), [board, videoSpots, frames, trashing, goTo, fit]); // (the videos at the right of the lines, and the references, are part of the board)
   const fitSelection = useCallback(() => {
     const row = !selection && lineSel ? board.rows.find(r => r.chapter.id === lineSel) : null;
     if (row) { goTo(fit(union([{x: row.x, y: row.y, w: row.w, h: row.h}, ...frames.filter(f => f.chapter === lineSel).map(f => frameBox(f.id)).filter(Boolean)]), {padding: 70, maxZoom: 0.9})); return; } // a line picked: the whole line
@@ -603,27 +762,198 @@ function Board({video: captured, videoId}) {
     if (!selRef.current?.key) return;
     const items = itemsNow(), moves = items.map(({frame, key}) => {
       const stage = stageFor(frame), el = stage && elementOf(stage, key);
-      if (!el) return null;
+      if (!el || isFixed(el)) return null; // (fixed in place: the background)
       const u = unitOf(stage), k = parentScale(el), t = translateOf(el), by = [dx * u / k, dy * u / k], off = offTail(stage, el, frame);
       return {frame, key, to: [t[0] + by[0], t[1] + by[1]], tip: off && [off.tip0[0] + by[0], off.tip0[1] + by[1]]};
     }).filter(Boolean);
     if (moves.length) commit(e => moves.reduce((cur, m) => (m.tip ? setTip(setMove(cur, m.frame, m.key, m.to), m.frame, m.key, m.tip) : setMove(cur, m.frame, m.key, m.to)), e), {merge: `move:${items.map(p => `${p.frame}:${p.key}`).join(',')}`});
   }, [commit]);
 
-  // The same words in the other duplicates of an asset along its line of the board:
-  // the ones that still say what this one said (`original`) are retyped with it.
-  const duplicatesSaying = (e, frameId, key, original) => {
-    const frame = allByIdRef.current[frameId]; // (a slide of a video that is not on the board is retyped too: the video says the same words in all its slides)
-    if (!frame) return [];
-    return linkedParts({frames: allFramesRef.current, edits: e, frame, key})
-      .filter(part => (e.frames[part.frame]?.texts?.[part.key] ?? textIn(e.library[part.asset] ?? video.assets[part.asset], part.layer, part.rest)) === original);
-  };
-  // Retype a text (from the board, or from the video's picture): and the same words in the duplicates along its line.
-  const retype = useCallback(({frame, key, original, text}) => {
-    const also = duplicatesSaying(editsRef.current, frame, key, original);
-    commit(e => [{frame, key}, ...also].reduce((cur, part) => setText(cur, part.frame, part.key, text), e));
-    if (also.length) setStatus(`Also retyped in ${also.length} duplicate${also.length > 1 ? 's' : ''} in this line (right-click > Make unique to change one alone)`);
-  }, [commit]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Retype a text (from the board, or from the video's picture): that text alone (the user, 2026-11-09: "if I change 123 to 000 in slide 4 it shouldn't
+  // change it in slide 5", nothing is linked). `shown`: retyped in a VIDEO, the other slides of that video that show the very same chat box, one caption seen
+  // across a scene's clicks, so its words do not jump while the video plays (`info.sameWords`); never other frames of the board.
+  const retype = useCallback(({frame, key, text, also: shown = []}) => {
+    commit(e => [{frame, key}, ...shown].reduce((cur, part) => setText(cur, part.frame, part.key, text), e));
+  }, [commit]);
+  // The look and the box of a text in a VIDEO, changed in the video's text editor (components/StoryboardTextEditor.jsx): kept on the frame's own record (`vtext`), apart from the slide. `targets`: every
+  // slide that shows these words (a scene's click after click), so the words do not jump when the next click plays. A drag is one step of Undo.
+  const SESSION = 3600000; // (a text editing is ONE step of Undo, however long it takes: the changes of the editing, and Done, carry its `session`)
+  const restyleVideo = useCallback(({targets, frames: ids = [], patch, session}) => { // (the look: this video's words, `kind:words` on its slides, taken off the texts it was typed on so they show it; the box: this text's)
+    const look = Object.fromEntries(Object.entries(patch).filter(([name]) => name !== 'rect')), off = Object.fromEntries(Object.keys(look).map(name => [name, null]));
+    commit(e => {
+      let cur = e;
+      if (Object.keys(look).length) cur = targets.reduce((c, t) => setVideoText(c, t.frame, t.key, off), (ids.length ? ids : targets.map(t => t.frame)).reduce((c, id) => setOwnLook(c, id, 'kind:words', 'words', look), cur));
+      if ('rect' in patch) cur = targets.reduce((c, t) => setVideoText(c, t.frame, t.key, {rect: patch.rect}), cur);
+      return cur;
+    }, session ? {merge: `vtext-session:${session}`, window: SESSION} : {merge: `vtext:${targets.map(t => `${t.frame}:${t.key}`).join(',')}:${Object.keys(patch).join(',')}`});
+  }, [commit]);
+  // The words typed over a caption of a DETAILED video (the user, 2026-10-14): kept apart from the slides, per video and beat, so the original video keeps its words.
+  const retypeCaption = useCallback(({run, beat, text}) => commit(e => setCaption(e, run, beat, text)), [commit]);
+  // ---- The video's inspector (the user, 2026-10-21: "I would love to have it as an inspector on the right instead of popping up. Same thing for the text and everything. So basically,
+  // if I select a video, it should show everything on the inspector when it comes to editing"): a press on a video picks it (`videoSel`: its title, its slides, the look a kind has on the
+  // frame it is on; `focus`: a color double-clicked in it); the text retyped in it hands its fields here (`textEd`). The colors are the shared looks (lib/storyboardEdits.mjs `looks`): for
+  // ALL the videos and slides, or for THIS video (its slides' own, `kind:<kind>`); the words are the look of all the video words (`videoText.words`). One step of Undo per field.
+  const [videoSel, setVideoSel] = useState(null), [textEd, setTextEd] = useState(null);
+  // The comment picked on a video of the board (the user, 2026-10-30: "the comments should be in /storyboard before going to video editor"): {key (the video's), title, id}. Its inspector
+  // is the sidebar (the same CommentPanel as in the video editor); picking anything else, or the video editor opening, puts it down.
+  const [pinSel, setPinSel] = useState(null), pinSelRef = useRef(null); pinSelRef.current = pinSel;
+  // The video editor (components/StoryboardVideoEditor.jsx): the video opened from its right-click menu ({key: its run, or the anchor of its cell; at: the second it was on})
+  const [vEdit, setVEdit] = useState(null), vEditRef = useRef(null); vEditRef.current = vEdit;
+  // The board behind the video editor is not seen (the user, 2026-10-27: "changing an option in video editor is super slow and tedious, like it freezes": each change drew
+  // again, behind the editor, every slide of the video on the board, the whole slide each time, and made again every copy of the video on the lines of videos). While the
+  // editor is open the board keeps the edits and the frame picked it had when it opened, and is drawn again once, when the editor closes. The frame picked in the editor stays
+  // drawn with the changes (the inspector reads its look from it), and the editor's own video takes the changes as they settle (`veEdits`: deferred, so a field scrubbed or a
+  // color dragged does not make the video again at every step of it; the sidebar answers at once).
+  const frozen = useRef(null);
+  if (!vEdit) frozen.current = null; else frozen.current ??= {edits, focus: selection?.frame ?? null};
+  const boardEdits = frozen.current?.edits ?? edits, boardFocus = frozen.current ? frozen.current.focus : selection?.frame ?? null;
+  const veEdits = useDeferredValue(vEdit ? edits : null) ?? edits; // (null while it is closed: no second drawing of the board for an edit made on the board)
+  // Guide lines over the slides and the video editor's picture (the user, 2026-10-22, with a picture of Figma's): through where the tablet's frame ends and the words' edges.
+  // On or off with the button or Shift+G; kept in this browser.
+  const [showGuides, setShowGuides] = useState(false);
+  useEffect(() => { if (readLocal('storyboard:guides') === '1') setShowGuides(true); }, []);
+  const toggleGuides = useCallback(() => setShowGuides(on => { writeLocal('storyboard:guides', on ? '0' : '1'); return !on; }), []);
+  const editorKey = `storyboard:editor:${videoId}`;
+  const openVideo = useCallback((key, at) => { setPinSel(null); setVEdit({key, at}); writeLocal(editorKey, JSON.stringify({key, at})); }, [editorKey]);
+  const editorTime = useCallback(t => { setVeT(t); const v = vEditRef.current; if (v) writeLocal(editorKey, JSON.stringify({key: v.key, at: Math.round(t * 1000) / 1000})); }, [editorKey]); // (held only: not each picture of a play)
+  // A video drawn again (an edit, Undo, Redo): the inspector of the video picked reads what it shows from its picture, so it is drawn again after it (the user, 2026-10-22: "undo sometimes doesn't work")
+  const [, setLookTick] = useState(0);
+  const onVideoDrawn = useCallback(title => { if (videoSelRef.current?.title === title) setLookTick(n => n + 1); }, []);
+  // what the editor has picked ({type: 'layer', id} | {type: 'asset', frame, key, name?} | {type: 'look', kind} | null) and its time while it is held (a layer's values then)
+  const [veSel, setVeSel] = useState(null), veSelRef = useRef(null); veSelRef.current = veSel;
+  const [veT, setVeT] = useState(0), veTitleRef = useRef(null);
+  const veActions = useRef(null); // (what the editor does to all that is picked, for the sidebar's buttons: align, distribute, duplicate, split, restack, remove)
+  const closeVideo = useCallback(() => { setVEdit(null); setVeSel(null); try { localStorage.removeItem(editorKey); } catch {} }, [editorKey]);
+  const reopened = useRef(false);
+  useEffect(() => { // (the board loaded: the video that was open in the editor before the reload, at the second it was on)
+    if (!loaded || reopened.current) return;
+    reopened.current = true;
+    try { const kept = JSON.parse(readLocal(editorKey) || 'null'); if (kept?.key) setVEdit({key: String(kept.key), at: Math.max(0, Number(kept.at) || 0)}); } catch {}
+  }, [loaded, editorKey]);
+  const veSelect = useCallback(sel => { // an element of a slide picked in the editor is the board's selection (its inspector is the asset's); the rest is the editor's
+    setVeSel(sel);
+    if (sel?.type !== 'look') setVideoSel(v => (v?.line ? {...v, line: null} : v)); // (a connector line picked before is not what Delete takes now)
+    if (sel?.type === 'asset') { setSelection({frame: sel.frame, key: sel.key, depth: sel.key.includes('/') ? sel.key.split('/')[1].split('.').length : 0}); setFrameSel([]); setPicked(null); }
+    else if (sel?.type === 'layer' || sel?.type === 'comment' || !sel) setSelection(null);
+  }, []);
+  // The layers of the video open in the editor (lib/storyboardLayers.mjs): one step of Undo each, or one for a run of changes with the same `merge`
+  const layerOps = useMemo(() => {
+    const title = () => veTitleRef.current, once = merge => (merge ? {merge} : undefined);
+    const idsFor = (t, list) => { const used = [...videoLayersOf(editsRef.current, t)]; return list.map(l => { const id = newLayerId(used, l.kind); used.push({id}); return id; }); }; // (new ids, one per layer, none taken)
+    const listOf = (t, ids) => { const items = videoLayersOf(editsRef.current, t); return ids.map(id => items.find(x => x.id === id)).filter(Boolean); };
+    const by = k => ({...k, ...(k.x != null ? {x: k.x + 24} : {}), ...(k.y != null ? {y: k.y + 24} : {})});
+    return {
+      // several at once, ONE step of Undo (the user, 2026-10-26: "multiselection"): `changes` {id: a patch or a function of the layer}; the others return the ids made
+      changeMany: (changes, merge) => { const t = title(); if (t && Object.keys(changes).length) commit(e => Object.entries(changes).reduce((cur, [id, change]) => updateVideoLayer(cur, t, id, change), e), once(merge)); },
+      removeMany: ids => { const t = title(); if (t && ids.length) commit(e => ids.reduce((cur, id) => removeVideoLayer(cur, t, id), e)); },
+      addMany: list => { const t = title(); if (!t || !list.length) return []; const ids = idsFor(t, list); commit(e => list.reduce((cur, l, i) => addVideoLayer(cur, t, {...l, id: ids[i]}).edits, e)); return ids; },
+      duplicateMany: ids => {
+        const t = title(), list = t ? listOf(t, ids) : [];
+        if (!list.length) return [];
+        const made = idsFor(t, list);
+        commit(e => list.reduce((cur, l, i) => addVideoLayer(cur, t, {...l, id: made[i], name: `${l.name} copy`, x: l.x + 24, y: l.y + 24, keys: l.keys?.map(by)}).edits, e));
+        return made;
+      },
+      order: ids => { const t = title(); if (t) commit(e => orderVideoLayers(e, t, ids)); }, // (the whole stacking, from the back to the front)
+      // an element of the slides trimmed (the user, 2026-10-28): its window in the video, {from?, to?}; null gives it the whole video back
+      setSpan: (name, span, merge) => { const t = title(); if (t && name) commit(e => setSpan(e, t, name, span), merge ? {merge} : undefined); },
+      split: (ids, at) => { // (cut in two at `at`: the second parts, just above the first)
+        const t = title(), list = t ? listOf(t, ids).filter(l => at > l.from + 0.05 && at < l.to - 0.05) : [];
+        if (!list.length) return [];
+        const made = idsFor(t, list);
+        commit(e => list.reduce((cur, l, i) => splitVideoLayer(cur, t, l.id, at, made[i]).edits, e));
+        return made;
+      },
+      add: layer => { const t = title(); if (!t) return null; const id = layer.id ?? newLayerId(videoLayersOf(editsRef.current, t), layer.kind); commit(e => addVideoLayer(e, t, {...layer, id}).edits); return id; },
+      change: (id, change, merge) => { const t = title(); if (t) commit(e => updateVideoLayer(e, t, id, change), merge ? {merge} : undefined); },
+      remove: id => { const t = title(); if (t) commit(e => removeVideoLayer(e, t, id)); },
+      stack: (id, dir) => { const t = title(); if (t) commit(e => stackVideoLayer(e, t, id, dir)); },
+      duplicate: id => {
+        const t = title(), items = t ? videoLayersOf(editsRef.current, t) : [], l = items.find(x => x.id === id);
+        if (!l) return null;
+        const nid = newLayerId(items, l.kind), by = k => ({...k, ...(k.x != null ? {x: k.x + 24} : {}), ...(k.y != null ? {y: k.y + 24} : {})});
+        commit(e => addVideoLayer(e, t, {...l, id: nid, name: `${l.name} copy`, x: l.x + 24, y: l.y + 24, keys: l.keys?.map(by)}).edits);
+        return nid;
+      },
+    };
+  }, [commit]);
+  // The comments of a video (lib/storyboardComments.mjs; the user, 2026-10-29): points placed on its picture, with words. One step of Undo each, or one for a run of
+  // changes with the same `merge` (the words typed). They are never in the video: only the editor and the board draw their pins. The ones without a title are the video open in the
+  // editor's, else the one whose comment is picked on the board (`pinSel`); `addTo` / `changeIn` / `removeIn` name the video (a comment placed from the board's menu, a pin moved there).
+  const commentOps = useMemo(() => {
+    const title = () => veTitleRef.current ?? pinSelRef.current?.title ?? null;
+    const addTo = (t, comment) => { if (!t) return null; const id = newCommentId(videoCommentsOf(editsRef.current, t)); commit(e => addVideoComment(e, t, {...comment, id}).edits); return id; };
+    const changeIn = (t, id, change, merge) => { if (t) commit(e => updateVideoComment(e, t, id, change), merge ? {merge} : undefined); };
+    const removeIn = (t, id) => { if (t) commit(e => removeVideoComment(e, t, id)); };
+    return {
+      add: comment => addTo(title(), comment),
+      change: (id, change, merge) => changeIn(title(), id, change, merge),
+      remove: id => removeIn(title(), id),
+      addTo, changeIn, removeIn,
+    };
+  }, [commit]);
+  // An element of a slide moved in the editor (that slide only), or hidden in the video
+  const sameInVideoRef = useRef(null); // (set where the video open is known: sameInVideo)
+  const assetOps = useMemo(() => ({
+    move: (frame, key, xy, merge) => commit(e => setMove(e, frame, key, xy), merge ? {merge} : undefined),
+    // resized by its handles: by `f` [fx, fy] on every slide of the video it is on, in the video only (`vscale`; the user, 2026-10-22: "Every slide of this video")
+    resize: (frame, key, f) => commit(e => (sameInVideoRef.current?.(frame, key) ?? [{frame, key}]).reduce((cur, q) => { const was = videoScaleOf(cur, q.frame, q.key) ?? [1, 1]; return setVideoScale(cur, q.frame, q.key, [was[0] * f[0], was[1] * f[1]]); }, e)),
+    unsize: (frame, key) => commit(e => (sameInVideoRef.current?.(frame, key) ?? [{frame, key}]).reduce((cur, q) => setVideoScale(cur, q.frame, q.key, null), e)),
+    // moved on the picture or by its point of the motion path: its place in the video on that slide only (`vmove`, stage px; the slide on the board is not touched)
+    place: (frame, key, d, merge) => commit(e => setVideoMove(e, frame, key, d), merge ? {merge} : undefined),
+    // several moved at once (with the layers picked with them: the same `merge`, one step of Undo): [{frame, key, d}] their places, [{frame, key, by: [dx, dy]}] moved by
+    placeMany: (list, merge) => commit(e => list.reduce((cur, q) => setVideoMove(cur, q.frame, q.key, q.d), e), merge ? {merge} : undefined),
+    shiftMany: (list, merge) => commit(e => list.reduce((cur, q) => { const m = videoMoveOf(cur, q.frame, q.key) ?? [0, 0]; return setVideoMove(cur, q.frame, q.key, [m[0] + q.by[0], m[1] + q.by[1]]); }, e), merge ? {merge} : undefined),
+    unplace: (frame, key) => commit(e => (sameInVideoRef.current?.(frame, key) ?? [{frame, key}]).reduce((cur, q) => setVideoMove(cur, q.frame, q.key, null), e)),
+    hide: (list, on) => commit(e => list.reduce((cur, {frame, key}) => (on ? hideLayer(cur, frame, key) : unhideLayer(cur, frame, key)), e)),
+  }), [commit]);
+  // A picture dropped, pasted or picked in the editor: a layer of the video, as big as fits in 640 x 400, where the middle of the picture is
+  const addVideoImage = useCallback(async (file, place) => {
+    try {
+      setStatus('Adding the picture…');
+      const url = await saveImage(file), size = await imageSize(url), k = Math.min(1, 640 / size.w, 400 / size.h), w = Math.round(size.w * k), h = Math.round(size.h * k);
+      const id = layerOps.add({kind: 'image', src: url, name: (file.name || '').replace(/\.[a-z0-9]+$/i, '').slice(0, 40) || 'Image', x: place.cx - w / 2, y: place.cy - h / 2, w, h, from: place.from, to: place.to});
+      if (id) veSelect({type: 'layer', id});
+      setStatus('');
+    } catch (error) { setStatus(`The picture was not added: ${error.message}`); }
+  }, [layerOps, veSelect, setStatus]);
+  const videoSelRef = useRef(null); videoSelRef.current = videoSel;
+  const selectVideo = useCallback((picked, extra = {}) => { setSelection(null); setFrameSel([]); setLineSel(null); setVideoSel({...picked, focus: extra.focus ?? null, line: extra.line ?? null, at: Date.now()}); }, []);
+  // A comment's pin pressed on a video of the board: it is what is picked (nothing else)
+  const pickPin = useCallback((key, title, id) => { setSelection(null); setFrameSel([]); setLineSel(null); setVideoSel(null); setPicked(null); setPinSel({key, title, id}); }, []);
+  useEffect(() => { if (selection || videoSel || lineSel) setPinSel(null); }, [selection, videoSel, lineSel]);
+  const scrolledTo = useRef(0); // (the color double-clicked in a video is brought into view once, not at every change)
+  const lookQueue = useRef(null); // (a color dragged on the wheel or the gradient bar: kept once a picture, not at every move of the pointer)
+  const ownKeyOf = kind => (kind === 'background' ? BACKGROUND : `kind:${kind}`); // (a video's own look of a kind, on each of its slides; 'words': the look of its words)
+  const changeVideoLook = useCallback((kind, ids, patch) => { // (this video only: the user, 2026-10-21, "first it should apply to only the video I have")
+    const q = lookQueue.current;
+    lookQueue.current = {kind, ids, patch: {...(q && q.kind === kind ? q.patch : {}), ...patch}, frame: q?.frame ?? requestAnimationFrame(() => {
+      const {kind: k, ids: list, patch: change} = lookQueue.current; lookQueue.current = null;
+      commit(e => list.reduce((cur, id) => setOwnLook(cur, id, ownKeyOf(k), k, change), e), {merge: `vlook:${k}:${Object.keys(change).join(',')}`});
+    })};
+  }, [commit]);
+  // A connector line deleted on this video (the user, 2026-10-22: "give me a way to cancel any line I want by selecting and deleting"): double-click it in the video, then Delete (the key or the
+  // inspector's button). It is gone from this video's slides (`hide` in its own connector look, kept apart from Apply to all); Bring back the lines shows them all again. One step of Undo.
+  const deleteVideoLine = useCallback((ids, name) => {
+    const hide = ids.map(id => editsRef.current.frames[id]?.ownLooks?.['kind:connector']?.hide).find(Boolean) ?? [];
+    if (!name || hide.includes(name)) return;
+    commit(e => ids.reduce((cur, id) => setOwnLook(cur, id, 'kind:connector', 'connector', {hide: [...hide, name]}), e));
+    setVideoSel(v => (v ? {...v, line: null} : v));
+    setStatus('Line deleted from this video (Ctrl+Z, or Bring back the lines)');
+  }, [commit, setStatus]);
+  const resetVideoLook = useCallback((kind, ids) => commit(e => ids.reduce((cur, id) => setOwnLook(cur, id, ownKeyOf(kind), kind, null), e)), [commit]); // (back to how all the videos have it)
+  // Apply to all (the inspector's blue button, the user, 2026-10-21: "make sure it doesn't apply to all until I hit an apply to all button"): this video's looks become the looks of every video
+  // and slide of every board (the colors: `looks`; the words: `videoText.words`), and the video follows them from then on. One step of Undo; the other boards get it from the effect above.
+  const applyVideoToAll = useCallback(ids => {
+    const at = new Date().toISOString(), cur0 = editsRef.current, mineOf = kind => ids.map(id => cur0.frames[id]?.ownLooks?.[ownKeyOf(kind)]).find(Boolean);
+    const kinds = ['background', 'plate', 'panel', 'outline', 'connector', 'words'].filter(mineOf);
+    if (!kinds.length) return;
+    commit(e => kinds.reduce((cur, kind) => {
+      const {hide, ...look} = mineOf(kind), shared = kind === 'words' ? setVideoTextKind(cur, 'words', look, at) : Object.keys(look).length ? setSharedLook(cur, kind, look, at) : cur; // (deleted lines stay this video's: never shared)
+      return ids.reduce((c, id) => setOwnLook(c, id, ownKeyOf(kind), kind, hide ? {fill: null, stroke: null, strokeWidth: null, arrow: null} : null, at), shared);
+    }, e));
+    setStatus('This video\'s look is now the look of every video and slide of every board (Ctrl+Z takes it back)');
+  }, [commit, setStatus]);
   const finishEdit = useCallback((keep = true) => {
     const ed = editing.current;
     if (!ed) return;
@@ -795,6 +1125,64 @@ function Board({video: captured, videoId}) {
     }
     deleteFrames(ids, {then: e => hideLine(e, id), message: ids.length ? `The line “${line.title}” and its ${ids.length} frame${ids.length > 1 ? 's' : ''} moved to the Trash` : `The line “${line.title}” is deleted`});
   }, [commit, deleteFrames, notify, trashing]);
+
+  // ---- A video's right-click menu (the user, 2026-10-30: "the video editor should open if I right click the video, and it should show multiple options like delete, duplicate,
+  // export, and take to video editor"). A double-click on a video retypes a text in it, as it always did; the menu has the rest. `m` (what the player says and the board adds): {kind:
+  // 'cell' (a video of a line of videos: its slides are frames of the line) | 'run' (the video of some lines: it plays them), key, title, at (the second it is on), point (where on its
+  // picture, or null), shelf (the line a run stands in, if it is on a shelf), lines (the lines a run plays)} ----
+  const videoMenu = useCallback((event, m) => setCtx({x: event.clientX, y: event.clientY, video: m}), []);
+  const duplicateVideoOf = useCallback(m => {
+    if (m.kind === 'cell') { duplicate([m.key]); return; }
+    if (m.shelf) return; // (a video stands once on a line)
+    let cur = editsRef.current;
+    const made = [];
+    for (const id of m.lines) { // (the video is made of its lines: they are copied, each right after its own)
+      const line = linesRef.current.find(l => l.id === id);
+      if (!line) continue;
+      const r = duplicateLine(cur, line, lineFrames(id));
+      cur = r.edits; made.push(...r.ids);
+    }
+    if (!made.length) return;
+    commit(cur);
+    markFresh(made);
+    setStatus(`Duplicated the ${m.lines.length} line${m.lines.length > 1 ? 's' : ''} of “${m.title}” (the copies are lines of slides: a video is made of the lines it plays)`);
+  }, [commit, duplicate, markFresh]);
+  const deleteVideoOf = useCallback(m => {
+    if (m.kind === 'cell') { // the video and all its slides go to the Trash
+      const all = withSlides([m.key], cellsRef.current);
+      deleteFrames(all, {message: `The video “${m.title}” and its ${all.length} frames moved to the Trash`});
+      return;
+    }
+    if (m.shelf) { // a video on a line of videos: taken off it (its lines stay as they are)
+      const kept = (editsRef.current.lines?.added?.[m.shelf]?.shelf ?? []).filter(id => id !== m.key);
+      commit(e => setLineShelf(e, m.shelf, kept));
+      setVideoSel(null);
+      notify(`“${m.title}” taken off its line. Its lines are untouched (Ctrl+Z puts it back).`);
+      return;
+    }
+    const ids = m.lines.flatMap(id => lineFrames(id).map(f => f.id)); // the video of some lines: they go to the Trash with it
+    deleteFrames(ids, {then: e => m.lines.reduce((cur, id) => hideLine(cur, id), e), message: `The video “${m.title}”, its ${m.lines.length} line${m.lines.length > 1 ? 's' : ''} and ${ids.length} frames moved to the Trash`});
+    setVideoSel(null);
+  }, [commit, deleteFrames, notify]);
+  // A comment placed from the menu: a pin at the click, at the second the video is on, picked, with the keyboard in its words
+  const addCommentAt = useCallback(m => {
+    if (!m.point) return;
+    const id = commentOps.addTo(m.title, {x: m.point.x, y: m.point.y, at: m.at, text: ''});
+    if (!id) return;
+    pickPin(m.key, m.title, id);
+    setTimeout(() => document.querySelector('.sb-cm-text')?.focus(), 150); // (once the inspector is drawn)
+  }, [commentOps, pickPin]);
+  // The video editor opened on a comment: at its second, with it picked
+  const openAtComment = useCallback((key, c) => { openVideo(key, c.at); veSelect({type: 'comment', id: c.id}); }, [openVideo, veSelect]);
+  // What a video of the board is handed for its pins (`pins` of components/StoryboardPlayer.jsx)
+  const pinsFor = useCallback((key, title) => ({
+    list: videoCommentsOf(boardEdits, title),
+    picked: pinSel && pinSel.title === title ? pinSel.id : null,
+    pick: c => pickPin(key, title, c.id),
+    move: (c, xy) => commentOps.changeIn(title, c.id, xy),
+    menu: (event, c) => { pickPin(key, title, c.id); setCtx({x: event.clientX, y: event.clientY, pin: {key, title, id: c.id}}); },
+    add: (point, at) => { addCommentAt({key, title, point, at}); setTool('move'); }, // (the Comment tool: a click on the picture; the tool is put down after one comment, as the editor's is)
+  }), [boardEdits, pinSel, pickPin, commentOps, addCommentAt]);
   const addFrameIn = useCallback(id => {
     const list = lineFrames(id);
     if (list.length) { addBlankAfter(list.at(-1).id); return; }
@@ -883,8 +1271,7 @@ function Board({video: captured, videoId}) {
       setStatus(`Pasted ${made.ids.length} frame${made.ids.length > 1 ? 's' : ''}`);
       return;
     }
-    const here = clip.video === videoId; // on its own board a copy stays linked to its original
-    const made = pasteLayers(cur, byIdRef.current[target], clip.items, {nudge: here && clip.from === target, linked: here, source: here && byIdRef.current[clip.from] ? clip.from : null});
+    const made = pasteLayers(cur, byIdRef.current[target], clip.items, {nudge: clip.video === videoId && clip.from === target}); // (a copy of its own, on any board: nothing is linked)
     if (!made.keys.length) return;
     commit(made.edits);
     setSelection({frame: target, key: made.keys.at(-1), depth: 0}); setFrameSel([target]); setPicked(made.keys.length > 1 ? {items: picksOf(target, made.keys)} : null);
@@ -917,28 +1304,47 @@ function Board({video: captured, videoId}) {
     const el = document.elementsFromPoint(x, y).map(node => node.closest?.('[data-frame]')).find(Boolean), id = el?.dataset.frame;
     if (!id || !byIdRef.current[id]) return null;
     const art = el.querySelector('[data-art]').getBoundingClientRect();
-    return {id, art, at: {x: (x - art.left) / art.width * STAGE, y: (y - art.top) / art.height * FRAME.h}};
+    return {id, art, cell: el.classList.contains('is-cell'), at: {x: (x - art.left) / art.width * STAGE, y: (y - art.top) / art.height * FRAME.h}};
   };
+  // ---- References: a file put on the canvas stays where it was put, a blank space too, any kind of file (lib/storyboardRefs.mjs). A picture put ON the picture of a frame still goes in that frame, at that point. ----
+  const worldAt = useCallback((x, y) => { const r = viewport.current.getBoundingClientRect(); return toWorld(viewRef.current, {x: x - r.left, y: y - r.top}); }, []);
+  const pickRef = useCallback(id => { setSelection(null); setFrameSel([]); setPicked(null); setLineSel(null); setVideoSel(null); setPinSel(null); setRefSel(id); }, []);
+  const addReferences = useCallback(async (files, at) => {
+    setStatus(`Adding ${files.length > 1 ? `${files.length} files` : files[0].name || 'the file'}…`);
+    const {made, failed} = await makeRefs(files, at, viewRef.current.zoom);
+    if (made.length) { commit(cur => addRefs(cur, made)); pickRef(made.at(-1).id); }
+    setStatus(failed.length ? `Not added: ${failed[0]}` : `Added ${made.length} reference${made.length > 1 ? 's' : ''}`);
+  }, [commit, pickRef, setStatus]);
+  const moveRef = useCallback((id, box) => commit(cur => changeRef(cur, id, box)), [commit]);
+  const deleteRef = useCallback(id => { commit(cur => removeRef(cur, id)); setRefSel(null); }, [commit]);
+  const refZoom = useCallback(() => viewRef.current.zoom, []), refFree = useCallback(() => !spaceRef.current && (toolRef.current === 'move' || toolRef.current === 'scale'), []);
+  const refMenu = useCallback((event, item) => setCtx({x: event.clientX, y: event.clientY, ref: item}), []);
+  const inArt = over => !!over && !over.cell && over.at.x >= 0 && over.at.x <= STAGE && over.at.y >= 0 && over.at.y <= FRAME.h;
+  // The browser never drags anything of a frame (a picture, a link, words picked): it would cancel the board's move and drop the picture back as a file, a copy (the user, 2026-11-06: "when I try
+  // to change position of some things like the images, it just duplicate it")
+  const onDragStart = event => { const el = event.target?.nodeType === 1 ? event.target : event.target?.parentElement; if (el?.closest?.('.sb-stage')) event.preventDefault(); }; // (not the notes under it)
   const onDragOver = event => { if ([...event.dataTransfer.types].includes('Files')) { event.preventDefault(); event.dataTransfer.dropEffect = 'copy'; } };
   const onDrop = event => {
-    const files = [...event.dataTransfer.files].filter(isImage);
     if (![...event.dataTransfer.types].includes('Files')) return;
     event.preventDefault();
-    if (!files.length) { setStatus('Only pictures (PNG, JPEG, WebP, GIF) can be dropped on a frame.'); return; }
-    const over = frameAt(event.clientX, event.clientY);
-    addImages(files, over?.id ?? frameAtCenter(), over?.at ?? null);
+    const files = [...event.dataTransfer.files], over = frameAt(event.clientX, event.clientY), pictures = inArt(over) ? files.filter(isImage) : [], others = files.filter(f => !pictures.includes(f));
+    if (pictures.length) addImages(pictures, over.id, over.at);
+    if (others.length) addReferences(others, worldAt(event.clientX, event.clientY));
   };
   // Ctrl/⌘ + C, X, V come as the browser's own copy / cut / paste, so a picture in the clipboard can be read.
   useEffect(() => {
-    const busy = event => isTyping(event.target) || editing.current;
+    const busy = event => isTyping(event.target) || editing.current || !!vEditRef.current; // (the video editor open: it copies and pastes its own)
     const mark = event => { try { event.clipboardData?.setData('text/plain', 'Taskmaverick storyboard'); } catch {} event.preventDefault(); };
     const onCopy = event => { if (!busy(event) && copySelected()) mark(event); };
     const onCut = event => { if (!busy(event) && copySelected()) { mark(event); removeSelected(); } };
     const onPaste = event => {
       if (busy(event)) return;
-      const files = [...(event.clipboardData?.files ?? [])].filter(isImage);
+      const all = [...(event.clipboardData?.files ?? [])], spot = pointerAt.current, under = spot ? frameAt(spot.x, spot.y) : null, frame = selRef.current?.frame ?? (inArt(under) ? under.id : null);
       event.preventDefault();
-      if (files.length) addImages(files, selRef.current?.frame ?? frameAtCenter(), null); else paste();
+      if (!all.length) { paste(); return; }
+      const pictures = frame ? all.filter(isImage) : [], others = all.filter(f => !pictures.includes(f)); // (a picture: in the frame picked, or under the pointer; anything else, or over a blank space: a reference there)
+      if (pictures.length) addImages(pictures, frame, null);
+      if (others.length) addReferences(others, spot ? worldAt(spot.x, spot.y) : toWorld(viewRef.current, {x: sizeRef.current.w / 2, y: sizeRef.current.h / 2}));
     };
     window.addEventListener('copy', onCopy); window.addEventListener('cut', onCut); window.addEventListener('paste', onPaste);
     return () => { window.removeEventListener('copy', onCopy); window.removeEventListener('cut', onCut); window.removeEventListener('paste', onPaste); };
@@ -963,7 +1369,7 @@ function Board({video: captured, videoId}) {
     fit.appendChild(stage); shell.appendChild(fit); ghost.appendChild(shell); over.appendChild(ghost);
     ghost.style.transform = `scale(${art.width / STAGE})`;
     d.ghostAt = {left: art.left - base.left, top: art.top - base.top};
-    applyEdits(stage, edit);
+    applyEdits(stage, edit, cur.looks);
     return ghost;
   };
   const dropDuplicate = useCallback((d, event) => {
@@ -973,7 +1379,7 @@ function Board({video: captured, videoId}) {
     const from = d.stage.getBoundingClientRect(), to = over?.art ?? from, u = from.width / STAGE;
     const shift = [(bx - (to.left - from.left)) / u, (by - (to.top - from.top)) / u];
     const clip = copyLayers({frame: byIdRef.current[d.frame], edit: cur.frames[d.frame], keys: d.items.map(item => item.key), htmlOf: hash => cur.library[hash] ?? video.assets[hash], stage: video.stage, video: videoId});
-    const made = pasteLayers(cur, byIdRef.current[target], clip.items, {shift, linked: true, source: d.frame});
+    const made = pasteLayers(cur, byIdRef.current[target], clip.items, {shift}); // (a copy of its own: nothing is linked)
     if (!made.keys.length) return;
     commit(made.edits);
     setSelection({frame: target, key: made.keys.at(-1), depth: 0}); setFrameSel([target]); setPicked(made.keys.length > 1 ? {items: picksOf(target, made.keys)} : null);
@@ -1211,6 +1617,30 @@ function Board({video: captured, videoId}) {
         if (isBubble(d.el)) drawShape(d.stage, editsRef.current.frames[d.frame], d.tips ?? null);
         d.moved = true;
         setTick(n => n + 1);
+      } else if (d.type === 'group-scale') { // several picked, scaled together from the corner opposite the handle (startGroupScale)
+        const h = d.handle, r = d.boxes[d.main];
+        const fx = h.includes('e') ? (event.clientX - r.left) / Math.max(1, r.width) : (r.right - event.clientX) / Math.max(1, r.width);
+        const fy = h.includes('s') ? (event.clientY - r.top) / Math.max(1, r.height) : (r.bottom - event.clientY) / Math.max(1, r.height);
+        const f = Math.max(0.05, Math.max(fx, fy)), tips = {};
+        for (const it of d.items) {
+          const box = d.boxes[it.frame], ax = h.includes('w') ? box.right : box.left, ay = h.includes('n') ? box.bottom : box.top;
+          if (!(it.lock.w || it.lock.h)) {
+            if (it.font) setTextNumbers(it.el, {size: it.font * f, lineHeight: it.own.lineHeight != null ? it.own.lineHeight * f : null, letterSpacing: it.own.letterSpacing != null ? it.own.letterSpacing * f : null}); // (its words grow with it)
+            if (it.bubble) { const [bw, bh] = scaledBox(it.box0, it.pad, f); sizeTo(it.el, [it.given[0] ? bw : 0, it.given[1] ? bh : 0]); } // (a side it was not given stays as big as its words)
+            else if (it.kind.mode === 'size') sizeTo(it.el, [it.size0[0] * f, it.text ? 0 : it.size0[1] * f]);
+            else scaleTo(it.el, [it.s0[0] * f, it.s0[1] * f]);
+            if (!it.bubble && it.kind.mode === 'size' && it.el.dataset.sbBox !== 'drawing') { // (the corners and the outline it was given scale with it)
+              if (it.own.radius != null) it.el.style.borderRadius = `${it.own.radius * f}px`;
+              if (it.own.strokeWidth != null) it.el.style.borderWidth = `${it.own.strokeWidth * f}px`;
+            }
+          }
+          const now = screenRectOf(it.el), t = translateOf(it.el); // its top left corner f times as far from the anchor as it was
+          moveTo(it.el, [t[0] + (ax + (it.r0.left - ax) * f - now.left) / it.k, t[1] + (ay + (it.r0.top - ay) * f - now.top) / it.k]);
+          if (it.off) (tips[it.frame] ??= {})[it.key] = tipToMiddle(it.stage, it.el); // (a tail that is off stays off)
+        }
+        for (const it of d.items) if (it.bubble && d.items.find(x => x.bubble && x.frame === it.frame) === it) drawShape(it.stage, editsRef.current.frames[it.frame], tips[it.frame] ?? null);
+        d.f = f; d.tips = tips; d.moved = true;
+        setTick(n => n + 1);
       } else if (d.type === 'maybe-move' || d.type === 'tip') {
         let dx = event.clientX - d.client.x, dy = event.clientY - d.client.y;
         if (!d.moved && Math.hypot(dx, dy) < 3) return;
@@ -1246,6 +1676,22 @@ function Board({video: captured, videoId}) {
         const c = d.content, f = d.f?.[0] ?? 1, patch = c ? scaledStyles(c.own, c.bubble ? c.size : null, f) : {}; // (the Scale tool, K: the words and the numbers it was given scale too, in the same step)
         const box = measured && (c?.bubble ? [c.given[0] ? measured[0] : 0, c.given[1] ? measured[1] : 0] : d.kind.bubble ? measured.map((n, i) => (Math.abs((d.f?.[i] ?? 1) - 1) < 1e-6 ? given?.[i] ?? 0 : n)) : measured), scale = scaleOf(d.el), to = translateOf(d.el); const tip = d.tips?.[d.key];
         commit(e => { let cur = setMove(box ? setBoxSize(e, d.frame, d.key, box) : setScale(e, d.frame, d.key, scale), d.frame, d.key, to); if (Math.abs(f - 1) > 1e-6 && Object.keys(patch).length) cur = setStyle(cur, d.frame, d.key, patch); return tip ? setTip(cur, d.frame, d.key, tip) : cur; }); }
+      if (d.type === 'group-scale' && d.moved) { // every one picked: its size or scale, its words, its place, its tail; one step of Undo
+        const f = d.f;
+        commit(e => d.items.reduce((cur, it) => {
+          let out = cur;
+          if (!(it.lock.w || it.lock.h)) {
+            if (it.bubble) { const m = sizeOf(it.el); out = setBoxSize(out, it.frame, it.key, [it.given[0] ? m[0] : 0, it.given[1] ? m[1] : 0]); }
+            else if (it.kind.mode === 'size') out = setBoxSize(out, it.frame, it.key, sizeOf(it.el));
+            else out = setScale(out, it.frame, it.key, scaleOf(it.el));
+            const patch = it.kind.mode === 'size' ? scaledStyles(it.own, it.font, f) : {};
+            if (Math.abs(f - 1) > 1e-6 && Object.keys(patch).length) out = setStyle(out, it.frame, it.key, patch);
+          }
+          out = setMove(out, it.frame, it.key, translateOf(it.el));
+          const tip = d.tips?.[it.frame]?.[it.key];
+          return tip ? setTip(out, it.frame, it.key, tip) : out;
+        }, e));
+      }
       if (d.type === 'maybe-move' && d.dup) { d.ghost?.remove(); if (d.moved) dropDuplicate(d, event); setTick(n => n + 1); return; }
       if (d.type === 'draw') { // the stroke becomes an asset of its frame
         inkRef.current?.setAttribute('d', '');
@@ -1300,6 +1746,7 @@ function Board({video: captured, videoId}) {
 
   // the + shows while the pointer is in the gap between two frames (or past the last one of a row)
   const onPointerMove = event => {
+    pointerAt.current = {x: event.clientX, y: event.clientY};
     const zoom = viewRef.current.zoom;
     if (trashing || drag.current || editing.current || zoom < 0.08 || toolRef.current === 'pencil' || toolRef.current === 'rect' || event.target.closest('[data-sb-ui]')) { if (hoverGap) setHoverGap(null); return; }
     const rect = viewport.current.getBoundingClientRect();
@@ -1319,7 +1766,9 @@ function Board({video: captured, videoId}) {
   const onPointerDown = event => {
     const rect = viewport.current.getBoundingClientRect(), local = {x: event.clientX - rect.left, y: event.clientY - rect.top};
     if (event.button === 1 || (event.button === 0 && (spaceRef.current || toolRef.current === 'hand'))) { event.preventDefault(); begin({type: 'pan', start: local, view: viewRef.current}); return; }
+    if (event.button === 0 && !event.target.closest('.sb-ref')) setRefSel(null);
     if (event.button !== 0 || event.target.closest('[data-sb-ui]')) return;
+    setVideoSel(null); setPinSel(null);
     if (editing.current) { if (editing.current.el.contains(event.target)) return; finishEdit(true); }
     if (toolRef.current === 'rect') { // the rectangle tool: drag on a frame (Shift: a square), or click for one of a usual size
       const over = frameAt(event.clientX, event.clientY);
@@ -1367,8 +1816,8 @@ function Board({video: captured, videoId}) {
       const el = (again && elementOf(hit.stage, s.key)) || chain[depth], key = keyOf(el);
       // an asset of this frame, or of any other one picked with it, as a thing to drag
       const itemOf = pick => { const stage = pick.frame === id ? hit.stage : stageFor(pick.frame), item = stage && (pick.frame === id && pick.key === key ? el : elementOf(stage, pick.key)); return item && {el: item, key: pick.key, frame: pick.frame, stage, t0: translateOf(item), k: parentScale(item), ...offTail(stage, item, pick.frame)}; };
-      const itemsOf = picks => picks.map(itemOf).filter(Boolean);
-      const mine = {frame: id, key};
+      const itemsOf = picks => picks.map(itemOf).filter(item => item && !isFixed(item.el)); // (what is fixed in place stays: it is picked, not dragged)
+      const mine = {frame: id, key}, fixed = isFixed(el);
       if (event.shiftKey && s?.key) { // Shift: add it to the assets picked, in this frame or any other (a click on one already picked takes it out); a drag moves them all, along one axis while Shift is held
         cycleRef.current = null;
         const base = pickedItemsRef.current.length ? pickedItemsRef.current : picksOf(s.frame, [s.key]);
@@ -1378,12 +1827,12 @@ function Board({video: captured, videoId}) {
         begin({type: 'maybe-move', client, items: itemsOf(items), frame: id, stage: hit.stage, moved: false, keep: true});
         return;
       }
-      if (again) { begin({type: 'maybe-move', client, items: itemsOf([mine]), frame: id, stage: hit.stage, moved: false, again: true}); return; }
+      if (again) { begin({type: 'maybe-move', client, items: itemsOf([mine]), frame: id, stage: hit.stage, moved: false, again: true, ...(fixed ? {backdrop: true, startLocal: local} : {})}); return; }
       const group = hasPick(pickedItemsRef.current, mine) ? pickedItemsRef.current : [mine]; // dragging one of several picked moves them all
       if (group.length === 1) setPicked(null);
       setSelection({frame: id, key, depth}); setFrameSel(group.length > 1 ? framesOfPicks(group) : [id]);
       cycleRef.current = plain ? {frame: id, x: client.x, y: client.y, key} : null;
-      if (event.altKey) { // Alt: what is dragged is a duplicate (of the whole asset, in this frame); the original stays
+      if (event.altKey && !fixed) { // Alt: what is dragged is a duplicate (of the whole asset, in this frame); the original stays
         const whole = [...new Set(group.filter(p => p.frame === id).map(p => layerKeyOf(p.key)))].map(k => { const item = elementOf(hit.stage, k); return item && {el: item, key: k, frame: id, stage: hit.stage, t0: translateOf(item), k: parentScale(item)}; }).filter(Boolean);
         begin({type: 'maybe-move', client, items: whole, frame: id, stage: hit.stage, moved: false, dup: true});
         return;
@@ -1391,7 +1840,8 @@ function Board({video: captured, videoId}) {
       // something as big as the frame (a dim, a backdrop), not yet selected, with other assets in the frame to pick: dragging
       // from it draws a rectangle (a click still selects it). A frame of only that (the title's words): the drag moves it.
       const root = chain[0], box = screenRectOf(root), S = hit.stage.getBoundingClientRect(), whole = {left: S.left, top: S.top, right: S.right, bottom: S.bottom};
-      const backdrop = plain && group.length === 1 && !(s?.frame === id && s.key && layerKeyOf(s.key) === layerKeyOf(key)) && isBackdrop({left: box.left, top: box.top, right: box.left + box.width, bottom: box.top + box.height}, S) && assetsIn(hit.stage, whole).length > 0;
+      // (fixed in place, the background: a drag from it always draws a rectangle, picked or not)
+      const backdrop = (fixed && group.length === 1) || (plain && group.length === 1 && !(s?.frame === id && s.key && layerKeyOf(s.key) === layerKeyOf(key)) && isBackdrop({left: box.left, top: box.top, right: box.left + box.width, bottom: box.top + box.height}, S) && assetsIn(hit.stage, whole).length > 0);
       begin({type: 'maybe-move', client, items: itemsOf(group), frame: id, stage: hit.stage, moved: false, ...(backdrop ? {backdrop: true, startLocal: local} : {})});
       return;
     }
@@ -1445,6 +1895,12 @@ function Board({video: captured, videoId}) {
       if (mod && key === 'z') { event.preventDefault(); if (editing.current) finishEdit(true); setHistory(h => (event.shiftKey ? redo(h) : undo(h))); dirty.current = true; return; }
       if (mod && key === 'y') { event.preventDefault(); setHistory(h => redo(h)); dirty.current = true; return; }
       if (typing) return;
+      if (event.shiftKey && !mod && key === 'g') { event.preventDefault(); toggleGuides(); return; } // (the guide lines: on the board and in the video editor)
+      if (vEditRef.current) { // the video editor is open: the keys are its own; of the board's, only Undo, Redo and Delete of a connector line picked in it
+        const v = videoSelRef.current;
+        if ((key === 'delete' || key === 'backspace') && v?.line) { event.preventDefault(); deleteVideoLine(v.frameIds(), v.line); }
+        return;
+      }
       if (event.code === 'Space') { event.preventDefault(); setSpace(true); return; }
       if (mod && event.shiftKey && key === 'c') { event.preventDefault(); copyPosition(); return; }  // a position, not the asset
       if (mod && event.shiftKey && key === 'v') { event.preventDefault(); pastePosition(); return; } // (not the browser's paste as plain text)
@@ -1466,14 +1922,17 @@ function Board({video: captured, videoId}) {
       if (key === 'h') { setTool('hand'); return; }
       if (key === 'p') { setTool('pencil'); return; }
       if (key === 'r') { setTool('rect'); return; }
+      if (key === 'c' && !mod) { const on = toolRef.current !== 'comment'; setTool(on ? 'comment' : 'move'); if (on) setStatus('Comment (C): click on a video to put a comment there. C, V or Esc to leave.'); return; } // the Comment tool, like the video editor's
       if (key === 'k') { const on = toolRef.current !== 'scale'; setTool(on ? 'scale' : 'move'); if (on) setStatus('Scale (K): drag a handle and the words scale with the box. K, V or Esc to leave.'); return; } // the Scale tool, like Figma's
-      if (key === 'delete' || key === 'backspace') { event.preventDefault(); if (lineSelRef.current && !selRef.current) deleteLineOf(lineSelRef.current); else removeSelected(); return; }
+      if (key === 'delete' || key === 'backspace') { event.preventDefault(); const v = videoSelRef.current, pin = pinSelRef.current; if (refSelRef.current) deleteRef(refSelRef.current); else if (pin && !selRef.current) { commentOps.removeIn(pin.title, pin.id); setPinSel(null); } else if (v?.line) deleteVideoLine(v.frameIds(), v.line); else if (lineSelRef.current && !selRef.current) deleteLineOf(lineSelRef.current); else removeSelected(); return; } // (a connector line picked in a video: deleted from it; a comment picked on a video: deleted)
       if (key === 'escape') {
         if (writers.current.length) { stopWriting(); return; }
         if (ctx) { setCtx(null); return; }
+        if (refSelRef.current) { setRefSel(null); return; }
+        if (pinSelRef.current) { setPinSel(null); return; }
         if (drag.current?.type === 'line-move' && drag.current.started) { cancelLineMove(); return; }
         if (lineSelRef.current) { setLineSel(null); return; }
-        if (toolRef.current === 'pencil' || toolRef.current === 'rect' || toolRef.current === 'scale') { setTool('move'); return; }
+        if (toolRef.current === 'pencil' || toolRef.current === 'rect' || toolRef.current === 'scale' || toolRef.current === 'comment') { setTool('move'); return; }
         if (drag.current?.type === 'reorder' && drag.current.started) { cancelReorder(); return; }
         const s = selRef.current;
         if (pickedItemsRef.current.length) { setPicked(null); return; }
@@ -1511,27 +1970,24 @@ function Board({video: captured, videoId}) {
     const s = selRef.current, stage = s?.key && stageFor(s.frame), el = stage && elementOf(stage, s.key);
     if (!el) { setStatus('Pick an asset to copy its position (Ctrl+Shift+C).'); return; }
     const b = stageBoxOf(stage, el), frame = byIdRef.current[s.frame], edit = editsRef.current.frames[s.frame], layer = layerKeyOf(s.key);
-    const p = {x: Math.round(b.x * 100) / 100, y: Math.round(b.y * 100) / 100, key: s.key, link: frame ? linkOf(frame, edit, layer)?.id ?? null : null, name: nameOf(el, frame && layersOf(frame, edit).find(l => l.key === layer)?.name)};
+    const p = {x: Math.round(b.x * 100) / 100, y: Math.round(b.y * 100) / 100, key: s.key, name: nameOf(el, frame && layersOf(frame, edit).find(l => l.key === layer)?.name)};
     positionRef.current = p;
     writeLocal(POSITION, JSON.stringify(p));
     setStatus(`Copied the position of ${p.name}: ${Math.round(p.x)}, ${Math.round(p.y)}`);
     setTick(t => t + 1);
   };
-  // The same asset in another frame: its key, else the one linked to it (a duplicate), else null.
+  // The same asset in another frame: the one with its key, else null.
   const matchIn = (frameId, p) => {
     const frame = byIdRef.current[frameId];
     if (!frame) return null;
-    const edit = editsRef.current.frames[frameId], layers = layersOf(frame, edit), {layer, rest} = splitKey(p.key);
-    if (layers.some(l => l.key === layer)) return p.key;
-    const linked = p.link && layers.find(l => linkOf(frame, edit, l.key)?.id === p.link);
-    return linked ? linked.key + rest : null;
+    return layersOf(frame, editsRef.current.frames[frameId]).some(l => l.key === layerKeyOf(p.key)) ? p.key : null;
   };
   // Each [frame, key]'s top left corner to p (stage px), in one step. -> how many were placed
   const placeAll = (parts, p) => {
     const moves = [];
     for (const {frame, key} of parts) {
       const stage = stageFor(frame), el = stage && elementOf(stage, key);
-      if (!el) continue;
+      if (!el || isFixed(el)) continue;
       const b = stageBoxOf(stage, el), u = unitOf(stage), k = parentScale(el), t = translateOf(el), by = [(p.x - b.x) * u / k, (p.y - b.y) * u / k], off = offTail(stage, el, frame);
       moves.push({frame, key, to: [t[0] + by[0], t[1] + by[1]], tip: off && [off.tip0[0] + by[0], off.tip0[1] + by[1]]});
     }
@@ -1562,21 +2018,43 @@ function Board({video: captured, videoId}) {
   // the videos of the lines of videos, by the slide they take the place of: what the player in it needs
   const cellProps = useMemo(() => {
     const out = new Map();
-    for (const [anchor, scene] of cells.anchors) out.set(anchor, {name: scene.name, frames: scene.ids.map(id => allById[id]).filter(Boolean), edits, onText: retype, onFrame: id => setPlayingId(id ? anchor : null)});
+    for (const [anchor, scene] of cells.anchors) out.set(anchor, {name: scene.name, frames: scene.ids.map(id => allById[id]).filter(Boolean), edits: boardEdits, onText: retype, onVideoText: restyleVideo, onCaption: retypeCaption, onSelect: selectVideo, onEditing: setTextEd, onFrame: id => setPlayingId(id ? anchor : null), onMenu: (event, m) => videoMenu(event, {kind: 'cell', key: anchor, title: scene.name, ...m}), pins: pinsFor(anchor, scene.name), commentTool: tool === 'comment', onDrawn: onVideoDrawn});
     return out;
-  }, [cells, allById, edits, retype]);
+  }, [cells, allById, boardEdits, retype, restyleVideo, retypeCaption, selectVideo, setPlayingId, videoMenu, pinsFor, tool, onVideoDrawn]);
+  // The video open in the video editor (opened from its right-click menu): what its player is handed there, as on the board (the edits as they settle: `veEdits`)
+  const vePlayer = useMemo(() => {
+    if (!vEdit) return null;
+    const run = videoRuns.find(v => v.key === vEdit.key), c = run ? null : cellProps.get(vEdit.key);
+    if (run) return {frames: run.frames, title: run.title, edits: veEdits, video, lines, placed: board.frames, onFrame: setPlayingId, onText: retype, onVideoText: restyleVideo, onCaption: retypeCaption, onSelect: selectVideo, onEditing: setTextEd, onDrawn: onVideoDrawn};
+    if (c) return {frames: c.frames, title: c.name, edits: veEdits, video, lines, placed: board.frames, onFrame: c.onFrame, onText: c.onText, onVideoText: c.onVideoText, onCaption: c.onCaption, onSelect: c.onSelect, onEditing: c.onEditing, onDrawn: onVideoDrawn};
+    return null;
+  }, [vEdit, videoRuns, cellProps, veEdits, video, lines, board, setPlayingId, retype, restyleVideo, retypeCaption, selectVideo, onVideoDrawn]);
+  useEffect(() => { if (vEdit && !vePlayer) setVEdit(null); }, [vEdit, vePlayer]); // (the video is gone: a line deleted, Undo)
+  veTitleRef.current = vePlayer?.title ?? null;
+  // The same element on every slide of the video open in the editor (by its key, else by its name; a part of it by the same path): where its LOOK goes
+  // ("look: video · place: slide", the user, 2026-10-22). -> [{frame, key}]
+  const sameInVideo = (frame, key) => {
+    const slides = vePlayer?.frames ?? [], cut = key.indexOf('/'), root = cut < 0 ? key : key.slice(0, cut), path = cut < 0 ? '' : key.slice(cut);
+    const from = allById[frame], name = from && layersOf(from, editsRef.current.frames[frame]).find(l => l.key === root)?.name;
+    return slides.flatMap(f => { const ls = layersOf(f, editsRef.current.frames[f.id]), hit = ls.find(l => l.key === root) ?? (name ? ls.find(l => l.name === name) : null); return hit ? [{frame: f.id, key: hit.key + path}] : []; });
+  };
+  sameInVideoRef.current = sameInVideo;
+  const untouched = useMemo(() => new Set(lines.filter(l => /^(scratch|fonts)$/i.test(String(l.title ?? '').trim())).map(l => l.id)), [lines]); // (lines whose slides are never changed by a rule: the model, the fonts)
+  // A frame is drawn live once it comes near the view (an edited one at any zoom: its picture would not show the edits), and stays drawn. Every edited frame used to be drawn at once,
+  // on screen or not: with the split design that is every frame, 30 000 elements built before anything showed and worked on again at every edit (the user, 2026-10-22: "faster").
+  const drawnOnce = useRef(new Set());
   const liveIds = useMemo(() => {
-    const near = visibleWorld(view, size, Math.max(300, size.w) / view.zoom), ids = new Set();
+    const near = visibleWorld(view, size, Math.max(300, size.w) / view.zoom), ids = new Set(), drawn = drawnOnce.current;
     for (const f of frames) {
       const p = board.frames[f.id];
       if (!p) continue;
-      if (hasChanges(edits, f.id) || (view.zoom >= LIVE_ZOOM && intersects(near, {x: p.x, y: p.y, w: FRAME.w, h: FRAME.h}))) ids.add(f.id);
+      if (drawn.has(f.id) || (intersects(near, {x: p.x, y: p.y, w: FRAME.w, h: FRAME.h}) && (view.zoom >= LIVE_ZOOM || hasChanges(boardEdits, f.id)))) { ids.add(f.id); drawn.add(f.id); }
     }
     if (selection) ids.add(selection.frame);
     for (const p of pickedItems) ids.add(p.frame); // (the assets picked in other frames are measured and moved: those frames are drawn)
     for (const id of forceDraw) ids.add(id);
     return ids;
-  }, [view, size, frames, board, edits, selection, pickedItems, forceDraw]);
+  }, [view, size, frames, board, boardEdits, selection, pickedItems, forceDraw]);
   // The frames the page measures or works on (the one picked, the ones picked with it, the ones being measured) are always
   // fully drawn; the others are only drawn while they are near the view (CSS content-visibility, .sb-frame).
   const solidIds = useMemo(() => new Set([...(selection ? [selection.frame] : []), ...frameSel, ...pickedItems.map(p => p.frame), ...forceDraw]), [selection, frameSel, pickedItems, forceDraw]);
@@ -1607,20 +2085,20 @@ function Board({video: captured, videoId}) {
       const stage = stageFor(waiting.frame), target = stage && targetOf(stage, waiting.key);
       if (target) { if (!isWords(target.el)) { const chain = chainOf(target.el), at = chain.length - 1; if (at >= 0 && keyOf(chain[at]) !== selRef.current?.key) setSelection({frame: waiting.frame, key: keyOf(chain[at]), depth: at}); } startEdit(target); }
     }
-    const others = pickedItems.filter(p => !(p.frame === selection?.frame && p.key === selection?.key)).map(p => { const stage = stageFor(p.frame), el = stage && elementOf(stage, p.key); return el ? {key: `${p.frame}\n${p.key}`, ...rel(el.getBoundingClientRect())} : null; }).filter(Boolean);
+    const others = pickedItems.map(p => { const stage = stageFor(p.frame), el = stage && elementOf(stage, p.key); return el ? {key: `${p.frame}\n${p.key}`, ...rel(screenRectOf(el))} : null; }).filter(Boolean); // (several picked: each its own outline; the box with the handles is round all of them)
     if (selection?.key) {
       const stage = stageFor(selection.frame), el = stage && elementOf(stage, selection.key);
       if (el) {
         const top = selection.key.split('/')[0], bubble = !selection.key.includes('/') && isBubble(el);
-        const r = bubble ? screenRectOf(el) : el.getBoundingClientRect(); // (a bubble by its yellow box: that is what its handles resize)
+        const r = bubble || !selection.key.includes('/') ? screenRectOf(el) : el.getBoundingClientRect(); // (a bubble by its yellow box: that is what its handles resize; a piece by what is seen of it, data-sb-seen)
         const f = byId[selection.frame], layer = f && layersOf(f, editsRef.current.frames[selection.frame]).find(l => l.key === top);
         const box = stageBoxOf(stage, el), u = unitOf(stage), name = nameOf(el, layer?.name);
         const kind = resizeKind(el), scale = scaleOf(el);
-        const lock = lockOf(editsRef.current, selection.frame, selection.key);
-        outline = {...rel(r), name, w: Math.round(r.width / u), h: Math.round(r.height / u), handles: pickedItems.length || (lock.w && lock.h) || (!kind.free && (lock.w || lock.h)) || (toolRef.current === 'scale' && kind.mode === 'size' && (lock.w || lock.h)) ? null : kind.free ? 'all' : 'corners', lock};
-        info = {kind: 'asset', frame: board.frames[selection.frame]?.index, name, x: Math.round(box.x), y: Math.round(box.y), w: Math.round(box.w), h: Math.round(box.h), bubble, top: !selection.key.includes('/'),
+        const lock = lockOf(editsRef.current, selection.frame, selection.key), fixed = isFixed(el);
+        outline = {...rel(r), name, w: Math.round(r.width / u), h: Math.round(r.height / u), handles: fixed || pickedItems.length || (lock.w && lock.h) || (!kind.free && (lock.w || lock.h)) || (toolRef.current === 'scale' && kind.mode === 'size' && (lock.w || lock.h)) ? null : kind.free ? 'all' : 'corners', lock};
+        info = {kind: 'asset', frame: board.frames[selection.frame]?.index, name, x: Math.round(box.x), y: Math.round(box.y), w: Math.round(box.w), h: Math.round(box.h), bubble, top: !selection.key.includes('/'), fixed,
           scale: kind.mode === 'scale' && (scale[0] !== 1 || scale[1] !== 1) ? scale.map(s => Math.round(s * 100)) : null, free: kind.free, keep: kind.keep,
-          ink: el.dataset.sbBox === 'drawing' && layer ? inkOf(editsRef.current.library[layer.asset]) : null, lock: lockOf(editsRef.current, selection.frame, selection.key),
+          ink: el.dataset.sbBox === 'drawing' ? (layer ? inkOf(editsRef.current.library[layer.asset]) : inkOf(el.outerHTML)) : null, // (a captured drawing: as it is drawn now) lock: lockOf(editsRef.current, selection.frame, selection.key),
           device: !!(el.matches('.tbl-tablet') || el.querySelector('.tbl-tablet')), look: lookOf(el), own: styleOf(editsRef.current, selection.frame, selection.key), chat: bubble ? {tail: !el.hasAttribute('data-sb-no-tail'), hasTail: !!el.dataset.sbTip, words: el.dataset.sbMode === 'words'} : null, changed: touched(editsRef.current.frames[selection.frame], selection.key)};
         if (bubble) {
           const t = tipOf(el, editsRef.current.frames[selection.frame], drag.current?.type === 'tip' ? {key: top, delta: drag.current.delta} : drag.current?.tips ?? null), S = stage.getBoundingClientRect();
@@ -1631,21 +2109,54 @@ function Board({video: captured, videoId}) {
       const f = byId[selection.frame];
       if (f) info = {kind: 'frame', frame: board.frames[selection.frame]?.index, name: f.label, copy: !!f.isCopy, many: frameSel.length > 1 ? frameSel.length : 0};
     }
+    if (outline && pickedItems.length > 1) { // several picked: one box round the ones in the frame pressed, its corners scale them all (startGroupScale)
+      const g = groupRectOf(selection.frame), stage = stageFor(selection.frame), u = stage ? unitOf(stage) : 1;
+      outline = g ? {...rel(g.rect), name: `${pickedItems.length} picked`, w: Math.round(g.rect.width / u), h: Math.round(g.rect.height / u), handles: g.scalable ? 'corners' : null, lock: {w: false, h: false}} : null;
+    }
     const plays = [...new Set([...frameSel, ...(selection ? [selection.frame] : [])])].filter(id => hasAnim(editsRef.current, id) && !cells.anchors.has(id)).map(id => { // (a video has no pen of its own: its slides' pens write as it plays)
       const art = frameEl(id)?.querySelector('[data-art]'), r = art && rel(art.getBoundingClientRect());
       return r && r.width >= 110 ? {id, left: Math.round(r.left + r.width - 40), top: Math.round(r.top + 10)} : null; // (top right of the slide)
     }).filter(Boolean);
     const outlines = [...new Set(frameSel.concat(selection && !selection.key ? [selection.frame] : []))].map(id => { const art = frameEl(id)?.querySelector('[data-art]'); return art ? {id, ...rel(art.getBoundingClientRect())} : null; }).filter(Boolean);
-    if (info && others.length) info.count = others.length + 1;
+    if (info && pickedItems.length > 1) info.count = pickedItems.length;
     setOverlay(o => (JSON.stringify([o.outline, o.tip, o.frames, o.info, o.picks, o.plays]) === JSON.stringify([outline, tip, outlines, info, others, plays]) ? o : {outline, tip, frames: outlines, info, picks: others, plays}));
   });
 
-  // A handle of the selected asset: dragging it scales the asset (see the 'scale' drag).
+  // ---- Several picked, scaled together (the user, 2026-11-09: "multiselection should give me ability to scale up everything at once") ----
+  // The box round the ones picked in a frame has corner handles; one dragged scales every one picked by the same factor from the opposite corner, like Figma's: the
+  // places spread out or close in with it and everything grows: a UI element by its scale, a box (a picture, a drawing, a rectangle, an outline) by its size, a text
+  // box and a chat box WITH their words (the font size, and the line height / letter spacing / corners / outline they were given). Picked in several frames, each
+  // frame's ones scale from the same corner of their own box. What is fixed in place (the background) stays; a locked width or height keeps that one's size, it
+  // still moves with the others. One step of Undo ('group-scale' drag).
+  const rectAround = rects => rects.reduce((g, r) => (g ? {left: Math.min(g.left, r.left), top: Math.min(g.top, r.top), right: Math.max(g.right, r.right), bottom: Math.max(g.bottom, r.bottom)} : {left: r.left, top: r.top, right: r.right, bottom: r.bottom}), null);
+  const withSize = g => g && {...g, width: g.right - g.left, height: g.bottom - g.top};
+  const groupRectOf = frameId => {
+    const els = pickedItemsRef.current.filter(p => p.frame === frameId).map(p => { const stage = stageFor(p.frame); return stage && elementOf(stage, p.key); }).filter(Boolean);
+    const movable = els.filter(el => !isFixed(el)), rect = withSize(rectAround((movable.length ? movable : els).map(screenRectOf)));
+    return rect ? {rect, scalable: movable.length > 0} : null;
+  };
+  const startGroupScale = handle => {
+    const cur = editsRef.current, items = itemsNow().map(({frame, key}) => {
+      const stage = stageFor(frame), el = stage && elementOf(stage, key);
+      if (!el || isFixed(el)) return null;
+      const r = screenRectOf(el), kind = resizeKind(el), bubble = isBubble(el), text = !bubble && el.dataset.sbBox === 'text', given = bubble ? (el.dataset.sbSize ?? '').split(',').map(Number) : null;
+      return {frame, key, el, stage, kind, bubble, text, lock: lockOf(cur, frame, key), own: styleOf(cur, frame, key) ?? {}, font: bubble || text ? lookOf(el).size || null : null,
+        r0: {left: r.left, top: r.top}, s0: scaleOf(el), size0: sizeOf(el), k: parentScale(el), box0: bubble ? (b => [b.w, b.h])(bubbleBoxOf(stage, el)) : null,
+        pad: bubble ? bubblePad(el) : null, given: given ? [given[0] || 0, given[1] || 0] : null, off: !!offTail(stage, el, frame)};
+    }).filter(Boolean);
+    if (!items.length) return;
+    const boxes = {};
+    for (const frame of new Set(items.map(it => it.frame))) boxes[frame] = withSize(rectAround(items.filter(it => it.frame === frame).map(it => screenRectOf(it.el))));
+    const main = boxes[selRef.current?.frame] ? selRef.current.frame : items[0].frame;
+    begin({type: 'group-scale', handle, items, boxes, main, f: 1, moved: false});
+  };
+  // A handle of the selected asset: dragging it scales the asset (see the 'scale' drag); several picked: all of them (startGroupScale).
   const startScale = (event, handle) => {
     event.stopPropagation(); event.preventDefault();
     if (editing.current) finishEdit(true);
+    if (pickedItemsRef.current.length > 1) { startGroupScale(handle); return; }
     const s = selRef.current, stage = s?.key && stageFor(s.frame), el = stage && elementOf(stage, s.key);
-    if (!el) return;
+    if (!el || isFixed(el)) return;
     const r = screenRectOf(el), kind = resizeKind(el);
     let content = null; // the Scale tool (K) on a box or a chat box: what scales with it besides its boundaries
     if (toolRef.current === 'scale' && kind.mode === 'size') {
@@ -1655,7 +2166,7 @@ function Board({video: captured, videoId}) {
     }
     begin({type: 'scale', handle, el, key: s.key, frame: s.frame, stage, kind, content, lock: lockOf(editsRef.current, s.frame, s.key), r0: {left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: Math.max(1, r.width), height: Math.max(1, r.height)}, s0: scaleOf(el), size0: sizeOf(el), k: parentScale(el), off: !!offTail(stage, el, s.frame), moved: false});
   };
-  // Right-click on an asset: its menu (Make unique, copy, paste, delete).
+  // Right-click on an asset: its menu (apply to all / delete in the row, copy, paste, delete).
   const onContextMenu = event => {
     const lineEl = event.target.closest('[data-sb-row]');
     if (lineEl) { event.preventDefault(); pickLine(lineEl.dataset.sbRow); setCtx({x: event.clientX, y: event.clientY, line: lineEl.dataset.sbRow}); return; }
@@ -1670,9 +2181,7 @@ function Board({video: captured, videoId}) {
     }
     const frame = s?.key && byIdRef.current[s.frame];
     if (!frame) { setCtx(null); return; }
-    const cur = editsRef.current, edit = cur.frames[s.frame], layers = [...new Set(keys.map(layerKeyOf))], row = baseFramesRef.current.filter(f => f.chapter === frame.chapter);
-    const linked = layers.filter(k => !isUnique(edit, k)).reduce((n, k) => { const link = linkOf(frame, edit, k); return n + (link ? Math.max(0, linkedLayers(row, cur, link.id).length - 1) : 0); }, 0);
-    setCtx({x: event.clientX, y: event.clientY, frame: s.frame, layers, linked, unique: layers.filter(k => isUnique(edit, k)).length});
+    setCtx({x: event.clientX, y: event.clientY, frame: s.frame, ...rowInfo(s.frame, keys)});
   };
   useEffect(() => { // the menu closes on a click anywhere else, or when the board moves
     if (!ctx) return;
@@ -1680,19 +2189,31 @@ function Board({video: captured, videoId}) {
     window.addEventListener('pointerdown', close, true); window.addEventListener('wheel', close, true);
     return () => { window.removeEventListener('pointerdown', close, true); window.removeEventListener('wheel', close, true); };
   }, [ctx]);
-  const makeUnique = on => { setUniqueOf(ctx.frame, ctx.layers, on); setCtx(null); };
   // A drawing in another color or width (one undo step while the wheel is dragged).
   const restyle = change => {
     const s = selection, cur = editsRef.current, layer = s?.key && cur.frames[s.frame]?.inserts?.find(l => l.key === s.key), html = layer && cur.library[layer.asset];
+    if (s?.key && !layer) { // (a captured drawing: its color and width are its style, the captured HTML stays)
+      const patch = {...(change.color ? {stroke: change.color} : {}), ...(Number.isFinite(change.width) ? {strokeWidth: change.width} : {})};
+      if (Object.keys(patch).length) commit(e => setStyle(e, s.frame, s.key, patch), {merge: `ink:${s.frame}:${s.key}`});
+      return;
+    }
     if (!html) return;
     const next = restyleInk(html, change);
     if (next !== html) commit(e => setInsertHtml(e, s.frame, s.key, next, hashString(next)), {merge: `ink:${s.frame}:${s.key}`});
   };
   // ---- The sidebar: what it sets on the picked assets (a field typed or scrubbed is one undo step) ----
   const setLook = (patch, name = Object.keys(patch).join(',')) => {
-    const items = itemsNow();
+    let items = itemsNow();
+    if (vEditRef.current && veSelRef.current?.type === 'asset' && Object.keys(patch).some(k => k !== 'rotate')) { // (in the video editor a look goes to the element on every slide of the video; its turn is its slide's)
+      const seen = new Map(items.map(p => [`${p.frame}:${p.key}`, p]));
+      for (const p of items) for (const q of sameInVideo(p.frame, p.key)) seen.set(`${q.frame}:${q.key}`, q);
+      items = [...seen.values()];
+    }
+    if ('rotate' in patch) items = items.filter(({frame, key}) => { const stage = stageFor(frame), el = stage && elementOf(stage, key); return !isFixed(el); }); // (what is fixed in place does not turn)
     if (!selRef.current?.key || !items.length) return;
-    commit(e => items.reduce((cur, {frame, key}) => setStyle(cur, frame, key, patch), e), {merge: `look:${items.map(p => `${p.frame}:${p.key}`).join(',')}:${name}`});
+    const kinds = Object.fromEntries(items.map(({frame, key}) => { const stage = stageFor(frame), el = stage && elementOf(stage, key); return [`${frame}:${key}`, el ? (el.matches('.iq2-mark') ? 'outline' : lookKindOfRoot(el)) : null]; }));
+    const ownOf = (cur, frame, key) => { const kind = kinds[`${frame}:${key}`], shared = kind && sharedLookOf(cur, kind), mine = kind && Object.fromEntries(Object.entries(patch).filter(([n]) => n in (shared ?? {}))); return mine && Object.keys(mine).length ? setOwnLook(cur, frame, key, kind, mine) : cur; }; // (the sidebar changes one slide: over a shared look, that part keeps what you gave it)
+    commit(e => items.reduce((cur, {frame, key}) => ownOf(setStyle(cur, frame, key, patch), frame, key), e), {merge: `look:${items.map(p => `${p.frame}:${p.key}`).join(',')}:${name}`});
   };
   // Align the picked assets, frame by frame: one in its frame, several in a frame to the box around them.
   const alignSelected = where => {
@@ -1700,7 +2221,7 @@ function Board({video: captured, videoId}) {
     for (const {frame, keys} of groupsNow()) {
       const stage = stageFor(frame);
       if (!stage) continue;
-      const u = unitOf(stage), items = keys.map(key => { const el = elementOf(stage, key); return el && {key, el, b: stageBoxOf(stage, el)}; }).filter(Boolean);
+      const u = unitOf(stage), items = keys.map(key => { const el = elementOf(stage, key); return el && !isFixed(el) && {key, el, b: stageBoxOf(stage, el)}; }).filter(Boolean);
       if (!items.length) continue;
       const area = items.length > 1 ? union(items.map(item => item.b)) : {x: 0, y: 0, w: FRAME.w, h: FRAME.h};
       for (const {key, el, b} of items) {
@@ -1716,7 +2237,7 @@ function Board({video: captured, videoId}) {
   // keep their proportions); its top left corner stays where it is.
   const resizeSelected = (w, h) => {
     const s = selRef.current, stage = s?.key && stageFor(s.frame), el = stage && elementOf(stage, s.key);
-    if (!el) return;
+    if (!el || isFixed(el)) return;
     const kind = resizeKind(el), u = unitOf(stage), r0 = screenRectOf(el), k = parentScale(el), lock = lockOf(editsRef.current, s.frame, s.key), keeps = !kind.free || kind.keep;
     if ((w && lock.w) || (h && lock.h) || (keeps && (lock.w || lock.h))) return; // locked
     let fx = w ? w * u / Math.max(1e-6, r0.width) : 1, fy = h ? h * u / Math.max(1e-6, r0.height) : 1;
@@ -1742,15 +2263,31 @@ function Board({video: captured, videoId}) {
   };
   // The picked assets as they were captured: place, size, scale, tail and styles (their words stay).
   const putBack = () => { const s = selRef.current, items = itemsNow(); if (s?.key) commit(e => items.reduce((cur, {frame, key}) => resetAsset(cur, frame, key), e)); };
-  // How many duplicates along its line the picked assets are linked to, and how many are unique.
-  const linkInfo = (frameId, keys) => {
-    const frame = byIdRef.current[frameId];
-    if (!frame) return {layers: [], linked: 0, unique: 0};
-    const cur = editsRef.current, edit = cur.frames[frameId], layers = [...new Set(keys.map(layerKeyOf))], row = baseFramesRef.current.filter(f => f.chapter === frame.chapter);
-    const linked = layers.filter(k => !isUnique(edit, k)).reduce((n, k) => { const link = linkOf(frame, edit, k); return n + (link ? Math.max(0, linkedLayers(row, cur, link.id).length - 1) : 0); }, 0);
-    return {layers, linked, unique: layers.filter(k => isUnique(edit, k)).length};
+  // Apply to all in this row / Delete in the whole row (the user, 2026-11-06, the board All storyboards): the picked assets as they are in this frame put on the same assets in every frame of its row,
+  // or taken out of all of them (lib/storyboardEdits.mjs applyAlongRow, hideAlongRow). Only when pressed: nothing is linked (the user, 2026-11-09), and "the same asset" is the captured one with
+  // the same key (lib/storyboardLinks.mjs); what was pasted, Alt+dragged or brought in is its frame's own.
+  const rowTargetsOf = (cur, frameId, k) => {
+    const frame = byIdRef.current[frameId], link = frame && linkOf(frame, cur.frames[frameId], k);
+    if (!link) return [];
+    return linkedLayers(baseFramesRef.current.filter(f => f.chapter === frame.chapter), cur, link.id).filter(m => !(m.frame === frameId && m.key === k));
   };
-  const setUniqueOf = (frameId, layers, on) => { commit(e => layers.reduce((cur, k) => setUnique(cur, frameId, k, on), e)); setStatus(on ? 'Made unique: it no longer changes with its duplicates.' : 'Linked to its duplicates again.'); };
+  // The picked assets (their layers) and how many of the same are in the other frames of the row (for the two buttons above).
+  const rowInfo = (frameId, keys) => {
+    const layers = [...new Set(keys.map(layerKeyOf))];
+    return {layers, inRow: layers.reduce((n, k) => n + rowTargetsOf(editsRef.current, frameId, k).length, 0)};
+  };
+  const applyToRow = (frameId, layers) => {
+    const n = layers.reduce((sum, k) => sum + rowTargetsOf(editsRef.current, frameId, k).length, 0);
+    if (!n) { setStatus('Nothing else in this row has it.'); return; }
+    commit(e => layers.reduce((cur, k) => applyAlongRow(cur, frameId, k, rowTargetsOf(cur, frameId, k)), e));
+    setStatus(`Applied to all in this row: ${n} more.`);
+  };
+  const deleteInRow = (frameId, layers) => {
+    const n = layers.reduce((sum, k) => sum + rowTargetsOf(editsRef.current, frameId, k).length, 0);
+    commit(e => layers.reduce((cur, k) => hideAlongRow(cur, [{frame: frameId, key: k}, ...rowTargetsOf(cur, frameId, k)]), e));
+    setSelection(null);
+    setStatus(`Deleted in the whole row${n ? ` (${n + layers.length} in all)` : ''}.`);
+  };
   const startTip = event => {
     event.stopPropagation(); event.preventDefault();
     const s = selRef.current, stage = stageFor(s.frame), key = s.key.split('/')[0];
@@ -1833,7 +2370,7 @@ function Board({video: captured, videoId}) {
   // ---- The sidebar's panels: the pencil, the picked asset(s), frame(s) or line, else the board ----
   const lineNow = lineSel ? lines.find(l => l.id === lineSel) ?? null : null;
   const assetPanel = () => {
-    const L = info.look ?? {}, own = info.own ?? {}, many = !!info.count, links = linkInfo(selection.frame, keysNow());
+    const L = info.look ?? {}, own = info.own ?? {}, many = !!info.count, links = rowInfo(selection.frame, keysNow()), fixedOne = !!info.fixed && !many; // (the background: fixed in place)
     const fillPaint = isGradient(own.fill) ? own.fill : null, fill = fillPaint ?? solidHex(own.fill ?? L.fill), stroke = solidHex(own.stroke ?? L.stroke), weight = own.weight ?? L.weight ?? 400;
     const weights = WEIGHTS.some(([w]) => w === weight) ? WEIGHTS : [...WEIGHTS, [weight, String(weight)]].sort((a, b) => a[0] - b[0]);
     return <>
@@ -1842,19 +2379,20 @@ function Board({video: captured, videoId}) {
         <ToolButton icon={PanelIcon.copyPos} label="Copy the position (Ctrl+Shift+C)" onClick={copyPosition}/>
         <ToolButton icon={PanelIcon.pastePos} label="Paste the position (Ctrl+Shift+V)" onClick={pastePosition} disabled={!copiedPosition()}/>
       </>}>
-        <IconButtons items={ALIGN} value={null} onChange={alignSelected}/>
+        {fixedOne && <p className="sb-side-note">Locked in place: its color and look change, not its position or size.</p>}
+        {!fixedOne && <IconButtons items={ALIGN} value={null} onChange={alignSelected}/>}
         <div className="sb-row">
-          <NumField label="X" value={info.x} onChange={v => setPosition('x', v)}/>
-          <NumField label="Y" value={info.y} onChange={v => setPosition('y', v)}/>
+          <NumField label="X" value={info.x} disabled={fixedOne} onChange={v => setPosition('x', v)}/>
+          <NumField label="Y" value={info.y} disabled={fixedOne} onChange={v => setPosition('y', v)}/>
         </div>
-        {!info.bubble && <div className="sb-row"><NumField label={PanelIcon.rotate} title="Rotation" value={own.rotate ?? 0} unit="°" onChange={v => setLook({rotate: v || null})}/><span className="sb-row-fill"/></div>}
+        {!info.bubble && <div className="sb-row"><NumField label={PanelIcon.rotate} title="Rotation" value={own.rotate ?? 0} unit="°" disabled={fixedOne} onChange={v => setLook({rotate: v || null})}/><span className="sb-row-fill"/></div>}
       </Section>
       <Section title="Layout">
         <div className="sb-row">
-          <NumField label="W" value={info.w} min={1} disabled={many || info.lock?.w} onChange={v => resizeSelected(v, null)}/>
-          <LockButton on={info.lock?.w} label="width" onClick={() => toggleLock('w')}/>
-          <NumField label="H" value={info.h} min={1} disabled={many || info.lock?.h} onChange={v => resizeSelected(null, v)}/>
-          <LockButton on={info.lock?.h} label="height" onClick={() => toggleLock('h')}/>
+          <NumField label="W" value={info.w} min={1} disabled={many || fixedOne || info.lock?.w} onChange={v => resizeSelected(v, null)}/>
+          {!fixedOne && <LockButton on={info.lock?.w} label="width" onClick={() => toggleLock('w')}/>}
+          <NumField label="H" value={info.h} min={1} disabled={many || fixedOne || info.lock?.h} onChange={v => resizeSelected(null, v)}/>
+          {!fixedOne && <LockButton on={info.lock?.h} label="height" onClick={() => toggleLock('h')}/>}
         </div>
       </Section>
       <Section title="Appearance">
@@ -1926,14 +2464,13 @@ function Board({video: captured, videoId}) {
       <Section title={many ? 'Assets' : 'Asset'}>
         <div className="sb-buttons">
           <button type="button" onClick={putBack} disabled={!info.changed && !many}>Put back</button>
-          {links.linked > 0 && <button type="button" onClick={() => setUniqueOf(selection.frame, links.layers, true)}>Make unique</button>}
-          {links.unique > 0 && <button type="button" onClick={() => setUniqueOf(selection.frame, links.layers, false)}>Link again</button>}
+          {links.inRow > 0 && <button type="button" onClick={() => applyToRow(selection.frame, links.layers)} title="Put what was done to it here (its place, size, look; not its words) on the same piece in every frame of this row">Apply to all in this row</button>}
           <button type="button" onClick={removeSelected} disabled={!info.top}>Delete</button>
         </div>
       </Section>
     </>;
   };
-  const setFrameBackground = paint => { const ids = (frameSel.length ? frameSel : [selection.frame]).filter(id => byIdRef.current[id]); commit(e => ids.reduce((cur, id) => setBackground(cur, id, paint), e), {merge: `background:${ids.join(',')}`}); };
+  const setFrameBackground = paint => { const ids = (frameSel.length ? frameSel : [selection.frame]).filter(id => byIdRef.current[id]); commit(e => ids.reduce((cur, id) => { const next = setBackground(cur, id, paint); return sharedLookOf(next, 'background').fill ? setOwnLook(next, id, BACKGROUND, 'background', paint ? {fill: paint} : null) : next; }, e), {merge: `background:${ids.join(',')}`}); }; // (over a shared background, the slide keeps the one you gave it)
   const backgroundNow = backgroundOf(edits, selection?.frame ?? '');
   const framePanel = () => <>
     <div className="sb-side-head"><b>{info.many ? `${info.many} frames` : `Frame ${info.frame}`}</b>{!info.many && <small>{selFrame.label}{info.copy && !selFrame.isBlank ? ' · copy' : ''}</small>}</div>
@@ -1994,17 +2531,261 @@ function Board({video: captured, videoId}) {
         : <p className="sb-side-none">{backups ? 'None yet' : '…'}</p>}
     </Section>}
   </>;
+  const LOOK_PARTS = [['background', 'Background'], ['plate', 'Plate'], ['panel', 'Gray side'], ['outline', 'Yellow outline'], ['connector', 'Connector lines']];
+  const HEAD_NAMES = [['arrow', 'Arrow'], ['triangle', 'Triangle'], ['dot', 'Dot'], ['none', 'None']]; // (a connector's arrow head: lib/storyboardEdits.mjs ARROW_HEADS)
+  const videoPanel = () => {
+    const ids = videoSel.frameIds(), mineOf = kind => ids.map(id => edits.frames[id]?.ownLooks?.[ownKeyOf(kind)]).find(Boolean), anyOwn = ['background', 'plate', 'panel', 'outline', 'connector', 'words'].some(kind => Object.keys(mineOf(kind) ?? {}).some(n => n !== 'hide')); // (deleted lines are not something to apply to all)
+    const hasConnectors = ids.some(id => allById[id] && layersOf(allById[id], edits.frames[id]).some(l => /sec-flow-lines|sec-rk-arrows/.test(edits.library[l.asset] ?? video.assets[l.asset] ?? ''))); // (the purple lines between cards: only a video that has them shows their section)
+    const ownWords = mineOf('words'), words = {...videoTextKindOf(edits, 'words'), ...(ownWords ?? {})}, wordsWeight = words.weight ?? 500, setWords = (patch, name) => changeVideoLook('words', ids, patch, name);
+    return <>
+      <div className="sb-side-head"><b>{videoSel.title || 'Video'}</b><small>Video · {ids.length} slide{ids.length === 1 ? '' : 's'} · changes stay on this video until Apply to all</small></div>
+      {textEd ? <TextFields key={textEd.title} edit={textEd}/> : <Section title="Words" tools={ownWords ? <ToolButton icon={PanelIcon.minus} label="Back to how all the videos write their words" onClick={() => resetVideoLook('words', ids)}/> : null}>
+        <SelectField wide label="Font" value={words.font ?? 'montserrat'} options={Object.entries(FONTS).map(([value, label]) => ({value, label}))} onChange={v => setWords({font: v})}/>
+        <div className="sb-row">
+          <SelectField label="Weight" value={String(wordsWeight)} options={WEIGHTS.map(([value, label]) => ({value: String(value), label}))} onChange={v => setWords({weight: Number(v)})}/>
+          <NumField label="Aa" title="Text size" value={words.fontSize ?? 26} min={4} onChange={v => setWords({fontSize: v})}/>
+        </div>
+        <IconButtons items={TEXT_ALIGN.filter(a => a.id !== 'justify')} value={words.align ?? 'center'} onChange={v => setWords({align: v})}/>
+        <div className="sb-sublabel">Color</div>
+        <ColorField label="Words color" value={words.color ?? '#ffffff'} onChange={color => setWords({color})}/>
+      </Section>}
+      {videoSel.title && (() => { // (the video's Speed, the user, 2026-10-29: "add a way to change speed from editor": the pen's letters a second, and the seconds a highlighted scene takes; `edits.speed`, withSpeed)
+        const title = videoSel.title, own = videoSpeedOf(edits, title), usual = profileOf(video.video, title), cps = own.cps ?? usual?.cps ?? ANIM_CPS.default, seconds = own.seconds ?? usual?.beats?.seconds;
+        const setSpeed = (patch, name) => commit(e => setVideoSpeed(e, title, patch), {merge: `speed:${title}:${name}`});
+        return <Section title="Speed" tools={Object.keys(own).length ? <ToolButton icon={PanelIcon.minus} label="Back to this video's usual speed" onClick={() => commit(e => setVideoSpeed(e, title, {cps: null, seconds: null}))}/> : null}>
+          <label className="sb-light" title="How fast the words are written: letters a second">
+            <span>Words</span>
+            <input type="range" min={SPEED.cps.min} max={SPEED.cps.max} step={1} value={cps} onChange={event => setSpeed({cps: Number(event.target.value)}, 'cps')}/>
+            <span className="sb-num">{Math.round(cps)} letters/s</span>
+          </label>
+          {seconds != null && <label className="sb-light" title="The seconds a highlighted scene takes: the highlight comes in, then the words are written, together (the scene then stays a moment more)">
+            <span>Scene</span>
+            <input type="range" min={SPEED.seconds.min} max={SPEED.seconds.max} step={0.1} value={seconds} onChange={event => setSpeed({seconds: Number(event.target.value)}, 'seconds')}/>
+            <span className="sb-num">{seconds.toFixed(1)} s</span>
+          </label>}
+        </Section>;
+      })()}
+      {LOOK_PARTS.filter(([kind]) => kind !== 'connector' || hasConnectors).map(([kind, name]) => {
+        const mine = mineOf(kind), set = mine ?? sharedLookOf(edits, kind), shown = videoSel.lookOf(kind);
+        const look = kind === 'outline' ? {stroke: set?.stroke ?? solidHex(shown?.stroke) ?? '#ffc800', strokeWidth: set?.strokeWidth ?? Math.round(shown?.strokeWidth ?? 6)}
+          : kind === 'connector' ? {stroke: set?.stroke ?? solidHex(shown?.stroke) ?? '#7b3cf0', strokeWidth: set?.strokeWidth ?? shown?.strokeWidth ?? 3, arrow: set?.arrow ?? shown?.arrow ?? 'arrow'}
+          : {fill: set?.fill ?? paintFromCss(shown?.fill) ?? '#ffffff'};
+        return <div key={kind} className={`sb-look${videoSel.focus === kind ? ' is-focus' : ''}`} ref={videoSel.focus === kind ? el => { if (el && scrolledTo.current !== videoSel.at) { scrolledTo.current = videoSel.at; el.scrollIntoView({block: 'nearest'}); } } : undefined}>
+          <Section title={name} tools={mine ? <ToolButton icon={PanelIcon.minus} label={`Back to how all the videos have the ${name.toLowerCase()}`} onClick={() => resetVideoLook(kind, ids)}/> : null}>
+            {kind === 'outline' ? <>
+              <ColorField label="Outline color" value={look.stroke} onChange={stroke => changeVideoLook(kind, ids, {stroke})}/>
+              <div className="sb-row"><NumField label="W" title="Thickness" value={look.strokeWidth} min={1} max={24} onChange={strokeWidth => changeVideoLook(kind, ids, {strokeWidth})}/><span className="sb-row-fill"/></div>
+            </> : kind === 'connector' ? <>
+              <div className="sb-seg sb-heads" role="group" aria-label="Arrow head">{HEAD_NAMES.map(([id, label]) => <button key={id} type="button" className={look.arrow === id ? 'is-on' : ''} aria-pressed={look.arrow === id} onClick={() => changeVideoLook(kind, ids, {arrow: id})}>{label}</button>)}</div>
+              <ColorField label="Line color" value={look.stroke} onChange={stroke => changeVideoLook(kind, ids, {stroke})}/>
+              <div className="sb-row"><NumField label="W" title="Thickness" value={look.strokeWidth} min={1} max={12} step={0.5} onChange={strokeWidth => changeVideoLook(kind, ids, {strokeWidth})}/><span className="sb-row-fill"/></div>
+              <div className="sb-buttons">
+                <button type="button" disabled={!videoSel.line} onClick={() => deleteVideoLine(ids, videoSel.line)} title={videoSel.line ? 'Delete the line you double-clicked from this video (Delete)' : 'Double-click a line in the video to pick it'}>{videoSel.line ? 'Delete this line' : 'Double-click a line to delete it'}</button>
+                {mine?.hide?.length > 0 && <button type="button" onClick={() => changeVideoLook(kind, ids, {hide: null})} title="Show again the lines deleted from this video">Bring back the lines ({mine.hide.length})</button>}
+              </div>
+            </> : <PaintField label={name} value={look.fill} onChange={fill => changeVideoLook(kind, ids, {fill})}/>}
+          </Section>
+        </div>;
+      })}
+      <div className="sb-apply-all">
+        <button type="button" disabled={!anyOwn} onClick={() => applyVideoToAll(ids)} title={anyOwn ? 'Give this video\'s look (its words, background, plate, gray side, outlines) to every video and slide of every board' : 'Nothing changed on this video yet'}>Apply to all</button>
+        <small>{anyOwn ? 'Every video and slide of every board takes this video\'s look · Ctrl+Z takes it back' : 'What you change here stays on this video'}</small>
+      </div>
+      {process.env.NODE_ENV !== 'production' && videoSel.title && <ExportSection board={video.video} title={videoSel.title}/>}
+    </>;
+  };
+  // ---- The video editor's inspector: a layer of the video (lib/storyboardLayers.mjs), its values at the editor's time; ◆ a keyframe there ----
+  const LAYER_KIND_NAMES = {rect: 'Rectangle', ellipse: 'Ellipse', text: 'Text', image: 'Image', path: 'Path'};
+  const CAP_OPTIONS = CAPS.map(value => ({value, label: CAP_NAMES[value]})), titled = list => list.map(value => ({value, label: value[0].toUpperCase() + value.slice(1)}));
+  const layerPanel = () => {
+    const l = videoLayersOf(edits, veTitleRef.current).find(x => x.id === veSel.id);
+    if (!l) return <div className="sb-side-head"><b>Layer</b><small>It is not in this video any more</small></div>;
+    const t = veT, val = p => layerValueAt(l, p, t), set = (patch, merge) => layerOps.change(l.id, x => setLayerAt(x, t, patch), merge), two = n => Math.round(n * 100) / 100;
+    const keyed = props => props.some(p => layerAnimated(l, p)), here = props => props.some(p => (l.keys ?? []).some(k => k[p] != null && Math.abs(k.t - t) < 1 / 60));
+    const keyButton = (props, name) => <button type="button" className={`sb-lkey${keyed(props) ? ' is-on' : ''}${here(props) ? ' is-here' : ''}`} title={here(props) ? `Take the ${name} keyframe at ${two(t)} s off` : `A ${name} keyframe at ${two(t)} s (the ${name} is animated from then on)`} aria-label={`${name} keyframe`}
+      onClick={() => layerOps.change(l.id, x => (here(props) ? props.reduce((c, p) => removeLayerKey(c, t, p), x) : setLayerAt(props.reduce((c, p) => (layerAnimated(c, p) ? c : setLayerAnimated(c, p, t, true)), x), t, Object.fromEntries(props.map(p => [p, layerValueAt(x, p, t)])))))}><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.5l8.5 8.5-8.5 8.5L3.5 12 12 3.5Z"/></svg></button>;
+    const shape = l.kind === 'rect' || l.kind === 'ellipse', times = layerKeyTimes(l);
+    return <>
+      <div className="sb-side-head"><b>{l.name}</b><small>{LAYER_KIND_NAMES[l.kind]} · a layer of this video · values at {two(t)} s</small></div>
+      <Section title="Position" tools={keyButton(['x', 'y'], 'position')}>
+        <IconButtons items={ALIGN.map(a => ({...a, label: `${a.label} of the picture`}))} value={null} onChange={kind => veActions.current?.align(kind)}/>
+        <div className="sb-row"><NumField label="X" value={Math.round(val('x'))} onChange={v => set({x: v}, `lx:${l.id}`)}/><NumField label="Y" value={Math.round(val('y'))} onChange={v => set({y: v}, `ly:${l.id}`)}/></div>
+        <div className="sb-row"><NumField label={PanelIcon.rotate} title="Rotation" value={two(val('rotation'))} unit="°" onChange={v => set({rotation: v}, `lr:${l.id}`)}/>{keyButton(['rotation'], 'rotation')}<span className="sb-row-fill"/></div>
+      </Section>
+      <Section title="Layout" tools={keyButton(['w', 'h'], 'size')}>
+        <div className="sb-row"><NumField label="W" min={1} value={Math.round(val('w'))} onChange={v => set({w: v}, `lw:${l.id}`)}/><NumField label="H" min={1} value={Math.round(val('h'))} onChange={v => set({h: v}, `lh:${l.id}`)}/></div>
+      </Section>
+      <Section title="Appearance" tools={keyButton(['opacity'], 'opacity')}>
+        <div className="sb-row">
+          <NumField label={PanelIcon.opacity} title="Opacity" unit="%" min={0} max={100} value={Math.round(val('opacity') * 100)} onChange={v => set({opacity: v / 100}, `lo:${l.id}`)}/>
+          {l.kind === 'rect' ? <NumField label={PanelIcon.radius} title="Corner radius" min={0} value={l.radius ?? 0} onChange={v => layerOps.change(l.id, {radius: v}, `lrad:${l.id}`)}/> : <span className="sb-row-fill"/>}
+        </div>
+      </Section>
+      <Section title="Blend and label">
+        <SelectField wide label="Blend mode" value={l.blend ?? 'normal'} options={BLEND_MODES.map(([value, label]) => ({value, label}))} onChange={blend => layerOps.change(l.id, {blend: blend === 'normal' ? null : blend})}/>
+        <SelectField wide label="Label color (the color of its bar)" value={String(l.label ?? KIND_LABEL[l.kind])} options={LABELS.map((x, i) => ({value: String(i + 1), label: x.name}))} onChange={v => layerOps.change(l.id, {label: Number(v)})}/>
+      </Section>
+      <Section title="Effects" addMenu={EFFECT_TYPES.map(type => ({value: type, label: EFFECTS[type].name}))} addLabel="Add an effect" onAdd={type => layerOps.change(l.id, x => addEffect(x, type).layer)}>
+        {(l.fx ?? []).length === 0 && <p className="sb-side-note">None. + adds Gaussian Blur, Drop Shadow, Glow, Brightness, Contrast, Saturation, Hue, Black &amp; White, Sepia or Invert; each number can be keyframed (the ◆).</p>}
+        {(l.fx ?? []).map((e, n, all) => <div key={e.id} className="sb-fx">
+          <div className="sb-row sb-fx-head">
+            <label className="sb-fx-on" title="The effect on or off"><input type="checkbox" checked={e.on !== false} onChange={ev => layerOps.change(l.id, x => patchEffect(x, e.id, {on: ev.target.checked}))}/><b>{EFFECTS[e.type].name}</b></label>
+            <button type="button" className="sb-sec-btn" disabled={n === 0} onClick={() => layerOps.change(l.id, x => moveEffect(x, e.id, -1))} title="Up: it is applied before the one above" aria-label="Move the effect up">↑</button>
+            <button type="button" className="sb-sec-btn" disabled={n === all.length - 1} onClick={() => layerOps.change(l.id, x => moveEffect(x, e.id, 1))} title="Down" aria-label="Move the effect down">↓</button>
+            <ToolButton icon={PanelIcon.minus} label={`Remove ${EFFECTS[e.type].name}`} onClick={() => layerOps.change(l.id, x => removeEffect(x, e.id))}/>
+          </div>
+          {EFFECTS[e.type].params.map(p => { const prop = fxProp(e.id, p.id); return <div key={p.id} className="sb-row sb-effect">
+            <span className="sb-effect-name">{p.name}</span>
+            <NumField label={p.unit || '#'} title={p.name} min={p.min} max={p.max} step={p.step ?? 1} value={two(val(prop))} onChange={v => set({[prop]: v}, `lfx:${l.id}:${prop}`)}/>
+            {keyButton([prop], p.name)}
+          </div>; })}
+          {EFFECTS[e.type].color && <ColorField label="Color" value={e.color ?? EFFECTS[e.type].color} onChange={color => layerOps.change(l.id, x => patchEffect(x, e.id, {color}), `lfxc:${l.id}:${e.id}`)}/>}
+        </div>)}
+      </Section>
+      {l.kind === 'path' && <>
+        <Section title="Line">
+          <ColorField label="Line color" value={l.stroke ?? '#7b3cf0'} onChange={stroke => layerOps.change(l.id, {stroke}, `lstroke:${l.id}`)}/>
+          <div className="sb-row">
+            <NumField label="W" title="Line width (0: no line)" min={0} max={200} step={0.5} value={l.strokeWidth ?? 3} onChange={v => layerOps.change(l.id, {strokeWidth: v}, `lsw:${l.id}`)}/>
+            <SelectField label="Dash" value={l.dash ?? 'solid'} options={titled(DASHES)} onChange={dash => layerOps.change(l.id, {dash})}/>
+          </div>
+          <div className="sb-row">
+            <SelectField label="Cap" value={l.lineCap ?? 'round'} options={titled(LINE_CAPS)} onChange={lineCap => layerOps.change(l.id, {lineCap})}/>
+            <SelectField label="Join" value={l.lineJoin ?? 'round'} options={titled(LINE_JOINS)} onChange={lineJoin => layerOps.change(l.id, {lineJoin})}/>
+          </div>
+        </Section>
+        <Section title="Ends">
+          <SelectField wide label="Start" value={l.startCap ?? 'none'} options={CAP_OPTIONS} onChange={startCap => layerOps.change(l.id, {startCap})}/>
+          <SelectField wide label="End" value={l.endCap ?? 'none'} options={CAP_OPTIONS} onChange={endCap => layerOps.change(l.id, {endCap})}/>
+          <div className="sb-row"><NumField label="Size" title="The size of the ends (1: as drawn from the line's width)" min={0.25} max={8} step={0.25} value={l.capScale ?? 1} onChange={capScale => layerOps.change(l.id, {capScale}, `lcap:${l.id}`)}/><span className="sb-row-fill"/></div>
+          <div className="sb-buttons"><button type="button" onClick={() => layerOps.change(l.id, x => ({...x, startCap: x.endCap, endCap: x.startCap}))} title="The start end takes the end's shape and the other way round">Swap the two ends</button></div>
+        </Section>
+        <Section title="Trim Paths" tools={null}>
+          <div className="sb-row"><NumField label="Start" unit="%" min={0} max={100} value={Math.round(val('trimStart') * 1000) / 10} onChange={v => set({trimStart: Math.max(0, Math.min(100, v)) / 100}, `ltrs:${l.id}`)}/>{keyButton(['trimStart'], 'trim start')}</div>
+          <div className="sb-row"><NumField label="End" unit="%" min={0} max={100} value={Math.round(val('trimEnd') * 1000) / 10} onChange={v => set({trimEnd: Math.max(0, Math.min(100, v)) / 100}, `ltre:${l.id}`)}/>{keyButton(['trimEnd'], 'trim end')}</div>
+          <p className="sb-side-note">The line is drawn from its start to its end as End goes from 0 to 100 % (the ◆ makes keyframes; Linear in Keyframes below keeps the speed even).</p>
+        </Section>
+        <Section title={`Points (${l.points?.length ?? 0})`}>
+          <label className="sb-row"><input type="checkbox" checked={!!l.closed} onChange={ev => layerOps.change(l.id, x => refitPath({...x, closed: ev.target.checked}))}/> Closed (the last point joins the first)</label>
+          {l.closed && <ColorField label="Fill" value={l.fill ?? '#7b3cf0'} onChange={fill => layerOps.change(l.id, {fill}, `lfill:${l.id}`)} onRemove={l.fill ? () => layerOps.change(l.id, {fill: null}) : undefined}/>}
+          <div className="sb-buttons">
+            <button type="button" onClick={() => layerOps.change(l.id, x => refitPath({...x, points: x.points.reduce((pts, _, i) => setSmooth(pts, x.closed, i, true), x.points)}))} title="Every point smooth: its handles along the line">All smooth</button>
+            <button type="button" onClick={() => layerOps.change(l.id, x => refitPath({...x, points: x.points.map(({ix, iy, ox, oy, smooth, ...rest}) => rest)}))} title="Every point a corner: no handles">All corners</button>
+            <button type="button" onClick={() => layerOps.change(l.id, x => refitPath({...x, points: reversePoints(x.points)}))} title="The first point becomes the last: the ends swap places">Reverse</button>
+          </div>
+          <p className="sb-side-note">Pick the path, then press a point to move it (Shift: more) · Alt + press: smooth / corner · drag its handles to bend the line · Delete takes the points picked off · double-click the line adds one · P is the Pen</p>
+          {l.replaces?.length > 0 && <p className="sb-side-note">It stands for {l.replaces.length} line{l.replaces.length === 1 ? '' : 's'} of the software, not seen while it is on (Delete gives them back; hide it to take them off the picture).</p>}
+        </Section>
+      </>}
+      {shape && <Section title="Fill"><PaintField label="Fill" value={l.fill ?? '#ffec00'} onChange={fill => layerOps.change(l.id, {fill}, `lfill:${l.id}`)}/></Section>}
+      {shape && <Section title="Stroke">
+        <ColorField label="Stroke color" value={l.stroke ?? '#000000'} onChange={stroke => layerOps.change(l.id, {stroke, strokeWidth: l.strokeWidth || 2}, `lstroke:${l.id}`)} onRemove={l.stroke ? () => layerOps.change(l.id, {stroke: null, strokeWidth: 0}) : undefined}/>
+        <div className="sb-row"><NumField label="W" title="Stroke width" min={0} max={200} value={l.strokeWidth ?? 0} onChange={v => layerOps.change(l.id, {strokeWidth: v, stroke: l.stroke ?? '#000000'}, `lsw:${l.id}`)}/><span className="sb-row-fill"/></div>
+      </Section>}
+      {l.kind === 'text' && <Section title="Text">
+        <textarea key={`${l.id}:${l.text}`} className="sb-vl-words" rows={3} defaultValue={l.text} spellCheck="false" aria-label="The words" onKeyDown={e => e.stopPropagation()} onBlur={e => { if (e.target.value !== l.text) layerOps.change(l.id, {text: e.target.value}); }}/>
+        <SelectField label="Font" wide value={l.font} options={Object.entries(FONTS).map(([value, label]) => ({value, label}))} onChange={font => layerOps.change(l.id, {font})}/>
+        <div className="sb-row">
+          <NumField label="Size" min={4} max={600} value={l.size} onChange={size => layerOps.change(l.id, {size}, `lsize:${l.id}`)}/>
+          <SelectField label="Weight" value={String(l.weight)} options={WEIGHTS.map(([w, name]) => ({value: String(w), label: name}))} onChange={w => layerOps.change(l.id, {weight: Number(w)})}/>
+        </div>
+        <IconButtons items={TEXT_ALIGN.filter(a => a.id !== 'justify')} value={l.align} onChange={align => layerOps.change(l.id, {align})}/>
+        <ColorField label="Text color" value={l.color} onChange={color => layerOps.change(l.id, {color}, `lcolor:${l.id}`)}/>
+      </Section>}
+      {l.kind === 'image' && <Section title="Image">
+        <div className="sb-buttons"><label className="sb-file-btn">Replace the picture<input type="file" accept="image/*" hidden onChange={async e => { const file = e.target.files?.[0]; e.target.value = ''; if (!file) return; try { const src = await saveImage(file); layerOps.change(l.id, {src}); } catch (error) { setStatus(`The picture was not replaced: ${error.message}`); } }}/></label></div>
+      </Section>}
+      <Section title="Time">
+        <div className="sb-row"><NumField label="In" title="On screen from (seconds)" step={0.1} min={0} value={two(l.from)} onChange={v => layerOps.change(l.id, {from: v}, `lin:${l.id}`)}/><NumField label="Out" title="On screen until (seconds)" step={0.1} min={0} value={two(l.to)} onChange={v => layerOps.change(l.id, {to: v}, `lout:${l.id}`)}/></div>
+      </Section>
+      {times.length > 0 && <Section title="Keyframes">
+        {times.map(k => { const ease = (l.keys ?? []).find(x => Math.abs(x.t - k) < 1 / 60)?.ease ?? 'ease'; return <div key={k} className="sb-row sb-lkeys">
+          <span className={`sb-lkeys-t${Math.abs(k - t) < 1 / 60 ? ' is-here' : ''}`}>◆ {two(k)} s</span>
+          <SelectField label="Easing" value={ease} options={[{value: 'ease', label: 'Easy ease'}, {value: 'linear', label: 'Linear'}, {value: 'hold', label: 'Hold'}]} onChange={v => layerOps.change(l.id, x => setKeyEase(x, k, v))}/>
+          <ToolButton icon={PanelIcon.minus} label="Delete this keyframe" onClick={() => layerOps.change(l.id, x => removeLayerKey(x, k))}/>
+        </div>; })}
+      </Section>}
+      <div className="sb-buttons">
+        <button type="button" onClick={() => { const id = layerOps.duplicate(l.id); if (id) veSelect({type: 'layer', id}); }} title="Duplicate (Ctrl+D)">Duplicate</button>
+        <button type="button" disabled={!(t > l.from + 0.05 && t < l.to - 0.05)} onClick={() => veActions.current?.split()} title="Cut it in two at the playhead (Ctrl+Shift+D)">Split at the playhead</button>
+        <button type="button" onClick={() => layerOps.stack(l.id, 1)} title="One layer forward">Bring forward</button>
+        <button type="button" onClick={() => layerOps.stack(l.id, -1)} title="One layer back">Send backward</button>
+        <button type="button" onClick={() => { layerOps.remove(l.id); veSelect(null); }} title="Delete (Delete)">Delete</button>
+      </div>
+    </>;
+  };
+  // ---- The video editor's inspector: a comment (the user, 2026-10-29: "it can be deleted ... selecting and hitting delete on the right inspector"): its words, place and second, a red Delete ----
+  const commentPanel = () => {
+    const list = videoCommentsOf(edits, veTitleRef.current), c = list.find(x => x.id === veSel.id) ?? null;
+    return <CommentPanel comment={c} number={c ? commentNumber(list, c.id) : 0} total={list.length} ops={commentOps} onSeek={t => veActions.current?.seek?.(t)} onDelete={() => { commentOps.remove(veSel.id); veSelect(null); }}/>;
+  };
+  // The same inspector for a comment picked on a video of the board (the user, 2026-10-30): its second opens the video editor there
+  const pinPanel = () => {
+    const list = videoCommentsOf(edits, pinSel.title), c = list.find(x => x.id === pinSel.id) ?? null;
+    return <CommentPanel comment={c} number={c ? commentNumber(list, c.id) : 0} total={list.length} byScene ops={commentOps} onSeek={() => c && openAtComment(pinSel.key, c)} seekLabel="Open in the video editor" seekTitle="Open the video in the video editor at the second of this comment"
+      onDelete={() => { commentOps.removeIn(pinSel.title, pinSel.id); setPinSel(null); }}/>;
+  };
+  // ---- The video editor's inspector, several picked (the user, 2026-10-26: "multiselection"): what they are, aligned and spread (to the box round them all), their opacity, and
+  // what is done to all of them (the editor's own: `veActions`) ----
+  const groupPanel = () => {
+    const items = veSel.group, all = videoLayersOf(edits, veTitleRef.current), ls = items.filter(q => q.type === 'layer').map(q => all.find(l => l.id === q.id)).filter(Boolean), elements = items.length - ls.length, a = veActions.current, t = veT, two = n => Math.round(n * 100) / 100;
+    const opacities = ls.map(l => Math.round(layerValueAt(l, 'opacity', t) * 100)), sameOpacity = opacities.length > 0 && opacities.every(o => o === opacities[0]), hidden = ls.length > 0 && ls.every(l => l.hidden);
+    const what = [ls.length && `${ls.length} layer${ls.length === 1 ? '' : 's'}`, elements && `${elements} element${elements === 1 ? '' : 's'} of the slides`].filter(Boolean).join(' · ');
+    return <>
+      <div className="sb-side-head"><b>{items.length} picked</b><small>{what} · values at {two(t)} s</small></div>
+      <Section title="Align">
+        <IconButtons items={ALIGN} value={null} onChange={kind => a?.align(kind)}/>
+        <IconButtons items={DISTRIBUTE} value={null} onChange={axis => a?.distribute(axis)}/>
+      </Section>
+      {ls.length > 0 && <Section title="Appearance">
+        <div className="sb-row"><NumField label={PanelIcon.opacity} title="Opacity (every layer picked; a keyframe now where it is animated)" unit="%" min={0} max={100} value={sameOpacity ? opacities[0] : ''} placeholder="Mixed" onChange={v => layerOps.changeMany(Object.fromEntries(ls.map(l => [l.id, x => setLayerAt(x, t, {opacity: Math.max(0, Math.min(100, v)) / 100})])), `gop:${ls.map(l => l.id).join()}`)}/><span className="sb-row-fill"/></div>
+      </Section>}
+      {ls.length > 0 && <div className="sb-buttons">
+        <button type="button" onClick={() => a?.duplicate()} title="Duplicate the layers (Ctrl+D)">Duplicate</button>
+        <button type="button" onClick={() => a?.split()} title="Cut the layers in two at the playhead (Ctrl+Shift+D)">Split at the playhead</button>
+        <button type="button" onClick={() => a?.restack('front')} title="Bring to front (Ctrl+Shift+])">Bring to front</button>
+        <button type="button" onClick={() => a?.restack('back')} title="Send to back (Ctrl+Shift+[)">Send to back</button>
+        <button type="button" onClick={() => layerOps.changeMany(Object.fromEntries(ls.map(l => [l.id, {hidden: !hidden}])))}>{hidden ? 'Show' : 'Hide'}</button>
+        <button type="button" onClick={() => a?.remove()} title="Delete the layers (Delete)">Delete</button>
+      </div>}
+      <p className="sb-side-note">Shift + click on the picture adds or takes out · a rectangle from the plate, the background or outside the picture picks what it touches · Ctrl + C / V copies the layers into any video, at the playhead · right-click: the menu</p>
+    </>;
+  };
+  // An element of a slide picked in the editor: its look is on every slide of the video already; Apply to all gives it to every element of its name, everywhere
+  const assetToAll = () => {
+    const s = veSelRef.current;
+    if (s?.type !== 'asset' || s.key.includes('/')) return;
+    const f = allById[s.frame], name = f && layersOf(f, editsRef.current.frames[s.frame]).find(l => l.key === s.key)?.name;
+    const own = {...styleOf(editsRef.current, s.frame, s.key)};
+    delete own.rotate;
+    if (!name || !Object.keys(own).length) return;
+    const off = Object.fromEntries(Object.keys(own).map(k => [k, null]));
+    commit(e => sameInVideo(s.frame, s.key).reduce((cur, q) => setStyle(cur, q.frame, q.key, off), setLayerLook(e, name, own))); // (the video's own look taken off: it is everyone's now)
+    setStatus(`Every “${name}” on every slide of every board has this look now · Ctrl+Z takes it back`);
+  };
+  const editorAssetFooter = () => {
+    const s = veSel, whole = !s.key.includes('/'), f = allById[s.frame], name = f && layersOf(f, edits.frames[s.frame]).find(l => l.key === s.key.split('/')[0])?.name;
+    const own = styleOf(edits, s.frame, s.key), has = Object.keys(own).some(k => k !== 'rotate'), shared = name && layerLookOf(edits, name), vs = videoScaleOf(edits, s.frame, s.key), vm = videoMoveOf(edits, s.frame, s.key), movedOn = (sameInVideo(s.frame, s.key)).filter(q => videoMoveOf(edits, q.frame, q.key)).length;
+    return <>{movedOn > 0 && <Section title="Place in this video" tools={<ToolButton icon={PanelIcon.minus} label="Back to where the video puts it (every slide of the video)" onClick={() => assetOps.unplace(s.frame, s.key)}/>}>
+      <p className="sb-side-note">{vm ? `Moved ${Math.round(vm[0])}, ${Math.round(vm[1])} px on this slide` : 'Where the video puts it on this slide'}{movedOn > (vm ? 1 : 0) ? ` · moved on ${movedOn} slide${movedOn === 1 ? '' : 's'} of the video` : ''} (its motion path: the points on the picture)</p>
+    </Section>}{vs && <Section title="Size in this video" tools={<ToolButton icon={PanelIcon.minus} label="Back to the size the video gives it (every slide of the video)" onClick={() => assetOps.unsize(s.frame, s.key)}/>}>
+      <p className="sb-side-note">{vs[0] === vs[1] ? `${Math.round(vs[0] * 100)} %` : `${Math.round(vs[0] * 100)} % × ${Math.round(vs[1] * 100)} %`} of what the video gives it, on every slide of the video (its handles in the picture)</p>
+    </Section>}<div className="sb-apply-all">
+      <button type="button" disabled={!whole || !name || !has} onClick={assetToAll} title={whole ? `Give this look to every “${name ?? 'element'}” on every slide of every board` : 'Apply to all takes a whole element (click it without Ctrl)'}>Apply to all</button>
+      <small>{!whole ? 'A part of an element: its look stays on this video' : !name ? 'It has no name to be found by on the other slides' : has ? `Its look is on every slide of this video; Apply to all gives it to every “${name}”` : shared ? `Every “${name}” has a look of all; what you change here stays on this video` : 'Its look goes to every slide of this video, moving it to this slide'}</small>
+    </div>{process.env.NODE_ENV !== 'production' && vePlayer?.title && <ExportSection board={video.video} title={vePlayer.title}/>}</>;
+  };
   const zoomPct = `${Math.round(view.zoom * (view.zoom < 0.1 ? 1000 : 100)) / (view.zoom < 0.1 ? 10 : 1)}%`;
   const cursor = space || tool === 'hand' ? (drag.current?.type === 'pan' ? 'grabbing' : 'grab') : tool === 'pencil' || tool === 'rect' ? 'crosshair' : drag.current?.dup && drag.current.moved ? 'copy' : 'default';
   const handleAt = (o, h) => ({left: o.left + (h.includes('w') ? 0 : h.includes('e') ? o.width : o.width / 2), top: o.top + (h.includes('n') ? 0 : h.includes('s') ? o.height : o.height / 2)});
   const info = overlay.info, selFrame = selection ? byId[selection.frame] : null;
   const targetLabel = menu ? `frame ${board.frames[menu.target]?.index ?? ''}` : '';
 
-  return <div className="sb-root">
+  return <div className={`sb-root${tool === 'comment' ? ' is-commenting' : ''}`}>
     <div className="sb-float sb-float--left">
       <Link href="/" className="sb-back" aria-label="Home">←</Link>
       <span className="sb-name">Storyboard</span>
-      <select className="sb-video" value={videoId} onChange={e => { window.location.search = `?video=${e.target.value}`; }} aria-label="Board">{BOARDS.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}</select>
+      <select className="sb-video" value={videoId} onChange={e => { window.location.search = `?video=${e.target.value}`; }} aria-label="Board">{(m => [...m.groups.map(g => <optgroup key={g.name} label={g.name}>{g.boards.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}</optgroup>), ...m.rest.map(v => <option key={v.id} value={v.id}>{v.name}</option>)])(menuOf(videoId))}</select>
     </div>
     <div className="sb-float sb-float--right">
       <span className="sb-status" role="status">{status}</span>
@@ -2016,9 +2797,10 @@ function Board({video: captured, videoId}) {
         </>}
       <button type="button" className="sb-icon" onClick={() => { setHistory(h => undo(h)); dirty.current = true; }} disabled={!history.past.length} title="Undo (Ctrl+Z)" aria-label="Undo">{Icon.undo}</button>
       <button type="button" className="sb-icon" onClick={() => { setHistory(h => redo(h)); dirty.current = true; }} disabled={!history.future.length} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">{Icon.redo}</button>
+      <button type="button" className={`sb-icon${showGuides ? ' is-on' : ''}`} onClick={toggleGuides} title="Guide lines (Shift+G)" aria-label="Guide lines" aria-pressed={showGuides}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M14.5 3.5v17M3.5 9.5h17M3.5 14.5h17" strokeDasharray="2 2"/></svg></button>
       <button type="button" className={`sb-icon${help ? ' is-on' : ''}`} onClick={() => setHelp(h => !h)} title="Shortcuts" aria-label="Shortcuts" aria-pressed={help}>{Icon.help}</button>
     </div>
-    <div ref={viewport} className="sb-viewport" style={{cursor: reorder ? 'grabbing' : cursor}} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerLeave={() => setHoverGap(null)} onClick={onClick} onDoubleClick={onDoubleClick} onContextMenu={onContextMenu} onDragOver={onDragOver} onDrop={onDrop}>
+    <div ref={viewport} className="sb-viewport" style={{cursor: reorder ? 'grabbing' : cursor}} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerLeave={() => { setHoverGap(null); pointerAt.current = null; }} onClick={onClick} onDoubleClick={onDoubleClick} onContextMenu={onContextMenu} onDragStart={onDragStart} onDragOver={onDragOver} onDrop={onDrop}>
       <div ref={worldRef} className="sb-world" style={{transform: `translate(${viewRef.current.x}px,${viewRef.current.y}px) scale(${viewRef.current.zoom})`}}>
         {board.rows.map(row => <div key={row.chapter.id} className={`sb-section${row.chapter.title.length > 22 ? ' is-long' : ''}${lineSel === row.chapter.id ? ' is-selected' : ''}`} data-sb-row={row.chapter.id} style={{left: row.x, top: row.y, width: row.w, height: row.h}}>
           {lineEdit === row.chapter.id ? <LineName title={row.chapter.title} onDone={title => { setLineEdit(null); if (title != null) renameLineTo(row.chapter.id, title); }}/> : <span>{row.chapter.title}</span>}
@@ -2026,8 +2808,9 @@ function Board({video: captured, videoId}) {
         {!trashing && board.rows.filter(row => !frames.some(f => f.chapter === row.chapter.id) && !shelfLines.has(row.chapter.id)).map(row => <button key={`empty-${row.chapter.id}`} type="button" className="sb-line-empty" data-sb-ui="" data-sb-empty={row.chapter.id} style={{left: LAYOUT.labelW + LAYOUT.labelGap, top: row.y + BAR + BAR_GAP, width: FRAME.w, height: FRAME.h}} onClick={() => addFrameIn(row.chapter.id)}><span>{Icon.plus}Add a frame</span></button>)}
         {!trashing && loaded && <button type="button" className="sb-line-add" data-sb-ui="" style={{left: 0, top: board.rows.length * board.rowHeight, width: LAYOUT.labelW, height: BAR}} onClick={() => addLineAfter(lines.at(-1)?.id ?? null)}><span>{Icon.plus}Add line</span></button>}
         {reorder && reorder.ids.filter(id => board.frames[id]).map(id => <div key={id} className="sb-slot" style={{left: board.frames[id].x, top: board.frames[id].y - HEAD, width: FRAME.w, height: HEAD + FRAME.h + NOTES_GAP + NOTES_H}}/>)}
-        {!trashing && loaded && videoRuns.map(v => <StoryboardPlayer key={v.key} frames={v.frames} title={v.title} edits={edits} video={video} x={v.x} y={v.y} focus={selection?.frame ?? null} lines={lines} placed={board.frames} onFrame={setPlayingId} onText={retype}/>)}
-        {frames.map(f => { const p = board.frames[f.id]; return p && <Frame key={f.id} frame={f} index={p.index} x={p.x} y={p.y} video={video} live={liveIds.has(f.id)} urgent={selection?.frame === f.id || forceDraw.has(f.id)} solid={solidIds.has(f.id)} edit={edits.frames[f.id]} library={edits.library} note={noteOf(edits, f.id)} selected={frameSel.includes(f.id) || (selection?.frame === f.id && !selection.key)} dragging={!!reorder?.ids.includes(f.id)} playing={playingId === f.id} isNew={fresh.has(f.id)} onNote={onNote} cell={cellProps.get(f.id) ?? null}/>; })}
+        {!trashing && loaded && videoRuns.map(v => <StoryboardPlayer key={v.key} frames={v.frames} title={v.title} edits={boardEdits} video={video} x={v.x} y={v.y} focus={boardFocus} lines={lines} placed={board.frames} onFrame={setPlayingId} onText={retype} onVideoText={restyleVideo} onCaption={retypeCaption} onSelect={selectVideo} onEditing={setTextEd} onMenu={(event, m) => videoMenu(event, {kind: 'run', key: v.key, title: v.title, shelf: v.shelf ?? null, lines: v.chapters, ...m})} pins={pinsFor(v.key, v.title)} commentTool={tool === 'comment'} onDrawn={onVideoDrawn}/>)}
+        {frames.map(f => { const p = board.frames[f.id], E = !vEdit ? edits : selection?.frame === f.id ? veEdits : boardEdits; return p && <Frame key={f.id} frame={f} index={p.index} x={p.x} y={p.y} video={video} live={liveIds.has(f.id)} urgent={selection?.frame === f.id || forceDraw.has(f.id)} solid={solidIds.has(f.id)} edit={E.frames[f.id]} library={E.library} looks={E.looks} note={noteOf(edits, f.id)} selected={frameSel.includes(f.id) || (selection?.frame === f.id && !selection.key)} dragging={!!reorder?.ids.includes(f.id)} isNew={fresh.has(f.id)} onNote={onNote} cell={cellProps.get(f.id) ?? null} narrow={!untouched.has(f.chapter)} guides={showGuides}/>; })}
+        <StoryboardRefs items={refsOf(edits)} picked={refSel} zoom={view.zoom} zoomNow={refZoom} free={refFree} onPick={pickRef} onChange={moveRef} onMenu={refMenu}/>
       </div>
       <div ref={overlayRef} className="sb-overlay" aria-hidden="true">
         {!reorder && overlay.plays.map(pl => <button key={pl.id} type="button" className={`sb-play${playing === pl.id ? ' is-playing' : ''}`} data-sb-ui="" style={{left: pl.left, top: pl.top}} onPointerDown={e => e.stopPropagation()} onClick={() => (playing === pl.id ? stopWriting() : playFrame(pl.id))} title={playing === pl.id ? 'Stop' : 'Play: the words are written by hand'} aria-label={playing === pl.id ? 'Stop the handwriting' : 'Play the handwriting'}>
@@ -2046,6 +2829,7 @@ function Board({video: captured, videoId}) {
         <svg className="sb-ink"><path ref={inkRef} fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </div>
     </div>
+    {vePlayer && <StoryboardVideoEditor key={vEdit.key} board={video.video} player={vePlayer} startAt={vEdit.at} layers={videoLayersOf(edits, vePlayer.title)} spans={spansOf(edits, vePlayer.title)} comments={videoCommentsOf(edits, vePlayer.title)} commentOps={commentOps} selection={veSel} onSelection={veSelect} onTime={editorTime} layerOps={layerOps} assetOps={assetOps} onAddImage={addVideoImage} actions={veActions} guides={showGuides} onGuides={toggleGuides} onClose={closeVideo} onReveal={id => { closeVideo(); focusFrame(id); }} onUndo={() => { setHistory(h => undo(h)); dirty.current = true; }} onRedo={() => { setHistory(h => redo(h)); dirty.current = true; }} canUndo={!!history.past.length} canRedo={!!history.future.length}/>}
     <aside className="sb-side" data-sb-ui="" aria-label="Design">
       {tool === 'pencil' ? <>
         <div className="sb-side-head"><b>Pencil</b></div>
@@ -2061,10 +2845,33 @@ function Board({video: captured, videoId}) {
         <Section title="Appearance">
           <div className="sb-row"><NumField label={PanelIcon.radius} title="Corner radius" value={rectLook.radius} min={0} onChange={radius => setRectLook(l => ({...l, radius}))}/><span className="sb-row-fill"/></div>
         </Section>
-      </> : info?.kind === 'asset' && selFrame ? assetPanel() : info?.kind === 'frame' && selFrame ? framePanel() : lineNow ? linePanel() : boardPanel()}
+      </> : vEdit && !textEd && veSel?.group ? groupPanel() : vEdit && !textEd && veSel?.type === 'comment' ? commentPanel() : vEdit && !textEd && veSel?.type === 'layer' ? layerPanel() : vEdit && !textEd && veSel?.type === 'asset' && info?.kind === 'asset' && selFrame ? <>{assetPanel()}{editorAssetFooter()}</> : pinSel && !vEdit && !textEd ? pinPanel() : videoSel || textEd ? (videoSel ? videoPanel() : null) : info?.kind === 'asset' && selFrame ? assetPanel() : info?.kind === 'frame' && selFrame ? framePanel() : lineNow ? linePanel() : boardPanel()}
     </aside>
     {ctx && <div className="sb-ctx" data-sb-ui="" role="menu" style={{left: Math.min(ctx.x, size.w - 270), top: Math.min(ctx.y, size.h - 260)}}>
-      {ctx.line ? <>
+      {ctx.ref ? (r => <>
+        <button type="button" role="menuitem" onClick={() => { window.open(r.url, '_blank', 'noopener'); setCtx(null); }}>Open in a new tab</button>
+        <hr/>
+        <button type="button" role="menuitem" onClick={() => { deleteRef(r.id); setCtx(null); }}>Delete <kbd>Del</kbd></button>
+      </>)(ctx.ref) : ctx.video ? (m => { // a video (the user, 2026-10-30): open it in the video editor, a comment on it, copy, export, delete
+        const run = m.kind === 'run', n = m.lines?.length ?? 0, lines = `${n} line${n > 1 ? 's' : ''}`;
+        return <>
+          <button type="button" role="menuitem" onClick={() => { openVideo(m.key, m.at); setCtx(null); }}>Open in video editor <kbd>at {clock(m.at)}</kbd></button>
+          <button type="button" role="menuitem" disabled={!m.point} onClick={() => { addCommentAt(m); setCtx(null); }} title={m.point ? 'A pin on the picture where you right-clicked, at the second the video is on' : 'Right-click on the picture to put a comment there'}>Add a comment here <kbd>{m.point ? `at ${clock(m.at)}` : 'on the picture'}</kbd></button>
+          <hr/>
+          <button type="button" role="menuitem" disabled={run && !!m.shelf} onClick={() => { duplicateVideoOf(m); setCtx(null); }} title={run ? (m.shelf ? 'A video stands once on a line' : 'A video is made of the lines it plays: they are copied') : 'The video and all its slides are copied, right after it'}>{run && !m.shelf ? `Duplicate its ${lines}` : 'Duplicate'}{run && m.shelf ? <kbd>stands once</kbd> : null}</button>
+          {process.env.NODE_ENV !== 'production' && <ExportMenuItem board={video.video} title={m.title} onStart={() => setCtx(null)}/>}
+          <hr/>
+          <button type="button" role="menuitem" onClick={() => { deleteVideoOf(m); setCtx(null); }} title={m.kind === 'cell' ? 'The video and its slides go to the Trash' : m.shelf ? 'The video leaves this line; the lines it plays are not touched' : 'The video is made of the lines it plays: they go to the Trash with it'}>{m.kind === 'cell' ? 'Delete' : m.shelf ? 'Take off this line' : `Delete with its ${lines}`}</button>
+        </>;
+      })(ctx.video) : ctx.pin ? (p => { // a comment's pin on a video of the board
+        const c = videoCommentsOf(edits, p.title).find(x => x.id === p.id) ?? null;
+        return <>
+          <button type="button" role="menuitem" disabled={!c} onClick={() => { openAtComment(p.key, c); setCtx(null); }}>Open in video editor <kbd>at its second</kbd></button>
+          <button type="button" role="menuitem" disabled={!c} onClick={() => { commentOps.changeIn(p.title, p.id, {done: !c.done}); setCtx(null); }}>{c?.done ? 'Mark as not done' : 'Mark as done'}</button>
+          <hr/>
+          <button type="button" role="menuitem" onClick={() => { commentOps.removeIn(p.title, p.id); setPinSel(null); setCtx(null); }}>Delete the comment <kbd>Del</kbd></button>
+        </>;
+      })(ctx.pin) : ctx.line ? <>
         {!trashing && <button type="button" role="menuitem" onClick={() => { setLineEdit(ctx.line); setCtx(null); }}>Rename <kbd>Enter</kbd></button>}
         {!trashing && <button type="button" role="menuitem" onClick={() => { addFrameIn(ctx.line); setCtx(null); }}>Add a frame</button>}
         {!trashing && <button type="button" role="menuitem" onClick={() => { addLineAfter(ctx.line); setCtx(null); }}>Add a line below</button>}
@@ -2075,8 +2882,8 @@ function Board({video: captured, videoId}) {
         <hr/>
         <button type="button" role="menuitem" onClick={() => { deleteLineOf(ctx.line); setCtx(null); }}>{trashing ? 'Delete for good' : 'Delete line'} <kbd>Del</kbd></button>
       </> : <>
-      <button type="button" role="menuitem" disabled={!ctx.linked} onClick={() => makeUnique(true)}>Make unique <kbd>{ctx.linked ? `${ctx.linked} duplicate${ctx.linked > 1 ? 's' : ''} in this line` : ctx.unique ? 'already unique' : 'no duplicates'}</kbd></button>
-      {ctx.unique > 0 && <button type="button" role="menuitem" onClick={() => makeUnique(false)}>Link to its duplicates again</button>}
+      <button type="button" role="menuitem" disabled={!ctx.inRow} onClick={() => { applyToRow(ctx.frame, ctx.layers); setCtx(null); }}>Apply to all in this row <kbd>{ctx.inRow ? `${ctx.inRow} more` : 'only here'}</kbd></button>
+      <button type="button" role="menuitem" disabled={!ctx.inRow} onClick={() => { deleteInRow(ctx.frame, ctx.layers); setCtx(null); }}>Delete in the whole row</button>
       <hr/>
       <button type="button" role="menuitem" onClick={() => { copySelected(); setCtx(null); }}>Copy <kbd>Ctrl C</kbd></button>
       <button type="button" role="menuitem" onClick={() => { paste(); setCtx(null); }}>Paste <kbd>Ctrl V</kbd></button>
@@ -2094,6 +2901,7 @@ function Board({video: captured, videoId}) {
         <button type="button" className={tool === 'scale' ? 'is-on' : ''} onClick={() => setTool(t => (t === 'scale' ? 'move' : 'scale'))} title="Scale (K): drag a handle, the words scale with the box" aria-label="Scale tool" aria-pressed={tool === 'scale'}>{Icon.scale}</button>
         <button type="button" className={tool === 'rect' ? 'is-on' : ''} onClick={() => setTool('rect')} title="Rectangle (R): drag on a frame, any fill" aria-label="Rectangle tool">{Icon.rect}</button>
         <button type="button" className={tool === 'pencil' ? 'is-on' : ''} onClick={() => setTool('pencil')} title="Pencil (P)" aria-label="Pencil tool">{Icon.pencil}<i className="sb-pen-color" style={{background: pen.color}}/></button>
+        <button type="button" className={tool === 'comment' ? 'is-on' : ''} onClick={() => setTool(t => (t === 'comment' ? 'move' : 'comment'))} title="Comment (C): click on a video to put a comment there" aria-label="Comment tool" aria-pressed={tool === 'comment'}>{Icon.comment}</button>
       </div>
     </footer>
     {trashing && loaded && !frames.length && <div className="sb-empty"><b>The Trash is empty</b><p>Select a frame on a storyboard and press Delete: it lands here. Pick it here, copy it (Ctrl+C) and paste it back on a storyboard (Ctrl+V).</p></div>}
@@ -2143,7 +2951,7 @@ function Board({video: captured, videoId}) {
     {help && <div className="sb-help" role="dialog" aria-label="Shortcuts"><h3>Move around</h3>
       <dl><dt>Scroll</dt><dd>Pan</dd><dt>Ctrl / ⌘ + scroll, pinch</dt><dd>Zoom</dd><dt>Space + drag, middle button, H</dt><dd>Pan</dd><dt>Shift 1 / Shift 2 / Shift 0</dt><dd>Fit all / selection / 100%</dd></dl>
       <h3>Edit</h3>
-      <dl><dt>Click</dt><dd>Select an asset or a frame</dd><dt>Double-click</dt><dd>Go into a group · retype any text</dd><dt>Tab while typing</dt><dd>The next text</dd><dt>Shift + click</dt><dd>Pick several assets or frames</dd><dt>Ctrl / ⌘ + C · X · V</dt><dd>Copy · cut · paste (any board)</dd><dt>Ctrl / ⌘ + click</dt><dd>Select the deepest</dd><dt>Drag · arrows (Shift = 10)</dt><dd>Move</dd><dt>Shift while dragging</dt><dd>Straight: one axis only</dd><dt>Ctrl / ⌘ while dragging</dt><dd>No snapping</dd><dt>Ctrl Shift C · Ctrl Shift V</dt><dd>Copy · paste a position (on the picked assets, or the same asset in the picked frames)</dd><dt>Drag a corner handle</dt><dd>Scale (UI keeps its proportions; a chat box changes its box, its words keep their size)</dd><dt>K, then drag a handle</dt><dd>Scale the asset with its words: a chat box grows with its font (K, V or Esc: back)</dd><dt>Alt + drag</dt><dd>Duplicate, here or onto another frame</dd><dt>Right-click</dt><dd>Make unique (duplicates are linked)</dd><dt>Esc</dt><dd>Out one level</dd><dt>Ctrl Z · Ctrl Shift Z</dt><dd>Undo · redo</dd></dl>
+      <dl><dt>Click</dt><dd>Select an asset or a frame</dd><dt>Double-click</dt><dd>Go into a group · retype any text (in a video too: its look is in the sidebar) · a color in a video: its section in the sidebar</dd><dt>Click a video</dt><dd>The sidebar is its inspector: the words, the background, the plate, the gray side, the outlines (all videos, or this video)</dd><dt>Tab while typing</dt><dd>The next text</dd><dt>Shift + click</dt><dd>Pick several assets or frames</dd><dt>Ctrl / ⌘ + C · X · V</dt><dd>Copy · cut · paste (any board)</dd><dt>Ctrl / ⌘ + click</dt><dd>Select the deepest</dd><dt>Drag · arrows (Shift = 10)</dt><dd>Move</dd><dt>Shift while dragging</dt><dd>Straight: one axis only</dd><dt>Ctrl / ⌘ while dragging</dt><dd>No snapping</dd><dt>Ctrl Shift C · Ctrl Shift V</dt><dd>Copy · paste a position (on the picked assets, or the same asset in the picked frames)</dd><dt>Drag a corner handle</dt><dd>Scale (UI keeps its proportions; a chat box changes its box, its words keep their size)</dd><dt>K, then drag a handle</dt><dd>Scale the asset with its words: a chat box grows with its font (K, V or Esc: back)</dd><dt>Alt + drag</dt><dd>Duplicate, here or onto another frame</dd><dt>Right-click</dt><dd>Apply to all in this row · copy · paste · delete (nothing is linked: every frame's texts are its own)</dd><dt>Esc</dt><dd>Out one level</dd><dt>Ctrl Z · Ctrl Shift Z</dt><dd>Undo · redo</dd></dl>
       <h3>Frames and assets</h3>
       <dl><dt>Ctrl / ⌘ + ] / [</dt><dd>Bring forward / send backward (Shift: to the front / back)</dd><dt>Ctrl / ⌘ + D</dt><dd>Duplicate the frame</dd><dt>Delete</dt><dd>Take an asset out · move a frame to the Trash</dd><dt>Shift A</dt><dd>Add a UI element</dd><dt>Paste or drop a picture</dt><dd>Add it to the frame</dd><dt>P, then drag on a frame</dt><dd>Draw (Alt + click: pick a color)</dd><dt>The bin at the top, or Board &gt; Trash</dt><dd>Deleted frames: copy one, paste it on a storyboard</dd><dt>+ between two frames</dt><dd>Add a blank frame there</dd><dt>Click a line's name</dt><dd>Pick the line (Del · Ctrl D · Ctrl C / V)</dd><dt>Double-click a line's name</dt><dd>Rename it</dd><dt>Hold a frame's number bar, drag</dt><dd>Move it (Esc: put back)</dd></dl></div>}
   </div>;

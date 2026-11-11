@@ -1,0 +1,776 @@
+{
+  "version": 1,
+  "frames": {
+    "schedule/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          274.03
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Each\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "schedule/words": {
+      "moves": {
+        "bubble": [
+          0,
+          274.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "schedule/end": {
+      "moves": {
+        "bubble": [
+          0,
+          274.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "points/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          252.44
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Reward\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "points/mark-2": {
+      "moves": {
+        "bubble": [
+          0,
+          153.94
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "points/words": {
+      "moves": {
+        "bubble": [
+          0,
+          153.94
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "urgency/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          326.19
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Mission\n\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "urgency/words": {
+      "moves": {
+        "bubble": [
+          0,
+          326.19
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "priority/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -70.94
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Critical\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "priority/words": {
+      "moves": {
+        "bubble": [
+          0,
+          272.14
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "shared/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "A Whole\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "shared/words": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "code/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Each\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "code/words": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "claim/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "To Claim\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "claim/words": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.572Z"
+    },
+    "claim/end": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "close/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "And To\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "close/words": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "close/end": {
+      "moves": {
+        "bubble": [
+          0,
+          142.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "execution/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          135.28
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Each\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "execution/mark-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -32.3
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "execution/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -32.3
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "performers/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          64.11
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "The\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "performers/words": {
+      "moves": {
+        "bubble": [
+          0,
+          64.11
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "reminder/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          0.28
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "No Need\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "reminder/words": {
+      "moves": {
+        "bubble": [
+          0,
+          0.28
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "individuals/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -6.03
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Work\n\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "individuals/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -6.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "teams/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Or To\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "teams/words": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "initiative/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Teams\n\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.348Z"
+    },
+    "initiative/words": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "initiative/mid": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "initiative/mid-2": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    },
+    "initiative/mid-3": {
+      "moves": {
+        "bubble": [
+          0,
+          271.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.573Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 4
+}

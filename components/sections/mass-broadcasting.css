@@ -1,0 +1,16 @@
+/* Mass Broadcasting (components/sections/BroadcastStage.jsx): its own classes, prefixed sec-. (Its Team Board is Live Monitoring's OverviewBoard: live-monitoring.css.) */
+
+/* the people an announcement goes to: a face, a badge once the quiz is done (a check: passed, a cross: failed) */
+.sec-mb-face { position:absolute; width:76px; height:76px; border-radius:50%; transform-origin:50% 50%; }
+.sec-mb-face img { display:block; width:76px; height:76px; border-radius:50%; object-fit:cover; background:#e9edf2; box-shadow:0 0 0 3px #fff, 0 8px 20px rgb(30 41 59 / 22%); }
+.sec-mb-badge { position:absolute; right:-6px; bottom:-4px; width:28px; height:28px; display:grid; place-items:center; border-radius:50%; box-shadow:0 0 0 3px #fff, 0 3px 8px rgb(30 41 59 / 25%); transform-origin:50% 50%; }
+.sec-mb-badge svg { width:18px; height:18px; }
+.sec-mb-badge.is-pass { background:#007a33; }
+.sec-mb-badge.is-fail { background:#bd1f59; }
+
+/* the announcement opened: the product's opened Media mission (OpenedMission) in the Improved Quality mission's box (360 x 573 at 1.5) */
+.sec-mb-om-clip { height:100%; overflow:hidden; border-radius:18px; }
+.sec-mb-om .om { font-family:var(--font-montserrat),sans-serif; }
+.sec-mb-om .om-head-actions { right:10px; gap:4px; } /* (the phone screen is 375 wide, this box 360: the title keeps its room) */
+.sec-mb-om .om-head-actions .om-hbtn { width:34px; height:34px; }
+.sec-mb-om .om-mrow.is-pressed { margin:0 -6px; padding-left:6px; padding-right:6px; border-radius:6px; background:#e6f0f8; }

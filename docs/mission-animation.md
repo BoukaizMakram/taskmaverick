@@ -365,6 +365,61 @@ live (items: plain = Yes/No, `!No` = alert ticket, `# label (unit) min-max`,
 `photo:`, `text:`, `pass:`). Regenerate / add premade packs:
 `node scripts/generate-industry-packs.mjs [ids…] [--force]`, then review.
 
+**Storyboard videos** (the user, 2026-10-19: "make the AI use our storyboards …
+change the mission names depending on the industry of the user, adding
+missions, making up schedules in precision planning … on the fly"). Mav also
+plays the storyboard's section videos, full stage (the `video` layout; any
+phone / tablet / web command brings the devices back), drawn with the
+visitor's own business. Decisions: **videos + simulator** (videos explain, the
+simulator is for hands-on); **words synced chapter by chapter** (the video's
+words as designed, Mav says them in her own words and language: each
+`[[video scene <chapter>]]` lets the chapter on finish, plays that one, then
+holds); **pilot: Precision Planning + Requesting Maintenance** (`LIVE`).
+- **Data**: `lib/sections/liveData.mjs` — the stages (`PlanningStage`,
+  `MaintenanceStage`) draw from a `data` prop whose default is the board's own
+  (`DEFAULTS`: a capture with it is byte-identical to the board on disk). The
+  things the video's script points at are **slots** that never change id (the
+  first team's missions `opening` / `restroom-ops` / `walk`, the second's
+  `restroom-kitchen` (always the same name as `restroom-ops`) / `temp`; `card-req`,
+  `demand-maintenance-request`…). When an industry is set up the data is made
+  from its workspace at once (`fromPack`) and written by Gemini meanwhile
+  (`/api/demo-ai/sections`, `SECTIONS_SCHEMA`, `cleanSections`; what the AI
+  already edited stays). `describe()` sends it as VIDEO DATA (+ VIDEO ON SCREEN).
+- **Edits**: `[[video rename from=…; to=…]]`, `[[video set unit=…]]` /
+  `problem=` / `team=` / `area=` / `ticketBoard=` / `ticket=`, `[[video add
+  mission=…; team=…; position=…; times=8,12,16]]` (or `every=3; from=9;
+  until=21`; a schedule's words come from its hours: `ruleOf`), `[[video add
+  request=…]]`, `[[video schedule …]]`, `[[video remove …]]` → `applyEdit` →
+  the video is drawn again (about a second) and the chapter that shows the
+  change plays.
+- **Drawing**: `components/demo-ai/liveCapture.js` keeps a hidden frame on
+  `/demo-ai/stage` (the same `SectionStage` as `/section-stage`, `live`: waits for
+  its pictures and fonts), draws each state with the data and runs the capture
+  script's own loop (`lib/sections/captureCore.mjs`), so the frames are the
+  board's. `components/demo-ai/SectionVideo.jsx` plays them with the storyboard's
+  director and engine and the board's edits (`content/storyboard/<board>.json`,
+  imported) — the same look as the board's video. The board videos are made
+  ready in the frame a moment after the call starts.
+- **The whole call has the videos' look** (the user, 2026-10-20: "the style like
+  the background the cursor etc."): the stage is the videos' metal plate with its
+  dark panel (`.dai-plate`, `.dai-panel`: the right side when one device is shown,
+  a band under the screens otherwise, `LAYOUTS[…].look`), Mav's words are written
+  where a video writes its words (white Montserrat 26, `.dai-words`, DemoStage
+  `words`; the visitor's own words keep the bottom caption), the cursor is the
+  videos' yellow hand (`/demo-hand.png`, fingertip on the target; it fades 2.6 s
+  after its last move), the highlight their yellow outline (`.iq2-mark`'s look,
+  padding by size) and the click their ripple. The tablet is theirs: a flat black
+  frame (the storyboard's bezel paint mask), its screen ×1.03, column titles
+  15.67 px; one tablet is fitted by the device (1127 wide at x 45, as a video's).
+  A video played in the call inherits what the storyboard page gives its videos
+  (`.dai-video`: 13px/1.4 Inter, buttons take their parent's color), so a still
+  of the call's video and of the board's "Videos" line at the same second match.
+- **Testing it is SILENT** (the user, 2026-10-19: "I hear the AI when u test it"):
+  a headless browser still speaks `speechSynthesis` through the speakers; stub
+  it and mute media before the page loads. The Gemini key is on the **free tier
+  (20 requests a day)**: every reply, every generated industry and every
+  `/api/demo-ai/sections` is one; a 429 is never retried.
+
 ## Demo animation vocabulary
 
 The 12 animations are code-accurate demos of the real product. Motion techniques we

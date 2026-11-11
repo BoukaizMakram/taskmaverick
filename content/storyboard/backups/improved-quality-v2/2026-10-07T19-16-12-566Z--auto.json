@@ -1,0 +1,4797 @@
+{
+  "version": 1,
+  "frames": {
+    "knowledge/start#2": {
+      "moves": {
+        "p1-speech-bubble": [
+          697.7,
+          -290.68
+        ],
+        "c1-tablet": [
+          209.71,
+          0
+        ]
+      },
+      "texts": {
+        "p1-speech-bubble/0.0": ""
+      },
+      "tips": {
+        "p1-speech-bubble": [
+          823.74,
+          -394.31
+        ]
+      },
+      "sizes": {
+        "p1-speech-bubble": [
+          293.57,
+          150.47
+        ]
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "ho33r781tdslq06k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 22,
+          "link": "tablet",
+          "inner": true
+        }
+      ],
+      "styles": {
+        "c1-tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.291Z"
+    },
+    "knowledge/hand": {
+      "note": "typing animation",
+      "moves": {
+        "p1-speech-bubble": [
+          572.57,
+          -267.93
+        ]
+      },
+      "tips": {
+        "p1-speech-bubble": [
+          718.43,
+          -333.4
+        ]
+      },
+      "sizes": {
+        "p1-speech-bubble": [
+          329.5,
+          151.4
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "updatedAt": "2026-10-02T22:59:22.437Z"
+    },
+    "peer/bubble": {
+      "moves": {
+        "bubble": [
+          -19.18,
+          198.78
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Peer\n\n"
+      },
+      "tips": {
+        "bubble": [
+          145.88,
+          -3.84
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "peer/words": {
+      "moves": {
+        "bubble": [
+          4.43,
+          198.78
+        ]
+      },
+      "tips": {
+        "bubble": [
+          201.54,
+          -2.88
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "peer/end": {
+      "moves": {
+        "bubble": [
+          -10.33,
+          198.78
+        ]
+      },
+      "tips": {
+        "bubble": [
+          151.64,
+          1.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "peer/tail": {
+      "tips": {
+        "bubble": [
+          159.31,
+          2.88
+        ]
+      },
+      "updatedAt": "2026-10-02T22:43:28.637Z"
+    },
+    "knowledge/result-3": {
+      "moves": {
+        "bubble": [
+          11.3,
+          96.48
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Knowledge Is Readily\nAccessible"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "timestamp/bubble": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "bubble": [
+          15.38,
+          -72
+        ],
+        "circle": [
+          44.88,
+          -11.11
+        ],
+        "c1-yellow-outline": [
+          44.88,
+          344.35
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "At What\n"
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ],
+        "c1-yellow-outline": [
+          1.0976,
+          1.0976
+        ]
+      },
+      "sizes": {
+        "circle": [
+          197.02,
+          47.05
+        ],
+        "c1-yellow-outline": [
+          197.02,
+          47.05
+        ],
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "circle-2"
+      ],
+      "inserts": [
+        {
+          "key": "c1-yellow-outline",
+          "name": "Yellow outline",
+          "kind": "dom",
+          "asset": "h2spiji11hx6megk",
+          "box": {
+            "x": 893.64,
+            "y": 348.99,
+            "w": 179.16,
+            "h": 43.89
+          },
+          "z": 20,
+          "link": "circle",
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "timestamp/start": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "updatedAt": "2026-10-05T23:51:10.882Z"
+    },
+    "timestamp/mark": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "circle": [
+          44.88,
+          -11.11
+        ],
+        "circle-2": [
+          44.88,
+          29.36
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "sizes": {
+        "circle": [
+          197.02,
+          47.05
+        ],
+        "circle-2": [
+          197.02,
+          47.05
+        ]
+      },
+      "updatedAt": "2026-10-05T20:27:53.304Z"
+    },
+    "timestamp/words": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "circle": [
+          44.88,
+          -11.11
+        ],
+        "circle-2": [
+          44.88,
+          29.36
+        ],
+        "bubble": [
+          15.38,
+          -72
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "sizes": {
+        "circle": [
+          197.02,
+          47.05
+        ],
+        "circle-2": [
+          197.02,
+          47.05
+        ],
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "performer/start": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "updatedAt": "2026-10-05T20:27:53.304Z"
+    },
+    "performer/mark": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "circle": [
+          -24.62,
+          -12.29
+        ],
+        "circle-2": [
+          -24.62,
+          28.19
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "sizes": {
+        "circle": [
+          150.82,
+          56.71
+        ],
+        "circle-2": [
+          128.51,
+          56.71
+        ]
+      },
+      "updatedAt": "2026-10-05T20:27:53.304Z"
+    },
+    "performer/bubble": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "circle": [
+          -24.62,
+          -12.29
+        ],
+        "circle-2": [
+          -24.62,
+          28.19
+        ],
+        "bubble": [
+          15.38,
+          -68.22
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Who"
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "sizes": {
+        "circle": [
+          150.82,
+          56.71
+        ],
+        "circle-2": [
+          128.51,
+          56.71
+        ],
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "performer/words": {
+      "moves": {
+        "report": [
+          -78.47,
+          -52.44
+        ],
+        "circle": [
+          -24.62,
+          -12.29
+        ],
+        "circle-2": [
+          -24.62,
+          28.19
+        ],
+        "bubble": [
+          15.38,
+          -68.22
+        ]
+      },
+      "scales": {
+        "report": [
+          1.1296,
+          1.1296
+        ]
+      },
+      "sizes": {
+        "circle": [
+          150.82,
+          56.71
+        ],
+        "circle-2": [
+          128.51,
+          56.71
+        ],
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "peer/start": {
+      "moves": {
+        "lifted-mission": [
+          -28.03,
+          10.33
+        ]
+      },
+      "updatedAt": "2026-10-05T21:59:19.925Z"
+    },
+    "knowledge/bubble": {
+      "note": "write as teams in chat",
+      "moves": {
+        "bubble": [
+          0,
+          300.94
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/fading": {
+      "moves": {
+        "hand": [
+          -13.77,
+          -4.89
+        ],
+        "c1-hand": [
+          151.75,
+          192.55
+        ],
+        "bubble": [
+          11.3,
+          335.94
+        ]
+      },
+      "tips": {
+        "bubble": [
+          174.37,
+          333.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          154
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "hidden": [
+        "ripple",
+        "hand"
+      ],
+      "inserts": [
+        {
+          "key": "c1-hand",
+          "name": "Hand",
+          "kind": "dom",
+          "asset": "hm62wn51k8kxx7hg",
+          "box": {
+            "x": 1073,
+            "y": 135.19,
+            "w": 36.55,
+            "h": 45.26
+          },
+          "z": 20,
+          "link": "hand",
+          "inner": true
+        }
+      ],
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/fading#2": {
+      "moves": {
+        "hand": [
+          -13.77,
+          -4.89
+        ],
+        "c1-hand": [
+          105.76,
+          -3.56
+        ],
+        "bubble": [
+          11.3,
+          335.79
+        ]
+      },
+      "tips": {
+        "bubble": [
+          174.84,
+          333.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "hidden": [
+        "ripple"
+      ],
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/result": {
+      "note": "darken the left side so we can clearly see the right side\n",
+      "moves": {
+        "hand": [
+          271.22,
+          125.49
+        ],
+        "tablet": [
+          210.26,
+          0
+        ]
+      },
+      "hidden": [
+        "bubble"
+      ],
+      "styles": {
+        "tablet/0.0.0.0.1": {
+          "opacity": 0.5
+        },
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.292Z"
+    },
+    "knowledge/words": {
+      "moves": {
+        "bubble": [
+          0,
+          314.22
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "bubble": {
+          "align": "center"
+        },
+        "tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#4a4a4a",
+                "at": 0
+              },
+              {
+                "color": "#535353",
+                "at": 16
+              },
+              {
+                "color": "#6a6a6a",
+                "at": 29
+              },
+              {
+                "color": "#505050",
+                "at": 38
+              },
+              {
+                "color": "#494949",
+                "at": 52
+              },
+              {
+                "color": "#5f5f5f",
+                "at": 60
+              },
+              {
+                "color": "#858585",
+                "at": 66
+              },
+              {
+                "color": "#575757",
+                "at": 73
+              }
+            ],
+            "angle": 100
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/result#2": {
+      "note": "make the knowledge base bigger\nstay dark\nadd a highlight arround knowledge base\nbold the words on the right menu knowledge base",
+      "moves": {
+        "hand": [
+          233.17,
+          125.49
+        ],
+        "tablet": [
+          210.26,
+          0
+        ],
+        "tablet/0.0.0.0.2.2.5.0.1": [
+          26.76,
+          0.13
+        ],
+        "c-highlight-1": [
+          0.2,
+          4.18
+        ],
+        "c1-highlight": [
+          -1.07,
+          6.35
+        ]
+      },
+      "scales": {
+        "tablet/0.0.0.0.2.2.5.0.1": [
+          1.4491,
+          1.4491
+        ]
+      },
+      "sizes": {
+        "c-highlight-1": [
+          277,
+          48
+        ],
+        "c1-highlight": [
+          277,
+          48
+        ]
+      },
+      "hidden": [
+        "bubble"
+      ],
+      "inserts": [
+        {
+          "key": "c1-highlight",
+          "name": "Highlight",
+          "kind": "dom",
+          "asset": "hvtb6q51ha8nxp42",
+          "box": {
+            "x": 1089,
+            "y": 360,
+            "w": 277,
+            "h": 60
+          },
+          "z": 20,
+          "link": "dup:knowledge/result#2:c-highlight-1"
+        }
+      ],
+      "styles": {
+        "tablet/0.0.0.0.1": {
+          "opacity": 0.5
+        },
+        "tablet/0.0.0.0.2.2.5.0.1": {
+          "weight": 700
+        },
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "knowledge/result#3": {
+      "note": "make it more dimer",
+      "moves": {
+        "hand": [
+          168.4,
+          250.17
+        ],
+        "tablet": [
+          210.26,
+          0
+        ],
+        "tablet/0.0.0.0.2.2.5.0.1": [
+          27.19,
+          -4.15
+        ]
+      },
+      "scales": {
+        "tablet/0.0.0.0.2.2.5.0.1": [
+          1.4491,
+          1.4491
+        ]
+      },
+      "hidden": [
+        "bubble"
+      ],
+      "styles": {
+        "tablet/0.0.0.0.1": {
+          "opacity": 0.5
+        },
+        "tablet/0.0.0.0.2.2.5.0.1": {
+          "weight": 700
+        },
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "knowledge/hand-3": {
+      "note": "also dark",
+      "moves": {
+        "bubble": [
+          -48.68,
+          -1.48
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Knowledge Is Readily\nAccessible"
+      },
+      "hidden": [
+        "hand"
+      ],
+      "updatedAt": "2026-10-05T22:45:51.578Z"
+    },
+    "knowledge/hand-3#2": {
+      "note": "always fade when we have a menu",
+      "moves": {
+        "bubble": [
+          11.3,
+          96.65
+        ],
+        "tablet/0.0.0.0.2.1.1.0.2.1": [
+          53.25,
+          2.83
+        ],
+        "c1-hand": [
+          167.04,
+          184.13
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Knowledge Is Readily\nAccessible"
+      },
+      "scales": {
+        "tablet/0.0.0.0.2.1.1.0.2.1": [
+          1.309,
+          1.309
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "inserts": [
+        {
+          "key": "c1-hand",
+          "name": "Hand",
+          "kind": "dom",
+          "asset": "hrj7upbozl5khh9",
+          "box": {
+            "x": 1070.92,
+            "y": 135.06,
+            "w": 42,
+            "h": 52
+          },
+          "z": 20,
+          "link": "hand",
+          "inner": true
+        },
+        {
+          "key": "c-highlight-1",
+          "name": "Highlight",
+          "kind": "dom",
+          "asset": "c327bdfe93",
+          "box": {
+            "x": 744,
+            "y": 316,
+            "w": 371,
+            "h": 111
+          },
+          "z": 19
+        }
+      ],
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/result-3#2": {
+      "note": "show the video playing as if like it's playing: with timeline and no play button",
+      "moves": {
+        "bubble": [
+          -7.77,
+          -44.29
+        ],
+        "c1-chat-bubble": [
+          0,
+          14.06
+        ],
+        "tablet": [
+          147.53,
+          0
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Teams "
+      },
+      "tips": {
+        "c1-chat-bubble": [
+          163.54,
+          11.63
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          310.58,
+          153.7
+        ]
+      },
+      "hidden": [
+        "hand",
+        "bubble"
+      ],
+      "inserts": [
+        {
+          "key": "c-video-timeline-1",
+          "name": "Video timeline",
+          "kind": "dom",
+          "asset": "1cdce09c24d",
+          "box": {
+            "x": 947,
+            "y": 616,
+            "w": 345,
+            "h": 38
+          },
+          "z": 20
+        }
+      ],
+      "styles": {
+        "tablet/0.0.0.0.2.1.1.0.2.1.0.1.1": {
+          "opacity": 0
+        },
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "knowledge/hand-3#3": {
+      "moves": {
+        "bubble": [
+          11.3,
+          96.65
+        ],
+        "tablet/0.0.0.0.2.1.1.0.2.1": [
+          53.25,
+          2.83
+        ],
+        "c1-hand": [
+          -209.13,
+          226.91
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Knowledge Is Readily\nAccessible"
+      },
+      "scales": {
+        "tablet/0.0.0.0.2.1.1.0.2.1": [
+          1.309,
+          1.309
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "inserts": [
+        {
+          "key": "c1-hand",
+          "name": "Hand",
+          "kind": "dom",
+          "asset": "hrj7upbozl5khh9",
+          "box": {
+            "x": 1070.92,
+            "y": 135.06,
+            "w": 42,
+            "h": 52
+          },
+          "z": 20,
+          "link": "hand",
+          "inner": true
+        }
+      ],
+      "styles": {
+        "tablet": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.304Z"
+    },
+    "knowledge/result-3#3": {
+      "note": "Faded in effect",
+      "moves": {
+        "bubble": [
+          -7.77,
+          -44.29
+        ],
+        "c1-chat-bubble": [
+          0,
+          14.06
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Teams ",
+        "c1-title/0.0.0": "As Teams Work\nThey Enjoy Constant\nAccess To Knowledge"
+      },
+      "tips": {
+        "c1-chat-bubble": [
+          163.54,
+          11.63
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          310.58,
+          153.7
+        ]
+      },
+      "hidden": [
+        "hand",
+        "bubble",
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-title",
+          "name": "Title",
+          "kind": "dom",
+          "asset": "ht2o5ia1rrgj7org",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 900
+          },
+          "z": 20,
+          "link": "dup:blank-1:c1-title",
+          "inner": true
+        }
+      ],
+      "styles": {
+        "c1-title": {
+          "opacity": 0.25
+        }
+      },
+      "updatedAt": "2026-10-06T18:54:24.781Z"
+    },
+    "knowledge/result-3#4": {
+      "moves": {
+        "bubble": [
+          -7.77,
+          -44.29
+        ],
+        "c1-chat-bubble": [
+          0,
+          14.06
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Teams ",
+        "c1-title/0.0.0": "As Teams Work\nThey Enjoy Constant\nAccess To Knowledge"
+      },
+      "tips": {
+        "c1-chat-bubble": [
+          163.54,
+          11.63
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          310.58,
+          153.7
+        ]
+      },
+      "hidden": [
+        "hand",
+        "bubble",
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-title",
+          "name": "Title",
+          "kind": "dom",
+          "asset": "ht2o5ia1rrgj7org",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 900
+          },
+          "z": 20,
+          "link": "dup:blank-1:c1-title",
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-10-05T22:59:29.699Z"
+    },
+    "blank-1": {
+      "inserts": [
+        {
+          "key": "c1-title",
+          "name": "Title",
+          "kind": "dom",
+          "asset": "hidjvdvjwno5ppy",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 900
+          },
+          "z": 20,
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-10-05T23:04:13.454Z"
+    },
+    "blank-2": {
+      "inserts": [
+        {
+          "key": "c1-title",
+          "name": "Title",
+          "kind": "dom",
+          "asset": "ht2o5ia1rrgj7org",
+          "box": {
+            "x": 0,
+            "y": 0,
+            "w": 1600,
+            "h": 900
+          },
+          "z": 20,
+          "inner": true
+        }
+      ],
+      "updatedAt": "2026-10-05T23:04:13.454Z"
+    },
+    "instructions/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -9.12
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Within\n\n\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "instructions/mid": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.677Z"
+    },
+    "instructions/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -9.09
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "instructions/mark": {
+      "moves": {
+        "bubble": [
+          0,
+          91.02
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "alerts/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          15.81
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Alerts Can\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:21:17.234Z"
+    },
+    "alerts/words": {
+      "moves": {
+        "bubble": [
+          0,
+          15.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "links/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -58.31
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Add Links\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "links/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -58.31
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "translation/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          368
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Instantly\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "translation/words": {
+      "moves": {
+        "bubble": [
+          0,
+          368
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "translation/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "translation/fading": {
+      "moves": {
+        "bubble": [
+          0,
+          368
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "translation/result-2": {
+      "moves": {
+        "bubble": [
+          0,
+          368
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "steps/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Executions\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/click": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "steps/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/hand-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/click-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/result-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/hand-3": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "steps/click-3": {
+      "moves": {
+        "bubble": [
+          0,
+          -22.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "micro/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -4.95
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Micro-Trainings\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -4.95
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "micro/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -4.92
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/mid": {
+      "moves": {
+        "bubble": [
+          0,
+          -4.59
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/hand-2": {
+      "moves": {
+        "bubble": [
+          0,
+          7.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/click-2": {
+      "moves": {
+        "bubble": [
+          0,
+          7.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/hand-3": {
+      "moves": {
+        "bubble": [
+          0,
+          -123.7
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/click-3": {
+      "moves": {
+        "bubble": [
+          0,
+          -123.7
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/hand-4": {
+      "moves": {
+        "bubble": [
+          0,
+          -227.48
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/click-4": {
+      "moves": {
+        "bubble": [
+          0,
+          -227.48
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/click-5": {
+      "moves": {
+        "bubble": [
+          0,
+          -296.78
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/result-5": {
+      "moves": {
+        "bubble": [
+          0,
+          -349
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "micro/end": {
+      "moves": {
+        "bubble": [
+          0,
+          -349
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.451Z"
+    },
+    "capture/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -29.03
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Photos\n\n\n\n\n\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "capture/mid": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.678Z"
+    },
+    "capture/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -29.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "photo/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          24.2
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Photos\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "photo/words": {
+      "moves": {
+        "bubble": [
+          0,
+          24.2
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "photo/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "photo/click": {
+      "moves": {
+        "bubble": [
+          0,
+          24.2
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "photo/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "photo/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -87.47
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          52.48
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Videos\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/words": {
+      "moves": {
+        "bubble": [
+          0,
+          52.48
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "video/click": {
+      "moves": {
+        "bubble": [
+          0,
+          52.48
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.451Z"
+    },
+    "video/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "video/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -26.41
+        ],
+        "hand": [
+          161.44,
+          -66.07
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/click-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -58.83
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/result-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -146.23
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "video/mid-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -169.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T20:11:27.451Z"
+    },
+    "emphasis/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          165.22
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Quality\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "emphasis/words": {
+      "moves": {
+        "bubble": [
+          0,
+          165.22
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "emphasis/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "emphasis/fading": {
+      "moves": {
+        "bubble": [
+          0,
+          165.22
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "hidden": [
+        "ripple",
+        "hand"
+      ],
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "emphasis/result": {
+      "moves": {
+        "bubble": [
+          128.45,
+          98.68
+        ],
+        "hand": [
+          198.08,
+          51.68
+        ],
+        "c1-yellow-outline": [
+          238.43,
+          -38.3
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "c1-yellow-outline": [
+          434.75,
+          199.31
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "inserts": [
+        {
+          "key": "c1-yellow-outline",
+          "name": "Yellow outline",
+          "kind": "dom",
+          "asset": "hb92hovyr1tkl56",
+          "box": {
+            "x": 345.5,
+            "y": 304.44,
+            "w": 563.98,
+            "h": 359.08
+          },
+          "z": 20,
+          "link": "circle"
+        }
+      ],
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "emphasis/end": {
+      "moves": {
+        "bubble": [
+          0,
+          13.09
+        ],
+        "hand": [
+          1.9,
+          -21.84
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "hidden": [
+        "hand"
+      ],
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "rate/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -47.77
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Self-Ratings\n\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -47.77
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "rate/result": {
+      "moves": {
+        "bubble": [
+          0,
+          85.81
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/click-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -117.23
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/click-3": {
+      "moves": {
+        "bubble": [
+          0,
+          -197.48
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/end": {
+      "moves": {
+        "bubble": [
+          0,
+          126.78
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "visibility/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          335.94
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Managers\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "visibility/words": {
+      "moves": {
+        "bubble": [
+          0,
+          335.94
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "visibility/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "visibility/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "visibility/result": {
+      "moves": {
+        "bubble": [
+          0,
+          335.94
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "visibility/click-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -229.06
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "visibility/result-2": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "visibility/end": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "mobile/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "mobile/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "From Any\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "mobile/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "mobile/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "mobile/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "mobile/end": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "tour/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "tour/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "They\n\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "tour/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "tour/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "tour/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "tour/end": {
+      "moves": {
+        "bubble": [
+          0,
+          -68.97
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "web/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          277.03
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "From The\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "web/words": {
+      "moves": {
+        "bubble": [
+          0,
+          277.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "web/out": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "web/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "web/result": {
+      "moves": {
+        "bubble": [
+          0,
+          277.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "remote/tail": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "remote/bubble": {
+      "moves": {
+        "bubble": [
+          0,
+          -16.36
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "They\n"
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false,
+          "words": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "remote/words": {
+      "moves": {
+        "bubble": [
+          0,
+          -16.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "remote/fading": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "tail": false
+        }
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T19:07:02.604Z"
+    },
+    "remote/result": {
+      "moves": {
+        "bubble": [
+          0,
+          -16.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "remote/end": {
+      "moves": {
+        "bubble": [
+          0,
+          -16.36
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "updatedAt": "2026-10-07T18:55:11.306Z"
+    },
+    "knowledge/result-3#5": {
+      "moves": {
+        "bubble": [
+          -7.77,
+          -44.29
+        ],
+        "c1-chat-bubble": [
+          0,
+          14.06
+        ],
+        "tablet": [
+          147.53,
+          0
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "Teams "
+      },
+      "tips": {
+        "c1-chat-bubble": [
+          163.54,
+          11.63
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          310.58,
+          153.7
+        ]
+      },
+      "hidden": [
+        "hand",
+        "bubble"
+      ],
+      "styles": {
+        "tablet": {
+          "opacity": 0.33,
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "alerts/mark": {
+      "moves": {
+        "c1-chat-bubble": [
+          0,
+          15.81
+        ]
+      },
+      "texts": {
+        "c1-chat-bubble/0.0": "Alerts Can\n\n\n"
+      },
+      "sizes": {
+        "c1-chat-bubble": [
+          300,
+          0
+        ]
+      },
+      "bubbles": {
+        "c1-chat-bubble": {
+          "words": true
+        }
+      },
+      "inserts": [
+        {
+          "key": "c1-chat-bubble",
+          "name": "Chat bubble",
+          "kind": "bubble",
+          "asset": "hdqgpm21dunp1gir",
+          "box": {
+            "x": 1023.48,
+            "y": 396.3,
+            "w": 328.11,
+            "h": 75.78
+          },
+          "z": 20,
+          "style": "closed",
+          "tip": null
+        }
+      ],
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "rate/start": {
+      "hidden": [
+        "hand"
+      ],
+      "updatedAt": "2026-10-06T22:03:46.599Z"
+    },
+    "knowledge/bubble#2": {
+      "moves": {
+        "bubble": [
+          -17.57,
+          335.94
+        ],
+        "i1-image": [
+          -348.92,
+          -53.17
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1123.93,
+          816.34
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "i1-image",
+          "name": "Group 12088",
+          "kind": "dom",
+          "asset": "h1tu2ncx13rm9157b",
+          "box": {
+            "x": 392,
+            "y": 95,
+            "w": 771,
+            "h": 560
+          },
+          "z": 20
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat"
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#05070a",
+                "at": 0
+              },
+              {
+                "color": "#0b0e12",
+                "at": 16
+              },
+              {
+                "color": "#262d35",
+                "at": 29
+              },
+              {
+                "color": "#0c1014",
+                "at": 38
+              },
+              {
+                "color": "#06080b",
+                "at": 52
+              },
+              {
+                "color": "#1c2229",
+                "at": 60
+              },
+              {
+                "color": "#4b535d",
+                "at": 66
+              },
+              {
+                "color": "#161b21",
+                "at": 73
+              }
+            ],
+            "angle": 100
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "emphasis/start": {
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "visibility/start": {
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "mobile/start": {
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "tour/start": {
+      "styles": {
+        "team-board": {
+          "bezel": "#535353"
+        }
+      },
+      "updatedAt": "2026-10-06T23:08:54.293Z"
+    },
+    "knowledge/bubble#5": {
+      "moves": {
+        "bubble": [
+          -17.57,
+          335.94
+        ],
+        "i1-image": [
+          -878.64,
+          -358.16
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1096.37,
+          796.32
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1bdl0qq1330qlu6k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 20,
+          "link": "tablet",
+          "inner": true
+        },
+        {
+          "key": "r1-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "hs2x9hy1g7fpzs54",
+          "box": {
+            "x": 1098,
+            "y": -359,
+            "w": 360,
+            "h": 220
+          },
+          "z": 22
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat"
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#6f7a83",
+                "at": 0
+              },
+              {
+                "color": "#46505a",
+                "at": 11
+              },
+              {
+                "color": "#0f1317",
+                "at": 23
+              },
+              {
+                "color": "#4d5862",
+                "at": 31
+              },
+              {
+                "color": "#8a959e",
+                "at": 42
+              },
+              {
+                "color": "#65717b",
+                "at": 50
+              },
+              {
+                "color": "#1d2329",
+                "at": 58
+              },
+              {
+                "color": "#080b0d",
+                "at": 66
+              }
+            ],
+            "angle": 118
+          }
+        },
+        "r1-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#1271b7",
+                "at": 0
+              },
+              {
+                "color": "#2fa4e7",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "knowledge/bubble#6": {
+      "moves": {
+        "bubble": [
+          19.23,
+          335.94
+        ],
+        "i1-image": [
+          -251,
+          -373
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1241.89,
+          902.02
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "i1-image",
+          "name": "7d214160-fbc3-47b9-bf8f-ea858a070c58",
+          "kind": "dom",
+          "asset": "hboe5iqovy1s47c",
+          "box": {
+            "x": 251,
+            "y": 373,
+            "w": 800,
+            "h": 533
+          },
+          "z": 20
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#46494f",
+            "at": 0
+          },
+          {
+            "color": "#5c6169",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat"
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#6f7a83",
+                "at": 0
+              },
+              {
+                "color": "#46505a",
+                "at": 11
+              },
+              {
+                "color": "#0f1317",
+                "at": 23
+              },
+              {
+                "color": "#4d5862",
+                "at": 31
+              },
+              {
+                "color": "#8a959e",
+                "at": 42
+              },
+              {
+                "color": "#65717b",
+                "at": 50
+              },
+              {
+                "color": "#1d2329",
+                "at": 58
+              },
+              {
+                "color": "#080b0d",
+                "at": 66
+              }
+            ],
+            "angle": 118
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "knowledge/bubble#3": {
+      "note": "make text 20% bigger\nopen claimed closed 10% bigger\ngive the chips bit more shadow",
+      "moves": {
+        "bubble": [
+          -29.7,
+          335.94
+        ],
+        "i1-image": [
+          -878.64,
+          -358.16
+        ],
+        "r2-rectangle": [
+          -1497.68,
+          -17.45
+        ],
+        "c1-tablet": [
+          19.86,
+          0
+        ],
+        "c1-hand": [
+          168.45,
+          196.38
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1096.37,
+          796.32
+        ],
+        "r2-rectangle": [
+          1269.87,
+          958.91
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1bdl0qq1330qlu6k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 20,
+          "link": "tablet",
+          "inner": true
+        },
+        {
+          "key": "r1-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "hs2x9hy1g7fpzs54",
+          "box": {
+            "x": 1098,
+            "y": -359,
+            "w": 360,
+            "h": 220
+          },
+          "z": 22
+        },
+        {
+          "key": "r2-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "h9ljeh21cbi18m50",
+          "box": {
+            "x": 1259,
+            "y": -12,
+            "w": 6,
+            "h": 16
+          },
+          "z": 24
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "order": [
+        "r2-rectangle",
+        "bubble",
+        "c1-tablet",
+        "r1-rectangle"
+      ],
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "r1-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#1271b7",
+                "at": 0
+              },
+              {
+                "color": "#2fa4e7",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "r2-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#656a73",
+                "at": 0
+              },
+              {
+                "color": "#656a73",
+                "at": 50
+              },
+              {
+                "color": "#9ea4b0",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.0.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.1.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.2.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.1.0.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.1.1.0": {
+          "shadow": true
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "knowledge/bubble#4": {
+      "moves": {
+        "bubble": [
+          -5.27,
+          335.94
+        ],
+        "i1-image": [
+          -878.64,
+          -358.16
+        ],
+        "r2-rectangle": [
+          -1497.68,
+          -17.45
+        ],
+        "c1-tablet": [
+          19.86,
+          0
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1096.37,
+          796.32
+        ],
+        "r2-rectangle": [
+          1269.87,
+          958.91
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1bdl0qq1330qlu6k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 20,
+          "link": "tablet",
+          "inner": true
+        },
+        {
+          "key": "r1-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "hs2x9hy1g7fpzs54",
+          "box": {
+            "x": 1098,
+            "y": -359,
+            "w": 360,
+            "h": 220
+          },
+          "z": 22
+        },
+        {
+          "key": "r2-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "h9ljeh21cbi18m50",
+          "box": {
+            "x": 1259,
+            "y": -12,
+            "w": 6,
+            "h": 16
+          },
+          "z": 24
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "order": [
+        "r2-rectangle",
+        "bubble",
+        "c1-tablet",
+        "r1-rectangle"
+      ],
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat"
+        },
+        "r1-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#1271b7",
+                "at": 0
+              },
+              {
+                "color": "#2fa4e7",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "r2-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#656a73",
+                "at": 0
+              },
+              {
+                "color": "#656a73",
+                "at": 50
+              },
+              {
+                "color": "#9ea4b0",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "knowledge/bubble#7": {
+      "moves": {
+        "bubble": [
+          -5.27,
+          335.94
+        ],
+        "i1-image": [
+          -878.64,
+          -358.16
+        ],
+        "r2-rectangle": [
+          -1308.57,
+          -17.45
+        ],
+        "c1-tablet": [
+          19.86,
+          0
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1096.37,
+          796.32
+        ],
+        "r2-rectangle": [
+          1269.87,
+          958.91
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1bdl0qq1330qlu6k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 20,
+          "link": "tablet",
+          "inner": true
+        },
+        {
+          "key": "r1-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "hs2x9hy1g7fpzs54",
+          "box": {
+            "x": 1098,
+            "y": -359,
+            "w": 360,
+            "h": 220
+          },
+          "z": 22
+        },
+        {
+          "key": "r2-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "h9ljeh21cbi18m50",
+          "box": {
+            "x": 1259,
+            "y": -12,
+            "w": 6,
+            "h": 16
+          },
+          "z": 24
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "order": [
+        "r2-rectangle",
+        "bubble",
+        "c1-tablet",
+        "r1-rectangle"
+      ],
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat"
+        },
+        "r1-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#1271b7",
+                "at": 0
+              },
+              {
+                "color": "#2fa4e7",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "r2-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#656a73",
+                "at": 0
+              },
+              {
+                "color": "#656a73",
+                "at": 50
+              },
+              {
+                "color": "#9ea4b0",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#000000",
+                "at": 0
+              },
+              {
+                "color": "#000000",
+                "at": 100
+              }
+            ],
+            "angle": 0,
+            "flat": true
+          }
+        }
+      },
+      "updatedAt": "2026-10-07T18:55:11.305Z"
+    },
+    "knowledge/bubble#8": {
+      "moves": {
+        "bubble": [
+          -29.7,
+          335.94
+        ],
+        "i1-image": [
+          -878.64,
+          -358.16
+        ],
+        "r2-rectangle": [
+          -1497.68,
+          -17.45
+        ],
+        "c1-tablet": [
+          19.86,
+          0
+        ],
+        "c1-hand": [
+          168.45,
+          196.38
+        ]
+      },
+      "texts": {
+        "bubble/0.0": "As Teams Work Information Is Readily Available\n"
+      },
+      "scales": {
+        "c1-tablet/0.0.0.0.0.0.0": [
+          1.03,
+          1.03
+        ]
+      },
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ],
+        "i1-image": [
+          1096.37,
+          796.32
+        ],
+        "r2-rectangle": [
+          1269.87,
+          958.91
+        ]
+      },
+      "bubbles": {
+        "bubble": {
+          "words": true
+        }
+      },
+      "hidden": [
+        "tablet"
+      ],
+      "inserts": [
+        {
+          "key": "c1-tablet",
+          "name": "Tablet",
+          "kind": "dom",
+          "asset": "h1bdl0qq1330qlu6k0",
+          "box": {
+            "x": -19.86,
+            "y": 24.56,
+            "w": 1220.3,
+            "h": 850.88
+          },
+          "z": 20,
+          "link": "tablet",
+          "inner": true
+        },
+        {
+          "key": "r1-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "hs2x9hy1g7fpzs54",
+          "box": {
+            "x": 1098,
+            "y": -359,
+            "w": 360,
+            "h": 220
+          },
+          "z": 22
+        },
+        {
+          "key": "r2-rectangle",
+          "name": "Rectangle",
+          "kind": "dom",
+          "asset": "h9ljeh21cbi18m50",
+          "box": {
+            "x": 1259,
+            "y": -12,
+            "w": 6,
+            "h": 16
+          },
+          "z": 24
+        }
+      ],
+      "background": {
+        "kind": "linear",
+        "stops": [
+          {
+            "color": "#4f4f57",
+            "at": 0
+          },
+          {
+            "color": "#9a9d9e",
+            "at": 20
+          },
+          {
+            "color": "#3f4145",
+            "at": 38
+          },
+          {
+            "color": "#4b4b4d",
+            "at": 56
+          },
+          {
+            "color": "#393b3d",
+            "at": 76
+          },
+          {
+            "color": "#454547",
+            "at": 100
+          }
+        ],
+        "angle": 135
+      },
+      "order": [
+        "r2-rectangle",
+        "bubble",
+        "c1-tablet",
+        "r1-rectangle"
+      ],
+      "styles": {
+        "bubble": {
+          "strokeWidth": 0,
+          "fill": "transparent",
+          "stroke": "#ffffff",
+          "color": "#ffffff",
+          "font": "caveat",
+          "size": 34.99
+        },
+        "r1-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#1271b7",
+                "at": 0
+              },
+              {
+                "color": "#2fa4e7",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "r2-rectangle": {
+          "fill": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#656a73",
+                "at": 0
+              },
+              {
+                "color": "#656a73",
+                "at": 50
+              },
+              {
+                "color": "#9ea4b0",
+                "at": 100
+              }
+            ],
+            "angle": 135
+          }
+        },
+        "c1-tablet": {
+          "bezel": {
+            "kind": "linear",
+            "stops": [
+              {
+                "color": "#05070a",
+                "at": 0
+              },
+              {
+                "color": "#0b0e12",
+                "at": 16
+              },
+              {
+                "color": "#262d35",
+                "at": 29
+              },
+              {
+                "color": "#0c1014",
+                "at": 38
+              },
+              {
+                "color": "#06080b",
+                "at": 52
+              },
+              {
+                "color": "#1c2229",
+                "at": 60
+              },
+              {
+                "color": "#4b535d",
+                "at": 66
+              },
+              {
+                "color": "#161b21",
+                "at": 73
+              }
+            ],
+            "angle": 100,
+            "edge": true
+          }
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.2.0": {
+          "size": 15.67
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.0.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.1.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.0.1.2.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.1.0.0": {
+          "shadow": true
+        },
+        "c1-tablet/0.0.0.0.0.0.0.0.2.1.1.1.0": {
+          "shadow": true
+        }
+      },
+      "updatedAt": "2026-10-07T19:04:06.583Z"
+    }
+  },
+  "copies": {
+    "knowledge/start#2": {
+      "from": "knowledge/start",
+      "after": "knowledge/start"
+    },
+    "knowledge/fading#2": {
+      "from": "knowledge/fading",
+      "after": "knowledge/fading"
+    },
+    "knowledge/result#2": {
+      "from": "knowledge/result",
+      "after": "knowledge/result"
+    },
+    "knowledge/result#3": {
+      "from": "knowledge/result",
+      "after": "knowledge/result#2"
+    },
+    "knowledge/hand-3#2": {
+      "from": "knowledge/hand-3",
+      "after": "knowledge/hand-3"
+    },
+    "knowledge/result-3#2": {
+      "from": "knowledge/result-3",
+      "after": "knowledge/result-3"
+    },
+    "knowledge/hand-3#3": {
+      "from": "knowledge/hand-3",
+      "after": "knowledge/hand-3#2"
+    },
+    "knowledge/result-3#3": {
+      "from": "knowledge/result-3",
+      "after": "knowledge/result-3#2"
+    },
+    "knowledge/result-3#4": {
+      "from": "knowledge/result-3",
+      "after": "knowledge/result-3#3"
+    },
+    "blank-1": {
+      "from": null,
+      "after": "knowledge/start#2"
+    },
+    "blank-2": {
+      "from": null,
+      "after": "blank-1"
+    },
+    "knowledge/result-3#5": {
+      "from": "knowledge/result-3",
+      "after": "knowledge/result-3#2"
+    },
+    "knowledge/bubble#2": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble"
+    },
+    "knowledge/bubble#5": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#2"
+    },
+    "knowledge/bubble#6": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#2"
+    },
+    "knowledge/bubble#3": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#5"
+    },
+    "knowledge/bubble#4": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#3"
+    },
+    "knowledge/bubble#7": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#3"
+    },
+    "knowledge/bubble#8": {
+      "from": "knowledge/bubble",
+      "after": "knowledge/bubble#3"
+    }
+  },
+  "rows": {
+    "knowledge": [
+      "blank-1",
+      "blank-2",
+      "knowledge/start#2",
+      "knowledge/bubble",
+      "knowledge/words",
+      "knowledge/fading",
+      "knowledge/fading#2",
+      "knowledge/result",
+      "knowledge/result#2",
+      "knowledge/result#3",
+      "knowledge/hand-3#2",
+      "knowledge/hand-3#3",
+      "knowledge/result-3",
+      "knowledge/result-3#2",
+      "knowledge/result-3#5",
+      "knowledge/result-3#3",
+      "knowledge/result-3#4"
+    ],
+    "line-1": [
+      "knowledge/bubble#5",
+      "knowledge/bubble#3",
+      "knowledge/bubble#8",
+      "knowledge/bubble#7",
+      "knowledge/bubble#2",
+      "knowledge/bubble#6"
+    ],
+    "instructions": [
+      "instructions/start",
+      "instructions/bubble",
+      "instructions/words",
+      "instructions/mark"
+    ],
+    "alerts": [
+      "alerts/start",
+      "alerts/mark",
+      "alerts/words"
+    ],
+    "links": [
+      "links/start",
+      "links/mark",
+      "links/bubble",
+      "links/words"
+    ],
+    "translation": [
+      "translation/start",
+      "translation/bubble",
+      "translation/words",
+      "translation/fading",
+      "translation/result-2"
+    ],
+    "steps": [
+      "steps/start",
+      "steps/hand",
+      "steps/bubble",
+      "steps/words",
+      "steps/click",
+      "steps/result",
+      "steps/hand-2",
+      "steps/click-2",
+      "steps/result-2",
+      "steps/hand-3",
+      "steps/click-3"
+    ],
+    "micro": [
+      "micro/start",
+      "micro/hand",
+      "micro/bubble",
+      "micro/words",
+      "micro/result",
+      "micro/mid",
+      "micro/hand-2",
+      "micro/click-2",
+      "micro/hand-3",
+      "micro/click-3",
+      "micro/hand-4",
+      "micro/click-4",
+      "micro/click-5",
+      "micro/result-5"
+    ],
+    "capture": [
+      "capture/start",
+      "capture/mark",
+      "capture/bubble",
+      "capture/words"
+    ],
+    "photo": [
+      "photo/start",
+      "photo/bubble",
+      "photo/words",
+      "photo/click",
+      "photo/result"
+    ],
+    "video": [
+      "video/start",
+      "video/bubble",
+      "video/words",
+      "video/result",
+      "video/click-2",
+      "video/result-2"
+    ],
+    "emphasis": [
+      "emphasis/start",
+      "emphasis/bubble",
+      "emphasis/words",
+      "emphasis/fading",
+      "emphasis/result",
+      "emphasis/end"
+    ],
+    "rate": [
+      "rate/start",
+      "rate/bubble",
+      "rate/words",
+      "rate/result",
+      "rate/click-2",
+      "rate/click-3",
+      "rate/end"
+    ],
+    "peer": [
+      "peer/start",
+      "peer/bubble",
+      "peer/words",
+      "peer/end"
+    ],
+    "visibility": [
+      "visibility/start",
+      "visibility/bubble",
+      "visibility/words",
+      "visibility/result",
+      "visibility/click-2",
+      "visibility/result-2",
+      "visibility/end"
+    ],
+    "mobile": [
+      "mobile/start",
+      "mobile/bubble",
+      "mobile/words",
+      "mobile/result",
+      "mobile/end"
+    ],
+    "tour": [
+      "tour/start",
+      "tour/bubble",
+      "tour/words",
+      "tour/result",
+      "tour/end"
+    ],
+    "web": [
+      "web/start",
+      "web/bubble",
+      "web/words",
+      "web/result"
+    ],
+    "remote": [
+      "remote/start",
+      "remote/bubble",
+      "remote/words",
+      "remote/result",
+      "remote/end"
+    ],
+    "performer": [
+      "performer/start",
+      "performer/mark",
+      "performer/bubble",
+      "performer/words"
+    ],
+    "timestamp": [
+      "timestamp/start",
+      "timestamp/mark",
+      "timestamp/bubble",
+      "timestamp/words"
+    ],
+    "conclusion": [
+      "conclusion/start",
+      "conclusion/words"
+    ]
+  },
+  "library": {
+    "h2spiji11hx6megk": "<div data-sb-root=\"c1-yellow-outline\" style=\"position:absolute;left:893.64px;top:348.99px;width:179.16px;height:43.89px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"timestamp\" data-view=\"web\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:-893.64px;top:-348.99px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><span class=\"iq2-mark\" aria-hidden=\"true\" style=\"opacity: 1; transform: translate(893.64px, 348.986px); width: 179.167px; height: 43.8978px;\" data-sb-was=\"\"></span></div></div>",
+    "ht2o5ia1rrgj7org": "<div data-sb-root=\"c1-title\" style=\"position:absolute;left:0px;top:0px;width:1600px;height:900px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"guidance\" data-view=\"title\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:0px;top:0px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div data-demo-caption=\"\" class=\"adx-title adx-msg adx-script-text adx-script-center es-title\" style=\"transform:translate(0px,0px)\" data-sb-was=\"\"><p aria-label=\"Teams Are Constantly Guided To Perform With Quality &amp; Precision\" style=\"zoom: 1; width: max-content; max-width: none; margin-left: auto; margin-right: auto; opacity: 1; transform: none;\"><span style=\"display:block;white-space:nowrap\">Teams Are Constantly</span><span style=\"display:block;white-space:nowrap\">Guided To Perform</span><span style=\"display:block;white-space:nowrap\">With Quality &amp; Precision</span></p></div></div></div>",
+    "ho33r781tdslq06k0": "<div data-sb-root=\"c1-tablet\" style=\"position:absolute;left:-19.86px;top:24.56px;width:1220.3px;height:850.88px;z-index:22\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"knowledge\" data-view=\"knowledge\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:19.86px;top:-24.56px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"iq-camera\" style=\"transform:translate(800px,450px) scale(1.2899543378995433) translate(-962.5716814159292px,-360px)\" data-sb-wrap><div class=\"adx-tablet adx-tablet--engaged iq-tablet iq2-kb-tablet\" aria-hidden=\"false\" style=\"opacity: 1; transform: translate(-50%, -50%) translateY(0px) scale(1.1); filter: none; --iq-menu-pop: 0;\" data-sb-was=\"\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"tbl-fit\"><div class=\"tbl-tablet\"><div class=\"tbl-screen mi-tablet-screen\"><div class=\"mi-tablet-board\"><div class=\"mi-status-bar\"><span data-demo-ui=\"knowledge-1h8s7zv\">4:10 PM&nbsp;&nbsp; Thu Sep 17</span><span class=\"mi-status-icons\" aria-label=\"Wi-Fi connected, battery 49 percent\" data-demo-ui=\"knowledge-le7ar\"><svg viewBox=\"0 0 20 16\" aria-hidden=\"true\"><path d=\"M2 5q8-7 16 0M5 8q5-4 10 0M8 11q2-2 4 0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"></path><circle cx=\"10\" cy=\"14\" r=\"1.3\" fill=\"currentColor\"></circle></svg>49%<svg viewBox=\"0 0 28 14\" aria-hidden=\"true\"><rect x=\"1\" y=\"1\" width=\"23\" height=\"12\" rx=\"3\" fill=\"none\" stroke=\"currentColor\"></rect><rect x=\"3\" y=\"3\" width=\"10\" height=\"8\" rx=\"1\" fill=\"currentColor\"></rect><path d=\"M26 5v4\" stroke=\"currentColor\" stroke-width=\"2\"></path></svg></span></div><header class=\"tbl-header\"><div class=\"mi-brand\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Back\"><svg viewBox=\"0 0 20 20\"><path d=\"M15 10H5.5M9.5 5.5 5 10l4.5 4.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><img class=\"mi-full-logo\" alt=\"Taskmaverick\" width=\"220\" height=\"30\" src=\"/logo.svg\"></div><span class=\"mi-department\" data-demo-ui=\"knowledge-149og9b\">Team Board</span><div class=\"tbl-header-actions\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Add\"><svg viewBox=\"0 0 18 18\"><path d=\"M9 3.5v11M3.5 9h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Menu\"><svg viewBox=\"0 0 18 18\"><path d=\"M3.5 5.5h11M3.5 9h11M3.5 12.5h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button></div></header><div class=\"mi-columns\"><section aria-label=\"open missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-1xpry0s knowledge-tjohji knowledge-1cspq1b\">Open - 3<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"quality-0\" type=\"button\" aria-label=\"Open mission Ice Maker Filter Check\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1phb48d\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-ph5x2o\">02:56:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-q5hu8c\">Ice Maker Filter Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-3zzxz6\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-3abm8v\">11:19 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-1\" type=\"button\" aria-label=\"Open mission Opening Quality Check\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-v8upw5\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-84h7t3\">02:53:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-vmr46d\">Opening Quality Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-cri7gv\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-4bhlsq\">11:19 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-2\" type=\"button\" aria-label=\"Open mission Equipment Inspection\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1ltctcb\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-182a6zi\">02:50:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-1j3vsjn\">Equipment Inspection</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-pkinm4\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-zdm4l1\">11:19 AM</span></span></div></article></button></div></section><section aria-label=\"claimed missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-bkxdek knowledge-x4q21b knowledge-1bz0gse\">Claimed - 2<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"quality-claimed-0\" type=\"button\" aria-label=\"Open mission Walk-In Cooler Temp Log\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1q8n4gk\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-exec\" data-demo-ui=\"knowledge-uk6r24\">00:12:14</span><span class=\"chip-pill\" data-demo-ui=\"knowledge-12akhsp\">03:10:12</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-aqhdmc\">Walk-In Cooler Temp Log</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-demo-ui=\"knowledge-11cq1p5\">Anna F</span><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-jtu11l\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-vb9v0o\">10:48 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-claimed-1\" type=\"button\" aria-label=\"Open mission Restroom Cleaning\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1udvf42\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-exec\" data-demo-ui=\"knowledge-1i8d3gj\">00:25:12</span><span class=\"chip-pill\" data-demo-ui=\"knowledge-1axu4m\">03:21:45</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-1o2a974\">Restroom Cleaning</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-demo-ui=\"knowledge-j1dh6y\">Gabriel F</span><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-1lhkog\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-12d7xhd\">10:37 AM</span></span></div></article></button></div></section><section aria-label=\"closed missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-g0xsmi knowledge-xq3s30 knowledge-zbddt1\">Closed - 0<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"></div></section></div></div><div class=\"mi-demo-shade\" aria-hidden=\"true\"></div></div></div></div><div class=\"mi-recording-controls\"><button type=\"button\" class=\"ov-btn\" data-demo-ui=\"knowledge-bs1pgs\">Reset interaction</button><span data-demo-ui=\"knowledge-cb4c9m knowledge-1cj33nx\">Recording code: <b data-demo-ui=\"knowledge-dnmv27\">123456</b> · Anna F.</span></div><span class=\"mi-announcement\" role=\"status\" aria-live=\"polite\"></span></div></div></div></div></div>",
+    "hm62wn51k8kxx7hg": "<div data-sb-root=\"c1-hand\" style=\"position:absolute;left:1073px;top:135.19px;width:36.55px;height:45.26px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"knowledge\" data-view=\"knowledge\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:-1073px;top:-135.19px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"dh-hand\" aria-hidden=\"true\" style=\"opacity: 1; transform: translate(1070.92px, 135.065px) rotate(0deg) scale(0.870294);\" data-sb-was=\"\"><img alt=\"\" draggable=\"false\" src=\"/demo-hand.png\"></div></div></div>",
+    "hrj7upbozl5khh9": "<div data-sb-root=\"c1-hand\" style=\"position:absolute;left:1070.92px;top:135.06px;width:42px;height:52px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"knowledge\" data-view=\"knowledge\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:-1070.92px;top:-135.06px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"dh-hand\" aria-hidden=\"true\" style=\"opacity: 1; transform: translate(1070.92px, 135.065px) rotate(0deg) scale(1);\" data-sb-was=\"\"><img alt=\"\" draggable=\"false\" src=\"/demo-hand.png\"></div></div></div>",
+    "hidjvdvjwno5ppy": "<div data-sb-root=\"c1-title\" style=\"position:absolute;left:0px;top:0px;width:1600px;height:900px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"guidance\" data-view=\"title\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:0px;top:0px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div data-demo-caption=\"\" class=\"adx-title adx-msg adx-script-text adx-script-center es-title\" style=\"transform:translate(0px,0px)\" data-sb-was=\"\"><p aria-label=\"Teams Are Constantly Guided To Perform With Quality &amp; Precision\" style=\"zoom: 1; width: max-content; max-width: none; margin-left: auto; margin-right: auto; opacity: 1; transform: none;\"><span style=\"display:block;white-space:nowrap\">Teams Are</span><span style=\"display:block;white-space:nowrap\">​</span><span style=\"display:block;white-space:nowrap\">​</span></p></div></div></div>",
+    "c327bdfe93": "<div class=\"iq2-mark\" data-sb-root=\"c-highlight-1\" style=\"left:744px;top:316px;width:371px;height:111px;z-index:19;opacity:1;transform:none\"></div>",
+    "1cdce09c24d": "<div data-sb-root=\"c-video-timeline-1\" style=\"position:absolute;left:947px;top:616px;width:345px;height:38px;z-index:20\"><div style=\"width:100%;height:100%;box-sizing:border-box;display:flex;align-items:center;padding:2px 12px;background:#fff;border-radius:0 0 9.6px 9.6px\"><div class=\"iq2-bar\" style=\"flex:1\"><span><svg viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><rect x=\"6\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1\"/><rect x=\"14\" y=\"4.5\" width=\"4\" height=\"15\" rx=\"1\"/></svg></span><span class=\"iq2-bar-track\"><i style=\"width:38%\"></i></span><time>0:04</time></div></div></div>",
+    "hvtb6q51ha8nxp42": "<div class=\"iq2-mark\" data-sb-root=\"c1-highlight\" style=\"left:1089px;top:360px;width:277px;height:60px;opacity:1;transform:none;z-index:20\"></div>",
+    "hdqgpm21dunp1gir": "<div class=\"iq-caption iq2-caption cb-caption\" style=\"left: 1023.5px; transform: translate(0%, -50%); top: 434.197px; --iq2-origin: 0% 50%; --iq-caption-fit: 1;z-index:21\" data-sb-root=\"c1-chat-bubble\"><div data-demo-caption=\"\" class=\"adx-title adx-msg adx-script-text adx-script-center \" style=\"transform: translate(0px, 0px);\"><p aria-label=\"Alerts Can Be Included To Warn About Risks\" style=\"zoom: 1; width: max-content; max-width: none; margin-left: auto; margin-right: auto; opacity: 1; transform: none;\"><span style=\"display:block;white-space:nowrap\">Alerts Can Be Included</span><span style=\"display:block;white-space:nowrap\">To Warn About Risks</span></p></div></div>",
+    "hb92hovyr1tkl56": "<span class=\"iq2-mark\" aria-hidden=\"true\" style=\"opacity: 1; transform: translate(345.5px, 304.44px); width: 564px; height: 359.086px;z-index:20\" data-sb-root=\"c1-yellow-outline\"></span>",
+    "h1bdl0qq1330qlu6k0": "<div data-sb-root=\"c1-tablet\" style=\"position:absolute;left:-19.86px;top:24.56px;width:1220.3px;height:850.88px;z-index:20\"><div class=\"ad-stage iq-stage iq2-stage\" data-scene=\"knowledge\" data-view=\"knowledge\" data-sb-wrap style=\"--iq-caption-size: 27px;position:absolute;left:19.86px;top:-24.56px;width:1600px;height:900px;transform:none;background:transparent;overflow:visible;cursor:default;pointer-events:none\"><div class=\"iq-camera\" style=\"transform:translate(800px,450px) scale(1.2899543378995433) translate(-962.5716814159292px,-360px)\" data-sb-wrap><div class=\"adx-tablet adx-tablet--engaged iq-tablet iq2-kb-tablet\" aria-hidden=\"false\" style=\"opacity: 1; transform: translate(-50%, -50%) translateY(0px) scale(1.1); filter: none; --iq-menu-pop: 0;\" data-sb-was=\"\"><div class=\"mi-interactive mi-interactive--tablet mi-reference\"><div class=\"tbl-fit\"><div class=\"tbl-tablet\"><div class=\"tbl-screen mi-tablet-screen\"><div class=\"mi-tablet-board\"><div class=\"mi-status-bar\"><span data-demo-ui=\"knowledge-1h8s7zv\">4:10 PM&nbsp;&nbsp; Thu Sep 17</span><span class=\"mi-status-icons\" aria-label=\"Wi-Fi connected, battery 49 percent\" data-demo-ui=\"knowledge-le7ar\"><svg viewBox=\"0 0 20 16\" aria-hidden=\"true\"><path d=\"M2 5q8-7 16 0M5 8q5-4 10 0M8 11q2-2 4 0\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"></path><circle cx=\"10\" cy=\"14\" r=\"1.3\" fill=\"currentColor\"></circle></svg>49%<svg viewBox=\"0 0 28 14\" aria-hidden=\"true\"><rect x=\"1\" y=\"1\" width=\"23\" height=\"12\" rx=\"3\" fill=\"none\" stroke=\"currentColor\"></rect><rect x=\"3\" y=\"3\" width=\"10\" height=\"8\" rx=\"1\" fill=\"currentColor\"></rect><path d=\"M26 5v4\" stroke=\"currentColor\" stroke-width=\"2\"></path></svg></span></div><header class=\"tbl-header\"><div class=\"mi-brand\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Back\"><svg viewBox=\"0 0 20 20\"><path d=\"M15 10H5.5M9.5 5.5 5 10l4.5 4.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><img class=\"mi-full-logo\" alt=\"Taskmaverick\" width=\"220\" height=\"30\" src=\"/logo.svg\"></div><span class=\"mi-department\" data-demo-ui=\"knowledge-149og9b\">Team Board</span><div class=\"tbl-header-actions\"><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Add\"><svg viewBox=\"0 0 18 18\"><path d=\"M9 3.5v11M3.5 9h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button><button type=\"button\" class=\"ph-iconbtn\" aria-label=\"Menu\"><svg viewBox=\"0 0 18 18\"><path d=\"M3.5 5.5h11M3.5 9h11M3.5 12.5h11\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></button></div></header><div class=\"mi-columns\"><section aria-label=\"open missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-1xpry0s knowledge-tjohji knowledge-1cspq1b\">Open - 3<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"quality-0\" type=\"button\" aria-label=\"Open mission Ice Maker Filter Check\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1phb48d\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-ph5x2o\">02:56:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-q5hu8c\">Ice Maker Filter Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-3zzxz6\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-3abm8v\">11:19 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-1\" type=\"button\" aria-label=\"Open mission Opening Quality Check\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-v8upw5\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-84h7t3\">02:53:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-vmr46d\">Opening Quality Check</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-cri7gv\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-4bhlsq\">11:19 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-2\" type=\"button\" aria-label=\"Open mission Equipment Inspection\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1ltctcb\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-pill\" data-demo-ui=\"knowledge-182a6zi\">02:50:03</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-1j3vsjn\">Equipment Inspection</h3><div class=\"chip-bottom\"><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-pkinm4\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-zdm4l1\">11:19 AM</span></span></div></article></button></div></section><section aria-label=\"claimed missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-bkxdek knowledge-x4q21b knowledge-1bz0gse\">Claimed - 2<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"><button class=\"mi-card-button\" data-mission-id=\"quality-claimed-0\" type=\"button\" aria-label=\"Open mission Walk-In Cooler Temp Log\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1q8n4gk\">Checklist</span></div><div class=\"chip-timers\"><span class=\"chip-exec\" data-demo-ui=\"knowledge-uk6r24\">00:12:14</span><span class=\"chip-pill\" data-demo-ui=\"knowledge-12akhsp\">03:10:12</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-aqhdmc\">Walk-In Cooler Temp Log</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-demo-ui=\"knowledge-11cq1p5\">Anna F</span><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-jtu11l\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-vb9v0o\">10:48 AM</span></span></div></article></button><button class=\"mi-card-button\" data-mission-id=\"quality-claimed-1\" type=\"button\" aria-label=\"Open mission Restroom Cleaning\"><article class=\"chip chip--green \"><div class=\"chip-top\"><div class=\"chip-id\"><img class=\"chip-logo\" alt=\"\" aria-hidden=\"true\" src=\"/mission-logo.png\"><span class=\"chip-kind\" data-demo-ui=\"knowledge-1udvf42\">Task</span></div><div class=\"chip-timers\"><span class=\"chip-exec\" data-demo-ui=\"knowledge-1i8d3gj\">00:25:12</span><span class=\"chip-pill\" data-demo-ui=\"knowledge-1axu4m\">03:21:45</span></div></div><h3 class=\"chip-title\" data-demo-ui=\"knowledge-1o2a974\">Restroom Cleaning</h3><div class=\"chip-bottom\"><span class=\"chip-who\" data-demo-ui=\"knowledge-j1dh6y\">Gabriel F</span><span class=\"chip-when\"><span class=\"chip-date\" data-demo-ui=\"knowledge-1lhkog\">08-02-26</span><span class=\"chip-time\" data-demo-ui=\"knowledge-12d7xhd\">10:37 AM</span></span></div></article></button></div></section><section aria-label=\"closed missions\"><h2 class=\"tbl-tab\" data-demo-ui=\"knowledge-g0xsmi knowledge-xq3s30 knowledge-zbddt1\">Closed - 0<svg viewBox=\"0 0 20 20\" aria-hidden=\"true\"><path d=\"M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg></h2><div class=\"mi-column-cards\"></div></section></div></div><div class=\"mi-demo-shade\" aria-hidden=\"true\"></div></div></div></div><div class=\"mi-recording-controls\"><button type=\"button\" class=\"ov-btn\" data-demo-ui=\"knowledge-bs1pgs\">Reset interaction</button><span data-demo-ui=\"knowledge-cb4c9m knowledge-1cj33nx\">Recording code: <b data-demo-ui=\"knowledge-dnmv27\">123456</b> · Anna F.</span></div><span class=\"mi-announcement\" role=\"status\" aria-live=\"polite\"></span></div></div></div></div></div>",
+    "hboe5iqovy1s47c": "<div data-sb-root=\"i1-image\" data-sb-box=\"image\" style=\"position:absolute;left:251px;top:373px;width:800px;height:533px;z-index:20\"><img src=\"/storyboard/uploads/1d3184c2c694570e169f.png\" alt=\"\" draggable=\"false\" style=\"display:block;width:100%;height:100%\"></div>",
+    "h1tu2ncx13rm9157b": "<div data-sb-root=\"i1-image\" data-sb-box=\"image\" style=\"position:absolute;left:392px;top:95px;width:771px;height:560px;z-index:20\"><img src=\"/storyboard/uploads/bb7c5b8910ffdf0d6da0.png\" alt=\"\" draggable=\"false\" style=\"display:block;width:100%;height:100%\"></div>",
+    "hs2x9hy1g7fpzs54": "<div data-sb-root=\"r1-rectangle\" data-sb-box=\"rect\" style=\"position:absolute;left:1098px;top:-359px;width:360px;height:220px;z-index:22;box-sizing:border-box;background:#cfd6dd\"></div>",
+    "h9ljeh21cbi18m50": "<div data-sb-root=\"r2-rectangle\" data-sb-box=\"rect\" style=\"position:absolute;left:1259px;top:-12px;width:6px;height:16px;z-index:24;box-sizing:border-box;background:#cfd6dd\"></div>"
+  },
+  "deleted": [
+    "knowledge/hand",
+    "knowledge/click",
+    "knowledge/result-2",
+    "knowledge/click-3",
+    "timestamp/end",
+    "performer/end",
+    "guidance/words",
+    "knowledge/start",
+    "knowledge/out",
+    "knowledge/click-2",
+    "knowledge/end",
+    "knowledge/hand-3",
+    "guidance/start",
+    "instructions/mid",
+    "translation/out",
+    "steps/tail",
+    "steps/fading",
+    "micro/tail",
+    "micro/fading",
+    "capture/mid",
+    "photo/out",
+    "photo/fading",
+    "video/out",
+    "video/fading",
+    "emphasis/out",
+    "rate/tail",
+    "rate/fading",
+    "visibility/out",
+    "visibility/fading",
+    "mobile/tail",
+    "mobile/fading",
+    "tour/tail",
+    "tour/fading",
+    "web/out",
+    "web/fading",
+    "remote/tail",
+    "remote/fading",
+    "knowledge/hand-2",
+    "micro/result-2",
+    "micro/result-3",
+    "micro/hand-5",
+    "photo/hand",
+    "video/hand-2",
+    "rate/hand-2",
+    "rate/hand-3",
+    "visibility/hand-2",
+    "micro/end",
+    "alerts/bubble",
+    "video/click",
+    "video/mid-2"
+  ],
+  "trash": [],
+  "lines": {
+    "added": {
+      "line-1": {
+        "title": "The tablet and its Knowledge Base copy",
+        "after": "knowledge"
+      }
+    },
+    "titles": {},
+    "deleted": [
+      "guidance"
+    ]
+  },
+  "rev": 361
+}

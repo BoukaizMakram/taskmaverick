@@ -1,0 +1,82 @@
+/* All videos (/storyboard?video=all-videos; components/StoryboardAllVideos.jsx): a board like the others (the user, 2026-10-29: "the all video board should be like the other boards, with figma style
+   paning etc"): the canvas, the green label of each group, and the videos side by side, each as a video of a board is (.sb-pl, .sb-pl-head, .sb-pl-bar...), in the board's own world px, under a pill that
+   says In progress or Final. */
+.sb-av-cell .sb-pl-head { grid-template-columns:420px 1fr 150px; column-gap:20px; }
+.sb-av-cell .sb-fvtitle { font-size:54px; }
+.sb-av-cell.is-selected .sb-pl-head { outline:12px solid var(--sb-blue); }/* (the video selected: a blue stroke round its purple title, as thick as a selected line's) */
+
+/* the status pill in the video's bar (amber while it is being fixed, green when it is final) */
+.sb-av-status { justify-self:start; display:inline-flex; align-items:center; gap:18px; padding:8px 30px 8px 26px; border:3px solid transparent; border-radius:999px; font:600 38px/1.35 var(--font-inter),sans-serif; letter-spacing:.02em; }
+.sb-av-status::before { content:''; width:22px; height:22px; border-radius:50%; background:currentColor; }
+.sb-av-status.is-progress { color:#ffc15a; background:rgb(20 12 40 / 55%); border-color:rgb(255 193 90 / 70%); }
+.sb-av-status.is-final { color:#5ff0a0; background:rgb(10 40 25 / 55%); border-color:rgb(95 240 160 / 70%); }
+
+/* the picture: 1600 x 900, the parts stacked (one on at a time; the one before stays under the next while that fades in) */
+.sb-av-screen { position:relative; width:1600px; height:900px; background:#1b1c20; }/* (no overflow: the picture is clipped by its own .sb-art; a pin's message can go past the edge) */
+.sb-av-stack { position:absolute; inset:0; }
+.sb-av-part { position:absolute; left:0; top:0; width:1600px; height:900px; opacity:0; pointer-events:none; }/* (not on: transparent, never hidden - the engine sets visibility:visible on what it draws, which a hidden parent would not hide - and it keeps its place so it is made ready like the rest) */
+.sb-av-part.is-was { opacity:1; z-index:1; }
+.sb-av-part.is-on { opacity:1; z-index:2; }
+.sb-av-part.is-on.is-fading { animation:sb-av-in var(--sb-av-cross) var(--sb-av-curve) both; }/* (the board's own: `crossOf`) */
+@keyframes sb-av-in { from { opacity:0; } to { opacity:1; } }
+.sb-av-part .sb-pl-over-bar, .sb-av-part .sb-pl-big { display:none; }/* (the player's own controls: a video here has one bar for the whole video) */
+.sb-av-part .sb-pl-screen { pointer-events:none; }
+.sb-av-hit { position:absolute; inset:0; z-index:5; cursor:pointer; }
+.sb-av-hit.is-off { pointer-events:none; }/* (a text is being retyped: the pointer goes through to it and to its box's handles) */
+.sb-av-hit.is-comment { cursor:crosshair; }/* (the Comment tool: a click puts a comment there) */
+.sb-av-cell .sb-av-pins { z-index:7; }/* (the comments' pins: over the click layer, so they can be hovered, pressed, dragged and right-clicked; never in the video. `.sb-av-cell` first: Storyboard.css comes after this file, and its .sb-pl-pins, z-index 4, would put them under the click layer) */
+/* a pin is the same size on screen at any zoom, its tip staying on its point, so it is easy to hit and its message can be read; far out it stops growing (--sb-inv: 1 / the zoom, on the world) */
+.sb-av-pins .sb-pl-pin { transform:scale(min(var(--sb-inv, 1) * .7, 3)); transform-origin:0 100%; cursor:grab; transition:transform .12s ease; }
+.sb-av-pins .sb-pl-pin:active { cursor:grabbing; }
+.sb-av-pins .sb-pl-pin::before { content:''; position:absolute; left:-14px; bottom:-14px; width:74px; height:74px; border-radius:50%; }/* (a wider target than the pin; the pin itself is an anchor with no size) */
+.sb-av-pins .sb-pl-pin.is-flip::before { left:auto; right:-14px; }
+.sb-av-big { position:absolute; left:50%; top:50%; z-index:6; display:grid; place-items:center; width:170px; height:170px; margin:-85px 0 0 -85px; border-radius:50%; background:rgb(106 75 208 / 82%); color:#fff; box-shadow:0 0 0 6px rgb(255 255 255 / 70%), 0 14px 56px rgb(0 0 0 / 50%); pointer-events:none; transition:opacity .2s, transform .2s; }
+.sb-av-big svg { width:82px; height:82px; margin-left:8px; }
+.sb-av-big.is-gone { opacity:0; transform:scale(.8); }
+.sb-av-wait { position:absolute; left:34px; bottom:28px; z-index:6; padding:6px 24px; border-radius:16px; background:rgb(0 0 0 / 55%); color:#ddd; font-size:34px; pointer-events:none; }
+
+/* the bar of controls: the board's own (.sb-pl-bar); the video's bar has no ticks and no numbers (the user, 2026-10-29: "remove the numbering and those lines in the timeline") */
+.sb-av-controls .sb-pl-play:disabled { opacity:.4; cursor:default; }
+
+/* the panel at the right: the videos by group, each with its status, to go to it */
+.sb-av-list { padding:8px 8px 2px; }
+.sb-av-list h4 { margin:8px 8px 4px; font:700 10px/1 var(--font-inter),sans-serif; letter-spacing:.09em; text-transform:uppercase; color:#8d8d8d; }
+.sb-root .sb-av-item { display:flex; align-items:center; gap:8px; width:100%; padding:5px 8px; border:0; border-radius:6px; background:transparent; color:#ddd; font-size:11px; text-align:left; cursor:pointer; }
+.sb-root .sb-av-item:hover { background:#3d3d3d; color:#fff; }
+.sb-av-item span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sb-av-dot { flex:none; width:8px; height:8px; border-radius:50%; }
+.sb-av-dot.is-progress { background:#f5a623; }
+.sb-av-dot.is-final { background:#3ddc84; }
+
+/* the panel of the video selected: all its comments, in the order it plays them: the number of its pin, its words, its second of the whole video */
+.sb-av-comments { padding:6px 8px; border-bottom:1px solid var(--sb-line); }
+.sb-av-comments.is-short { max-height:38vh; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#4a4a4a transparent; }/* (a comment picked: its fields are under the list) */
+.sb-root .sb-av-cm { display:grid; grid-template-columns:20px 1fr auto; align-items:start; column-gap:8px; width:100%; padding:7px 8px; border:0; border-radius:6px; background:transparent; color:#ddd; font-size:11px; line-height:1.4; text-align:left; cursor:pointer; }
+.sb-root .sb-av-cm:hover { background:#3d3d3d; color:#fff; }
+.sb-root .sb-av-cm.is-on { background:rgb(13 153 255 / 22%); box-shadow:inset 0 0 0 1px var(--sb-blue); color:#fff; }
+.sb-av-cm-pin { display:grid; place-items:center; width:20px; height:20px; border-radius:50% 50% 50% 3px; background:#ffb020; color:#1a1a1a; font:700 10px/1 var(--font-inter),sans-serif; font-style:normal; }/* (its pin, small) */
+.sb-av-cm-text { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; min-width:0; overflow:hidden; white-space:pre-wrap; word-break:break-word; }
+.sb-av-cm time { color:#8d8d8d; font-variant-numeric:tabular-nums; }
+.sb-av-cm.is-done .sb-av-cm-pin { background:#58c27d; }
+.sb-av-cm.is-done .sb-av-cm-text { color:#8d8d8d; }
+.sb-side .sb-av-empty { padding:12px 16px; }
+/* the inspector of a selected video: Comments | Variations (the user, 2026-11-03: "variations should show up on the right side inspector with dropdown between comments/the variations") */
+.sb-root .sb-av-side-row { display:flex; align-items:center; gap:8px; min-width:0; }
+.sb-root .sb-av-side-row b { flex:1; min-width:0; }
+.sb-root .sb-av-side-pick { flex:none; padding:3px 6px; border:0; border-radius:6px; background:#3a3a3a; color:#eee; font:500 11px var(--font-inter),sans-serif; cursor:pointer; }
+.sb-av-vars { padding:6px 8px; border-bottom:1px solid var(--sb-line); }
+.sb-root .sb-av-var { display:flex; align-items:stretch; gap:2px; }
+.sb-root .sb-av-var > button:first-child { display:grid; grid-template-columns:12px 1fr; align-items:start; column-gap:8px; flex:1; min-width:0; padding:8px; border:0; border-radius:6px; background:transparent; color:#ddd; font-size:11px; line-height:1.4; text-align:left; cursor:pointer; }
+.sb-root .sb-av-var > button:first-child:hover { background:#3d3d3d; color:#fff; }
+.sb-root .sb-av-var.is-on > button:first-child { background:rgb(13 153 255 / 22%); box-shadow:inset 0 0 0 1px var(--sb-blue); color:#fff; }
+.sb-av-var-dot { width:12px; height:12px; margin-top:2px; border-radius:50%; box-shadow:inset 0 0 0 1.5px #8d8d8d; }
+.sb-av-var.is-on .sb-av-var-dot { box-shadow:inset 0 0 0 4px var(--sb-blue); }/* (the one that plays) */
+.sb-av-var b, .sb-av-var small { display:block; }
+.sb-av-var b { font-weight:600; }
+.sb-av-var small { color:#9a9a9a; }
+.sb-root .sb-av-var-rm { flex:none; width:26px; border:0; border-radius:6px; background:transparent; color:#8d8d8d; font-size:15px; line-height:1; cursor:pointer; }
+.sb-root .sb-av-var-rm:hover { background:#3d3d3d; color:#fff; }
+.sb-av-var-add { display:flex; flex-direction:column; gap:4px; padding:8px 8px 2px; }
+.sb-root .sb-av-var-add button { padding:7px 8px; border:1px dashed #4a4a4a; border-radius:6px; background:transparent; color:#cfcfcf; font-size:11px; text-align:left; cursor:pointer; }
+.sb-root .sb-av-var-add button:hover { border-color:var(--sb-blue); color:#fff; }
+.sb-side .sb-av-vars-note { padding:8px 16px 12px; }

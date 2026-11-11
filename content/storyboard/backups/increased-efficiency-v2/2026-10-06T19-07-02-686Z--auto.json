@@ -1,0 +1,448 @@
+{
+  "version": 1,
+  "frames": {
+    "schedule/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "schedule/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "schedule/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "points/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "points/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "points/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "urgency/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "urgency/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "priority/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "priority/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "shared/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "shared/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "code/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "code/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "claim/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "claim/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "claim/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "close/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "close/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "close/end": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "execution/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "execution/mark-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "execution/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "performers/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "performers/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "reminder/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "reminder/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "individuals/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "individuals/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "teams/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "teams/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "initiative/bubble": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "initiative/words": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "initiative/mid": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "initiative/mid-2": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    },
+    "initiative/mid-3": {
+      "sizes": {
+        "bubble": [
+          300,
+          0
+        ]
+      },
+      "locks": {
+        "bubble": "w"
+      },
+      "updatedAt": "2026-10-06T17:54:18.745Z"
+    }
+  },
+  "copies": {},
+  "rows": {},
+  "library": {},
+  "deleted": [],
+  "trash": [],
+  "lines": {
+    "added": {},
+    "titles": {},
+    "deleted": []
+  },
+  "rev": 1
+}

@@ -12,7 +12,7 @@ const lower = v => String(v ?? '').toLowerCase();
 const rectOf = el => el.getBoundingClientRect();
 export const cut = (a, b) => ({ left: Math.max(a.left, b.left), top: Math.max(a.top, b.top), right: Math.min(a.right, b.right), bottom: Math.min(a.bottom, b.bottom) });
 const size = r => Math.max(0, r.right - r.left) * Math.max(0, r.bottom - r.top);
-const OVERLAYS = '.dai-cursor, .dai-spot, .dai-ripple, .dai-captions';
+const OVERLAYS = '.dai-cursor, .dai-spot, .dai-ripple, .dai-captions, .dai-words, .dai-plate, .dai-panel';
 
 // The part of the page an element may show in: every ancestor that clips
 // (overflow ≠ visible) up to and including the shared stage.

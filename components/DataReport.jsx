@@ -8,16 +8,16 @@
 import {Fragment} from 'react';
 import {REPORT} from '@/lib/liveOversightData.mjs';
 
-const NAV=['Missions','People','Teams','Units','Ticket Boards','Groups','Certifications','Timesheets','Reports','Dashboards','Overview'];
+export const NAV=['Missions','People','Teams','Units','Ticket Boards','Groups','Certifications','Timesheets','Reports','Dashboards','Overview'];
 const path={back:'M19 12H5M11 6l-6 6 6 6',chev:'m6 9 6 6 6-6',right:'m9 6 6 6-6 6',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4',tree:'M6 3v6M6 9h6M12 9v6M6 15h12M18 15v6',collapse:'M4 4v16M20 7l-5 5 5 5',view:'M4 5h16v14H4zM4 9h16',group:'M8 6h12M8 12h12M8 18h12M4 6h.5M4 12h.5M4 18h.5',expand:'M6 3v6M6 9h6M12 9v6M6 15h12M18 15v6',gear:'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2',cloud:'M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8M12 12v7M9 16l3 3 3-3',mail:'M3 6h18v12H3zM3 7l9 6 9-6',sync:'M20 11a8 8 0 0 0-14.5-4M4 13a8 8 0 0 0 14.5 4M5 3v4h4M19 21v-4h-4',bell:'M18 8a6 6 0 0 0-12 0v7l-2 3h16l-2-3zM10 21h4',arrow:'M7 17 17 7M9 7h8v8',dots:'M12 5h.01M12 12h.01M12 19h.01',clock:'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0',person:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0',team:'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 13.5a7 7 0 0 1 4 6.5',doc:'M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h5',ticket:'M3 7h18v4a2 2 0 0 0 0 4v4H3v-4a2 2 0 0 0 0-4zM8 12h8'};
-const Icon=({name,className='iq-ur-ic'})=><svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d={path[name]} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+export const Icon=({name,className='iq-ur-ic'})=><svg className={className} viewBox="0 0 24 24" aria-hidden="true"><path d={path[name]} fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const Check=()=><i className="iq-ur-checkbox is-checked"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></i>;
-const Toggle=({open=true})=><span className={`iq-ur-toggle${open?'':' is-closed'}`} aria-hidden="true"><Icon name={open?'chev':'right'}/></span>;
+export const Toggle=({open=true})=><span className={`iq-ur-toggle${open?'':' is-closed'}`} aria-hidden="true"><Icon name={open?'chev':'right'}/></span>;
 const Stat=([label,value,total,pct,dot,active])=><div key={label} className={`iq-ur-stat${active?' is-active':''}`}><span>{label}<Icon name="arrow"/></span><b>{value}<small> / {total}</small><em>{pct}<i className={`is-${dot}`}/></em></b></div>;
 const barTone=pct=>pct>=80?'green':pct>=20?'orange':'red';
-function Pct({pct}){return <span className="iq-dr-pct"><b>{pct.toFixed(2).replace(/\.00$/,'')}%</b><i><em className={`is-${barTone(pct)}`} style={{width:`${Math.min(100,pct)}%`}}/></i></span>;}
+export function Pct({pct}){return <span className="iq-dr-pct"><b>{pct.toFixed(2).replace(/\.00$/,'')}%</b><i><em className={`is-${barTone(pct)}`} style={{width:`${Math.min(100,pct)}%`}}/></i></span>;}
 
-function Sidebar(){
+export function Sidebar(){
  return <aside className="iq-ur-side iq-dr-side">
   <div className="iq-ur-side-top"><span className="iq-ur-link"><Icon name="back"/>Back To All Reports</span><span className="iq-ur-side-tools"><Icon name="tree"/><Icon name="collapse"/></span></div>
   <div className="iq-ur-side-search"><Icon name="search"/>Search by keyword</div>
@@ -37,8 +37,8 @@ function Sidebar(){
  </aside>;
 }
 
-const HEAD=['Name','Reference','Posted','Closed','Closed %','Position','Type','Folder','Process','Course'];
-function GroupRow({depth,index,label,count,posted,closed,pct,position,open=true,muted}){
+export const HEAD=['Name','Reference','Posted','Closed','Closed %','Position','Type','Folder','Process','Course'];
+export function GroupRow({depth,index,label,count,posted,closed,pct,position,open=true,muted}){
  return <div className={`iq-dr-row is-group depth-${depth}${muted?' is-muted':''}`}>
   <span><Toggle open={open}/><em>{index}.</em><b>{label}</b><small>{count}</small></span><span/><span className="is-num">{posted}</span><span className="is-num">{closed}</span><span><Pct pct={pct}/></span><span>{position&&<i className="iq-dr-chip">{position}</i>}</span><span/><span/><span/><span/>
  </div>;

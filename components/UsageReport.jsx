@@ -56,11 +56,11 @@ export function ReportTree({nodes,rows=0,depth=0}){
    <ReportTree nodes={node.children} rows={rows} depth={depth+1}/>
   </Fragment>);
 }
-// Group by menu: opens under its toolbar button (the button turns light blue).
-function GroupMenu({open,value,options}){
+// Group by menu: opens under its toolbar button (the button turns light blue). `target`: what its options are named (the Overview's History has one too: OverviewScene).
+export function GroupMenu({open,value,options,target='group-'}){
  return <div className="iq-ur-menu" style={{opacity:open,transform:`translateY(${(1-open)*-6}px) scale(${.96+.04*open})`}}>
   <header><b>Group by</b><span>Expand All</span><span>Collapse All</span></header>
-  <div>{options.map(o=><span key={o} className={o===value?'is-active':undefined} data-iq-target={`group-${o}`}><i>{o===value&&<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3.2L13 4.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}</i>{o}</span>)}</div>
+  <div>{options.map(o=><span key={o} className={o===value?'is-active':undefined} data-iq-target={`${target}${o}`}><i>{o===value&&<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3.2L13 4.8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>}</i>{o}</span>)}</div>
  </div>;
 }
 

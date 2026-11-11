@@ -1,0 +1,70 @@
+/* Innovating Consulting (components/sections/ConsultingStage.jsx): its own classes, prefixed sec-. */
+.sec-ic-ic { width:16px; height:16px; flex:none; }
+
+/* ---- the standards exported into a catalog (the marketplace's own catalog card) ---- */
+.sec-ic-catalog { position:absolute; width:286px; transform-origin:0 50%; font-family:var(--font-poppins),sans-serif; color:#161919; box-shadow:0 16px 38px rgb(21 39 54 / 30%); border-radius:8px; }
+.sec-ic-label.sec-label { transform:translate(-50%,-50%); }
+
+/* ---- outside the product: the catalog open to everyone, the crowd, the money ---- */
+.sec-ic-masses { font-family:var(--font-montserrat),sans-serif; }
+.sec-ic-pub { position:absolute; left:521px; top:36px; width:286px; transform:translateX(-50%) scale(1.02); transform-origin:50% 0; font-family:var(--font-poppins),sans-serif; color:#161919; border-radius:8px; box-shadow:0 16px 38px rgb(21 39 54 / 30%); }
+.sec-ic-beam { position:absolute; left:0; top:0; width:1042px; height:900px; background:linear-gradient(180deg, rgb(255 255 255 / 40%), rgb(255 255 255 / 4%)); clip-path:polygon(40% 37%, 60% 37%, 92% 92%, 8% 92%); pointer-events:none; }
+.sec-ic-revenue { position:absolute; left:521px; top:368px; display:flex; flex-direction:column; align-items:center; padding:10px 26px; border-radius:16px; background:#fff; box-shadow:0 16px 38px rgb(21 39 54 / 30%); transform-origin:50% 50%; }
+.sec-ic-revenue b { font-size:36px; font-weight:800; line-height:1.1; color:#008300; }
+.sec-ic-revenue span { font-size:14px; font-weight:600; color:#3d4852; }
+.sec-ic-crowd { position:absolute; left:0; top:0; width:1042px; height:900px; }
+.sec-ic-crowd-photo { position:absolute; left:21px; top:450px; width:1000px; height:450px; object-fit:contain; object-position:50% 100%; transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(90deg, transparent 10%, #000 19%, #000 81%, transparent 90%); mask-image:linear-gradient(90deg, transparent 10%, #000 19%, #000 81%, transparent 90%); }/* (the photo, 796 wide in the box, cut at its sides: they fade) *//* (a photograph; boards captured before it have the drawn people below) */
+.sec-ic-person { position:absolute; display:block; filter:drop-shadow(0 3px 5px rgb(0 0 0 / 22%)); }
+.sec-ic-person svg { display:block; width:100%; height:100%; }
+.sec-ic-coin { position:absolute; width:38px; height:38px; margin:-4px 0 0 -4px; background:url('/storyboard-art/coin.webp') center / contain no-repeat; filter:drop-shadow(0 4px 6px rgb(0 0 0 / 35%)); font-size:0; color:transparent; }/* (a photograph; the "$" of boards captured before it is hidden) */
+
+/* ---- outside the product: a plain BI report (no Taskmaverick bar, tabs or navigation) ---- */
+/* the report on a monitor (a photograph, its screen blacked out under the report: ConsultingStage.jsx ValueReport) */
+.sec-ic-monitor { position:absolute; background:url('/storyboard-art/bi-monitor.webp') center / 100% 100% no-repeat; filter:drop-shadow(0 24px 40px rgb(0 0 0 / 45%)); }
+.sec-ic-screen { position:absolute; overflow:hidden; background:#fff; }
+.sec-ic-screen .sec-ic-bi { left:0; top:0; border-radius:0; box-shadow:none; transform-origin:0 0; }
+.sec-ic-bi { position:absolute; left:31px; top:70px; width:980px; height:760px; display:flex; flex-direction:column; overflow:hidden; border-radius:10px; background:#fff; box-shadow:0 22px 50px rgb(21 39 54 / 32%); font-family:var(--font-inter),sans-serif; color:#0b0b0b; }
+.sec-ic-bi-bar { flex:none; display:flex; align-items:center; gap:14px; height:38px; padding:0 14px; background:#e9ebee; border-bottom:1px solid #d5d8dc; font-size:13px; }
+.sec-ic-bi-bar > span { display:flex; gap:6px; }
+.sec-ic-bi-bar > span i { width:11px; height:11px; border-radius:50%; background:#c4c8cd; }
+.sec-ic-bi-bar b { font-weight:500; color:#30363a; }
+.sec-ic-bi-bar em { margin-left:auto; padding:2px 8px; border-radius:4px; background:#fff; color:#52514e; font-style:normal; font-size:12px; }
+.sec-ic-bi-body { flex:1; min-height:0; display:flex; flex-direction:column; gap:14px; padding:18px 22px 0; }
+.sec-ic-bi-head b { display:block; font-size:21px; font-weight:600; }
+.sec-ic-bi-head small { font-size:13px; color:#52514e; }
+.sec-ic-kpis { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+.sec-ic-kpi { display:flex; flex-direction:column; gap:2px; padding:12px 14px; border:1px solid #e1e3e6; border-radius:8px; background:#fcfcfb; }
+.sec-ic-kpi small { font-size:12.5px; color:#52514e; }
+.sec-ic-kpi b { font-size:27px; font-weight:600; line-height:1.25; }
+.sec-ic-kpi em { font-style:normal; font-size:12px; color:#52514e; }
+.sec-ic-kpi em.is-up { color:#0b6e0b; }
+.sec-ic-kpi.is-key { border-color:#2a78d6; box-shadow:inset 4px 0 0 #2a78d6; }
+.sec-ic-panels { flex:1; min-height:0; display:grid; grid-template-columns:1fr 260px; gap:12px; }
+.sec-ic-panel { display:flex; flex-direction:column; padding:12px 14px 0; border:1px solid #e1e3e6; border-radius:8px; background:#fcfcfb; overflow:hidden; }
+.sec-ic-panel header { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.sec-ic-panel header b { font-size:14.5px; font-weight:600; }
+.sec-ic-legend { display:flex; align-items:center; gap:6px; font-size:12px; color:#52514e; }
+.sec-ic-legend i { width:14px; height:3px; border-radius:2px; margin-left:8px; }
+.sec-ic-legend i.is-value { background:#2a78d6; }
+.sec-ic-legend i.is-cost { background:#eb6834; }
+.sec-ic-chart { position:relative; }
+.sec-ic-chart svg { display:block; overflow:visible; }
+.sec-ic-grid { stroke:#e7e6e1; stroke-width:1; }
+.sec-ic-tick { fill:#52514e; font-size:12px; }
+.sec-ic-area { fill:#2a78d6; opacity:.1; }
+.sec-ic-line { fill:none; stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; }
+.sec-ic-line.is-value { stroke:#2a78d6; }
+.sec-ic-line.is-cost { stroke:#eb6834; }
+.sec-ic-dot { stroke:#fcfcfb; stroke-width:2; }
+.sec-ic-dot.is-value { fill:#2a78d6; }
+.sec-ic-dot.is-cost { fill:#eb6834; }
+.sec-ic-end { fill:#0b0b0b; font-size:12.5px; font-weight:500; }
+.sec-ic-mask { position:absolute; background:#fcfcfb; }
+.sec-ic-bars { display:flex; flex-direction:column; gap:20px; margin-top:12px; }
+.sec-ic-bar { display:grid; gap:6px; }
+.sec-ic-bar span { font-size:12.5px; color:#52514e; }
+.sec-ic-bar i { display:block; height:14px; border-radius:0 4px 4px 0; background:#eceef0; }
+.sec-ic-bar em { display:block; height:100%; border-radius:0 4px 4px 0; background:#2a78d6; }
+.sec-ic-bar b { font-size:14px; font-weight:600; }
+.sec-ic-note { margin:20px 0 0; font-size:12px; color:#52514e; line-height:1.5; }

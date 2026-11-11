@@ -1,0 +1,77 @@
+/* What every Remotion cut draws the same way (components/remotion/CutParts.jsx, lib/remotion/cutCore.mjs): .rc-*. The stage is 1600 x 900, scaled to the video; everything in it is placed by the clock
+   (transforms written each frame), so nothing here animates by itself. */
+.rc-root { overflow:hidden; background:#0e1013; font-family:var(--font-montserrat),system-ui,sans-serif; }
+.rc-stage { position:absolute; left:0; top:0; width:1600px; height:900px; transform-origin:0 0; pointer-events:none; }
+.rc-stage *, .rc-stage *::before, .rc-stage *::after { animation:none !important; transition:none !important; }/* (the product's own entrance animations would run in real time, not by the video's clock) */
+.rc-bg { position:absolute; inset:0; background:radial-gradient(ellipse 70% 62% at 50% 42%, #2a3037 0%, #181b20 58%, #0e1013 100%); }
+
+/* the words: ONE band under the picture; the sentence left-aligned and centered on the picture (only it is in the flow), a thin vertical line at its left and the chapter's label at the left of the line
+   (the user, 2026-11-05); word by word (the opacity and the rise are written each frame); a new scene's words are first in the middle of the picture, the band moved up by the clock (`bandLift`: its
+   bottom is BAND.bottom, a line BAND.line, in lib/remotion/cutCore.mjs) */
+/* behind the words: the BACKGROUND'S OWN dark blue, with a SOLID EDGE (the user, 2026-11-10: "the faded color behind title shouldn't be faded, should be a solid", "solid edges I mean (meaning
+   shouldn't be same color gradient as background just trimmed)"; of a flat gray band tried first: "dude u made this a different color not same as dark blue"). It was that dark fading in over
+   the art from clear at y 688 to 94% at 754; it is `.rc-bg`'s very gradient, laid out over the whole stage (1600 x 900) and seen from y 744 down, so the band cannot be told from the background
+   and the art is just trimmed by a straight line; two lines of words (778 to 866) have 34 px over them and 34 px under. KEEP ITS GRADIENT THE SAME AS `.rc-bg`'s. */
+/* (it goes 8 px past the stage's bottom: the picture can be a fraction of a pixel taller than the scaled stage, and art that runs under the band showed there as a thin line, the user, 2026-11-10:
+   "there is a small gap under the title background, very small"; the gradient is still laid out from the stage's top, the rest is the background's edge color) */
+/* (and past its left and right sides, the user right after: "same for left and right side"; 8 px were not enough there, "still gaps in left, right": the All videos page shows more of the picture
+   than the stage at its sides, and art that runs out of the stage, a tablet zoomed in, was seen beside the band. So it goes 400 px past the stage on the left, the right and the bottom: more than
+   any frame shows. The gradient starts 400 px in, where the stage's left edge is; past the stage the band is the background's edge color, which is what is behind the stage there) */
+.rc-band-shade { position:absolute; left:-400px; right:-400px; top:744px; bottom:-400px; z-index:40; background:radial-gradient(ellipse 70% 62% at 50% 42%, #2a3037 0%, #181b20 58%, #0e1013 100%) 400px -744px / 1600px 900px no-repeat #0e1013; }
+.rc-band { position:absolute; left:0; bottom:34px; z-index:41; display:flex; justify-content:center; width:1600px; color:#fff; }
+.rc-band.is-side { bottom:auto; transform:translateY(-50%); }/* (words beside tall art: their middle at `side.y`; the group glides to the right by the clock) */
+/* words beside the art (`c.beside`, BesideBand; the user, 2026-11-11: the title at the right of the missions alone): the block's middle at its `top`, the blue label OVER the white words, both
+   left-aligned on the thin line, which runs the height of the two */
+.rc-band.is-beside { bottom:auto; }
+.rc-band.is-beside .rc-kicker { position:static; display:block; transform:none; margin:0 0 12px; text-align:left; }
+.rc-band.is-beside .rc-rule { top:2px; }
+.rc-group { position:relative; }
+.rc-rule { position:absolute; left:-26px; top:7px; bottom:7px; width:2px; border-radius:1px; background:rgb(143 199 242 / 70%); transform-origin:50% 50%; }
+.rc-kicker { position:absolute; right:calc(100% + 52px); top:50%; transform:translateY(-50%); margin-right:-.22em; font:700 20px/1 var(--font-montserrat),sans-serif; letter-spacing:.22em; text-transform:uppercase; white-space:nowrap; color:#8fc7f2; text-align:right; }/* (the margin: its last letter's spacing) */
+.rc-kicker-line { display:block; line-height:1.3; }/* (two lines, like the white words, right-aligned against the thin line) */
+.rc-lines { text-align:left; }
+.rc-line { display:block; white-space:nowrap; font:600 34px/1.3 var(--font-montserrat),sans-serif; letter-spacing:-.005em; text-shadow:0 2px 14px rgb(0 0 0 / 45%); }
+.rc-word { display:inline-block; }
+.rc-title { position:absolute; left:0; top:430px; z-index:41; width:1600px; text-align:center; color:#fff; font:700 60px/1.22 var(--font-montserrat),sans-serif; letter-spacing:-.01em; transform-origin:50% 50%; }
+.rc-title-line { white-space:nowrap; }
+/* a word of the title marked in yellow: struck through (Increased Efficiency's "Micro-Manage") or underlined (Improved Quality's "Quality & Precision"); the line is drawn left to right by the clock and reaches over
+   the space to the next marked word */
+.rc-mark-word { position:relative; display:inline-block; }
+.rc-mark-word > i { position:absolute; left:-6px; right:-6px; height:7px; border-radius:4px; background:#ffec00; box-shadow:0 0 14px rgb(255 236 0 / 45%); transform-origin:0 50%; }
+.rc-mark-word.is-strike > i { top:53%; margin-top:-3.5px; }
+.rc-mark-word.is-underline > i { left:-3px; right:-3px; bottom:-3px; height:6px; }
+.rc-mark-word.is-joined > i { right:-.3em; }
+
+/* the art (everything but the words, the title and the outlines): at a new scene it goes and comes as one, its opacity and its pull down written each frame (`artAt`); its pieces stack inside it */
+.rc-art { position:absolute; inset:0; z-index:1; }
+
+/* a device of the product in the flat black frame of the videos (the tablet: .tbl-tablet drawn 1000 px wide, scaled by the clock) */
+.rc-device { position:absolute; left:0; top:0; width:1000px; transform-origin:0 0; }
+/* its shadow is TIGHT: it has to end over the band of the words (y 744, a straight edge since 2026-11-10: `.rc-band-shade`). The whole tablet's frame ends at y 698 (715 a little closer), and
+   the shadow it had (0 30px 50px) went on to 778, so the band cut it along a line right across under the tablet (the user, 2026-11-10: "there is a seam here"). This one ends 20 px under the
+   frame. Keep any shadow of what stands over the band shorter than the room under it. */
+.rc-device .tbl-tablet { background:none; filter:drop-shadow(0 8px 12px rgb(0 0 0 / 45%)); }
+/* its frame and screen are Variation 2's (the user, 2026-11-06: "change this tablet to the tablet we had in ... variation 2"): the tablet photo's outline (/tablet-frame.png) painted flat black, as the
+   storyboard's black bezel does, and the board's cool gray screen */
+.rc-device .tbl-tablet::before { content:''; position:absolute; inset:0; background:#0b0b0c; -webkit-mask:url('/tablet-frame.png') center / 100% 100% no-repeat; mask:url('/tablet-frame.png') center / 100% 100% no-repeat; }
+.rc-device .tbl-screen, .rc-device .mi-reference.mi-interactive--tablet .mi-tablet-board { background:#F6F7F9; }
+.rc-device .tbl-screen { z-index:1; }
+.rc-device .mi-tablet-board { position:relative; overflow:hidden; }
+.rc-device .mi-recording-controls, .rc-device .mi-announcement { display:none; }
+/* the header's own colors, whatever page plays the cut (the user, 2026-11-10: "fix UI in tablet the back, team board and + and burger menu, it looks gray it should be darker"): the board's title
+   has no color of its own and the storyboard page gives every button the text color round it (`.sb-root button { color:inherit }`), so on that dark page the title and the three round buttons
+   were drawn in its light gray. Here the title is black and the buttons' icons the product's blue, as on the product (phones too: PhoneShell's buttons) */
+.rc-device .mi-department { color:#000; }
+:is(.rc-stage, .rc-sb-stage) .ph-iconbtn { color:#1271b7; }/* (.rc-sb-stage: the same pieces on the board All storyboards) */
+
+/* the yellow outlines (.iq2-mark, the videos' one), placed each frame round what they are about */
+.rc-marks { position:absolute; inset:0; z-index:30; }
+.rc-mark { transform-origin:50% 50%; }
+
+/* the cursor: the demos' yellow hand (public/demo-hand.png), over everything; a click's yellow ring (.dh-ripple's look); both placed by the clock (Cursor) */
+.rc-hand { position:absolute; left:0; top:0; z-index:51; opacity:0; filter:drop-shadow(0 5px 7px rgb(0 0 0 / 32%)); }
+.rc-hand img { display:block; width:100%; height:100%; }
+.rc-ripple { position:absolute; left:0; top:0; z-index:50; box-sizing:border-box; border:5px solid #ffec00; border-radius:50%; background:rgb(255 236 0 / 28%); box-shadow:0 0 0 3px #111; opacity:0; }
+
+/* the board All storyboards (lib/storyboardAllStoryboards.mjs): its frames are the cuts' pieces on the cuts' dark, in their font */
+.rc-sb-stage { background:#0e1013; font-family:var(--font-montserrat),system-ui,sans-serif; }/* (no color of its own: each word piece carries its own; the tablet's header title and icons have theirs since 2026-11-10: `.rc-device .mi-department`, `.ph-iconbtn` above) */

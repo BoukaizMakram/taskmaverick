@@ -1,0 +1,34 @@
+/* Content Adaptation (components/sections/AdaptationStage.jsx): its own classes, prefixed sec-. */
+
+/* ---- the two states (outside the product), the mission card in each ---- */
+.sec-ca-label.sec-label { transform:translate(-50%,-50%); }
+.sec-ca-state { position:absolute; }
+.sec-ca-state svg { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 12px 22px rgb(0 0 0 / 28%)); }
+.sec-ca-state path { stroke:#fff; stroke-width:5; stroke-linejoin:round; opacity:.96; }
+.sec-ca-state:not(.is-on) path { opacity:.55; }
+/* the land (a photograph) under the state's color: white over it until the mission lands, then the state's color (boards captured before it have the one path above) */
+.sec-ca-state path.sec-ca-land { stroke:none; opacity:1; }
+.sec-ca-state path.sec-ca-tint { opacity:1; }
+.sec-ca-name { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; color:#fff; font-family:var(--font-montserrat),sans-serif; font-size:17px; font-weight:600; text-shadow:0 1px 4px rgb(0 0 0 / 40%); white-space:nowrap; }
+.sec-ca-name b { font-size:44px; font-weight:800; line-height:1; }
+.sec-ca-state:not(.is-on) .sec-ca-name { color:#3d4852; text-shadow:none; }
+.sec-ca-state[data-iq-target="state-ca"] .sec-ca-name { left:40%; top:44%; }
+.ev2-schedule.sec-ca-sched { position:absolute; padding:6px 12px; font-size:14px; box-shadow:0 6px 14px rgb(0 0 0 / 22%); transform-origin:50% 50%; }
+
+/* ---- the mission's guide, written line by line ---- */
+.sec-ca-line { transition:none; }
+
+/* ---- the web app's Units page (tm/47-units.png) ---- */
+.sec-ca-tools { gap:0 34px !important; }
+.sec-ca-table { flex:1; min-height:0; }
+.sec-ca-rows td { height:42px; }
+.sec-ca-rows td.is-center { text-align:center; }
+.sec-ca-uname { display:flex; align-items:center; gap:10px; height:41px; padding:0 10px 0 40px; font-weight:400; }
+.sec-ca-uname em { flex:none; min-width:22px; font-style:normal; text-align:right; }
+.sec-ca-uname b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:400; }
+.sec-ca-status { display:inline-flex; align-items:center; gap:8px; }
+.sec-ca-status i { width:7px; height:7px; border-radius:50%; background:#1f9d55; }
+.sec-ca-pager { flex:none; display:flex; align-items:center; gap:18px; height:52px; padding:0 28px; border-top:1px solid #e3e6e8; font-size:13px; color:#30363a; }
+.sec-ca-per { display:flex; align-items:center; gap:14px; height:32px; padding:0 10px; border:1px solid #d5d9dc; border-radius:6px; }
+.sec-ca-pages { display:flex; align-items:center; gap:14px; margin-left:110px; }
+.sec-ca-pages b { display:grid; place-items:center; width:30px; height:30px; border:1.5px solid #1271b7; border-radius:4px; font-weight:500; color:#1271b7; }

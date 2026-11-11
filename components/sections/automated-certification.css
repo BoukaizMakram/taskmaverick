@@ -1,0 +1,124 @@
+/* Automated Certification (components/sections/CertificationStage.jsx): its own classes, prefixed sec-ac-. */
+
+/* ---- the certificate: a paper document (not a product screen: no Taskmaverick bar or navigation round it), issued by the business. The paper, its border and its seal are
+   a photograph (public/storyboard-art/certificate.webp, scripts/generate-images.mjs), its words live over it inside its border (26 px in); boards captured before it keep a drawn
+   seal: hidden ---- */
+.sec-ac-cert { position:relative; width:560px; height:396px; box-sizing:border-box; padding:14px; background:url('/storyboard-art/certificate.webp') center / 100% 100% no-repeat; filter:drop-shadow(0 22px 30px rgb(21 39 54 / 28%)); font-family:var(--font-montserrat),sans-serif; color:#111; }
+.sec-ac-cert-frame { position:relative; height:100%; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; padding:22px 34px 16px; text-align:center; }
+.sec-ac-cert-issuer { font-size:17px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#0d2a3f; }
+.sec-ac-cert-eyebrow { margin-top:14px; font-size:11px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:#1271b7; }
+.sec-ac-cert h2 { margin:6px 0 10px; font-size:26px; font-weight:700; line-height:1.15; color:#0d2a3f; }
+.sec-ac-cert p { margin:0; font-size:12px; font-weight:500; color:#5d6a75; }
+.sec-ac-cert-name { display:block; min-width:240px; margin:4px 0 6px; padding:0 0 4px; border-bottom:1.5px solid #c9d6e0; font-size:27px; font-weight:600; color:#111; }
+.sec-ac-cert footer { position:absolute; left:30px; right:30px; bottom:36px; display:flex; align-items:flex-end; justify-content:space-between; }
+.sec-ac-cert footer > div { display:flex; flex-direction:column; gap:2px; width:150px; padding:5px 8px; border-radius:6px; text-align:left; }
+.sec-ac-cert footer > div:last-child { text-align:right; }
+.sec-ac-cert footer small { font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#6b7880; }
+.sec-ac-cert footer b { font-size:16px; font-weight:700; color:#111; }
+.sec-ac-cert footer .is-expired small, .sec-ac-cert footer .is-expired b { color:#bd1f59; }
+.sec-ac-seal { display:none; }
+
+/* the check (kept) and the X (expired) the diagram puts on the certificate and beside the course */
+.sec-ac-badge { position:absolute; right:-20px; top:-20px; z-index:3; display:grid; place-items:center; width:58px; height:58px; border-radius:50%; border:4px solid #fff; box-sizing:border-box; box-shadow:0 6px 16px rgb(0 0 0 / 22%); }
+.sec-ac-badge svg { width:30px; height:30px; }
+.sec-ac-badge.is-ok { background:#1f9d55; }
+.sec-ac-badge.is-x { background:#bd1f59; }
+.sec-ac-cert > .sec-ac-badge { right:-44px; top:-44px; width:122px; height:122px; border-width:8px; }
+.sec-ac-cert > .sec-ac-badge svg { width:64px; height:64px; }
+
+/* ---- the diagram: one layer, its pieces placed in the group's px, the group centered on the plate ---- */
+.sec-ac-diagram { position:absolute; left:0; top:0; width:1600px; height:900px; pointer-events:none; }
+.sec-ac-inner { position:absolute; left:0; top:0; width:0; height:0; }
+.sec-ac-item { position:absolute; transform-origin:0 0; }
+.sec-ac-line { position:absolute; left:0; top:0; }
+.sec-ac-line > i { position:absolute; border-radius:2px; background:#7b3cf0; }
+.sec-ac-headbox { position:absolute; width:0; height:0; }
+.sec-ac-head { position:absolute; left:-15px; top:-9px; width:18px; height:18px; overflow:visible; transform-origin:15px 9px; }
+
+/* what the diagram writes on it (the dates on the arrows, the course's name): white on the plate's gray, where the connectors' purple could not be read */
+.sec-ac-label { display:flex; flex-direction:column; align-items:center; width:220px; text-align:center; color:#fff; text-shadow:0 1px 3px rgb(0 0 0 / 40%); font-family:var(--font-inter),sans-serif; white-space:nowrap; }
+.sec-ac-label b { font-size:24px; font-weight:600; line-height:1.15; }
+.sec-ac-label small { margin-top:4px; font-size:15px; font-weight:400; }
+.sec-ac-label small.is-missed { color:#ffc9d8; font-weight:600; }
+.sec-ac-course-label { position:absolute; width:280px; }
+.sec-ac-course-label b { font-size:21px; }
+.sec-ac-course-label .sec-ac-badge { right:-30px; top:50%; width:44px; height:44px; margin-top:-22px; border-width:3px; }
+.sec-ac-course-label .sec-ac-badge svg { width:24px; height:24px; }
+
+/* the person's phone */
+.sec-ac-phone.adx-phone.ph-fit { width:300px; height:627px; margin:0; }
+.sec-ac-phone-card { transform-origin:50% 0; }
+
+/* ---- the driver's license in the mission: attached as a proof is (.iq2-m-proof: its picture, its file name under it) ---- */
+.sec-ac-docshot { display:grid; place-items:center; padding:10px 14px; background:#dfe5ea !important; }
+.sec-ac-license { overflow:hidden; border-radius:10px; background:linear-gradient(135deg,#fdfbf3,#eaf2f8); box-shadow:0 3px 10px rgb(0 0 0 / 14%); font-family:var(--font-montserrat),sans-serif; }
+.sec-ac-license header { display:flex; align-items:baseline; justify-content:space-between; padding:6px 12px; background:#0f5d97; color:#fff; }
+.sec-ac-license header b { font-size:12px; font-weight:700; letter-spacing:.12em; }
+.sec-ac-license header small { font-size:9px; font-weight:600; letter-spacing:.1em; opacity:.85; }
+.sec-ac-license-body { display:flex; gap:12px; padding:10px 12px 12px; }
+.sec-ac-license-photo { flex:none; width:62px; height:76px; overflow:hidden; border-radius:6px; background:#cfdbe5; }
+.sec-ac-license-photo img { display:block; width:100%; height:100%; object-fit:cover; }
+.sec-ac-license dl { display:grid; grid-template-columns:auto 1fr; gap:3px 10px; margin:0; align-content:start; }
+.sec-ac-license dt { font-size:9.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#6b7880; }
+.sec-ac-license dd { margin:0; font-size:12px; font-weight:600; color:#111; }
+
+/* ---- People Certifications (the web app, tm/39-people-certs.png) ---- */
+.sec-ac-web { display:flex; flex-direction:column; height:776px; background:#fff; }
+.sec-ac-web.sec-pl.iq-ow .ow-toolbar { gap:0 26px; }
+.sec-ac-web .ow-tool { color:#171b1c; }
+.sec-ac-table { position:relative; flex:1; min-height:0; display:flex; flex-direction:column; }
+.sec-ac-row { position:relative; display:grid; grid-template-columns:290px 115px 175px 175px 145px 210px; height:42px; border-bottom:1px solid #e3e7ec; background:#fff; font-size:13px; color:#181d1f; }
+.sec-ac-row > span { display:flex; align-items:center; min-width:0; padding:0 14px; border-right:1px solid #ececec; white-space:nowrap; }
+.sec-ac-row > span:last-child { border-right:0; }
+.sec-ac-row.is-head { flex:none; height:46px; border-bottom:2px solid #1271b7; }
+.sec-ac-row.is-head > span { justify-content:space-between; }
+.sec-ac-row.is-head b { font-size:14px; font-weight:500; }
+.sec-ac-row.is-head i { font-style:normal; font-size:18px; color:#272c2f; }
+.sec-ac-row.is-person { background:#f0f9ff; }
+.sec-ac-row.is-person .is-dash { justify-content:center; color:#555; }
+.sec-ac-name { position:relative; gap:0; }
+.sec-ac-name em { flex:none; min-width:24px; font-style:normal; color:#30363a; }
+.sec-ac-name b { font-weight:500; }
+.sec-ac-name small { margin-left:auto; color:#6b7378; font-size:13px; }
+.sec-ac-row.is-person .sec-ac-name { padding-left:44px; }
+.sec-ac-row.is-cert .sec-ac-name { padding-left:58px; }
+.sec-ac-row.is-cert .sec-ac-name > span { overflow:hidden; text-overflow:ellipsis; }
+.sec-ac-toggle { position:absolute; left:14px; top:50%; display:grid; place-items:center; width:18px; height:18px; margin-top:-9px; border-radius:4px; background:#1271b7; color:#fff; }
+.sec-ac-toggle svg { width:14px; height:14px; }
+.sec-ac-branch { position:absolute; left:23px; top:-1px; width:14px; height:calc(50% + 1px); border-left:1px solid #a9b3bb; border-bottom:1px solid #a9b3bb; border-bottom-left-radius:5px; }
+.sec-ac-branch::after { content:''; position:absolute; left:-1px; top:100%; height:22px; border-left:1px solid #a9b3bb; }
+.sec-ac-branch[data-last]::after { display:none; }
+.sec-ac-dot { width:8px; height:8px; margin-right:8px; border-radius:50%; background:#1f9d55; }
+.sec-ac-dot.is-expired, .sec-ac-dot.is-failed { background:#bd1f59; }
+.sec-ac-row .is-late { color:#bd1f59; font-weight:600; }
+.sec-ac-row.is-cert > span:nth-child(5) { justify-content:center; }
+.sec-ac-col { position:absolute; top:0; bottom:0; pointer-events:none; }
+
+/* ---- Certifications (the web app, tm/31-certifications.png, tm/33-cert-level3.png) ---- */
+.sec-ac-new svg { color:#7b3cf0; }
+.sec-ac-cbody { flex:1; min-height:0; overflow:hidden; }
+.sec-ac-crow { position:relative; display:grid; grid-template-columns:325px 105px 100px 160px 110px 170px 140px; height:42px; border-bottom:1px solid #e3e7ec; background:#fff; font-size:13px; color:#181d1f; }
+.sec-ac-crow > span { display:flex; align-items:center; min-width:0; padding:0 12px; border-right:1px solid #ececec; white-space:nowrap; }
+.sec-ac-crow > span:last-child { border-right:0; }
+.sec-ac-crow > span.is-dash { justify-content:center; color:#555; }
+.sec-ac-crow > span u { text-underline-offset:3px; }
+.sec-ac-crow.is-head { flex:none; height:46px; border-bottom:2px solid #1271b7; }
+.sec-ac-crow.is-head > span { justify-content:space-between; }
+.sec-ac-crow.is-head b { font-size:14px; font-weight:500; }
+.sec-ac-crow.is-head i { font-style:normal; font-size:18px; color:#272c2f; }
+.sec-ac-crow.is-open { background:#eef7fd; }
+.sec-ac-cname { position:relative; gap:0; }
+.sec-ac-cname em { flex:none; min-width:24px; font-style:normal; color:#30363a; }
+.sec-ac-cname b { overflow:hidden; text-overflow:ellipsis; font-weight:500; }
+.sec-ac-cname small { margin-left:auto; padding-left:8px; color:#6b7378; font-size:13px; }
+.sec-ac-cname .sec-pl-kebab { margin-left:10px; }
+.sec-ac-cname b + .sec-pl-kebab { margin-left:auto; }
+.sec-ac-cicon { flex:none; display:grid; place-items:center; width:20px; height:20px; margin-right:8px; }
+.sec-ac-cicon svg { width:18px; height:18px; }
+.sec-ac-ctoggle { position:absolute; top:50%; width:17px; height:17px; margin-top:-8.5px; }
+.sec-ac-ctoggle .sec-pl-toggle { left:0; top:0; margin-top:0; }
+.sec-ac-celbow, .sec-ac-cpipe { position:absolute; width:12px; border-left:1px solid #a9b3bb; pointer-events:none; }
+.sec-ac-celbow { top:-1px; height:calc(50% + 1px); border-bottom:1px solid #a9b3bb; border-bottom-left-radius:5px; }
+.sec-ac-cpipe { top:50%; bottom:-1px; }
+.sec-ac-crow:not(.is-certificate) .sec-ac-dot { display:none; }
+.sec-ac-dot { display:inline-block; }

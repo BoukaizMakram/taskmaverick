@@ -1,0 +1,27 @@
+/* Live Monitoring (components/sections/MonitoringStage.jsx): its own classes, prefixed sec-lm-. Also the boards Mass Broadcasting and Data & AI draw with OverviewBoard. */
+
+/* the Overview's boards (the product's screenshots 10, 34, 41): an empty cell is a dash, every column but Name centered, a Pending course has a blue dot */
+.sec-lm.iq-ow .ow-table td.iq-ow-center, .sec-lm.iq-ow .ow-table td.ow-timer-cell { text-align:center; }
+.sec-lm-dash { color:#3c4347; }
+.sec-lm.iq-ow .ow-state.sec-lm-pending i { background:#1271b7; }
+.sec-lm.iq-ow .ow-group-row .ow-total { font-weight:500; }
+.sec-lm.iq-ow .sec-lm-course .ow-group-label { flex:1; min-width:0; }
+.sec-lm.iq-ow .sec-lm-course .ow-count { margin-left:auto; }
+.sec-lm.iq-ow .sec-lm-course .ow-dots { display:grid; place-items:center; width:20px; min-width:20px; font-size:19px; line-height:1; color:#272c2f; }
+.sec-lm.iq-ow .ow-position { font-weight:500; }
+/* a folded group (screenshot 36): its toggle outlined, pointing right */
+.sec-lm.iq-ow .ow-collapse-icon.sec-lm-shut { background:#fff; color:var(--ow-blue); box-shadow:inset 0 0 0 1.5px var(--ow-blue); }
+.sec-lm.iq-ow .ow-collapse-icon.sec-lm-shut .ow-icon { transform:rotate(-90deg); }
+.sec-lm.iq-ow .ow-collapse-icon.sec-lm-shut::after { display:none; }
+/* a row that folds: its cells' content in a box that goes to no height */
+.sec-lm.iq-ow .ow-table tr.sec-lm-fold td { height:auto; padding-top:0; padding-bottom:0; }
+.sec-lm-cell { display:flex; align-items:center; overflow:hidden; }
+.sec-lm-cell.is-center { justify-content:center; }
+.sec-lm-cell > .ow-name-content { flex:1; min-width:0; }
+/* a mission right under a person (no course between): its tree line comes from the person's icon */
+.sec-lm.iq-ow .sec-lm-shallow .ow-name-content { padding-left:60px; }
+.sec-lm.iq-ow .sec-lm-shallow .ow-tree { left:26.5px; }
+/* the History view's toolbar: the filter first, the dates at the right (screenshot 10) */
+.sec-lm.iq-ow .ow-toolbar .ow-tool.iq-ow-filter.sec-lm-first { margin-left:0; padding:0; background:none; }
+.sec-lm-range { display:flex; align-items:center; gap:14px; margin-left:auto; padding:6px 10px; border:1px solid #e4e7e9; border-radius:4px; white-space:nowrap; }
+.sec-lm-range .ow-icon { width:14px; height:14px; }

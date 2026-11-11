@@ -1,0 +1,49 @@
+/* Automated Coaching (components/sections/CoachingStage.jsx): its own classes, prefixed sec-co-. */
+/* The Training group's shared pieces (components/sections/trainingParts.jsx: Automated Coaching, Reactive Training, Dynamic Testing) are here too, prefixed sec-tr-: this file is loaded
+   wherever the sections' art is drawn (components/sections/sectionStyles.js). */
+
+/* ---- the mission by itself: a footer button, the exec timer, the questions ---- */
+.sec-tr-panel .iq2-m-kind .sec-tr-exec { margin-left:auto; font-weight:500; font-variant-numeric:tabular-nums; color:#1b1b21; }
+.sec-tr-panel .iq2-m-kind .sec-tr-exec + em { margin-left:8px; }
+.sec-tr-panel .om-footer.sec-tr-foot { position:relative; z-index:4; height:66px; }
+.sec-tr-panel .om-cta { display:grid; place-items:center; }
+.sec-tr-q > b { display:block; }
+.sec-tr-hint { display:block; margin-top:4px; font-size:11px; font-style:italic; color:#6b7580; }
+.sec-tr-opts { display:flex; gap:8px; margin-top:12px; }
+.sec-tr-opts--single, .sec-tr-opts--multi { flex-direction:column; }
+.sec-tr-opt { flex:1; display:flex; align-items:center; gap:10px; padding:10px 11px; border:1px solid #cdd2d5; border-radius:10px; background:#fff; font-size:15px; line-height:1.3; }
+.sec-tr-opt.is-selected { background:#e6eef8; border-color:#7da3cf; }
+.sec-tr-mark { flex:none; display:grid; place-items:center; width:20px; height:20px; box-sizing:border-box; border:1.5px solid #b9c0c5; background:#fff; color:#fff; }
+.sec-tr-mark--square { border-radius:4px; }
+.sec-tr-mark--round { border-radius:50%; }
+.sec-tr-mark svg { width:14px; height:14px; opacity:0; }
+.sec-tr-opt.is-selected .sec-tr-mark--square { background:#1276bb; border-color:#1276bb; }
+.sec-tr-opt.is-selected .sec-tr-mark--square svg { opacity:1; }
+.sec-tr-opt.is-selected .sec-tr-mark--round { border:6px solid #1276bb; }
+.sec-tr-opt.is-selected.is-negative { background:#fbeaf0; border-color:#e3a2b9; }
+.sec-tr-opt.is-selected.is-negative .sec-tr-mark--square { background:#bd1f59; border-color:#bd1f59; }
+
+/* ---- cards on their own: faces, words ---- */
+.sec-tr-face { position:absolute; display:flex; flex-direction:column; align-items:center; gap:6px; font-family:var(--font-montserrat),sans-serif; }
+.sec-tr-face .adx-avatar { position:static; display:block; }
+.sec-tr-face b { padding:3px 12px; border-radius:14px; background:#fff; color:#111; font-size:16px; font-weight:600; white-space:nowrap; box-shadow:0 4px 12px rgb(0 0 0 / 18%); }
+.sec-tr-face small { padding:2px 10px; border-radius:12px; background:#1271b7; color:#fff; font-size:14px; font-weight:600; white-space:nowrap; }
+.sec-tr-label { position:absolute; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; transform:translateY(-50%); font-family:var(--font-montserrat),sans-serif; }
+.sec-tr-label--label { color:#fff; font-size:22px; font-weight:600; text-shadow:0 2px 6px rgb(0 0 0 / 35%); }
+.sec-tr-label--dark { color:#14202b; font-size:22px; font-weight:700; text-shadow:0 0 10px rgb(255 255 255 / 75%); }
+
+/* ---- the micro-lesson: the product's opened Media mission (components/OpenedMission.jsx, .om-* in globals.css) in the phone view's box ---- */
+.sec-co-om-clip { height:100%; overflow:hidden; border-radius:18px; }
+.sec-co-om .om { font-family:var(--font-montserrat),sans-serif; }
+.sec-co-om .om-head-actions { right:10px; gap:4px; } /* (the phone screen is 375 wide, this box 360: the title keeps its room) */
+.sec-co-om .om-head-actions .om-hbtn { width:34px; height:34px; }
+.sec-co-om .om-translate { border:0; border-radius:10px; background:#1271b7; color:#fff; font-size:14px; font-weight:600; } /* (the Improved Quality mission's translate button) */
+.sec-co-om .om-mrow.is-pressed { margin:0 -6px; padding-left:6px; padding-right:6px; border-radius:6px; background:#e6f0f8; }
+
+/* ---- the Timeline: 31 days, by person (Precision Planning's look: .sec-pl-* in sections.css) ---- */
+.sec-co-tl .sec-pl-row { grid-template-columns:250px 110px 1178px; }
+.sec-co-tl .sec-pl-hours.sec-co-days { grid-template-columns:repeat(31, 38px); }
+.sec-co-tl .sec-pl-row.is-head .sec-pl-hours > i { font-size:11px; line-height:1.25; }
+.sec-co-tl .sec-pl-row.is-head .sec-pl-hours small { font-size:10px; color:#8a9196; }
+.sec-co-table { position:relative; }
+.sec-co-pick { position:absolute; pointer-events:none; }

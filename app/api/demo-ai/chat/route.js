@@ -41,7 +41,7 @@ export async function POST(request) {
   if (!Array.isArray(body?.messages) || body.messages.length > 80) return jsonError('messages must be an array.', 400);
 
   const payload = thinking => JSON.stringify({
-    systemInstruction: { parts: [{ text: `${SYSTEM_PROMPT}\n\n${typeof body.screen === 'string' && body.screen.trim() ? `CURRENT SCREEN (live — trust this over your memory):\n${body.screen.slice(0, 5000)}` : describeView(body.view || {})}${typeof body.tour === 'string' && body.tour ? `\n\n${body.tour.slice(0, 3000)}` : ''}` }] },
+    systemInstruction: { parts: [{ text: `${SYSTEM_PROMPT}\n\n${typeof body.screen === 'string' && body.screen.trim() ? `CURRENT SCREEN (live — trust this over your memory):\n${body.screen.slice(0, 9000)}` : describeView(body.view || {})}${typeof body.tour === 'string' && body.tour ? `\n\n${body.tour.slice(0, 3000)}` : ''}` }] },
     contents: toContents(body.messages),
     generationConfig: { maxOutputTokens: 900, ...(thinking ? { thinkingConfig: { thinkingLevel: 'minimal' } } : {}) },
   });
@@ -52,6 +52,8 @@ export async function POST(request) {
     upstream = await call(true);
     // Older / other models may not accept thinkingLevel — retry without it.
     if (upstream.status === 400) upstream = await call(false);
+    // An overloaded model (5xx) usually answers a moment later: once more before the visitor sees an error. Not a 429: that is the key's quota, and a retry only spends more of it.
+    if (upstream.status >= 500) { await new Promise(resolve => setTimeout(resolve, 700)); upstream = await call(true); }
   } catch (error) {
     if (error.name === 'AbortError') return new Response(null, { status: 499 });
     return jsonError('Could not reach Gemini.', 502);
