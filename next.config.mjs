@@ -22,6 +22,10 @@ const nextConfig = {
   reactStrictMode: true,
   // Don't advertise the framework/version in the X-Powered-By header.
   poweredByHeader: false,
+  // The storyboard's saved boards (content/storyboard/<board>.json: the variation each board plays, retyped words, comments) are read by /api/storyboard in production too, so they have to
+  // be in that function (they are read by a path made at run time, which the tracing cannot follow); their backups are not needed there
+  outputFileTracingIncludes: { '/api/storyboard': ['./content/storyboard/*.json'] },
+  outputFileTracingExcludes: { '/api/storyboard': ['./content/storyboard/backups/**/*'] },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },

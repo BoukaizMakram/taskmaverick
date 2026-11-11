@@ -125,9 +125,10 @@ async function loadSaved(videoId) {
   try {
     const response = await fetch(`/api/storyboard?video=${videoId}`, {cache: 'no-store'});
     if (!response.ok) throw new Error();
-    const data = await response.json(), base = normalizeEdits(data.edits), rev = data.rev ?? 0;
-    if (mine.rev !== rev) return {edits: base, changed: false, file: true, rev}; // the file changed since (the command line, another tab): it wins
-    return {...mergeEdits(base, mine.edits), file: true, rev};
+    // (`readOnly`: production. The file is read as it was pushed, but nothing can be saved to it: `file` false, so changes are kept in this browser, on top of that file while it is the same one)
+    const data = await response.json(), base = normalizeEdits(data.edits), rev = data.rev ?? 0, file = !data.readOnly;
+    if (mine.rev !== rev) return {edits: base, changed: false, file, rev}; // the file changed since (the command line, another tab; in production: a new deployment): it wins
+    return {...mergeEdits(base, mine.edits), file, rev};
   } catch { return {edits: mine.edits, changed: false, file: false, rev: 0}; }
 }
 // Save to the file. -> {rev} or {conflict: true, edits, rev} (the file changed since `rev`: what it holds now)
@@ -160,7 +161,7 @@ async function changeBoard(videoId, change) {
   for (let tries = 0; tries < 4; tries++) {
     const saved = await loadSaved(videoId), next = change(saved.edits);
     if (next === saved.edits) return {rev: saved.rev, edits: saved.edits}; // (-> what the file holds now: the All videos page keeps its copy of the board by it)
-    if (!saved.file) { keepLocal(videoId, null, next); return {rev: null, edits: next}; }
+    if (!saved.file) { keepLocal(videoId, saved.rev || null, next); return {rev: null, edits: next}; } // (kept with the revision of the file it was made on, when there is one to read: production)
     const done = await postSaved(videoId, next, saved.rev);
     if (!done.conflict) { keepLocal(videoId, done.rev, next); return {rev: done.rev, edits: next}; } // (else it changed meanwhile: read it again and redo)
   }
@@ -549,6 +550,7 @@ function Board({video: captured, videoId}) {
       const data = await check;
       if (!live) return;
       if (!data) { setToFile(false); return; } // (no file to save to: kept in this browser, as before)
+      if (data.readOnly) setToFile(false);     // (production: the file is read, never written)
       if (data.same || !data.edits) return;
       const remote = normalizeEdits(data.edits); // the file changed since (the command line, another board, another tab): it is taken, merged with what is not saved yet
       revRef.current = data.rev;

@@ -16,14 +16,19 @@ export const dynamic = 'force-dynamic';
 const store = storyboardStore(path.join(process.cwd(), 'content', 'storyboard'));
 
 // ?video=<id>: { edits, rev }. With &rev=<n>: { same: true } when the file is still at n.
+// PRODUCTION READS TOO, and only reads (the user, 2026-11-12, having pushed: "I wanna see latest video variation in https://taskmaverick.vercel.app/storyboard?video=all-videos"): it
+// answered 404, so the deployed page had only the browser's own copy, which is empty there: no variation (they are in the edits: `edits.variations`), so every board played Variation 1, and
+// no retyped words or comments. It now answers with the file as it was pushed, plus `readOnly: true`: the page shows it and keeps what is changed there in the browser, as it always did
+// in production (nothing can be written: POST still answers 404). The files have to be in the function: next.config.mjs `outputFileTracingIncludes`. A deployment never changes, so
+// the answer can be kept by the CDN for ten minutes (a new deployment starts with nothing kept).
 export async function GET(request) {
-  if (process.env.NODE_ENV === 'production') return new Response(null, { status: 404 });
+  const live = process.env.NODE_ENV === 'production', keep = { 'Cache-Control': live ? 'public, max-age=0, s-maxage=600' : 'no-store' };
   const params = new URL(request.url).searchParams, video = videoOf(params.get('video'));
   if (!video) return Response.json({ error: 'Unknown video.' }, { status: 400 });
   try {
-    const { edits, rev } = await store.read(video);
-    if (params.has('rev') && Number(params.get('rev')) === rev) return Response.json({ same: true, rev }, { headers: { 'Cache-Control': 'no-store' } });
-    return Response.json({ edits, rev }, { headers: { 'Cache-Control': 'no-store' } });
+    const { edits, rev } = await store.read(video), more = live ? { readOnly: true } : {};
+    if (params.has('rev') && Number(params.get('rev')) === rev) return Response.json({ same: true, rev, ...more }, { headers: keep });
+    return Response.json({ edits, rev, ...more }, { headers: keep });
   } catch { return Response.json({ error: 'Could not read the saved changes.' }, { status: 500 }); }
 }
 
