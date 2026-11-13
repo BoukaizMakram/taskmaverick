@@ -138,13 +138,14 @@ function Quiz({id, quiz}) {
     <span className={`iq2-m-submit${done === quiz.questions.length ? ' is-ready' : ''}`} data-iq-target={`quiz-submit-${id}`}>Submit</span>
   </div>;
 }
-export function MissionPanel({kind = 'Checklist', points = 25, title, location, who = 'Anna F', date = '09-23-26 04:03 PM', timer = '00:07:42', tone = 'green', status = 'claimed', brief = null, items = [], groupTitle = null, scrollTo = 'top', translate = false, name = 'Mission', scale = 1.5, closed = false, expand = 1, left = 341, top = 163}) {
+export function MissionPanel({kind = 'Checklist', points = 25, title, location, who = 'Anna F', date = '09-23-26 04:03 PM', timer = '00:07:42', tone = 'green', status = 'claimed', brief = null, items = [], groupTitle = null, scrollTo = 'top', translate = false, name = 'Mission', scale = 1.5, closed = false, expand = 1, left = 341, top = 163, scrollMix = null}) { // (`scrollMix` {from, to, p}: the window between two scroll places, by a clock: a Remotion cut, components/remotion/AuditingCut.jsx; `scrollTo` is where it stands otherwise)
   const panel = useRef(null);
   useLayoutEffect(() => {
     const box = panel.current, content = box.querySelector('.iq2-m-content'), win = box.querySelector('.iq2-m-window'), chip = box.querySelector('.iq2-m-summary');
     const at = key => { if (key === 'top') return 0; const el = content.querySelector(`[data-iq-target="${key}"]`); return el ? el.getBoundingClientRect().top - content.getBoundingClientRect().top : 0; };
     const k = content.getBoundingClientRect().height / content.offsetHeight || 1, max = Math.max(0, content.offsetHeight - win.clientHeight);
-    const y = Math.min(max, Math.max(0, at(scrollTo) / k - chip.offsetHeight - 8));
+    const place = key => Math.max(0, at(key) / k - chip.offsetHeight - 8);
+    const y = Math.min(max, scrollMix ? place(scrollMix.from) + (place(scrollMix.to) - place(scrollMix.from)) * scrollMix.p : place(scrollTo));
     content.style.transform = `translateY(${-y}px)`; chip.style.transform = `translateY(${y}px)`;
     chip.style.boxShadow = y > 2 ? '0 10px 14px -10px rgb(21 39 54 / 30%)' : 'none';
     // popped as its summary card, centered, then expanded (the Improved Quality film's mission: the card is what is cut out of the panel, `expand` 0 to 1)

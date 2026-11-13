@@ -25,7 +25,9 @@ import '../web/web.css';               // .ow-* (the workspace)
 import './OversightCut.css';
 
 // the viewer's video, played by the cut's clock (CutVideo: it runs with the picture while it plays, else it holds its frame)
-const Clip = props => <CutVideo {...props} src={CLIP}/>;
+// CutVideo fills its parent (position absolute), and the viewer's media column sizes itself from its children, so without a box of its own the clip collapsed to a thin strip (the user, 2026-11-12,
+// on the Video proof scene): the box is the clip's size in the viewer (components/LiveOversightDemo.css .iq-mv-media video: 760 x 428)
+const Clip = props => <div className="rc-lo-clip"><CutVideo {...props} src={CLIP}/></div>;
 
 // ---- the pages: the one on, and for a moment the one a click went to coming in over it ----
 function Usage({usage}) {

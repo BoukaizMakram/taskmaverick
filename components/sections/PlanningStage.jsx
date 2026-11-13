@@ -53,26 +53,29 @@ const Lines = ({pipes = [], elbow, down}) => <>
   {elbow && <i className="sec-pl-elbow" style={{left: elbow[0], width: elbow[1] - elbow[0]}}/>}
   {down != null && <i className="sec-pl-down" style={{left: down}}/>}
 </>;
-const Reveal = ({open, children}) => <div className="iq2-reveal" style={{gridTemplateRows: `${open ? 1 : 0}fr`, opacity: open ? 1 : 0, visibility: open ? 'visible' : 'hidden'}}><div>{children}</div></div>;
+// (`open`: true / false, or how far it is open, 0 to 1: the Remotion cut folds rows by its clock, components/remotion/PlanningCut.jsx)
+const Reveal = ({open, children}) => { const v = open === true ? 1 : open === false || !open ? 0 : open; return <div className="iq2-reveal" style={{gridTemplateRows: `${v}fr`, opacity: v, visibility: v > 0 ? 'visible' : 'hidden'}}><div>{children}</div></div>; };
 const Block = ({id, children}) => <div data-iq-target={id} className="sec-block">{children}</div>;
 const count = n => (n ? <b>{n}</b> : <small>0</small>);
 
 function UnitRow({index, name, teams, open = false, id}) {
-  return <div className={`sec-pl-row is-unit${open ? ' is-open' : ''}`} data-iq-target={id}>
-    <span className="sec-pl-name"><Lines down={X1}/><Toggle open={open}/><em>{index}.</em><b>{name}</b><small>{teams}</small></span>
+  const is = open === true || open > 0.5; // (a number: how far it is open)
+  return <div className={`sec-pl-row is-unit${is ? ' is-open' : ''}`} data-iq-target={id}>
+    <span className="sec-pl-name"><Lines down={X1}/><Toggle open={is}/><em>{index}.</em><b>{name}</b><small>{teams}</small></span>
     <span className="sec-pl-pos"/>
     <span className="sec-pl-hours" data-iq-target={id ? `${id}-hours` : undefined}>{HOURS.map(h => <i key={h}/>)}</span>
   </div>;
 }
 function TeamRow({index, team, open, last}) {
-  return <div className={`sec-pl-row is-team${open ? ' is-open' : ''}`} data-iq-target={`row-${team.id}`}>
-    <span className="sec-pl-name"><Lines pipes={last ? [] : [X1]} elbow={[X1, END2]} down={X2}/><Toggle open={open}/><em>{index}.</em><b>{team.name}</b><small>{team.count}</small><Clip/></span>
+  const is = open === true || open > 0.5;
+  return <div className={`sec-pl-row is-team${is ? ' is-open' : ''}`} data-iq-target={`row-${team.id}`}>
+    <span className="sec-pl-name"><Lines pipes={last ? [] : [X1]} elbow={[X1, END2]} down={X2}/><Toggle open={is}/><em>{index}.</em><b>{team.name}</b><small>{team.count}</small><Clip/></span>
     <span className="sec-pl-pos"/>
     <span className="sec-pl-hours" data-iq-target={`row-${team.id}-hours`}>{team.perHour.map((n, h) => <i key={h}>{count(n)}</i>)}</span>
   </div>;
 }
 // a mission: its row (the cursor presses the count of its first hour) and the box that sums up its schedule
-function Mission({index, id, m, open, lastTeam, last}) {
+function Mission({index, id, m, open, lastTeam, last, noBox = false}) { // (`noBox`: the Remotion cut leaves out the box that sums up a schedule, which the real software does not have: the user, 2026-11-12)
   const pipes = [...(lastTeam ? [] : [X1]), ...(last ? [] : [X2])];
   return <Block id={`block-${id}`}>
     <div className="sec-pl-row is-mission" data-iq-target={`mission-${id}`}>
@@ -80,13 +83,15 @@ function Mission({index, id, m, open, lastTeam, last}) {
       <span className="sec-pl-pos"><i className="sec-pl-tag">{m.position}</i></span>
       <span className="sec-pl-hours">{cells(m.hours).map((n, h) => <i key={h} data-iq-target={h === m.hours[0] ? `badge-${id}` : undefined}>{count(n)}</i>)}</span>
     </div>
-    <Reveal open={open}><div className="sec-pl-boxrow"><Lines pipes={pipes}/>
+    {!noBox && <Reveal open={open}><div className="sec-pl-boxrow"><Lines pipes={pipes}/>
       <div className="sec-pl-box" data-iq-target={`box-${id}`}><Svg d="calendar"/><b>{m.name}</b><span>{m.rule}</span><em>{m.hours.map(h => <i key={h}>{timeOf(h)}</i>)}</em></div>
-    </div></Reveal>
+    </div></Reveal>}
   </Block>;
 }
 
-export default function PlanningStage({state, data = DEFAULTS['precision-planning']}) {
+// `bare` {w, h} (the Remotion cut, components/remotion/PlanningCut.jsx: the user, 2026-11-12): the page edge to edge, its whole 1600 px across a window of that size (no pan), and what folds open by
+// numbers (`unit`, `ops`, `kitchen`: 0 to 1; `boxP`: {mission id: 0 to 1}); where the list is scrolled is the cut's own, by its clock (it measures the rows and sets it)
+export default function PlanningStage({state, data = DEFAULTS['precision-planning'], bare = null}) {
   const s = {...PLANNING_BASE, ...state}, win = useRef(null);
   const TEAMS = useMemo(() => teamsOf(data), [data]);
   useCenter(win, {focus: s.focus, pan: s.pan, scroller: '.sec-scroll', scrollTo: s.scrollTo});
@@ -95,12 +100,13 @@ export default function PlanningStage({state, data = DEFAULTS['precision-plannin
     return <Block key={t.id} id={`team-${t.id}`}>
       <TeamRow index={i + 1} team={t} open={open} last={lastTeam}/>
       {t.missions.length > 0 && <Reveal open={open}><div className="sec-block" data-iq-target={`missions-${t.id}`}>
-        {t.missions.map(([id, m], j) => <Mission key={id} index={j + 1} id={id} m={m} open={s.boxes.includes(id)} lastTeam={lastTeam} last={j === t.missions.length - 1}/>)}
+        {t.missions.map(([id, m], j) => <Mission key={id} index={j + 1} id={id} m={m} open={s.boxes.includes(id)} noBox={!!bare} lastTeam={lastTeam} last={j === t.missions.length - 1}/>)}
       </div></Reveal>}
     </Block>;
   };
-  return <div ref={win} className="iq2-report" data-sec-part="Report" style={{left: 24, top: 62, width: 1110, height: 776}}>
-    <div className="iq2-report-page" style={{transform: `translateX(${-s.pan}px)`, height: 776, width: 1600}}><div className="iq-ol-page">
+  const box = bare ? {left: 0, top: 0, width: bare.w, height: bare.h} : {left: 24, top: 62, width: 1110, height: 776};
+  return <div ref={win} className={`iq2-report${bare ? ' rc-lo-board' : ''}`} data-sec-part="Report" style={box}>
+    <div className="iq2-report-page" style={{transform: `translateX(${-s.pan}px)`, height: box.height, width: 1600}}><div className="iq-ol-page">
       <div className="ow-workspace iq-ow sec-pl" aria-label="Taskmaverick web: Overview, Personal Board, Timeline">
         <header className="ow-topbar"><span className="ow-logo"><img src="/logo.svg" alt="taskmaverick"/></span>
           <nav>{NAV.map(n => <span key={n} className={n === 'Overview' ? 'is-active' : undefined}>{n}</span>)}</nav>

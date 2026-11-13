@@ -5,3 +5,5 @@
 .rc-lo-board { border:0; border-radius:0; box-shadow:none; }
 /* its pages, one over the other: the one a click went to comes in over the one before (its opacity, by the clock) */
 .rc-lo-page { position:absolute; left:0; top:0; background:#fff; }
+/* the viewer's clip: a box of its own (CutVideo is absolute inside it), the size the demo's <video> has in the viewer */
+.rc-lo-clip { position:relative; flex:none; width:760px; height:428px; overflow:hidden; background:#000; }

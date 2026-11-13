@@ -1,0 +1,18 @@
+/* Requesting Maintenance, the Remotion cut (components/remotion/MaintenanceCut.jsx, lib/remotion/maintenanceCut.mjs): .rc-ma-*. The stage, the words, the title, the outlines and the cursor are every
+   cut's (components/remotion/CutParts.css); everything is set by the clock, nothing here animates by itself. */
+
+/* a layer of the art: the screen a click or a new sentence went to comes in over the one before (its opacity, by the clock) */
+.rc-ma-layer { position:absolute; inset:0; }
+/* the request and the ticket are a smaller 9:16 phone's panel over the band of the words: its shadow ends before the band's straight edge (y 744), the panel ends at y 701 */
+.rc-ma-layer .iq2-mission { filter:drop-shadow(0 14px 24px rgb(0 0 0 / 45%)); }
+/* the On-Demand list over the board, by the clock: the demo's own panel, only its opacity and a slide (its own animation is off) */
+.rc-ma-drawer { position:absolute; inset:0; z-index:6; }
+/* the ticket board's cards are shorter than the team board's (sections.css .sec-compact, which is on the stage's tablet and not on this one) */
+.rc-ma-compact.rc-device .mi-reference.mi-interactive--tablet .mi-tablet-board .chip { height:calc(104 * var(--ref-u)); padding-top:calc(8 * var(--ref-u)); padding-bottom:calc(8 * var(--ref-u)); }
+/* the responder's avatar: over the tablet, placed each frame on the ticket (MaintenanceCut.jsx Responder) */
+.rc-ma-face { position:absolute; left:0; top:0; z-index:12; border-radius:50%; overflow:hidden; opacity:0; box-shadow:0 4px 12px rgb(0 0 0 / 40%); background:#fff; }
+.rc-ma-face img { display:block; width:100%; height:100%; object-fit:cover; }
+/* the cards (FlowPart: the demo's 1600 x 900 layer, kept where it is drawn); the one that pops lies over the one that stays */
+.rc-ma-flow { position:absolute; left:0; top:0; width:1600px; height:900px; }
+.rc-ma-flow-pop { position:absolute; inset:0; }
+.rc-ma-flow .chip { box-shadow:0 8px 20px rgb(0 0 0 / 35%); }

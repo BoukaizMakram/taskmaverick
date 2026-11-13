@@ -825,5 +825,16 @@
       "at": "2026-10-17T00:03:28.284Z"
     }
   },
-  "rev": 29
+  "variations": {
+    "list": [
+      {
+        "id": "v2",
+        "name": "Variation 2",
+        "look": "remotion"
+      }
+    ],
+    "active": "v2",
+    "at": "2026-11-12T19:06:27.752Z"
+  },
+  "rev": 30
 }

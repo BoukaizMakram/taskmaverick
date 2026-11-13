@@ -6,9 +6,12 @@ import EfficiencyCut from './EfficiencyCut';
 import EfficiencyRedo from './EfficiencyRedo';
 import QualityCut from './QualityCut';
 import OversightCut from './OversightCut';
+import AuditingCut from './AuditingCut';
+import PlanningCut from './PlanningCut';
+import MaintenanceCut from './MaintenanceCut';
 
 function IncreasedEfficiency(props) {
   return props.layout === 'storyboard' || props.layout === 'straight' ? <EfficiencyRedo {...props}/> : <EfficiencyCut {...props}/>;
 }
 
-export const CUT_COMPONENTS = {'increased-efficiency-v3': IncreasedEfficiency, 'improved-quality-v2': QualityCut, 'live-oversight-v2': OversightCut}; // (Live Oversight's: the user, 2026-11-11)
+export const CUT_COMPONENTS = {'increased-efficiency-v3': IncreasedEfficiency, 'improved-quality-v2': QualityCut, 'live-oversight-v2': OversightCut, 'dynamic-auditing-v2': AuditingCut, 'precision-planning-v2': PlanningCut, 'requesting-maintenance-v2': MaintenanceCut}; // (Live Oversight's: the user, 2026-11-11; Dynamic Auditing's and Precision Planning's: 2026-11-12)

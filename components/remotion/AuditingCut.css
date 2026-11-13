@@ -1,0 +1,11 @@
+/* Dynamic Auditing, the Remotion cut (components/remotion/AuditingCut.jsx, lib/remotion/auditingCut.mjs): .rc-ad-*. The stage, the words, the title, the outlines and the cursor are every cut's
+   (components/remotion/CutParts.css); everything is set by the clock, nothing here animates by itself. */
+
+/* a layer of the art: the screen a click or a new sentence went to comes in over the one before (its opacity, by the clock) */
+.rc-ad-layer { position:absolute; inset:0; }
+/* the mission is a smaller 9:16 phone's panel over the band of the words: its shadow ends before the band's straight edge (y 744), the panel ends at y 701 (the layout 'under' of Improved Quality's) */
+.rc-ad-layer .iq2-mission { filter:drop-shadow(0 14px 24px rgb(0 0 0 / 45%)); }
+/* the cards that follow an audit (FlowPart: the demo's 1600 x 900 layer, kept where it is drawn); the one that pops lies over the ones that stay */
+.rc-ad-flow { position:absolute; left:0; top:0; width:1600px; height:900px; }
+.rc-ad-flow-pop { position:absolute; inset:0; }
+.rc-ad-flow .chip { box-shadow:0 8px 20px rgb(0 0 0 / 35%); }

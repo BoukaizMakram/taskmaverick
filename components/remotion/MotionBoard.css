@@ -1,0 +1,14 @@
+/* The motion of the missions the cuts draw (components/remotion/MotionBoard.jsx): .rc-mt-*. Everything is set by the clock. */
+
+/* the board's own cards are moved by the clock: no entrance of their own */
+.rc-mt .mi-card-button { animation:none; }
+/* the board the cards come from, drawn under the other and never seen: only its cards' places are measured */
+.rc-mt-from { position:absolute; left:0; top:0; width:100%; visibility:hidden; pointer-events:none; }
+/* a card on its way: over the others, with the lifted card's shadow (Increased Efficiency's) */
+.rc-mt .mi-card-button.is-moving .chip { box-shadow:0 10px 24px rgb(0 0 0 / 35%), 0 2px 6px rgb(0 0 0 / 25%); }
+
+/* the cards that follow a mission: the demo's 1600 x 900 layer, kept where it is drawn; each new card pops at its own place; a timer's pill pops by the clock (--rc-pop) */
+.rc-mt-flow { position:absolute; left:0; top:0; width:1600px; height:900px; }
+.rc-mt-pop { position:absolute; inset:0; }
+.rc-mt-flow .chip { box-shadow:0 8px 20px rgb(0 0 0 / 35%); }
+.rc-mt-flow .chip-pill { transform:scale(var(--rc-pop, 1)); transform-origin:50% 50%; }
