@@ -9,9 +9,15 @@ import OversightCut from './OversightCut';
 import AuditingCut from './AuditingCut';
 import PlanningCut from './PlanningCut';
 import MaintenanceCut from './MaintenanceCut';
+import ExpirationsCut from './ExpirationsCut';
+import SupportCut from './SupportCut';
+import InventoryCut from './InventoryCut';
+import ExceptionsCut from './ExceptionsCut';
+import ReportingCut from './ReportingCut';
 
 function IncreasedEfficiency(props) {
-  return props.layout === 'storyboard' || props.layout === 'straight' ? <EfficiencyRedo {...props}/> : <EfficiencyCut {...props}/>;
+  return props.layout === 'storyboard' || props.layout === 'straight' || props.layout === 'flow' || props.layout === 'soft' || props.layout === 'narrator' || props.layout === 'story' ? <EfficiencyRedo {...props}/> : <EfficiencyCut {...props}/>;
 }
 
-export const CUT_COMPONENTS = {'increased-efficiency-v3': IncreasedEfficiency, 'improved-quality-v2': QualityCut, 'live-oversight-v2': OversightCut, 'dynamic-auditing-v2': AuditingCut, 'precision-planning-v2': PlanningCut, 'requesting-maintenance-v2': MaintenanceCut}; // (Live Oversight's: the user, 2026-11-11; Dynamic Auditing's and Precision Planning's: 2026-11-12)
+export const CUT_COMPONENTS = {'increased-efficiency-v3': IncreasedEfficiency, 'improved-quality-v2': QualityCut, 'live-oversight-v2': OversightCut, 'dynamic-auditing-v2': AuditingCut, 'precision-planning-v2': PlanningCut, 'requesting-maintenance-v2': MaintenanceCut,
+  'tracking-expirations-v2': ExpirationsCut, 'requesting-support-v2': SupportCut, 'replenishing-inventory-v2': InventoryCut, 'exception-management-v2': ExceptionsCut, 'reporting-ai-v2': ReportingCut}; // (the section films of 2026-11-16: Requesting Support to Reporting & AI) // (Live Oversight's: the user, 2026-11-11; Dynamic Auditing's and Precision Planning's: 2026-11-12)

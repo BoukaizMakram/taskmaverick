@@ -2165,6 +2165,115 @@
         ]
       },
       "updatedAt": "2026-11-09T22:50:26.636Z"
+    },
+    "ie-v7/assign": {
+      "moves": {
+        "sentence": [
+          0,
+          8.67
+        ]
+      },
+      "texts": {
+        "sentence": "Work Missions Are Automatically Posted Exactly When Due"
+      },
+      "sizes": {
+        "sentence": [
+          583.87,
+          88
+        ]
+      },
+      "styles": {
+        "label": {
+          "align": "left"
+        }
+      },
+      "updatedAt": "2026-11-13T23:37:20.089Z"
+    },
+    "ie-v7/teamwork#2": {
+      "moves": {
+        "label": [
+          -53.03,
+          0.01
+        ]
+      },
+      "texts": {
+        "sentence": "Everyone Remains Constantly Engaged",
+        "label": "Constant engagement"
+      },
+      "sizes": {
+        "label": [
+          230.94,
+          52
+        ]
+      },
+      "updatedAt": "2026-11-13T23:39:19.547Z"
+    },
+    "ie-v7/login": {
+      "texts": {
+        "sentence": "There Is No Need For Anyone To Login Or To Sign Into A Device"
+      },
+      "sizes": {
+        "sentence": [
+          577.33,
+          88
+        ]
+      },
+      "updatedAt": "2026-11-13T23:44:56.926Z"
+    },
+    "ie-v7/initiative": {
+      "texts": {
+        "sentence": "Everyone Can See Who Is Doing What",
+        "label": "CONSTANT VISIBILITY"
+      },
+      "updatedAt": "2026-11-13T23:41:41.440Z"
+    },
+    "ie-v7/initiative#2": {
+      "texts": {
+        "sentence": "People Are Constantly Guided To Take Initiatives On Their Own"
+      },
+      "updatedAt": "2026-11-13T23:42:01.307Z"
+    },
+    "ie-v7/downtime": {
+      "texts": {
+        "sentence": "There Is No Confusion About What Needs To Be Done Next"
+      },
+      "updatedAt": "2026-11-13T23:42:49.527Z"
+    },
+    "ie-v7/recognition": {
+      "note": "Each Person's Contribution Can Be Easily Recognized",
+      "updatedAt": "2026-11-13T23:43:48.150Z"
+    },
+    "ie-v7/measured": {
+      "note": "Execution Duration Is Measured Per Mission",
+      "updatedAt": "2026-11-13T23:43:54.380Z"
+    },
+    "rm-v2/alert@24.4": {
+      "note": "show what caused the ticket to show up without closing mission keep it open as it was",
+      "updatedAt": "2026-11-16T05:49:37.379Z"
+    },
+    "rm-v2/delays": {
+      "note": "here because mission is still open on the left it's like we gonna pan to the right to show the escalation alert to the right, and fade the mission on left while it's going left (it's like we are moving a camera)",
+      "updatedAt": "2026-11-16T05:51:16.178Z"
+    },
+    "rm-v2/list@7.0": {
+      "note": "here show only the open section without the tablet",
+      "updatedAt": "2026-11-16T06:06:33.984Z"
+    },
+    "rm-v2/list@7.8": {
+      "note": "here show only the open section with the on demand + icon and menu opening up from it without the tablet",
+      "updatedAt": "2026-11-16T06:06:34.138Z"
+    },
+    "rm-v2/list": {
+      "note": "show mission adding to open without tablet",
+      "updatedAt": "2026-11-16T06:06:34.271Z"
+    },
+    "rm-v2/delays@28.9": {
+      "note": "here keep mission open until 16",
+      "updatedAt": "2026-11-16T06:06:34.421Z"
+    },
+    "rm-v2/evidence@39.0": {
+      "note": "here show only maintenance alert, nothing else, keep for the whole story just one ticket and claim it then goes to next.",
+      "updatedAt": "2026-11-16T06:06:34.573Z"
     }
   },
   "copies": {
@@ -2191,6 +2300,18 @@
     "ie-v4/shared#2": {
       "from": "ie-v4/shared",
       "after": "ie-v4/shared#3"
+    },
+    "ie-v7/teamwork#2": {
+      "from": "ie-v7/teamwork",
+      "after": "ie-v7/teamwork"
+    },
+    "ie-v7/initiative#2": {
+      "from": "ie-v7/initiative",
+      "after": "ie-v7/initiative"
+    },
+    "ie-v7/downtime#2": {
+      "from": "ie-v7/downtime",
+      "after": "ie-v7/downtime"
     }
   },
   "rows": {
@@ -2300,5 +2421,5 @@
     "titles": {},
     "deleted": []
   },
-  "rev": 505
+  "rev": 575
 }

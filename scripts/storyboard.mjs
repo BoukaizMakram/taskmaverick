@@ -88,6 +88,8 @@ Change (one thing; the rest of the board is left exactly as it is)
   blank <frame|line>             a blank frame after a frame, or at the end of a line
   delete <frame> ...             to the Trash, with its line's name
   drop <frame> ...               off the board WITHOUT the Trash (frames that exist only because of a recapture)
+  gone [line]                    what is kept (a note, edits) for frames a capture no longer makes: a row made again gives its moments new ids
+  forget <id> ...                drop what is kept for such a frame (after its note was put on the frame that shows that moment now: note)
   to-line <frame> <line> [n]     move a frame to a line (at the end, or to be its n-th)
   animate <frame> <bubble> <handwrite|off> [letters/s]  a chat box's words written by a pen, so many letters a second (the play button on the slide)
   line-add <name> [--after <line> | --first]   line-rename <line> <name>
@@ -131,7 +133,7 @@ and change the ones of the variation that plays (variation-use); vcomments lists
 Variations of a board's videos (the user, 2026-11-03: another way to play the same video, picked in the All videos page's inspector: Comments | Variations; lib/storyboardVariations.mjs).
 Variation 1 (v1) is the video as it is made; the one picked plays everywhere (the board, All videos, the video editor, an export). Looks: ${Object.keys(LOOKS).join(', ')}.
   variations                     the board's variations, the one that plays marked *
-  variation-add <look> ["<name>"] [--id v5]  a new variation with that look, played from now on; prints its id (--id: the one it should have, if free)
+  variation-add <look> ["<name>"] [--id v5] [--keep]  a new variation with that look, played from now on (--keep: added only, the one that plays stays); prints its id (--id: the one it should have, if free)
   variation-use <id>             play that one (v1: the video as it is made)
   variation-name <id> "<name>"    rename one
   variation-rm <id>              delete one (Variation 1 plays if it was the one)
@@ -152,7 +154,7 @@ Files
 const argv = process.argv.slice(2), flags = {}, args = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
-  if (a === '--only' || a === '--to' || a === '--lock') flags[a.slice(2)] = true;
+  if (a === '--only' || a === '--to' || a === '--lock' || a === '--keep') flags[a.slice(2)] = true;
   else if (a === '--z') flags.z = Number(argv[++i]);
   else if (a === '--first') flags.first = true;
   else if (a.startsWith('--')) flags[a.slice(2)] = argv[++i];
@@ -613,6 +615,22 @@ const commands = {
     await save(b, frames.reduce((e, f) => deleteFrame(e, f.id), b.edits), `${frames.map(f => where(b, f)).join(', ')} taken off the board (not in the Trash)`);
   },
 
+  // What is kept for frames a capture no longer makes (a row of All storyboards made again gives its moments new ids, `<sentence>@<seconds>`, when the film's timing changed: a note written on
+  // one is then on no frame). `gone` lists it; put a note back on the frame that shows that moment now (note), then `forget` the old id, so it does not come back on another frame one day.
+  async gone(line) {
+    const b = await loadBoard(), captured = new Set(b.video.frames.map(f => f.id)), row = line ? `${lineOf(b, line).id}/` : '';
+    const ids = Object.keys(b.edits.frames).filter(id => !captured.has(id) && !b.edits.copies[id] && id.startsWith(row));
+    for (const id of ids) console.log(`${pad(id, 30)} ${Object.keys(b.edits.frames[id]).filter(k => k !== 'updatedAt').join(', ')}${b.edits.frames[id].note ? `  note: ${b.edits.frames[id].note}` : ''}`);
+    if (!ids.length) console.log('Nothing is kept for a frame that is gone.');
+  },
+  async forget(...ids) {
+    const b = await loadBoard(), captured = new Set(b.video.frames.map(f => f.id)), gone = [...new Set(ids)].filter(id => b.edits.frames[id] && !captured.has(id) && !b.edits.copies[id]);
+    if (!gone.length) fail('Nothing is kept under these ids for a frame that is gone (see: gone).');
+    const frames = {...b.edits.frames};
+    for (const id of gone) delete frames[id];
+    await save(b, {...b.edits, frames}, `What was kept for ${gone.join(', ')} is forgotten`);
+  },
+
   async 'to-line'(ref, line, n) {
     const b = await loadBoard(), f = frameOf(b, ref), to = lineOf(b, line), cells = cellsOf(b.edits, b.frames);
     if (cells.hidden.has(f.id)) fail(`${where(b, f)} is a slide of a video, not on the board: show its line as slides first (line-view <line> slides), or move the video by its first slide.`);
@@ -867,9 +885,9 @@ const commands = {
   },
   async 'variation-add'(look, ...words) {
     if (!LOOKS[look]) fail(`variation-add <look> ["<name>"]: the looks are ${Object.keys(LOOKS).join(', ')}`);
-    const b = await loadBoard(), {edits, id} = addVariation(b.edits, {name: words.join(' '), look, id: flags.id ?? null}); // (`--id v5`: the id it should have, when it is free)
+    const b = await loadBoard(), {edits, id} = addVariation(b.edits, {name: words.join(' '), look, id: flags.id ?? null, play: !flags.keep}); // (`--keep`: the variation that plays stays) // (`--id v5`: the id it should have, when it is free)
     if (!id) fail('No more variations can be added to this board.');
-    await save(b, edits, `${b.id}: ${variationsOf(edits).find(v => v.id === id).name} (${id}, ${LOOKS[look].label}) added, and it plays`);
+    await save(b, edits, `${b.id}: ${variationsOf(edits).find(v => v.id === id).name} (${id}, ${LOOKS[look].label}) added${flags.keep ? '; the one that played still plays' : ', and it plays'}`);
   },
   async 'variation-use'(id) {
     const b = await loadBoard(), v = variationsOf(b.edits).find(x => x.id === id);

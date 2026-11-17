@@ -172,14 +172,15 @@ export function PopCell({kind,i,style}){
 // ---- Chapters 15-17: Business Proofs in the tablet ---------------------------------
 function FolderIcon(){return <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" aria-hidden="true"><path d="M1.8 3.5h4.3l1.3 1.6h6.8v7.4H1.8Z"/></svg>;}
 function FunnelIcon(){return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 4h18l-7 8.2V19l-4 2v-8.8Z"/></svg>;}
-export function BusinessProofs({scroll=0,tablet=false}){
+// (`proofs`: the missions listed, lib/businessProofs.mjs's by default; a film about something else gives its own, e.g. Replenishing Inventory's restocked shelves, lib/replenishProofs.mjs)
+export function BusinessProofs({scroll=0,tablet=false,proofs=BUSINESS_PROOFS}){
  const list=useRef(null),[max,setMax]=useState(0);
  useLayoutEffect(()=>{const el=list.current;if(!el)return;const m=Math.max(0,el.scrollHeight-el.parentElement.clientHeight);if(Math.abs(m-max)>1)setMax(m);});
  return <div className={`iq-bp${tablet?' iq-bp--tablet':''}`}>
   <header className="iq-bp-head"><span className="iq-bp-back"><IconBack/></span><b>Business Proofs</b><span className="iq-bp-filter"><FunnelIcon/></span></header>
   <div className="iq-bp-search"><span><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4.5 4.5"/></svg>Search</span><i>×</i></div>
   <div className="iq-bp-window"><div ref={list} className="iq-bp-list" style={{transform:`translateY(${-max*scroll}px)`}}>
-   {BUSINESS_PROOFS.map(m=><article className="iq-bp-mission" key={m.id}>
+   {proofs.map(m=><article className="iq-bp-mission" key={m.id}>
     <header><div className="iq-bp-kind"><img src="/mission-logo.png" alt=""/><b>{m.kind}</b><span>{m.execution}</span><strong>{m.duration}</strong></div>
      <small><FolderIcon/>{m.category}</small><h3>{m.title}</h3><div className="iq-bp-meta"><span>{m.performer}</span><time>{m.date}</time></div></header>
     <div className="iq-bp-grid">{m.photos.map(({name,alt},i)=><span className="iq-bp-photo" key={name} role="img" aria-label={alt} style={{backgroundImage:`url('${proofSrc(name)}')`}}>{m.more&&i===m.photos.length-1&&<em>+{m.more}</em>}</span>)}</div>

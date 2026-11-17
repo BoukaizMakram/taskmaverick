@@ -86,6 +86,13 @@ import './web/web.css';// the web app's pieces (Shift+A > Web app) need its own 
 import './remotion/CutParts.css';     // the Remotion cuts' pieces, on the board All storyboards (scripts/capture-cuts.mjs)
 import './remotion/EfficiencyCut.css';
 import './remotion/EfficiencyRedo.css'; // (the cut redone from the storyboard, if a row is made from it: capture-cuts --layout storyboard)
+import './remotion/MotionBoard.css';      // (the other cuts' art, as the rows of All storyboards draw it: the tablet's motion and cards, the pages edge to edge, the panels)
+import './remotion/QualityCut.css';
+import './remotion/OversightCut.css';
+import './remotion/AuditingCut.css';
+import './remotion/PlanningCut.css';
+import './remotion/MaintenanceCut.css';
+import './remotion/SectionParts.css';     // (the pieces of the films made of sections, cards and panels: a section's tab, a card, an arrow, the plus, the On-Demand list, the avatar)
 import './Storyboard.css';
 
 const VIDEOS = [{id: 'improved-quality-v2', name: 'Improved Quality'}, {id: 'increased-efficiency-v2', name: 'Increased Efficiency (previous)'}, ...SECTION_BOARDS]; // (the sections of the website: lib/sections/index.mjs)

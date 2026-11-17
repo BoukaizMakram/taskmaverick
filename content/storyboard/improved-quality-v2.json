@@ -32174,6 +32174,10 @@
     "The tablet and its Knowledge Base": {
       "items": [],
       "updated": "2026-10-29T23:43:57.512Z"
+    },
+    "Improved Quality · Remotion cut [v5]": {
+      "items": [],
+      "updated": "2026-11-16T20:55:19.603Z"
     }
   },
   "variations": {
@@ -32192,10 +32196,15 @@
         "id": "v4",
         "name": "Variation 4 · Told as Increased Efficiency is",
         "look": "remotion-like-ie"
+      },
+      {
+        "id": "v5",
+        "name": "Variation 5 · Narrator",
+        "look": "remotion-narrator"
       }
     ],
-    "active": "v4",
-    "at": "2026-11-11T20:21:04.060Z"
+    "active": "v5",
+    "at": "2026-11-16T20:54:41.054Z"
   },
   "speed": {
     "The tablet and its Knowledge Base": {
@@ -32203,5 +32212,5 @@
       "at": "2026-10-28T23:25:26.448Z"
     }
   },
-  "rev": 1246
+  "rev": 1250
 }

@@ -16823,6 +16823,46 @@
           "view": "cut"
         }
       }
+    },
+    {
+      "id": "trash-mwitgsrey38i-1",
+      "video": "all-storyboards",
+      "videoName": "All storyboards",
+      "chapter": "ie-v7",
+      "chapterTitle": "Increased Efficiency · Variation 7",
+      "label": "Blank frame",
+      "time": null,
+      "from": "blank-1",
+      "deletedAt": "2026-11-16T05:22:08.666Z",
+      "look": {
+        "shell": "es-player demo-text-scope",
+        "stageClass": "ad-stage rc-sb-stage",
+        "stageStyle": "",
+        "scene": {
+          "id": null,
+          "view": null
+        }
+      }
+    },
+    {
+      "id": "trash-mwitgv08sxf4-1",
+      "video": "all-storyboards",
+      "videoName": "All storyboards",
+      "chapter": "ie-v7",
+      "chapterTitle": "Increased Efficiency · Variation 7",
+      "label": "Blank frame",
+      "time": null,
+      "from": "blank-1",
+      "deletedAt": "2026-11-16T05:22:11.576Z",
+      "look": {
+        "shell": "es-player demo-text-scope",
+        "stageClass": "ad-stage rc-sb-stage",
+        "stageStyle": "",
+        "scene": {
+          "id": null,
+          "view": null
+        }
+      }
     }
   ],
   "lines": {
@@ -16830,5 +16870,5 @@
     "titles": {},
     "deleted": []
   },
-  "rev": 59
+  "rev": 61
 }

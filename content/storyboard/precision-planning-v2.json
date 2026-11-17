@@ -831,10 +831,15 @@
         "id": "v2",
         "name": "Variation 2",
         "look": "remotion"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3 · Narrator",
+        "look": "remotion-narrator"
       }
     ],
     "active": "v2",
-    "at": "2026-11-12T19:06:27.752Z"
+    "at": "2026-11-16T20:23:16.100Z"
   },
-  "rev": 30
+  "rev": 31
 }

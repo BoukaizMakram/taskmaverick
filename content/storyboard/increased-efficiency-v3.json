@@ -7691,6 +7691,19 @@
         }
       ],
       "updated": "2026-11-11T00:13:01.045Z"
+    },
+    "Increased Efficiency · Remotion cut [v7]": {
+      "items": [
+        {
+          "id": "comment-1",
+          "x": 229.3,
+          "y": 67.9,
+          "at": 6.47,
+          "text": "SLOW DOWN POSTING MISSIONS",
+          "created": "2026-11-13T23:46:22.311Z"
+        }
+      ],
+      "updated": "2026-11-13T23:46:31.678Z"
     }
   },
   "variations": {
@@ -7704,10 +7717,30 @@
         "id": "v7",
         "name": "Variation 7 · From the comments",
         "look": "remotion-straight"
+      },
+      {
+        "id": "v8",
+        "name": "Variation 8 · Quiet words, voice-over",
+        "look": "remotion-flow"
+      },
+      {
+        "id": "v9",
+        "name": "Variation 9 · Same words, softer timing",
+        "look": "remotion-soft"
+      },
+      {
+        "id": "v10",
+        "name": "Variation 10 · Narrator",
+        "look": "remotion-narrator"
+      },
+      {
+        "id": "v11",
+        "name": "Variation 11 · Storyboard row with added slides",
+        "look": "remotion-story"
       }
     ],
-    "active": "v7",
-    "at": "2026-11-11T00:24:51.675Z"
+    "active": "v10",
+    "at": "2026-11-16T20:51:45.899Z"
   },
   "cuts": {
     "IE-Redo": {
@@ -7721,6 +7754,10 @@
         "cost": "A Single Device Can Be\nDisplayed & Shared By A Team"
       },
       "at": "2026-11-11T00:24:51.821Z"
+    },
+    "IE-Story": {
+      "words": {},
+      "at": "2026-11-14T00:51:37.085Z"
     }
   },
   "speed": {
@@ -7729,5 +7766,5 @@
       "at": "2026-10-28T23:26:13.548Z"
     }
   },
-  "rev": 293
+  "rev": 332
 }

@@ -62,12 +62,12 @@ function RowPop({open}) {
   return <i ref={me} hidden/>;
 }
 
-export default function PlanningCut({words = null, hide = null}) {
+export default function PlanningCut({words = null, hide = null, layout = null}) { // (`layout`: the variation's; 'narrator': the same film with the narrator's voice)
   const frame = useCurrentFrame(), {fps} = useVideoConfig(), t = frame / fps, stage = useRef(null);
-  const cut = useMemo(() => makePlanningCut(words ?? undefined), [words]);
+  const cut = useMemo(() => makePlanningCut(words ?? undefined, {layout}), [words, layout]);
   const s = cut.stateAt(t);
   return <CutFrame cut={cut} t={t} hide={hide} stage={stage}>
-    <div className="rc-pl-page" data-rc-pl="page">
+    <div className="rc-pl-page" data-rc-pl="page" data-cut-part="Page">
       <PlanningStage state={{unit: s.unit, ops: s.ops, kitchen: s.kitchen}} bare={BOARD}/>
       <RowPop open={s}/>
       <ListScroll scroll={s.scroll}/>

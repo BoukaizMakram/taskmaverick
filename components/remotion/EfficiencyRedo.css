@@ -1,21 +1,23 @@
 /* Increased Efficiency, the Remotion cut redone from the storyboard (components/remotion/EfficiencyRedo.jsx, lib/remotion/efficiencyRedo.mjs): what it adds to the cuts' pieces (CutParts.css) and to
    Variation 4's (EfficiencyCut.css). Everything is placed by the clock (transforms written each frame), so nothing here animates by itself. */
 .rc-redo { position:absolute; inset:0; }/* (no z-index: its pieces stack in the art's layer as Variation 4's do) */
+/* (.rc-sb-redo: the stage of this film's frames on the board All storyboards, where its pieces are no longer inside .rc-redo: scripts/capture-cuts.mjs, `data-cut-scope`. The names' and the
+   execution timers' strips, sizes and weights below are on those slides too) */
 
 /* what pops on a mission (the user's slides: "pop the execution timer", the names circled with "pop"): the name and the execution timer, scaled by the clock (the timer pill and the points
    badge have theirs in EfficiencyCut.css) */
-.rc-redo .rc-card .chip-who { transform:scale(var(--rc-who-s, 1)); transform-origin:0 60%;
+:is(.rc-redo, .rc-sb-redo) .rc-card .chip-who { transform:scale(var(--rc-who-s, 1)); transform-origin:0 60%;
   /* slide 6, the CEO, 2026-11-09: "make them more pronounced, like black, like bold, these names": bold by a text stroke and black by the clock (--rc-who-b 0 to 1), never a switch of weight */
   -webkit-text-stroke:calc(.75px * var(--rc-who-b, 0)) #000; -webkit-text-fill-color:color-mix(in srgb, #000 calc(var(--rc-who-b, 0) * 100%), currentColor);/* (black by the letters' fill, not a filter: a filter would blacken the yellow strip too) */
   position:relative; }
 /* a yellow strip behind the name and behind the execution timer (the user, 2026-11-10: "put a yellow strip behind it for both execution timer and names too", then "make the strip comes from
    left to right"): the videos' yellow, drawn from its left edge to its right by the clock (--rc-*-w 0 to 1), gone with the words (--rc-*-o); it is a box of its own behind the letters, 3 board
    units round them, so the text's own box and place do not change (the text's transform keeps it over the card and under the letters) */
-.rc-redo .rc-card :is(.chip-who, .chip-exec)::before { content:''; position:absolute; inset:calc(-3 * var(--ref-u, 1px)); z-index:-1; border-radius:calc(1.5 * var(--ref-u, 1px)); background:#ffec00;
+:is(.rc-redo, .rc-sb-redo) .rc-card :is(.chip-who, .chip-exec)::before { content:''; position:absolute; inset:calc(-3 * var(--ref-u, 1px)); z-index:-1; border-radius:calc(1.5 * var(--ref-u, 1px)); background:#ffec00;
   transform-origin:0 50%; pointer-events:none; }
-.rc-redo .rc-card .chip-who::before { transform:scaleX(var(--rc-who-w, 0)); opacity:var(--rc-who-o, 0); }
+:is(.rc-redo, .rc-sb-redo) .rc-card .chip-who::before { transform:scaleX(var(--rc-who-w, 0)); opacity:var(--rc-who-o, 0); }
 /* (the execution timers' strip can be another color than the names': --rc-exec-strip, Variation 7's orange; the user, 2026-11-11, on one of them: "use a different color like an orange here") */
-.rc-redo .rc-card .chip-exec::before { transform:scaleX(var(--rc-exec-w, 0)); opacity:var(--rc-exec-o, 0); background:var(--rc-exec-strip, #ffec00); }
+:is(.rc-redo, .rc-sb-redo) .rc-card .chip-exec::before { transform:scaleX(var(--rc-exec-w, 0)); opacity:var(--rc-exec-o, 0); background:var(--rc-exec-strip, #ffec00); }
 /* the missions of Claimed and Closed standing out of the light board while the camera is on them (--rc-lift 0 to 1; the CEO, 2026-11-09: "make these missions visible ... I'm not seeing"): a
    deeper shadow and a thin edge over the board's own */
 /* a mission on the dark, off the tablet (--rc-alone 1: the four alone, the board without its tablet; 1 to 0 as the four land on the tablet): a deeper shadow under it (the user, 2026-11-10:
@@ -28,14 +30,14 @@
      stood out    --rc-lift (Claimed and Closed while the camera is on them): + 0 12px 28px at 42% and its thin edge
    On the dark (--rc-alone 1: the four alone, the board without its tablet) nothing changes: that shadow is the first two layers of .is-up and the lifted card's own, all three times
    --rc-alone, so a mission landing on the tablet goes from the one to the other with no jump. These are the numbers to raise or lower. */
-.rc-redo .rc-card { --rc-on:calc(1 - var(--rc-alone, 0)); --rc-rest-a:0 5px 12px rgb(15 23 42 / calc(.32 * var(--rc-on))); --rc-rest-b:0 1px 3px rgb(15 23 42 / calc(.26 * var(--rc-on))); }
-.rc-redo .rc-card.is-up .iq2-iso-stack .chip { box-shadow:0 10px 24px rgb(0 0 0 / calc(.6 * var(--rc-alone, 0))), 0 2px 6px rgb(0 0 0 / calc(.4 * var(--rc-alone, 0))), 0 12px 34px rgb(30 41 59 / calc(.19 * var(--rc-alone, 0))),
+:is(.rc-redo, .rc-sb-redo) .rc-card { --rc-on:calc(1 - var(--rc-alone, 0)); --rc-rest-a:0 5px 12px rgb(15 23 42 / calc(.32 * var(--rc-on))); --rc-rest-b:0 1px 3px rgb(15 23 42 / calc(.26 * var(--rc-on))); }
+:is(.rc-redo, .rc-sb-redo) .rc-card.is-up .iq2-iso-stack .chip { box-shadow:0 10px 24px rgb(0 0 0 / calc(.6 * var(--rc-alone, 0))), 0 2px 6px rgb(0 0 0 / calc(.4 * var(--rc-alone, 0))), 0 12px 34px rgb(30 41 59 / calc(.19 * var(--rc-alone, 0))),
   0 16px 30px rgb(15 23 42 / calc(.44 * var(--rc-air, 1) * var(--rc-on))), 0 4px 9px rgb(15 23 42 / calc(.28 * var(--rc-air, 1) * var(--rc-on))), var(--rc-rest-a), var(--rc-rest-b); }
-.rc-redo .rc-card:not(.is-up) .iq2-iso-stack .chip { box-shadow:var(--rc-rest-a), var(--rc-rest-b), 0 calc(12px * var(--rc-lift, 0)) calc(28px * var(--rc-lift, 0)) rgb(15 23 42 / calc(.42 * var(--rc-lift, 0))), 0 0 0 calc(1.5px * var(--rc-lift, 0)) rgb(15 23 42 / 16%); }
+:is(.rc-redo, .rc-sb-redo) .rc-card:not(.is-up) .iq2-iso-stack .chip { box-shadow:var(--rc-rest-a), var(--rc-rest-b), 0 calc(12px * var(--rc-lift, 0)) calc(28px * var(--rc-lift, 0)) rgb(15 23 42 / calc(.42 * var(--rc-lift, 0))), 0 0 0 calc(1.5px * var(--rc-lift, 0)) rgb(15 23 42 / 16%); }
 /* the execution timer of "Execution Duration Is Measured Per Mission" (the user, 2026-11-10: "execution timer move it to the left ... make it bold and put a yellow strip behind it"): it grows
    from its right edge and goes 8 board units to the left, so it never comes over the timer pill; bold by a text stroke by the clock (--rc-exec-b 0 to 1), never a switch of weight; with
    --rc-exec-b 0 it is the board's own timer, where it always was (its yellow strip: the ::before above) */
-.rc-redo .rc-card .chip-exec { position:relative; transform:translateX(calc(-8 * var(--ref-u, 1px) * var(--rc-exec-b, 0))) scale(var(--rc-exec-s, 1)); transform-origin:100% 50%;
+:is(.rc-redo, .rc-sb-redo) .rc-card .chip-exec { position:relative; transform:translateX(calc(-8 * var(--ref-u, 1px) * var(--rc-exec-b, 0))) scale(var(--rc-exec-s, 1)); transform-origin:100% 50%;
   -webkit-text-stroke:calc(.7px * var(--rc-exec-b, 0)) currentColor; }
 
 /* the board without its tablet: its blue column tabs (the board's own .tbl-tab, drawn 334 board units wide as a card is, scaled by the clock), with no white ring round them on the dark */

@@ -1,0 +1,7 @@
+/* Tracking Expirations, the Remotion cut (components/remotion/ExpirationsCut.jsx, lib/remotion/expirationsCut.mjs): .rc-ex-*. Its pieces are the section films' (SectionParts.css, .rc-sp-*);
+   everything is set by the clock, nothing here animates by itself. */
+
+/* an item of the section: a box of its own round its card (the card is placed in the stage's own px, so the box is the stage's) */
+.rc-ex-item { position:absolute; inset:0; pointer-events:none; }
+/* the item that rises: a lifted card's deeper shadow while it goes over the ones it passes (MotionBoard.css gives a card on its own 0 8px 20px) */
+.rc-ex-item.is-up .chip { box-shadow:0 14px 30px rgb(0 0 0 / 50%), 0 3px 8px rgb(0 0 0 / 30%); }

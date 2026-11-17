@@ -31,12 +31,14 @@ function missionsOf(board) {
 }
 
 // ---- the request by itself ----
-function RequestPanel({s}) {
+// (exported for the Remotion cut, components/remotion/SupportCut.jsx, which draws these pieces by its clock: `s.place` {left, top, scale} is where the panel stands, `s.typed` may be the text
+// typed so far, `s.timer` its running timer; with none of them it is the slide's)
+export function RequestPanel({s}) {
   const proof = s.doc === 'ask' ? {kind: 'video', state: 'ask'} : s.doc === 'done' ? {kind: 'video', state: 'done', src: CLIP, poster: ROOM, file: 'Video 9/23/2026 at 2:11:48 PM.mp4'} : null;
-  return <MissionPanel kind="Task" points={null} title="Clean Room" location="Front Desk / Requests" who="Anna F" date="09-23-26 02:10 PM" timer="00:00:04" expand={s.expand}
+  return <MissionPanel kind="Task" points={null} title="Clean Room" location="Front Desk / Requests" who="Anna F" date="09-23-26 02:10 PM" timer={s.timer ?? '00:00:04'} expand={s.expand}
     brief={{instructions: 'Tell us what you need.'}}
-    items={[{id: 'describe', type: 'text', q: 'Describe issue', value: s.typed ? PROBLEM : '', placeholder: 'Describe the request'},
-      {id: 'record', type: 'yesno', q: 'Record request?', answer: s.doc === 'none' ? null : 'yes', proof}]} scrollTo="top"/>;
+    items={[{id: 'describe', type: 'text', q: 'Describe issue', value: typeof s.typed === 'string' ? s.typed : s.typed ? PROBLEM : '', placeholder: 'Describe the request'},
+      {id: 'record', type: 'yesno', q: 'Record request?', answer: s.doc === 'none' ? null : 'yes', proof}]} scrollTo="top" {...(s.place ?? {})}/>;
 }
 
 // ---- the cards on their own ----
@@ -59,31 +61,34 @@ function flowOf(s) {
 
 // ---- the QR code, the sign and the package that carry it (the sign and the package are photographs: public/storyboard-art/, scripts/generate-images.mjs) ----
 const SEED = 'https://app.taskmaverick.com/request/room-12';
-function QrCard() {
-  return <div className="sec-qrcard" data-sec-part="Layer" style={{left: 50, top: 120}}>
+// (`place`: a style of its own, where a Remotion cut stands it: {left, top, transform...}; none: the slide's. The sign and the package say their names for the board All storyboards, `data-cut-part`)
+export function QrCard({place = null}) {
+  return <div className="sec-qrcard" data-sec-part="Layer" style={place ?? {left: 50, top: 120}}>
     <img src="/mission-logo.png" alt=""/><h3>Request Support</h3>
     <div className="sec-qrcard-code" data-iq-target="qr"><Qr size={380} seed={SEED}/></div>
     <p>Scan with your phone</p>
   </div>;
 }
-function Placed() {
-  return <div className="sec-placed" data-sec-part="Layer" style={{left: 40, top: 150, width: 960, height: 600}}>
-    <div className="sec-sign" data-iq-target="sign" role="img" aria-label="Need something? Scan to request support. Room 12"/>
-    <div className="sec-box" data-iq-target="package" role="img" aria-label="Package 4821: scan to report a problem"/>
+export function Placed({place = null}) {
+  return <div className="sec-placed" data-sec-part="Layer" style={{left: 40, top: 150, width: 960, height: 600, ...(place ?? {})}}>
+    <div className="sec-sign" data-iq-target="sign" data-cut-part="Sign" role="img" aria-label="Need something? Scan to request support. Room 12"/>
+    <div className="sec-box" data-iq-target="package" data-cut-part="Package" role="img" aria-label="Package 4821: scan to report a problem"/>
   </div>;
 }
 
 // ---- the phone that scans it, and the form it opens ----
-function Phone({s}) {
+// (`s.place` {left, top, width}: where a Remotion cut stands it; `s.scan` between 0 and 1: the form coming in over the camera, by the cut's clock; 0 or 1 and no place: the slide's)
+export function Phone({s}) {
   const camera = <div className="sec-cam"><div className="sec-cam-view"><div className="sec-cam-code" data-iq-target="camera"><Qr size={210} seed={SEED}/></div>
     {['tl', 'tr', 'bl', 'br'].map(c => <i key={c} className={`sec-cam-corner sec-cam-corner--${c}`}/>)}</div><p>Point the camera at the QR code</p></div>;
-  const form = <div className="sec-form" data-iq-target="form"><header><b>Experience Survey</b></header>
+  const coming = s.scan > 0 && s.scan < 1;
+  const form = <div className="sec-form" data-iq-target="form" style={coming ? {opacity: s.scan, transform: `translateY(${((1 - s.scan) * 46).toFixed(2)}px)`} : undefined}><header><b>Experience Survey</b></header>
     <section><p>How was your experience?</p><div className="sec-stars" data-iq-target="stars">{[1, 2, 3, 4, 5].map(i => <span key={i} className={i <= 4 ? 'is-on' : ''}>★</span>)}</div></section>
     <section><p>Was the room clean?</p><div className="iq2-m-options"><span className="is-selected"><span className="iq-checkbox is-checked">✓</span>Yes</span><span><span className="iq-checkbox"/>No</span></div></section>
     <section><p>Anything we should know?</p><div className="sec-field">Everything was great.</div></section>
     <span className="iq2-m-submit is-ready">Submit</span></div>;
-  return <div className="ph-fit sec-phone" data-sec-part="Board" style={{position: 'absolute', left: 331, top: 40, width: 380}}>
-    <PhoneShell title="Scan" tabs={[]} overlay={s.scan >= 1 ? form : camera}/>
+  return <div className="ph-fit sec-phone" data-sec-part="Board" style={{position: 'absolute', left: 331, top: 40, width: 380, ...(s.place ?? {})}}>
+    <PhoneShell title="Scan" tabs={[]} overlay={coming ? <>{camera}{form}</> : s.scan >= 1 ? form : camera}/>
   </div>;
 }
 

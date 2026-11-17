@@ -729,5 +729,21 @@
       "at": "2026-10-17T00:03:28.284Z"
     }
   },
-  "rev": 35
+  "variations": {
+    "list": [
+      {
+        "id": "v2",
+        "name": "Variation 2 · Remotion cut",
+        "look": "remotion"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3 · Narrator",
+        "look": "remotion-narrator"
+      }
+    ],
+    "active": "v2",
+    "at": "2026-11-16T20:23:16.758Z"
+  },
+  "rev": 37
 }

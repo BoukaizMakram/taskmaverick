@@ -87,3 +87,31 @@
 .sb-root .sb-av-var-add button { padding:7px 8px; border:1px dashed #4a4a4a; border-radius:6px; background:transparent; color:#cfcfcf; font-size:11px; text-align:left; cursor:pointer; }
 .sb-root .sb-av-var-add button:hover { border-color:var(--sb-blue); color:#fff; }
 .sb-side .sb-av-vars-note { padding:8px 16px 12px; }
+
+/* The Titles of a Remotion cut in the inspector (components/StoryboardTitlesPanel.jsx; the user, 2026-11-14): the titles in order, each with its second, label, words and the mark of its voice; one more is added at the end */
+.sb-av-titles { display:flex; flex-direction:column; gap:10px; padding:0 2px 24px; }
+.sb-av-titles-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.sb-av-title { display:flex; flex-direction:column; gap:4px; padding:7px 8px; border-radius:8px; background:rgb(255 255 255 / 5%); }
+.sb-av-title.is-added { box-shadow:inset 2px 0 0 #8fc7f2; }
+.sb-av-title-head { display:flex; align-items:center; gap:6px; min-width:0; }
+.sb-av-title-n { flex:none; width:18px; height:18px; border-radius:50%; display:grid; place-items:center; font:600 10px/1 inherit; font-style:normal; background:rgb(255 255 255 / 12%); }
+.sb-av-title-at { flex:none; font:500 11px/1 ui-monospace,monospace; padding:3px 5px; border-radius:5px; background:rgb(255 255 255 / 8%); color:inherit; cursor:pointer; border:0; }
+.sb-av-title-label { flex:1; min-width:0; font:500 11px/1.2 inherit; padding:4px 6px; border-radius:5px; border:1px solid rgb(255 255 255 / 12%); background:rgb(0 0 0 / 25%); color:inherit; }
+.sb-av-title-text { width:100%; box-sizing:border-box; resize:vertical; font:500 12px/1.35 inherit; padding:5px 6px; border-radius:5px; border:1px solid rgb(255 255 255 / 12%); background:rgb(0 0 0 / 25%); color:inherit; }
+.sb-av-title-voice { flex:none; width:16px; text-align:center; opacity:.45; }
+.sb-av-title-voice.is-ready { opacity:1; color:#7fd99a; }
+.sb-av-title-add { display:flex; flex-direction:column; gap:6px; padding:10px; border-radius:8px; border:1px dashed rgb(255 255 255 / 20%); }
+.sb-av-title-add small { opacity:.65; }
+/* between two titles: "+ Insert a title here" (the user, 2026-11-16: "put text in between texts"), quiet until hovered; its form is the Add form, there */
+.sb-av-title-between { display:flex; margin:-4px 0; }
+.sb-av-title-between button { flex:1; padding:2px 0; border:0; border-radius:5px; background:none; color:inherit; font:500 10px/1.4 inherit; opacity:.38; cursor:pointer; }
+.sb-av-title-between button:hover, .sb-av-title-between button:focus-visible { opacity:1; background:rgb(18 113 183 / 35%); }
+.sb-av-title-add.is-between { border-color:#1271b7; }
+/* a narrator's variation: what the narrator says for a title, under its words */
+.sb-av-title-says { font-style:italic; border-left:2px solid #c9a0ff; background:rgb(201 160 255 / 8%); }
+.sb-av-title-row { display:flex; gap:6px; }
+.sb-av-title-row .sb-av-title-go { flex:1; }
+.sb-av-title-go { padding:7px 10px; border-radius:7px; border:0; background:#1271b7; color:#fff; font:600 12px/1 inherit; cursor:pointer; }
+.sb-av-title-go.is-quiet { background:rgb(255 255 255 / 10%); }
+.sb-av-title-go:disabled { opacity:.4; cursor:default; }
+.sb-av-titles-error { margin:0; padding:6px 8px; border-radius:6px; background:rgb(189 31 89 / 25%); font-size:11px; }

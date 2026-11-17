@@ -35,7 +35,9 @@ import {ExportAllButton, ExportMenuItem} from './StoryboardExport';
 import {addVideoComment, commentsOf, newCommentId, removeVideoComment, updateVideoComment} from '@/lib/storyboardComments.mjs';
 import {LOOKS, activeVariation, addVariation, looksFor, removeVariation, setActiveVariation, variationsOf} from '@/lib/storyboardVariations.mjs';
 import StoryboardRemotionCut from './StoryboardRemotionCut';
+import StoryboardTitlesPanel from './StoryboardTitlesPanel';
 import {CUT_PART, cutPartOf, playingCutOf, renderCommandOf} from '@/lib/remotion/cuts.mjs';
+import {titlesCut} from '@/lib/remotion/cutTitles.mjs';
 import {setCutText} from '@/lib/remotion/cutWords.mjs';
 import {setCaption, setOwnLook, setText, setVideoText} from '@/lib/storyboardEdits.mjs';
 import {STAGE_H, STAGE_W} from '@/lib/storyboardLayers.mjs';
@@ -608,10 +610,12 @@ export default function StoryboardAllVideos({menu, load, change}) {
   };
   // The inspector of a selected video shows its comments or its variations (the user, 2026-11-03: "variations should show up on the right side inspector with dropdown between comments/the variations")
   const [side, setSide] = useState('comments');
-  useEffect(() => { try { if (localStorage.getItem(SIDE_KEY) === 'variations') setSide('variations'); } catch {} }, []);
-  const pickSide = value => { setSide(value); if (value === 'variations') setPinSel(null); try { localStorage.setItem(SIDE_KEY, value); } catch {} };
+  useEffect(() => { try { const kept = localStorage.getItem(SIDE_KEY); if (kept === 'variations' || kept === 'titles') setSide(kept); } catch {} }, []);
+  const pickSide = value => { setSide(value); if (value !== 'comments') setPinSel(null); try { localStorage.setItem(SIDE_KEY, value); } catch {} };
+  // The titles of the cut that plays (the user, 2026-11-14): Increased Efficiency's cuts that are drawn with a voice (lib/remotion/cutTitles.mjs `titlesCut`)
+  const cutNow = chosenIsCut ? playingCutOf(selected, chosenEdits) : null, titlesCutNow = !!cutNow && titlesCut(selected, cutNow.layout);
   const sideHead = (small, shown) => <div className="sb-side-head">
-    <div className="sb-av-side-row"><b>{chosen.name}</b><select className="sb-av-side-pick" value={shown} onChange={e => pickSide(e.target.value)} aria-label="What the inspector shows"><option value="comments">Comments</option><option value="variations">Variations</option></select></div>
+    <div className="sb-av-side-row"><b>{chosen.name}</b><select className="sb-av-side-pick" value={shown} onChange={e => pickSide(e.target.value)} aria-label="What the inspector shows"><option value="comments">Comments</option><option value="variations">Variations</option>{titlesCutNow && <option value="titles">Titles</option>}</select></div>
     <small>{small}</small>
   </div>;
   // The variations of the video selected (lib/storyboardVariations.mjs): the one that plays is picked (it plays everywhere: here, on its board, in the video editor, in an export), one is added with a look, or deleted.
@@ -653,6 +657,11 @@ export default function StoryboardAllVideos({menu, load, change}) {
         onDelete={() => { ops.removeIn(pinSel.board, pinSel.title, pinSel.id); setPinSel(null); }}/>}
     </>;
   };
+  // The Titles: every title of the cut in the order it plays, one more added at the end, the voice made for them
+  const titlesPanel = () => <>
+    {sideHead(!chosenData ? 'Getting ready…' : `Titles · ${activeVariation(chosenEdits).name}`, 'titles')}
+    {chosenData && <StoryboardTitlesPanel board={selected} cut={cutNow} layout={cutNow.layout} edits={chosenEdits} apply={apply} seek={t => videos.current.get(selected)?.(CUT_PART, t)}/>}
+  </>;
   const found = ctx?.pin ? commentsOf(store[ctx.pin.board]?.edits, ctx.pin.part.title).find(x => x.id === ctx.pin.c.id) ?? null : null;
 
   return <div className={`sb-root sb-av-root${tool === 'comment' ? ' is-commenting' : ''}`}>
@@ -676,7 +685,7 @@ export default function StoryboardAllVideos({menu, load, change}) {
       {textEd && !pinSel ? <>
         <div className="sb-side-head"><b>{textEd.title}</b><small>Retyping a text in this video · Esc leaves</small></div>
         <TextFields key={textEd.title} edit={textEd}/>
-      </> : chosen ? (side === 'variations' && !pinSel ? variationsPanel() : commentsPanel()) : <>
+      </> : chosen ? (side === 'titles' && titlesCutNow && !pinSel ? titlesPanel() : side === 'variations' && !pinSel ? variationsPanel() : commentsPanel()) : <>
         <div className="sb-side-head"><b>{ALL_VIDEOS_NAME}</b><small>{all.length} videos · {finals} Final · {all.length - finals} In progress</small></div>
         {groups.map(g => <div key={g.name} className="sb-av-list">
           <h4>{g.name}</h4>

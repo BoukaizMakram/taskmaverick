@@ -27,7 +27,7 @@ const TOP = {from: 'top', to: 'top', p: 1};
 // opened it), `menuPop` how much it is seen (it pops from its corner, the board dims behind it; it stays open, unseen, while the cursor sets off from one of its items) ----
 function Tablet({tab, name, missions, title, elapsed, overlay, menu = false, menuPop = 0}) {
   const demo = useMemo(() => ({missions, elapsed, selected: null, menuOpen: menu, boardTitle: title, businessMediaLabel: 'Business Media'}), [missions, elapsed, title, menu]);
-  return <div className="rc-device rc-iq-tablet" data-rc-iq={name} style={{transform: `translate(${tab.x}px, ${tab.y}px) scale(${tab.w / 1000})`, '--rc-menu': menuPop.toFixed(3)}}>
+  return <div className="rc-device rc-iq-tablet" data-rc-iq={name} data-cut-part="Tablet" data-cut-lift="" style={{transform: `translate(${tab.x}px, ${tab.y}px) scale(${tab.w / 1000})`, '--rc-menu': menuPop.toFixed(3)}}>
     <InteractiveMissionBoard device="tablet" referenceLayout initialScreen="board" initialMissions={missions} demoState={demo} demoOverlay={overlay}/>
   </div>;
 }
@@ -69,7 +69,7 @@ function Mission({m, name, under = false}) {
   useLayoutEffect(() => { if (m) placeMission(box.current, m); });
   if (!m) return null;
   const es = m.es ?? 0;
-  return <div ref={box} className={`rc-iq-mission${under ? ' is-under' : ''}`} data-rc-iq={name} style={{left: m.x, top: m.y, width: MISSION.w, height: MISSION.h, transform: `scale(${m.s})`}}>
+  return <div ref={box} className={`rc-iq-mission${under ? ' is-under' : ''}`} data-rc-iq={name} data-cut-part="Mission" data-cut-lift="" style={{left: m.x, top: m.y, width: MISSION.w, height: MISSION.h, transform: `scale(${m.s})`}}>
     <div className="rc-iq-clip">
       <div className="rc-iq-layer"><StoryMission frame={m.frame} playing speed={1} Video={CutVideo}/></div>
       {es > 0.001 && <div className="rc-iq-layer" style={{opacity: es}}><StoryMission frame={{...m.frame, mission: {...m.frame.mission, translated: true}}} playing speed={1} Video={CutVideo}/></div>}
@@ -103,8 +103,8 @@ function Ratings({cut, t}) {
   useLayoutEffect(() => { if (r) placeLines(layer.current, svg.current, r.lines); });
   if (!r) return null;
   return <>
-    <svg ref={svg} className="rc-iq-lines" viewBox="0 0 1600 900" aria-hidden="true">{[0, 1, 2].map(i => <path key={i} pathLength="1"/>)}</svg>
-    <div ref={layer} className="iq2-iso-layer rc-iq-iso" data-rc-iq="iso" style={{transform: `translate(${r.x.toFixed(2)}px, ${r.y.toFixed(2)}px) scale(${(r.w / ISO.card).toFixed(4)})`}}>
+    <svg ref={svg} className="rc-iq-lines" viewBox="0 0 1600 900" aria-hidden="true" data-cut-part="Rating lines" data-cut-lift="">{[0, 1, 2].map(i => <path key={i} pathLength="1"/>)}</svg>
+    <div ref={layer} className="iq2-iso-layer rc-iq-iso" data-rc-iq="iso" data-cut-part="Ratings" data-cut-lift="" style={{transform: `translate(${r.x.toFixed(2)}px, ${r.y.toFixed(2)}px) scale(${(r.w / ISO.card).toFixed(4)})`}}>
       <IsoMission mission={{...RATED, ratings: r.ratings}} frame={{rating: r.rating}} width={ISO.card}/>
     </div>
   </>;
@@ -117,7 +117,7 @@ function Proofs({cut, t}) {
   const pin = p.proofs.in, overlay = pin > 0.001 ? <div className="iq-bp-layer" style={{opacity: Math.min(1, pin * 1.5), transform: `translateX(${(4 * (1 - pin)).toFixed(2)}%)`}}><BusinessProofs tablet scroll={p.proofs.scroll}/></div> : null;
   return <>
     <Tablet tab={p.tab} name="tablet" missions={TEAM_A} title="Team A" elapsed={p.elapsed} overlay={overlay} menu={p.menu} menuPop={p.menuPop}/>
-    {p.phone && <div className="rc-iq-phone" data-rc-iq="phone" style={{left: p.phone.x, top: p.phone.y, width: PHONE.w, opacity: p.phone.op, transform: `scale(${p.phone.pop.toFixed(4)})`}}>
+    {p.phone && <div className="rc-iq-phone" data-rc-iq="phone" data-cut-part="Phone" data-cut-lift="" style={{left: p.phone.x, top: p.phone.y, width: PHONE.w, opacity: p.phone.op, transform: `scale(${p.phone.pop.toFixed(4)})`}}>
       <div className="ph-fit"><PhoneShell title="Team A" tabs={[{label: 'Open - 3', active: true}, {label: 'Claimed - 2'}, {label: 'Closed - 4'}]} overlay={<div className="iq-bp-layer"><BusinessProofs scroll={p.proofs.scroll}/></div>}/></div>
     </div>}
   </>;
@@ -127,7 +127,7 @@ function Proofs({cut, t}) {
 function Report({cut, t}) {
   const w = cut.webAt(t);
   if (!w) return null;
-  return <div className="iq2-report rc-iq-report" data-rc-iq="report" style={{left: REPORT.x, top: REPORT.y, width: REPORT.page, height: REPORT.h, transform: `scale(${REPORT.s})`}}>
+  return <div className="iq2-report rc-iq-report" data-rc-iq="report" data-cut-part="Web report" data-cut-lift="" style={{left: REPORT.x, top: REPORT.y, width: REPORT.page, height: REPORT.h, transform: `scale(${REPORT.s})`}}>
     <div className="iq2-report-page"><UsageReport web={w}/></div>
   </div>;
 }

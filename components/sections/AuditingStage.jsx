@@ -20,7 +20,7 @@ export function AuditPanel({s}) {
   const answered = i => (s.steps > i ? 'yes' : null);
   const items = QUESTIONS.map((q, i) => ({id: String(i), type: 'yesno', q, answer: answered(i)}));
   const hazardProof = s.hazard === 'ask' ? {kind: 'video', state: 'ask'} : s.hazard === 'rec' ? {kind: 'video', state: 'rec', src: CLIP, poster: HAZARD, rec: 4} : s.hazard === 'done' ? {kind: 'video', state: 'done', src: CLIP, poster: HAZARD, file: 'Video 9/23/2026 at 8:14:31 AM.mp4'} : null;
-  items.push({id: 'hazard', type: 'yesno', q: 'Are there any safety hazards?', answer: s.hazard === 'none' ? null : 'yes', proof: hazardProof});
+  items.push({id: 'hazard', type: 'yesno', q: 'Are there any safety hazards?', answer: s.hazard === 'none' ? null : 'yes', proof: hazardProof, ...(s.trigger ? {trigger: 'yes', flip: true} : {})}); // (`s.trigger`: the Remotion cut's: Yes is what raises the corrective mission: at the right, in the trigger's color, the purple arrow comes out of it)
   const count = (s.steps) + (s.hazard === 'done' ? 1 : 0);
   return <MissionPanel kind="Audit" title="North Building Audit" location="North Building / Safety" who="Anna F" date="09-23-26 08:00 AM" timer="00:00:14" status="claimed"
     brief={{instructions: 'Walk the building and check every point below. Report anything that is not safe.', alert: 'Photograph or film every hazard you find.', link: s.link ? 'View the audit standards guide' : null}}
@@ -31,7 +31,7 @@ export function AuditPanel({s}) {
 export function CorrectivePanel({s}) {
   return <MissionPanel kind="Task" points={10} title="Correct Safety Hazard" location="North Building / Safety" who={s.panel === 'corrective-closed' ? 'Carla M' : 'Posted by Anna F'} date="09-23-26 08:15 AM" timer={s.panel === 'corrective-closed' ? '00:07:12' : '00:00:21'} tone={s.panel === 'corrective-closed' ? 'gray' : 'green'}
     brief={{instructions: 'Repair the damaged door hinge on the walk-in cooler.', alert: 'Watch the video of the hazard first.'}}
-    items={[{id: 'evidence', type: 'training', q: 'Evidence from the audit', title: 'Damaged door hinge', poster: HAZARD, meta: 'Video · 0:06', done: false, player: s.watch ? {src: CLIP, poster: HAZARD, time: s.watch, length: 6} : null}]} scrollTo="top" expand={s.grow ?? 1} closed={s.panel === 'corrective-closed'} {...(s.place ?? {})}/>;
+    items={[{id: 'evidence', type: 'training', q: 'Evidence from the audit', title: 'Damaged door hinge', poster: HAZARD, meta: 'Video · 0:06', done: false, player: s.watch ? {src: CLIP, poster: HAZARD, time: s.watch, length: 6} : null}]} scrollTo="top" scrollMix={s.scrollMix} expand={s.grow ?? 1} closed={s.panel === 'corrective-closed'} {...(s.place ?? {})}/>;
 }
 export function TrainingPanel({s}) {
   const text = s.training === 'text' || s.training === 'quiz';

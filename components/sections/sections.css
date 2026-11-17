@@ -30,6 +30,13 @@
 .sec-chip .iq2-iso-stack { width:334px; }
 .sec-label { position:absolute; white-space:nowrap; transform:translateY(-50%); }
 
+/* an answer that raises an alert ticket (a trigger), chosen: in the alert ticket's border color (#d03a6f, components/TicketCard.css .chip--alert), with a little of its glow, so the answer
+   and the ticket it raises read as one (the user, 2026-11-16: "change the yes to be trigger ... with same color as the ticket border"; components/sections/parts.jsx `item.trigger`) */
+.iq2-m-options>span.is-selected.is-trigger { background:#fbe7ee; border-color:#d03a6f; box-shadow:0 0 0 1px #d03a6f, 0 0 10px rgb(208 58 111 / 28%); }
+.iq2-m-options>span.is-selected.is-trigger .iq-checkbox.is-checked { background:#d03a6f; border-color:#d03a6f; }
+/* (a number entered that raises one, `item.trigger` of a number checkpoint: the same color, in a Remotion cut where the entry stays open beside the ticket it raises) */
+.sec-field--n.is-trigger { background:#fbe7ee; border-color:#d03a6f; color:#d03a6f; font-weight:600; box-shadow:0 0 0 1px #d03a6f, 0 0 10px rgb(208 58 111 / 28%); }
+
 /* the On-Demand list: the card the cursor picks */
 .bn-demand-card.is-picked { border-color:#7da3cf; background:#e6eef8; }
 .iq-tablet .bn-demand-header h2 { font-size:17px; }

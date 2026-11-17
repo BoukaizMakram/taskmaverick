@@ -4,8 +4,11 @@
 // so they follow what moves), the band of words (the sentence centered and left-aligned, a thin line at its left and the chapter's label at the left of the line; a new scene's words first in the middle)
 // and a video played by the cut's clock. Classes: .rc-* (components/remotion/CutParts.css). The texts that can be retyped say so: `data-rc-text` (a sentence's id, '<id>:kicker', 'title').
 import {Fragment, useLayoutEffect, useMemo, useRef} from 'react';
-import {AbsoluteFill, Freeze, Img, OffthreadVideo, Sequence, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Freeze, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {CURSOR, CUT_H, CUT_W, OUT, TITLE, WORDS, mix, prog, wordsOf} from '@/lib/remotion/cutCore.mjs';
+import {VOICE_GAIN, voiceHash, voiceLinesOf} from '@/lib/remotion/efficiencyVoice.mjs';
+import {cutVoiceFile} from '@/lib/remotion/cutVoice.mjs';
+import {CUT_VOICE_AUDIO} from '@/lib/remotion/cutVoiceAudio.mjs';
 import '../DemoHand.css'; // .iq2-mark
 import './CutParts.css';
 
@@ -104,7 +107,7 @@ function BesideBand({cut, c, t, hide}) {
   </div>;
 }
 function SlidingBand({cut, c, t, hide}) {
-  const lines = useMemo(() => wordsOf(c.lines), [c]);
+  const lines = useMemo(() => wordsOf(c.lines, c.pace), [c]); // (`c.pace`: a cut's own pace for its words; none: the usual)
   const g = cut.slideOf(c, t), kKey = `${c.id}:kicker`;
   return <div className="rc-band" style={{opacity: g.op}}>
     <div className="rc-group" style={{transform: `translateX(${g.x.toFixed(2)}px)`}}>
@@ -222,10 +225,20 @@ export function CutVideo({time = 0, src, playing = false}) {
 }
 
 // ---- the frame of a cut: the stage, the title, the art (`children`, as one layer), the outlines, what the cut adds over them (`over`), the band ----
+// The voice-over of a cut that has one (the user, 2026-11-16: "add voice over to all videos"; lib/remotion/cutVoice.mjs; a plan made with `story(words, {voice})` says so: `voiceKey`): each line
+// (the title, each sentence, a title added on the All videos page) starts where its words do. A line plays only if the audio made for THAT text is there (its hash), so a sentence retyped
+// since is silent until its voice is made again, never the wrong words. Drawn by `CutFrame`, so every cut has it; Increased Efficiency's keeps its own (components/remotion/EfficiencyRedo.jsx).
+export function CutVoice({cut}) {
+  const {fps} = useVideoConfig(), key = cut.voiceKey ?? null, made = key ? CUT_VOICE_AUDIO[key] : null;
+  const lines = useMemo(() => (made ? voiceLinesOf(cut).filter(line => made[line.id]?.hash === voiceHash(line.text)) : []), [cut, made]);
+  return lines.map(line => <Sequence key={line.id} from={Math.round(line.at * fps)} durationInFrames={Math.ceil(made[line.id].duration * fps) + 2} layout="none"><Audio src={staticFile(cutVoiceFile(key, line.id))} volume={VOICE_GAIN}/></Sequence>);
+}
+
 export function CutFrame({cut, t, hide, stage, over = null, children}) {
   const {width} = useVideoConfig(), art = cut.artAt(t), shade = cut.shadeAt ? cut.shadeAt(t) : 1;
   return <AbsoluteFill className="rc-root">
-    <div ref={stage} className="rc-stage" style={{transform: `scale(${width / CUT_W})`}}>
+    <CutVoice cut={cut}/>
+    <div ref={stage} className={`rc-stage${cut.look?.quiet ? ' is-quiet' : ''}`} style={{transform: `scale(${width / CUT_W})`}}>{/* (`is-quiet`: Increased Efficiency's Variation 8, small words with no solid band under them) */}
       <div className="rc-bg" data-cut-part="Background" data-cut-fixed=""/>{/* (on All storyboards it is fixed in place: its color changes, not its place or size) */}
       <Title cut={cut} t={t} hide={hide}/>
       {/* the art: at a new scene it goes as one, then comes in as one, pulled down with the words (`artAt`) */}
@@ -234,6 +247,7 @@ export function CutFrame({cut, t, hide, stage, over = null, children}) {
       {over}
       <Cursor cut={cut} t={t} stage={stage}/>
       <div className="rc-band-shade" data-cut-part="Band shade" style={shade < 1 ? {opacity: shade} : undefined}/>
+      {cut.look?.quiet ? <div className="rc-scrim" aria-hidden="true"/> : null}
       <Band cut={cut} t={t} hide={hide}/>
     </div>
   </AbsoluteFill>;

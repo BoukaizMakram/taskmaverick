@@ -8,7 +8,10 @@ import LiveOversightStage from './LiveOversightStage';
 const SHELF = '/demo-quality/proofs/storage-shelves.jpg';
 export const INVENTORY_BASE = {view: 'board', board: 'base', panel: 'check', counts: 0, expand: 1, count: null, photo: 'none', flow: 'aging', flowStep: 0, scroll: 0, gallery: true, scrollTo: 'top'};
 
-function missionsOf(board) {
+// (exported for the Remotion cut, components/remotion/InventoryCut.jsx, which draws these pieces by its clock. A panel takes there, all optional: `s.place` {left, top, scale} where it
+// stands, `s.timer` (and `s.tone`) its timer by the clock, `s.scrollMix` {from, to, p} its window between two places, `s.trigger` the count below par drawn as what raises the order.
+// With none of them a panel is what the section's slides have always drawn)
+export function missionsOf(board) {
   const rest = [
     mission('napkins', 'Restock Napkins', 'Task', 'open', {ageSeconds: 920, openOrder: 5}),
     mission('delivery', 'Receive Delivery', 'Checklist', 'claimed', {performer: 'Ben R', performerAvatar: AVATAR.ben, executionSeconds: 402, started: 40, ageSeconds: 1300}),
@@ -24,17 +27,17 @@ function missionsOf(board) {
 
 // ---- the inventory check by itself, with the counts it collects ----
 const ITEMS = [['A', 15], ['B', 22], ['C', 5]];
-function CheckPanel({s}) {
-  const items = ITEMS.map(([k, v], i) => ({id: `item-${k}`, type: 'number', q: `Item-${k} on hand`, value: s.counts > i ? v : null, unit: 'units', flag: k === 'C' && s.counts > i}));
-  return <MissionPanel kind="Checklist" points={25} title="Inventory Check" location="Stockroom / Shelf 3" who="Anna F" date="09-23-26 07:00 AM" timer="00:05:11" expand={s.expand}
+export function CheckPanel({s}) {
+  const items = ITEMS.map(([k, v], i) => ({id: `item-${k}`, type: 'number', q: `Item-${k} on hand`, value: s.counts > i ? v : null, unit: 'units', flag: k === 'C' && s.counts > i, ...(s.trigger && k === 'C' ? {trigger: true} : {})}));
+  return <MissionPanel kind="Checklist" points={25} title="Inventory Check" location="Stockroom / Shelf 3" who="Anna F" date="09-23-26 07:00 AM" timer={s.timer ?? '00:05:11'} expand={s.expand} scrollMix={s.scrollMix ?? null} {...(s.place ?? {})}
     brief={{instructions: 'Count what is on the shelf and enter each number.', alert: 'Par is 20 units for every item.'}}
     groupTitle={{name: 'Counts', count: `${s.counts}/3`}} items={items} scrollTo={s.scrollTo}/>;
 }
 // ---- the replenishment: the count, then the photo of the shelf ----
-function ReplenishPanel({s}) {
+export function ReplenishPanel({s}) {
   const items = [{id: 'count', type: 'number', q: 'Item-C on the shelf now', value: s.count, unit: 'units'},
     {id: 'shelf', type: 'photo', q: 'Take a photo of the shelf.', state: s.photo === 'done' ? 'done' : 'ask', poster: SHELF}];
-  return <MissionPanel kind="Task" points={10} title="Replenish Item-C" location="Stockroom / Shelf 3" who="Ben R" date="09-23-26 07:06 AM" timer="00:00:05" expand={s.expand}
+  return <MissionPanel kind="Task" points={10} title="Replenish Item-C" location="Stockroom / Shelf 3" who="Ben R" date="09-23-26 07:06 AM" timer={s.timer ?? '00:00:05'} tone={s.tone ?? 'green'} expand={s.expand} scrollMix={s.scrollMix ?? null} {...(s.place ?? {})}
     brief={{instructions: 'Bring Item-C up to par and show the full shelf.', alert: 'Item-C was below par: 5 units.'}} items={items} scrollTo={s.scrollTo}/>;
 }
 

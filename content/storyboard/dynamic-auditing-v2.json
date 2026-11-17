@@ -2843,10 +2843,15 @@
         "id": "v2",
         "name": "Variation 2",
         "look": "remotion"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3 · Narrator",
+        "look": "remotion-narrator"
       }
     ],
-    "active": "v2",
-    "at": "2026-11-12T19:06:27.645Z"
+    "active": "v3",
+    "at": "2026-11-16T23:36:38.937Z"
   },
-  "rev": 35
+  "rev": 37
 }

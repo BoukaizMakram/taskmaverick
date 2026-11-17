@@ -46,11 +46,12 @@ export function RequestPanel({s, d}) {
   return <MissionPanel kind="Survey" points={null} title={d.request} location={`${d.area} / ${d.ticketBoard}`} who={d.people[0]} date="09-23-26 10:20 AM" timer="00:00:06" expand={s.expand}
     brief={{instructions: d.instructions}}
     items={[{id: 'describe', type: 'text', q: 'Describe issue', value: typeof s.typed === 'string' ? s.typed : s.typed ? d.problem : '', placeholder: 'Describe the issue'},
-      {id: 'doc', type: 'yesno', q: 'Document issue?', answer: s.doc === 'none' ? null : 'yes', proof}]} scrollTo="top" {...(s.place ?? {})}/>;
+      {id: 'doc', type: 'yesno', q: 'Document issue?', answer: s.doc === 'none' ? null : 'yes', proof, ...(s.trigger ? {trigger: 'yes', flip: true} : {})}]} scrollTo="top" {...(s.place ?? {})}/>; // (`s.trigger`: the Remotion cut's: Yes is what raises the ticket, at the right and in the ticket's border color; the slides keep Yes, No)
 }
 // ---- the ticket opened, with the video the request carried ----
 export function TicketPanel({s, d}) {
-  return <MissionPanel kind="Ticket" points={null} title={d.ticket} location={`${d.ticketBoard} Board`} who={`Posted by ${d.people[0]}`} date="09-23-26 10:21 AM" timer="00:00:14" expand={s.expand}
+  // (`s.timer`, `s.tone`: the ticket's timer by a cut's clock, components/remotion/MaintenanceCut.jsx: there it is the one ticket of the whole story, red by then; the slides keep 00:00:14, green)
+  return <MissionPanel kind="Ticket" points={null} title={d.ticket} location={`${d.ticketBoard} Board`} who={`Posted by ${d.people[0]}`} date="09-23-26 10:21 AM" timer={s.timer ?? '00:00:14'} tone={s.tone ?? 'green'} expand={s.expand}
     brief={{instructions: d.problem, alert: `Reported from the ${d.area}.`}}
     items={[{id: 'evidence', type: 'training', q: 'Evidence from the request', title: d.evidence, poster: HINGE, meta: 'Video · 0:06', done: false, player: s.watch ? {src: CLIP, poster: HINGE, time: s.watch, length: 6} : null}]} scrollTo="top" {...(s.place ?? {})}/>;
 }

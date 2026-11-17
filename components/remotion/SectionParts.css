@@ -1,0 +1,34 @@
+/* The pieces of the cuts made of a board's sections, cards and panels (components/remotion/SectionParts.jsx, lib/remotion/sectionCore.mjs): .rc-sp-*. The stage, the words, the title, the outlines
+   and the cursor are every cut's (CutParts.css); everything is set by the clock, nothing here animates by itself. There is no tablet in these films (the user, 2026-11-16). */
+
+/* a layer of the art: its opacity by the clock (the screen a click or a new sentence went to comes in over the one before) */
+.rc-sp-layer { position:absolute; inset:0; }
+/* a mission opened is a 9:16 phone's panel over the band of the words: its shadow ends before the band's straight edge (y 744), the panel ends at y 701 */
+.rc-sp-layer .iq2-mission { filter:drop-shadow(0 14px 24px rgb(0 0 0 / 45%)); }
+
+/* a section of a board with no tablet: the board's own column tab (.tbl-tab), drawn 334 board units wide as a card is and scaled by the clock, with no white ring round it on the dark
+   (the same as Increased Efficiency's board without its tablet, EfficiencyRedo.css .rc-lane-tab) */
+.rc-sp-tab { position:absolute; left:0; top:0; transform-origin:0 0; }
+.rc-sp-tab .mi-interactive { width:1080px; }
+.rc-sp-tab .mi-reference.mi-interactive--tablet .mi-tablet-board.iq2-iso-board { width:1080px; height:auto; overflow:visible; background:none; }
+.rc-sp-tab .mi-reference.mi-interactive--tablet .mi-tablet-board .tbl-tab { margin:0; box-shadow:none; }
+/* a card on its own (a mission's, an alert ticket's): the flows' layer, one a card, so each pops, fades and is stacked by itself (MotionBoard.css .rc-mt-flow) */
+.rc-sp-card { pointer-events:none; }
+/* the plus of the board (On-Demand), by itself beside a section's tab: the header's blue plus on the header's white */
+.rc-sp-plus { position:absolute; display:grid; place-items:center; border-radius:12px; background:#fff; color:#1271b7; box-shadow:0 6px 16px rgb(0 0 0 / 35%); }
+.rc-sp-plus svg { display:block; width:56%; height:56%; }
+/* the On-Demand list, out of the plus: the board's own drawer in a box of its own (it grows from its corner by the plus, by the clock; its own entrance is off) */
+.rc-sp-menu { position:absolute; z-index:10; transform-origin:0 0; overflow:hidden; border-radius:16px; background:#f8f8f5; box-shadow:0 14px 34px rgb(0 0 0 / 45%); }
+.rc-sp-menu .mi-drawer { position:absolute; inset:0; width:auto; max-width:none; box-shadow:none; animation:none; }
+/* a name over a section or a card (a team's, a board's): white on the dark; a ticket board's is in the ticket's color, lighter than the header's so it reads on the dark */
+.rc-sp-name { position:absolute; white-space:nowrap; transform:translateY(-50%); color:#fff; font:600 22px/1 var(--font-montserrat),sans-serif; letter-spacing:.01em; text-shadow:0 1px 8px rgb(0 0 0 / 55%); }
+.rc-sp-name.is-ticket { color:#f0638f; }
+/* an arrow from what raised a card to the card */
+.rc-sp-arrow { position:absolute; overflow:visible; }
+/* a card's own avatar keeps the performer's place on the card and is never seen: the avatar that took it sits there, the same one from its pop to the end (the user, 2026-11-16:
+   "make sure to don't change the avatar to the shape it had before") */
+.rc-sp-layer.is-bare .chip-performer-avatar { opacity:0; }
+/* the avatar that takes a card: over the cards, placed each frame on its card (SectionParts.jsx Rider). It is the avatar's own picture, an octagon: never cut into a circle (the user,
+   2026-11-16, with the two side by side: "it shouldn't be a circle"); its shadow follows its shape, as Increased Efficiency's faces (EfficiencyCut.css .rc-face) */
+.rc-sp-face { position:absolute; left:0; top:0; z-index:12; opacity:0; }
+.rc-sp-face img { display:block; width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 4px 10px rgb(0 0 0 / 40%)); }

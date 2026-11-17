@@ -1,0 +1,5 @@
+/* Reporting & AI, the Remotion cut (components/remotion/ReportingCut.jsx, lib/remotion/reportingCut.mjs): .rc-ra-*. The stage, the words, the title, the outlines and the cursor are every cut's
+   (components/remotion/CutParts.css); everything is set by the clock, nothing here animates by itself. */
+
+/* the page, edge to edge over the band of the words (the section's ReportingStage in its `bare` way, which has no border, corners or shadow: .rc-lo-board) */
+.rc-ra-page { position:absolute; inset:0; }

@@ -6,6 +6,9 @@
 /* the mission is a smaller 9:16 phone's panel over the band of the words: its shadow ends before the band's straight edge (y 744), the panel ends at y 701 (the layout 'under' of Improved Quality's) */
 .rc-ad-layer .iq2-mission { filter:drop-shadow(0 14px 24px rgb(0 0 0 / 45%)); }
 /* the cards that follow an audit (FlowPart: the demo's 1600 x 900 layer, kept where it is drawn); the one that pops lies over the ones that stay */
+/* the tree the camera pans over (the user, 2026-11-16): one layer moved by the camera, the audit's panel in it, its lines drawn in the tree's own space */
+.rc-ad-cam, .rc-ad-sub { position:absolute; inset:0; }
+.rc-ad-lines { position:absolute; left:0; top:0; width:1600px; height:900px; overflow:visible; }
 .rc-ad-flow { position:absolute; left:0; top:0; width:1600px; height:900px; }
 .rc-ad-flow-pop { position:absolute; inset:0; }
 .rc-ad-flow .chip { box-shadow:0 8px 20px rgb(0 0 0 / 35%); }

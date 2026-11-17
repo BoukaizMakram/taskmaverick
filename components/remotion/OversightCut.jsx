@@ -73,9 +73,9 @@ function BoardMarks({cut, t, stage}) {
   return <div ref={layer} className="rc-marks">{list.map(m => <i key={`${m.kind}:${m.state ?? ''}:${m.col}`} className="iq2-mark rc-mark" data-cut-part="Yellow outline" style={{opacity: m.op}}/>)}</div>;
 }
 
-export default function OversightCut({words = null, hide = null}) {
+export default function OversightCut({words = null, hide = null, layout = null}) { // (`layout`: the variation's; 'narrator': the same film with the narrator's voice)
   const frame = useCurrentFrame(), {fps} = useVideoConfig(), t = frame / fps, stage = useRef(null);
-  const cut = useMemo(() => makeOversightCut(words ?? undefined), [words]);
+  const cut = useMemo(() => makeOversightCut(words ?? undefined, {layout}), [words, layout]);
   return <CutFrame cut={cut} t={t} hide={hide} stage={stage} over={<BoardMarks cut={cut} t={t} stage={stage}/>}>
     <Pages cut={cut} t={t}/>
   </CutFrame>;

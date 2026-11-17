@@ -1,6 +1,12 @@
 'use client';
 // Reporting & AI's art for the section videos (lib/sections/reporting-ai.mjs): the Data Board of the web app (components/DataReport.jsx's page, with its own rows): the execution summary per
 // unit, opened one level at a time (teams, people, missions, statements) down to the data a person entered and the photo and video they collected. `level` says how deep it is open.
+// For the Remotion cut (components/remotion/ReportingCut.jsx, lib/remotion/reportingCut.mjs; the user, 2026-11-16), all of it only when asked for, the slides draw as they did:
+//   `bare` {w, h}     the page edge to edge, its whole 1600 px across a window of that size (no border, corners or shadow: .rc-lo-board), a piece of its own on the board All storyboards
+//                     ("Board"), the viewer another ("Viewer", a little bigger than on the slides); where the list is scrolled is then the cut's own, by its clock
+//   `state.open`      [unit, team, person, mission]: how far each level is open, 0 to 1, by a clock, instead of `level`
+//   `state.viewerOp`  how far the viewer has come in over the page (0 to 1); `state.viewerPlaying`: its clip plays
+//   `Video`           what plays the viewer's clip (a cut's CutVideo: by the film's clock), in a box of its own since it fills its parent
 import {Fragment, useRef} from 'react';
 import {useCenter} from './parts';
 import {Icon, Sidebar, NAV, HEAD, GroupRow, Toggle, Pct} from '../DataReport';
@@ -21,7 +27,9 @@ const STATEMENTS = [
 ];
 const pct = (closed, posted) => (closed / posted) * 100;
 
-const Reveal = ({open, children}) => <div className="iq2-reveal" style={{gridTemplateRows: `${open ? 1 : 0}fr`, opacity: open ? 1 : 0, visibility: open ? 'visible' : 'hidden'}}><div>{children}</div></div>;
+const Reveal = ({open, children}) => { const v = open === true ? 1 : !open ? 0 : open; return <div className="iq2-reveal" style={{gridTemplateRows: `${v}fr`, opacity: v, visibility: v > 0 ? 'visible' : 'hidden'}}><div>{children}</div></div>; }; // (`open`: yes or no, or how far, 0 to 1: the cut's)
+const CLIP_BOX = {position: 'relative', width: '100%', height: 360, borderRadius: 8, overflow: 'hidden', background: '#10151a'}; // (the box of a clip played by a cut's `Video`, which fills its parent: the size the viewer's own video has)
+const BIG = 1.3; // (the viewer in the cut, over the whole 1600 px page)
 function Block({id, children}) { return <div data-iq-target={id} className="sec-block">{children}</div>; }
 function Statements() {
   return <div className="iq-dr-statements sec-st" data-iq-target="statements-block">
@@ -38,12 +46,14 @@ function Statements() {
   </div>;
 }
 
-export default function ReportingStage({state}) {
-  const s = {...REPORTING_BASE, ...state}, win = useRef(null), L = s.level;
+export default function ReportingStage({state, bare = null, Video = null}) {
+  const s = {...REPORTING_BASE, ...state}, win = useRef(null), level = s.level;
+  const lv = n => (s.open ? s.open[n - 1] ?? 0 : level >= n); // how far level `n` is open: the cut's number (0 to 1), else yes or no from `level`
   useCenter(win, {focus: s.focus, pan: s.pan, scroller: '.sec-scroll', scrollTo: s.scrollTo});
-  const unit = (u, i) => <GroupRow key={u[0]} depth={0} index={i + 1} label={u[0]} count={u[1]} posted={u[2]} closed={u[3]} pct={pct(u[3], u[2])} open={i === 0 && L >= 1}/>;
-  return <div ref={win} className="iq2-report" data-sec-part="Report" style={{left: 24, top: 62, width: 1110, height: 776}}>
-    <div className="iq2-report-page" style={{transform: `translateX(${-s.pan}px)`, height: 760}}><div className="iq-ol-page">
+  const unit = (u, i) => <GroupRow key={u[0]} depth={0} index={i + 1} label={u[0]} count={u[1]} posted={u[2]} closed={u[3]} pct={pct(u[3], u[2])} open={i === 0 && !!lv(1)}/>;
+  const box = bare ? {left: 0, top: 0, width: bare.w, height: bare.h} : {left: 24, top: 62, width: 1110, height: 776};
+  return <div ref={win} className={`iq2-report${bare ? ' rc-lo-board' : ''}`} data-sec-part="Report" data-cut-part={bare ? 'Board' : undefined} style={box}>
+    <div className={`iq2-report-page${bare ? ' rc-lo-page' : ''}`} style={{transform: `translateX(${-s.pan}px)`, height: bare ? bare.h : 760}}><div className="iq-ol-page">
       <div className="iq-ur iq-dr" aria-label="Taskmaverick web: Data Board">
         <header className="iq-ur-topbar"><img src="/logo.svg" alt="taskmaverick"/><nav>{NAV.map(n => <span key={n} className={n === 'Reports' ? 'is-active' : undefined}>{n}</span>)}</nav><div><Icon name="bell"/><Icon name="gear"/><span className="iq-ur-avatar">JM</span></div></header>
         <div className="iq-ur-page"><Sidebar/>
@@ -57,13 +67,13 @@ export default function ReportingStage({state}) {
                 <Block id="units-block">
                   <Block id="unit-0">
                     {unit(UNITS[0], 0)}
-                    <Reveal open={L >= 1}><Block id="teams-block">{TEAMS.map((t, i) => <Block key={t[0]} id={`team-${i}`}>
-                      <GroupRow depth={1} index={i + 1} label={t[0]} count={t[1]} posted={t[2]} closed={t[3]} pct={pct(t[3], t[2])} open={i === 0 && L >= 2}/>
-                      {i === 0 && <Reveal open={L >= 2}><Block id="people-block">{PEOPLE.map((p, j) => <Block key={p[0]} id={`person-${j}`}>
-                        <GroupRow depth={2} index={j + 1} label={p[0]} count={p[1]} posted={p[2]} closed={p[3]} pct={pct(p[3], p[2])} position="WL Staff" open={j === 0 && L >= 3}/>
-                        {j === 0 && <Reveal open={L >= 3}><Block id="missions-block">{MISSIONS.map(([name, type, posted, closed], k) => <Block key={name} id={`mission-${k}`}>
-                          <div className={`iq-dr-row is-mission${k === 0 && L >= 4 ? ' is-expanded' : ''}`}><span>{k === 0 && L >= 4 ? <Toggle/> : <i className="iq-dr-branch"/>}<em>{k + 1}.</em><b>{name}</b><small>1</small></span><span/><span className="is-num">{posted}</span><span className="is-num">{closed}</span><span><Pct pct={pct(closed, posted)}/></span><span/><span>{type}</span><span>Operations</span><span/><span/></div>
-                          {k === 0 && <Reveal open={L >= 4}><Statements/></Reveal>}
+                    <Reveal open={lv(1)}><Block id="teams-block">{TEAMS.map((t, i) => <Block key={t[0]} id={`team-${i}`}>
+                      <GroupRow depth={1} index={i + 1} label={t[0]} count={t[1]} posted={t[2]} closed={t[3]} pct={pct(t[3], t[2])} open={i === 0 && !!lv(2)}/>
+                      {i === 0 && <Reveal open={lv(2)}><Block id="people-block">{PEOPLE.map((p, j) => <Block key={p[0]} id={`person-${j}`}>
+                        <GroupRow depth={2} index={j + 1} label={p[0]} count={p[1]} posted={p[2]} closed={p[3]} pct={pct(p[3], p[2])} position="WL Staff" open={j === 0 && !!lv(3)}/>
+                        {j === 0 && <Reveal open={lv(3)}><Block id="missions-block">{MISSIONS.map(([name, type, posted, closed], k) => <Block key={name} id={`mission-${k}`}>
+                          <div className={`iq-dr-row is-mission${k === 0 && lv(4) ? ' is-expanded' : ''}`}><span>{k === 0 && lv(4) ? <Toggle/> : <i className="iq-dr-branch"/>}<em>{k + 1}.</em><b>{name}</b><small>1</small></span><span/><span className="is-num">{posted}</span><span className="is-num">{closed}</span><span><Pct pct={pct(closed, posted)}/></span><span/><span>{type}</span><span>Operations</span><span/><span/></div>
+                          {k === 0 && <Reveal open={lv(4)}><Statements/></Reveal>}
                         </Block>)}</Block></Reveal>}
                       </Block>)}</Block></Reveal>}
                     </Block>)}</Block></Reveal>
@@ -76,6 +86,11 @@ export default function ReportingStage({state}) {
         </div>
       </div>
     </div></div>
-    {s.viewer && <div className="sec-lightbox" data-sec-window><div className="sec-lightbox-card">{s.viewer === 'photo' ? <img src={PHOTO} alt=""/> : <DemoVideo src={CLIP} poster={POSTER} time={s.viewerTime ?? 0}/>}<span className="sec-lightbox-x" data-iq-target="lightbox-close">×</span></div></div>}
+    {s.viewer && <div className="sec-lightbox" data-sec-window data-cut-part={bare ? 'Viewer' : undefined} style={s.viewerOp != null && s.viewerOp < 1 ? {opacity: s.viewerOp} : undefined}>
+      <div className="sec-lightbox-card" style={bare ? {transform: `scale(${BIG})`} : undefined}>
+        {s.viewer === 'photo' ? <img src={PHOTO} alt=""/> : Video ? <div style={CLIP_BOX}><Video src={CLIP} poster={POSTER} time={s.viewerTime ?? 0} playing={!!s.viewerPlaying}/></div> : <DemoVideo src={CLIP} poster={POSTER} time={s.viewerTime ?? 0}/>}
+        <span className="sec-lightbox-x" data-iq-target="lightbox-close">×</span>
+      </div>
+    </div>}
   </div>;
 }

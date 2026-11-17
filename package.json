@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
     "gen:tts": "node scripts/generate-tts.mjs",
+    "gen:ie-voice": "node scripts/generate-ie-voice.mjs",
+    "gen:voice": "node scripts/generate-voice.mjs",
     "fetch:proofs": "node scripts/fetch-proof-images.mjs",
     "gen:posters": "node scripts/generate-asset-posters.mjs",
     "gen:images": "node scripts/generate-images.mjs",
     "gen:storyboard": "node scripts/capture-storyboard.mjs",
+    "gen:storyboards": "node scripts/capture-cuts.mjs --all",
     "export:storyboard": "node scripts/storyboard-export.mjs"
   },
   "dependencies": {

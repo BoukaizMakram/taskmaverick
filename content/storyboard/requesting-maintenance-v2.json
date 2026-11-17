@@ -2210,16 +2210,27 @@
       "at": "2026-10-17T00:03:28.284Z"
     }
   },
+  "comments": {
+    "Requesting Maintenance · Remotion cut [v2]": {
+      "items": [],
+      "updated": "2026-11-16T07:25:58.341Z"
+    }
+  },
   "variations": {
     "list": [
       {
         "id": "v2",
         "name": "Variation 2",
         "look": "remotion"
+      },
+      {
+        "id": "v3",
+        "name": "Variation 3 · Narrator",
+        "look": "remotion-narrator"
       }
     ],
     "active": "v2",
-    "at": "2026-11-12T21:03:58.563Z"
+    "at": "2026-11-16T20:23:16.236Z"
   },
-  "rev": 35
+  "rev": 45
 }

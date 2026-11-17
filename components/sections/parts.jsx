@@ -110,13 +110,13 @@ function Proof({id, proof}) {
 }
 function Item({item, n}) {
   const head = <b>{n}. {item.q}</b>;
-  if (item.type === 'yesno') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}
-    <div className="iq2-m-options">
-      <span role="checkbox" aria-checked={item.answer === 'yes'} className={item.answer === 'yes' ? 'is-selected' : undefined} data-iq-target={`yes-${item.id}`}><Box checked={item.answer === 'yes'}/>Yes</span>
-      <span role="checkbox" aria-checked={item.answer === 'no'} className={item.answer === 'no' ? 'is-selected' : undefined} data-iq-target={`no-${item.id}`}><Box checked={item.answer === 'no'}/>No</span>
-    </div><Proof id={item.id} proof={item.proof}/></section>;
+  if (item.type === 'yesno') { // (`item.trigger` 'yes' | 'no': the answer that raises an alert ticket: chosen, it is in the ticket's border color, `.is-trigger`; `item.flip`: No first, Yes at the right. The user, 2026-11-16, Requesting Maintenance's cut: "change the yes to be trigger with yes on the right with same color as the ticket border")
+    const option = v => <span key={v} role="checkbox" aria-checked={item.answer === v} className={item.answer === v ? `is-selected${item.trigger === v ? ' is-trigger' : ''}` : undefined} data-iq-target={`${v}-${item.id}`}><Box checked={item.answer === v}/>{v === 'yes' ? 'Yes' : 'No'}</span>;
+    return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}
+      <div className="iq2-m-options">{(item.flip ? ['no', 'yes'] : ['yes', 'no']).map(option)}</div><Proof id={item.id} proof={item.proof}/></section>;
+  }
   if (item.type === 'text') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}<div className={`sec-field${item.value ? ' has-value' : ''}`} data-iq-target={`field-${item.id}`}>{item.value || item.placeholder || 'Type here'}</div><Proof id={item.id} proof={item.proof}/></section>;
-  if (item.type === 'number') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}<div className="sec-number"><span className={`sec-field sec-field--n${item.value != null ? ' has-value' : ''}${item.flag ? ' is-flag' : ''}`} data-iq-target={`field-${item.id}`}>{item.value ?? '#'}</span>{item.unit && <em>{item.unit}</em>}</div><Proof id={item.id} proof={item.proof}/></section>;
+  if (item.type === 'number') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}<div className="sec-number"><span className={`sec-field sec-field--n${item.value != null ? ' has-value' : ''}${item.flag ? ' is-flag' : ''}${item.trigger && item.value != null ? ' is-trigger' : ''}`} data-iq-target={`field-${item.id}`}>{item.value ?? '#'}</span>{item.unit && <em>{item.unit}</em>}</div><Proof id={item.id} proof={item.proof}/></section>;
   if (item.type === 'photo') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}<Proof id={item.id} proof={{kind: 'photo', state: item.state ?? 'ask', poster: item.poster}}/></section>;
   if (item.type === 'training') return <section className="iq2-m-cp" data-iq-target={`cp-${item.id}`}>{head}
     <div className={`iq2-m-tile${item.done ? ' is-done' : ''}`} data-iq-target={`training-${item.id}`}>

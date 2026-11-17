@@ -12,7 +12,7 @@
 // the stars popping on the phones.
 // The stage, the title and the words are every cut's (components/remotion/CutParts.jsx); classes of its own: .rc-* (components/remotion/EfficiencyRedo.css, with EfficiencyCut.css).
 import {memo, useLayoutEffect, useMemo, useRef} from 'react';
-import {Img, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Audio, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {CutFrame} from './CutParts';
 import InteractiveMissionBoard from '../InteractiveMissionBoard';
 import MissionChip from '../MissionChip';
@@ -21,6 +21,8 @@ import {ALL_CARDS, ART_DY, BOARD, CARD, CREW, LANES, LANE_TAB, PEOPLE, PHONES_IM
 import '../ImprovedQualityV2Demo.css'; // .iq2-iso-* (a card out of its board)
 import './EfficiencyCut.css';         // .rc-card, .rc-tablet, .rc-face, .rc-phone, .rc-photo (the cut it redoes)
 import './EfficiencyRedo.css';
+import {VOICE_GAIN, voiceFile, voiceHash, voiceLinesOf} from '@/lib/remotion/efficiencyVoice.mjs';
+import {VOICE_AUDIO} from '@/lib/remotion/efficiencyVoiceAudio.mjs';
 
 const EXPAND = 'M7 3H3v4M13 3h4v4M17 3l-5 5M3 13v4h4M3 17l5-5M17 13v4h-4'; // (the board's column tab icon)
 
@@ -38,21 +40,21 @@ function Photo({cut, t, front = false}) {
 // out and six sparks; `p` 0 to 1 over STAR.dur ----
 const STAR_PATH = 'M0 -50 C6 -14 14 -6 50 0 C14 6 6 14 0 50 C-6 14 -14 6 -50 0 C-14 -6 -6 -14 0 -50 Z';
 const ease = p => 1 - (1 - p) ** 3;
-function Star({x, y, p}) {
+function Star({x, y, p, who}) {
   const size = STAR.size, grow = p < 0.32 ? 0.15 + 1.05 * ease(p / 0.32) * (1 + 0.18 * Math.sin(Math.PI * Math.min(1, p / 0.32))) : 1.2 - 0.2 * ease(Math.min(1, (p - 0.32) / 0.3));
   const op = p < 0.68 ? 1 : 1 - (p - 0.68) / 0.32, ring = ease(Math.min(1, p / 0.7)), spark = ease(Math.min(1, p / 0.6));
-  return <div className="rc-star" data-cut-part="Star" style={{left: x - size / 2, top: y - size / 2, width: size, height: size}}>
+  return <div className="rc-star" data-cut-part={who ? `Star ${PEOPLE[who].name}` : 'Star'} style={{left: x - size / 2, top: y - size / 2, width: size, height: size, opacity: op < 1 ? op : undefined}}>{/* (it fades as a whole: its ring and sparks are gone before it does, the same picture; scripts/capture-cuts.mjs sees a piece going by its own opacity) */}
     <i className="rc-star-ring" style={{transform: `scale(${0.3 + 1.5 * ring})`, opacity: 0.85 * (1 - ring)}}/>
     {[0, 1, 2, 3, 4, 5].map(k => { const a = (k * 60 + 30) * Math.PI / 180, d = size * (0.18 + 0.62 * spark); return <i key={k} className="rc-star-spark" style={{transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) scale(${1 - 0.6 * spark})`, opacity: p < 0.15 ? 0 : 1 - Math.min(1, (p - 0.2) / 0.45)}}/>; })}
-    <svg viewBox="-50 -50 100 100" style={{transform: `scale(${grow}) rotate(${(28 * ease(Math.min(1, p / 0.8))).toFixed(2)}deg)`, opacity: op}} aria-hidden="true"><path d={STAR_PATH}/></svg>
+    <svg viewBox="-50 -50 100 100" style={{transform: `scale(${grow}) rotate(${(28 * ease(Math.min(1, p / 0.8))).toFixed(2)}deg)`}} aria-hidden="true"><path d={STAR_PATH}/></svg>
   </div>;
 }
 
 // ---- a press on a phone's screen (the CEO, 2026-11-09: "the guy presses with his hand ... and it does this for the others"): a fingertip coming down on the screen and two rings going out of
 // it; the stars then pop on the OTHER phones. `p` 0 to 1 over STAR.press ----
-function Press({x, y, p}) {
+function Press({x, y, p, who}) {
   const size = STAR.size * 0.9, dot = 1.3 - 0.5 * ease(Math.min(1, p / 0.22)), op = Math.min(1, p / 0.1) * (p < 0.7 ? 1 : 1 - (p - 0.7) / 0.3);
-  return <div className="rc-press" data-cut-part="Press" style={{left: x - size / 2, top: y - size / 2, width: size, height: size}}>
+  return <div className="rc-press" data-cut-part={who ? `Press ${PEOPLE[who].name}` : 'Press'} style={{left: x - size / 2, top: y - size / 2, width: size, height: size}}>
     {[0, 1].map(k => { const q = Math.max(0, Math.min(1, (p - 0.18 - k * 0.2) / 0.6)); return <i key={k} className="rc-press-ring" style={{transform: `scale(${(0.3 + 1.3 * ease(q)).toFixed(3)})`, opacity: q <= 0 ? 0 : 0.9 * (1 - q)}}/>; })}
     <i className="rc-press-dot" style={{transform: `scale(${dot.toFixed(3)})`, opacity: op}}/>
   </div>;
@@ -62,7 +64,7 @@ function Press({x, y, p}) {
 function Phones({cut, t}) {
   const p = cut.phonesAt(t);
   if (p.op <= 0.001) return null;
-  const stars = p.stars.length || p.presses.length ? <div className="rc-stars" data-cut-group="Stars" style={{opacity: p.op}}>{p.presses.map(s => <Press key={s.key} x={s.x} y={s.y} p={s.p}/>)}{p.stars.map(s => <Star key={s.key} x={s.x} y={s.y} p={s.p}/>)}</div> : null;
+  const stars = p.stars.length || p.presses.length ? <div className="rc-stars" data-cut-group="Stars" style={{opacity: p.op}}>{p.presses.map(s => <Press key={s.key} x={s.x} y={s.y} p={s.p} who={s.who}/>)}{p.stars.map(s => <Star key={s.key} x={s.x} y={s.y} p={s.p} who={s.who}/>)}</div> : null;
   if (PHONES_PHOTO.src) return <>
     <div className="rc-photo rc-photo--phones" data-cut-part="Picture phones" style={{left: PHOTO.x, top: PHOTO.y, width: PHOTO.w, height: PHOTO.h, borderRadius: PHOTO.r, opacity: p.op}}>
       <Img src={PHONES_PHOTO.src} alt="" style={{left: PHONES_IMG.x, top: PHONES_IMG.y, width: PHONES_IMG.w, height: PHONES_IMG.h, transformOrigin: `${PHOTO.w / 2 - PHONES_IMG.x}px ${PHOTO.h / 2 - PHONES_IMG.y}px`, transform: `scale(${p.z})`}}/>
@@ -160,12 +162,21 @@ function onboardStyle(cut, t) {
   return {transform: skew ?? undefined, filter: w > 0.001 ? `brightness(${(1 - 0.1 * w).toFixed(3)}) saturate(${(1 - 0.12 * w).toFixed(3)}) sepia(${(0.14 * w).toFixed(3)})` : undefined};
 }
 
+// The voice-over (the user, 2026-11-13: ElevenLabs, lib/remotion/efficiencyVoice.mjs): each line starts where its words do. A line plays only if the audio made for THAT text is there (its hash), so a
+// sentence retyped on the All videos page is silent until `npm run gen:ie-voice` makes it again, never the old words said over the new ones.
+function Voice({cut, layout}) {
+  const {fps} = useVideoConfig(), made = VOICE_AUDIO[layout ?? 'redo'];
+  if (!made) return null;
+  return voiceLinesOf(cut).map(line => made[line.id]?.hash === voiceHash(line.text)
+    ? <Sequence key={line.id} from={Math.round(line.at * fps)} durationInFrames={Math.ceil(made[line.id].duration * fps) + 2} layout="none"><Audio src={staticFile(voiceFile(layout, line.id))} volume={VOICE_GAIN}/></Sequence> : null);
+}
+
 export default function EfficiencyRedo({words = null, hide = null, layout = null}) {
   const frame = useCurrentFrame(), {fps} = useVideoConfig(), t = frame / fps, stage = useRef(null);
   const cut = useMemo(() => makeRedoCut(words ?? undefined, {layout}), [words, layout]), ctx = cut.frameCtx(t);
-  return <CutFrame cut={cut} t={t} hide={hide} stage={stage} over={<UiTexts stage={stage} hide={hide}/>}>
+  return <><Voice cut={cut} layout={layout}/><CutFrame cut={cut} t={t} hide={hide} stage={stage} over={<UiTexts stage={stage} hide={hide}/>}>
     {/* (the whole art is drawn ART_DY px lower than its own space: as much room over it as between it and the title, which does not move; lib/remotion/efficiencyRedo.mjs) */}
-    <div className="rc-redo" style={{transform: `translateY(${ART_DY}px)`, '--rc-exec-strip': cut.look?.execStrip ?? undefined}}>{/* (--rc-exec-strip: the strip behind the execution timers, when a variation changes it) */}
+    <div className="rc-redo" data-cut-scope="rc-sb-redo" style={{transform: `translateY(${ART_DY}px)`, '--rc-exec-strip': cut.look?.execStrip ?? undefined}}>{/* (--rc-exec-strip: the strip behind the execution timers, when a variation changes it) */}
       <Photo cut={cut} t={t}/>
       <Phones cut={cut} t={t}/>
       <div className="rc-onboard" style={onboardStyle(cut, t)}>{/* (the tablet and its missions, bent as one to the angle of the tablet on the picture's wall) */}
@@ -181,5 +192,5 @@ export default function EfficiencyRedo({words = null, hide = null, layout = null
       <Photo cut={cut} t={t} front/>
       <LaneTabs cut={cut} t={t}/>
     </div>
-  </CutFrame>;
+  </CutFrame></>;
 }

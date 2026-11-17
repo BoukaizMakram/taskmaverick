@@ -75,3 +75,11 @@
 
 /* the board All storyboards (lib/storyboardAllStoryboards.mjs): its frames are the cuts' pieces on the cuts' dark, in their font */
 .rc-sb-stage { background:#0e1013; font-family:var(--font-montserrat),system-ui,sans-serif; }/* (no color of its own: each word piece carries its own; the tablet's header title and icons have theirs since 2026-11-10: `.rc-device .mi-department`, `.ph-iconbtn` above) */
+
+/* Increased Efficiency's Variation 8 (`cut.look.quiet`, lib/remotion/efficiencyRedo.mjs; the user, 2026-11-13: "less emphasis on the text and the text flow with the action with the voice on top"): the words are
+   small and quiet, one line, centered, with no solid band under them; a soft scrim keeps them readable where the art runs under them */
+.rc-stage.is-quiet .rc-band-shade { display:none; }
+.rc-stage.is-quiet .rc-scrim { position:absolute; left:-400px; right:-400px; bottom:-400px; height:600px; z-index:40; background:linear-gradient(to top, rgb(14 16 19 / 90%) 0, rgb(14 16 19 / 90%) 400px, rgb(14 16 19 / 72%) 470px, rgb(14 16 19 / 0%) 600px); }
+.rc-stage.is-quiet .rc-band { bottom:40px; }
+.rc-stage.is-quiet .rc-line { font-size:25px; font-weight:500; line-height:1.4; letter-spacing:.005em; color:rgb(255 255 255 / 88%); text-shadow:0 1px 10px rgb(0 0 0 / 60%); }
+.rc-stage.is-quiet .rc-title { font-size:46px; font-weight:600; }
